@@ -207,11 +207,7 @@ export default function LoginPage() {
                 <div className="auth-error-banner">❌ {errors.root.message}</div>
               )}
 
-              {/* Redirect hint */}
-              <div className={`auth-hint-box text-xs auth-hint-box--${selectedRole.id}`}>
-                💡 <strong>{selectedRole.label}</strong> credentials auto-filled{' '}
-                <span className="text-[var(--text-secondary)]">{ROLE_DEST_LABEL[selectedRole.id]}</span>
-              </div>
+
 
               {/* Submit */}
               <button
