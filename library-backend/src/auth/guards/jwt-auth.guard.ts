@@ -1,14 +1,37 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
+/**
+ * Real JWT Auth Guard — replaces the previous hardcoded stub.
+ * 
+ * 1. Checks if route is marked @Public() → skips auth
+ * 2. Delegates to Passport JWT strategy (validates Bearer token)
+ * 3. Attaches verified user payload to request.user
+ */
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    request.user = {
-      id: '11111111-1111-1111-1111-111111111111',
-      role: 'manager',
-      branchId: '22222222-2222-2222-2222-222222222222',
-    };
-    return true;
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  constructor(private reflector: Reflector) {
+    super();
+  }
+
+  canActivate(context: ExecutionContext) {
+    // Check if route is marked as public
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) return true;
+
+    // Run real JWT passport validation
+    return super.canActivate(context);
+  }
+
+  handleRequest(err: any, user: any, info: any) {
+    if (err || !user) {
+      throw err || new UnauthorizedException('Invalid or expired token. Please login again.');
+    }
+    return user;
   }
 }

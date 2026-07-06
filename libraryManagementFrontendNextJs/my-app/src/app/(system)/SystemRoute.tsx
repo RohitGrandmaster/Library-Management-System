@@ -1,24 +1,62 @@
 'use client';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Sidebar from '@/app/(admin)/admin/Sidebar';
 import Header from '@/app/(admin)/admin/Header';
 import '@/app/(admin)/admin.css';
 import '@/app/(system)/system.css';
+import { getCurrentUser } from '@/lib/auth';
 
+// ALL system routes — including ones previously missing from the guard
 const SYSTEM_ROUTES = [
-  '/system/bulk-import', '/system/data-export', '/system/backups',
-  '/system/settings', '/system/profile', '/system/branding', '/system/whatsapp-integration'
+  '/system/bulk-import',
+  '/system/data-export',
+  '/system/backups',
+  '/system/settings',
+  '/system/profile',
+  '/system/branding',
+  '/system/whatsapp-integration',
+  '/system/auto-scale',
+  '/system/gap-filling',
+  '/system/maintenance',
+  '/system/offline',
+  '/system/power-saving',
+  '/system/smart-id',
+  '/system/waitlist-automation',
 ];
+
+const ALLOWED_ROLES = ['admin', 'superadmin'];
 
 export function SystemRoute({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   const isSystemRoute = SYSTEM_ROUTES.some(r => pathname.startsWith(r));
 
+  useEffect(() => {
+    if (!isSystemRoute) {
+      setIsVerified(true);
+      return;
+    }
+
+    // Client-side backup check (middleware is the real guard)
+    const user = getCurrentUser();
+    if (!user) {
+      router.replace(`/auth/login?returnTo=${encodeURIComponent(pathname)}&reason=unauthenticated`);
+      return;
+    }
+    if (!ALLOWED_ROLES.includes(user.role)) {
+      router.replace('/403');
+      return;
+    }
+    setIsVerified(true);
+  }, [pathname, isSystemRoute, router]);
+
   if (!isSystemRoute) return <>{children}</>;
+  if (!isVerified) return null;
 
   const sidebarWidth = collapsed ? 60 : 240;
 

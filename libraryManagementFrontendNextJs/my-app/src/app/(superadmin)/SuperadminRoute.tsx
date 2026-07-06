@@ -1,31 +1,54 @@
 'use client';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Sidebar from '@/app/(superadmin)/superadmin/dashboard/Sidebar';
 import Header from '@/app/(superadmin)/superadmin/dashboard/Header';
 import '@/app/(superadmin)/superadmin.css';
+import { getCurrentUser, clearAuthState } from '@/lib/auth';
 
-const SUPERADMIN_ROUTES = [
-  '/superadmin'
-];
+const SUPERADMIN_ROUTES = ['/superadmin'];
 
 export function SuperadminRoute({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   const isSuperadminRoute = SUPERADMIN_ROUTES.some(r => pathname.startsWith(r));
 
+  useEffect(() => {
+    if (!isSuperadminRoute) {
+      setIsVerified(true);
+      return;
+    }
+
+    // Client-side backup check (middleware is the real guard)
+    const user = getCurrentUser();
+    if (!user) {
+      router.replace(`/auth/login?returnTo=${encodeURIComponent(pathname)}&reason=unauthenticated`);
+      return;
+    }
+    if (user.role !== 'superadmin') {
+      // Wrong role — redirect to 403
+      router.replace('/403');
+      return;
+    }
+    setIsVerified(true);
+  }, [pathname, isSuperadminRoute, router]);
+
   if (!isSuperadminRoute) return <>{children}</>;
 
-  // Setup wizard is explicitly mentioned as standalone, we can bypass the shell wrapper
+  // Show nothing while verifying (middleware already handled server-side)
+  if (!isVerified) return null;
+
+  // Setup wizard is explicitly standalone
   if (pathname.startsWith('/superadmin/setup-wizard')) {
-     return <div className="superadmin-theme">{children}</div>;
+    return <div className="superadmin-theme">{children}</div>;
   }
 
   return (
     <div className="superadmin-theme">
       <div className="sa-shell">
-        {/* Mobile overlay */}
         <div
           className={`sa-sidebar-mobile-overlay ${sidebarOpen ? 'sa-sidebar-mobile-overlay--visible' : ''}`}
           onClick={() => setSidebarOpen(false)}
