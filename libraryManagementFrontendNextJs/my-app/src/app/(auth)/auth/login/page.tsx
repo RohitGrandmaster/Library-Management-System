@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Eye, EyeOff, BookOpen, CheckCircle, ChevronRight } from 'lucide-react';
 import { loginSchema, type LoginFormData } from '@/app/(auth)/auth/reusable/schema';
 import hardcoded from '@/app/(auth)/hardcoded.json';
+import { login } from '@/lib/auth';
 
 const ROLES = hardcoded.roles;
 
@@ -33,24 +34,25 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: ROLES[0].email, password: ROLES[0].password, role: 'superadmin' },
+    defaultValues: { email: '', password: '', role: 'superadmin' },
   });
 
   const handleRoleSelect = (role: typeof ROLES[0]) => {
     setSelectedRole(role);
-    setValue('email',    role.email,    { shouldValidate: false });
-    setValue('password', role.password, { shouldValidate: false });
+    setValue('email',    '', { shouldValidate: false });
+    setValue('password', '', { shouldValidate: false });
     setValue('role',     role.id as LoginFormData['role']);
   };
 
   const onSubmit = async (data: LoginFormData) => {
-    const match = ROLES.find(r => r.id === selectedRole.id && r.email === data.email && r.password === data.password);
-    if (!match) {
-      setError('root', { message: 'Invalid credentials. Please try again.' });
-      return;
+    try {
+      const response = await login(data.email, data.password);
+      const userRole = response.user.role;
+      const roleConfig = ROLES.find(r => r.id === userRole);
+      window.location.href = roleConfig ? getRedirectUrl(roleConfig) : `/${userRole}/dashboard`;
+    } catch (err: any) {
+      setError('root', { message: err.message || 'Invalid credentials. Please try again.' });
     }
-    await new Promise(res => setTimeout(res, 900));
-    window.location.href = getRedirectUrl(match);
   };
 
   return (
