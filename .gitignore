@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+/node_modules
+*/node_modules/
+library-backend/node_modules/
+libraryManagementFrontendNextJs/my-app/node_modules/
+
+# Production builds
+dist/
+/dist
+build/
+/build
+.next/
+/.next
+out/
+/out
+
+# Testing
+coverage/
+/coverage
+
+# Misc
+.DS_Store
+*.pem
+temp.html
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDEs and Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.qodo/

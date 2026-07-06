@@ -1,0 +1,18 @@
+{
+  "name": "library-management-system",
+  "version": "1.0.0",
+  "description": "Library Management System",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "build": "docker-compose build",
+    "logs": "docker-compose logs -f",
+    "clear:cache": "rimraf library-backend/dist libraryManagementFrontendNextJs/my-app/.next library-backend/node_modules libraryManagementFrontendNextJs/my-app/node_modules",
+    "install:all": "npm install --prefix library-backend && npm install --prefix libraryManagementFrontendNextJs/my-app",
+    "dev:backend": "npm run start:dev --prefix library-backend",
+    "dev:frontend": "npm run dev --prefix libraryManagementFrontendNextJs/my-app"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.1"
+  }
+}
