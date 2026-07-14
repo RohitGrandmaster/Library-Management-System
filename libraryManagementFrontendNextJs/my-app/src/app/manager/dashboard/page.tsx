@@ -194,7 +194,7 @@ export default function ManagerDashboardPage() {
         <div className="mgr-card">
           <div className="mgr-card-header">
             <h2 className="mgr-section-title">Recent Enquiries</h2>
-            <Link href="/crm/enquiries" className="mgr-action-link">View all</Link>
+            <Link href="/manager/crm/enquiries" className="mgr-action-link">View all</Link>
           </div>
           <div style={{ height: 280 }}>
             <AgGridReact
