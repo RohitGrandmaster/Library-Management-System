@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Sidebar from '@/app/superadmin/dashboard/Sidebar';
 import Header from '@/app/superadmin/dashboard/Header';
 import '@/app/superadmin/superadmin.css';
+import '@/app/superadmin/sa-components.css';
 import { getCurrentUser, clearAuthState } from '@/lib/auth';
 
 const SUPERADMIN_ROUTES = ['/superadmin'];
