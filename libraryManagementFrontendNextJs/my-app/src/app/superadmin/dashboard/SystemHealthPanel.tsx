@@ -40,7 +40,7 @@ export default function SystemHealthPanel({ data }: Props) {
       </div>
 
       <div className="mt-auto p-6 border-t border-[var(--border)]">
-        <Link href="/superadmin/system-health" className="sa-panel-view-all">
+        <Link href="/superadmin/superadmin_system-health" className="sa-panel-view-all">
           <ExternalLink size={13} /> View Full System Report
         </Link>
       </div>
