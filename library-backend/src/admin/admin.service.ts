@@ -122,4 +122,8 @@ export class AdminService {
       }
     };
   }
+
+  async getEmptyArray() {
+    return [];
+  }
 }
