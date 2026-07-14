@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Users, CalendarCheck, Phone, Armchair, ChevronRight, TrendingUp } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '../reusable/gridTheme';
+import { gridTheme } from '../manager_reusable/gridTheme';
 import { fetchApi } from '@/lib/api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
