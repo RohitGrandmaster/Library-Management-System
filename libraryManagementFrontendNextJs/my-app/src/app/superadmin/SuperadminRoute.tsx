@@ -43,7 +43,7 @@ export function SuperadminRoute({ children }: { children: React.ReactNode }) {
   if (!isVerified) return null;
 
   // Setup wizard is explicitly standalone
-  if (pathname.startsWith('/superadmin/setup-wizard')) {
+  if (pathname.startsWith('/superadmin/superadmin_setup-wizard')) {
     return <div className="superadmin-theme">{children}</div>;
   }
 

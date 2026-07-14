@@ -8,22 +8,6 @@ import './manager.css';
 
 const MANAGER_ROUTES = [
   '/manager',
-  '/crm/enquiries',
-  '/manager/students',
-  '/manager/documents',
-  '/seats_shifts_lockers',
-  '/finance',
-  '/engagement',
-  '/accounting/expenses',
-  '/accounting/financial-reports',
-  '/accounting/daily-settlement',
-  '/accounting/seat-gap-report',
-  '/accounting/shift-gap-analyzer',
-  '/accounting/assets',
-  '/accounting/asset-maintenance',
-  '/communication',
-  '/manager/student-reports',
-  '/manager/student-dashboard',
 ];
 
 export function ManagerRoute({ children }: { children: React.ReactNode }) {

@@ -9,10 +9,7 @@ import '@/app/admin/admin.css';
 
 // All route prefixes that belong to admin shell
 const ADMIN_ROUTES = [
-  '/admin/dashboard', '/admin/reports',
-  '/admin/branches', '/admin/staff-users', '/admin/permissions',
-  '/admin/plans', '/admin/coupons', '/admin/audit-logs', '/admin/blacklist',
-  '/admin/settings', '/admin/expense-categories', '/admin/expenses', '/admin/students'
+  '/admin'
 ];
 
 export function AdminRoute({ children }: { children: React.ReactNode }) {
