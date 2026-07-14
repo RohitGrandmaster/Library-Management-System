@@ -874,8 +874,10 @@
      KANBAN BOARD
   ════════════════════════════════════════ */
   .crm-kanban-board {
-    display: flex;
-    gap: 20px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 12px;
     overflow-x: auto;
     padding-bottom: 24px;
     padding-top: 4px;
@@ -893,8 +895,9 @@
   }
 
   .crm-kanban-col {
-    flex-shrink: 0;
-    width: 300px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 260px;
     display: flex;
     flex-direction: column;
     gap: 12px;

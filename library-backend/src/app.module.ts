@@ -30,6 +30,7 @@ import { AdminModule } from './admin/admin.module';
 import { CouponsModule } from './coupons/coupons.module';
 import { LockersModule } from './lockers/lockers.module';
 import { ManagerModule } from './manager/manager.module';
+import { EnquiriesModule } from './enquiries/enquiries.module';
 
 @Module({
   imports: [
@@ -113,6 +114,7 @@ import { ManagerModule } from './manager/manager.module';
     CouponsModule,
     LockersModule,
     ManagerModule,
+    EnquiriesModule,
   ],
   controllers: [AppController],
   providers: [

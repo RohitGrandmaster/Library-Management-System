@@ -1,50 +1,85 @@
-# Dependencies
+﻿# ============================================================
+#  Library Management System — Monorepo .gitignore
+#  Covers: NestJS Backend + Next.js Frontend
+# ============================================================
+
+# ── Node / npm ──────────────────────────────────────────────
 node_modules/
-/node_modules
-*/node_modules/
-library-backend/node_modules/
-libraryManagementFrontendNextJs/my-app/node_modules/
-
-# Production builds
-dist/
-/dist
-build/
-/build
-.next/
-/.next
-out/
-/out
-
-# Testing
-coverage/
-/coverage
-
-# Misc
-.DS_Store
-*.pem
-temp.html
-
-# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+.yarn-integrity
 
-# Environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# ── NestJS Backend Build ─────────────────────────────────────
+library-backend/dist/
+library-backend/build/
+library-backend/.cache/
 
-# Vercel
-.vercel
+# ── Next.js Frontend Build ───────────────────────────────────
+libraryManagementFrontendNextJs/my-app/.next/
+libraryManagementFrontendNextJs/my-app/out/
+libraryManagementFrontendNextJs/my-app/build/
 
-# TypeScript
+# TypeScript build info
 *.tsbuildinfo
 next-env.d.ts
 
-# IDEs and Editors
+# ── Environment Files (NEVER commit secrets!) ────────────────
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.staging
+.env.production
+.env.production.local
+*.env.backup
+!.env.example
+!.env.template
+
+# ── Logs ─────────────────────────────────────────────────────
+logs/
+*.log
+*.log.*
+pino.log
+
+# ── Testing & Coverage ───────────────────────────────────────
+coverage/
+.nyc_output/
+jest-results/
+test-results/
+playwright-report/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# ── Docker local overrides ───────────────────────────────────
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+pgdata/
+redisdata/
+miniodata/
+
+# ── Database ─────────────────────────────────────────────────
+*.sql.bak
+*.dump
+*.sqlite
+*.db
+
+# ── OS Generated ─────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── IDEs and Editors ─────────────────────────────────────────
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -56,4 +91,35 @@ next-env.d.ts
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# ── Vercel / Netlify / CI ────────────────────────────────────
+.vercel
+.netlify
+
+# ── Security / Certs ─────────────────────────────────────────
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+
+# ── Temporary / Misc ─────────────────────────────────────────
+temp.html
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
 .qodo/
+.agents/
+
+# ── Storybook ────────────────────────────────────────────────
+storybook-static/

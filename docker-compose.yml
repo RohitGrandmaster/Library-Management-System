@@ -1,106 +1,132 @@
-version: '3.8'
+﻿# ============================================================
+#  Library Management System — docker-compose.yml
+#  Services: Frontend | Backend | PostgreSQL | Redis | Nginx
+# ============================================================
+
+version: "3.9"
 
 services:
-  # Next.js Frontend
-  frontend:
-    build:
-      context: ./libraryManagementFrontendNextJs/my-app
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
-    depends_on:
-      - backend
-    networks:
-      - app-network
-    restart: always
 
-  # NestJS Backend
+  # ── PostgreSQL Database ──────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: library_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER:     ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB:       ${DB_NAME:-library360}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - library-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-library360}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis Cache ──────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: library_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redispass}
+    volumes:
+      - redisdata:/data
+    networks:
+      - library-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD:-redispass}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── NestJS Backend ───────────────────────────────────────────
   backend:
     build:
       context: ./library-backend
       dockerfile: Dockerfile
+      target: production
+    container_name: library_backend
+    restart: unless-stopped
     ports:
-      - "3001:3000"
+      - "3001:3001"
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/library_db
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - S3_ENDPOINT=http://minio:9000
-      - S3_ACCESS_KEY=minioadmin
-      - S3_SECRET_KEY=minioadmin
+      NODE_ENV:           production
+      PORT:               3001
+      DB_HOST:            postgres
+      DB_PORT:            5432
+      DB_USER:            ${DB_USER:-postgres}
+      DB_PASSWORD:        ${DB_PASSWORD:-postgres}
+      DB_NAME:            ${DB_NAME:-library360}
+      JWT_SECRET:         ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      REDIS_HOST:         redis
+      REDIS_PORT:         6379
+      REDIS_PASSWORD:     ${REDIS_PASSWORD:-redispass}
     depends_on:
-      - postgres
-      - redis
-      - minio
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
-      - app-network
-    restart: always
+      - library-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
 
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
+  # ── Next.js Frontend ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./libraryManagementFrontendNextJs/my-app
+      dockerfile: Dockerfile
+      target: production
+    container_name: library_frontend
+    restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "3000:3000"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=library_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      NODE_ENV:              production
+      NEXT_PUBLIC_API_URL:   http://backend:3001/api/v1
+    depends_on:
+      backend:
+        condition: service_healthy
     networks:
-      - app-network
-    restart: always
+      - library-net
 
-  # Redis (Cache & BullMQ)
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redisdata:/data
-    networks:
-      - app-network
-    restart: always
-
-  # MinIO (S3-compatible storage)
-  minio:
-    image: minio/minio
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-    command: server /data --console-address ":9001"
-    volumes:
-      - miniodata:/data
-    networks:
-      - app-network
-    restart: always
-
-  # Nginx Reverse Proxy
+  # ── Nginx Reverse Proxy ──────────────────────────────────────
   nginx:
-    image: nginx:alpine
+    image: nginx:1.27-alpine
+    container_name: library_nginx
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
     depends_on:
       - frontend
       - backend
     networks:
-      - app-network
-    restart: always
+      - library-net
 
+# ── Volumes ──────────────────────────────────────────────────
 volumes:
   pgdata:
+    driver: local
   redisdata:
-  miniodata:
+    driver: local
 
+# ── Networks ─────────────────────────────────────────────────
 networks:
-  app-network:
+  library-net:
     driver: bridge

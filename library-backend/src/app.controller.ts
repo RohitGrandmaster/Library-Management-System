@@ -1,8 +1,8 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { DataSource } from 'typeorm';
 
-@Controller('api')
+@Controller('')
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -12,11 +12,6 @@ export class AppController {
   @Get('hello')
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @Get('crm/enquiries')
-  async getEnquiries() {
-    return this.dataSource.query('SELECT * FROM enquiry ORDER BY "createdAt" DESC');
   }
 
   @Get('communication/complaints')

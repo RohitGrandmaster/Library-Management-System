@@ -119,6 +119,9 @@ export async function middleware(request: NextRequest) {
  */
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|icons|images|fonts|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|icons|images|fonts|.*\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)$).*)',
   ],
 };
+
+// Next.js 16+ alias (prevents deprecation warning)
+export { middleware as proxy };

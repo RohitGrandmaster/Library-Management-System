@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import {
   Users, IndianRupee, Armchair, AlertCircle,
   RotateCcw, Phone, MessageSquare, Handshake, ChevronRight,
@@ -11,7 +12,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 
 async function getDashboardData() {
-  const res = await fetch('http://localhost:3001/api/admin/dashboard', { cache: 'no-store' });
+  const cookieStore = await cookies();
+  const token = cookieStore.get('access_token')?.value || '';
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
+  const res = await fetch(`${API_BASE}/admin/dashboard`, {
+    cache: 'no-store',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
   if (!res.ok) {
     return null;
   }

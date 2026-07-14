@@ -7,7 +7,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 @ApiTags('Audit Logs')
 @ApiBearerAuth()
-@Controller('api/v1/audit-logs')
+@Controller('audit-logs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('superadmin')
 export class AuditLogsController {
