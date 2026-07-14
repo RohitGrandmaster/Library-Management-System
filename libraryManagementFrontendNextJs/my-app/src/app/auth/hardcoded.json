@@ -27,7 +27,7 @@
       "icon": "📋",
       "email": "manager@smartlibrary.com",
       "password": "Manager@1234",
-      "redirectTo": "/seats_shifts_lockers/seat-matrix",
+      "redirectTo": "/manager/seats_shifts_lockers/seat-matrix",
       "setupComplete": true
     }
   ],
