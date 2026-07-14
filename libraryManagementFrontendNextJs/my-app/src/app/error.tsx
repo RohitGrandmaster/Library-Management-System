@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import './(system)/system.css';
+import './system/system.css';
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {

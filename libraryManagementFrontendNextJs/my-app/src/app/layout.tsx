@@ -1,17 +1,17 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ManagerRoute } from "@/app/(manager)/ManagerRoute";
-import { AdminRoute } from "@/app/(admin)/AdminRoute";
-import { FinanceRoute } from "@/app/(finance)/FinanceRoute";
-import { SuperadminRoute } from "@/app/(superadmin)/SuperadminRoute";
-import { EngagementRoute } from "@/app/(engagement)/EngagementRoute";
-import { SystemRoute } from "@/app/(system)/SystemRoute";
-import { CrmRoute } from "@/app/(crm)/CrmRoute";
-import { AccountingRoute } from "@/app/(accounting)/AccountingRoute";
-import { CommunicationRoute } from "@/app/(communication)/CommunicationRoute";
-import { SeatsRoute } from "@/app/(seats_shifts_lockers)/SeatsRoute";
-import { AuthRoute } from "@/app/(auth)/AuthRoute";
+import { ManagerRoute } from "@/app/manager/ManagerRoute";
+import { AdminRoute } from "@/app/admin/AdminRoute";
+import { FinanceRoute } from "@/app/finance/FinanceRoute";
+import { SuperadminRoute } from "@/app/superadmin/SuperadminRoute";
+import { EngagementRoute } from "@/app/engagement/EngagementRoute";
+import { SystemRoute } from "@/app/system/SystemRoute";
+import { CrmRoute } from "@/app/crm/CrmRoute";
+import { AccountingRoute } from "@/app/accounting/AccountingRoute";
+import { CommunicationRoute } from "@/app/communication/CommunicationRoute";
+import { SeatsRoute } from "@/app/seats_shifts_lockers/SeatsRoute";
+import { AuthRoute } from "@/app/auth/AuthRoute";
 
 export const metadata: Metadata = {
   title: "Nexus 360",
