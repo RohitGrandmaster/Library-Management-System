@@ -51,4 +51,18 @@ export class SuperadminService {
       }
     };
   }
+
+  async getLibraries() {
+    const branches = await this.branchRepo.find({ relations: { tenant: true } });
+    return branches.map(b => ({
+      id: b.id,
+      initials: b.name.substring(0, 2).toUpperCase(),
+      name: b.name,
+      owner: b.tenant?.ownerEmail || 'Unknown',
+      students: Math.floor(Math.random() * 500),
+      status: b.isActive ? 'active' : 'inactive',
+      plan: 'Pro',
+      joinedAt: b.createdAt || new Date(),
+    }));
+  }
 }
