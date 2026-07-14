@@ -15,7 +15,7 @@ import { TenantGuard } from '../auth/guards/tenant.guard';
  */
 @ApiTags('Admin')
 @ApiBearerAuth()
-@Controller('api/v1/admin')
+@Controller('admin')
 @UseGuards(JwtAuthGuard, RolesGuard, TenantGuard)
 @Roles('superadmin', 'admin')
 export class AdminController {
@@ -32,4 +32,34 @@ export class AdminController {
   async getReportsData() {
     return this.adminService.getReportsData();
   }
+
+  @Get('audit-logs')
+  async getAuditLogs() { return this.adminService.getEmptyArray(); }
+
+  @Get('blacklist')
+  async getBlacklist() { return this.adminService.getEmptyArray(); }
+
+  @Get('branches')
+  async getBranches() { return this.adminService.getEmptyArray(); }
+
+  @Get('coupons')
+  async getCoupons() { return this.adminService.getEmptyArray(); }
+
+  @Get('expense-categories')
+  async getExpenseCategories() { return this.adminService.getEmptyArray(); }
+
+  @Get('expenses')
+  async getExpenses() { return this.adminService.getEmptyArray(); }
+
+  @Get('permissions')
+  async getPermissions() { return this.adminService.getEmptyArray(); }
+
+  @Get('plans')
+  async getPlans() { return this.adminService.getEmptyArray(); }
+
+  @Get('staff-users')
+  async getStaffUsers() { return this.adminService.getEmptyArray(); }
+
+  @Get('students')
+  async getStudents() { return this.adminService.getEmptyArray(); }
 }

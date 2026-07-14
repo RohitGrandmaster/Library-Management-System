@@ -4,9 +4,20 @@ import ActionItemsPanel from './ActionItemsPanel';
 import RecentLibrariesTable from './RecentLibrariesTable';
 import Link from 'next/link';
 import { Activity, Clock } from 'lucide-react';
+import { cookies } from 'next/headers';
 
 async function getDashboardData() {
-  const res = await fetch('http://localhost:3001/api/superadmin/dashboard', { cache: 'no-store' });
+  const cookieStore = await cookies();
+  const token = cookieStore.get('access_token')?.value || '';
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
+  const res = await fetch(`${API_BASE}/superadmin/dashboard`, {
+    cache: 'no-store',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
   if (!res.ok) {
     return null;
   }

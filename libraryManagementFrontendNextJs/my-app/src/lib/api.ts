@@ -5,7 +5,9 @@
  * 1. Attaches Authorization: Bearer <token> header
  * 2. On 401 → tries to refresh token once, then redirects to login
  * 3. On 403 → redirects to /403 page
- * 4. Sets Cache-Control: no-store to prevent caching of API responses
+ *
+ * NOTE: Cache-Control is a RESPONSE header — do NOT send it as a REQUEST header.
+ * Sending it as a request header causes CORS preflight to fail.
  */
 
 import { getAccessToken, refreshAccessToken, clearAuthState } from './auth';
@@ -19,17 +21,28 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-store',
+    // ✅ Removed 'Cache-Control' — it's a response header, not request header.
+    // Sending it as a request header causes CORS preflight failures.
     ...options.headers,
     // Attach JWT token if available
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    credentials: 'include',
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+      credentials: 'include',
+    });
+  } catch (networkError) {
+    // Network-level failure (server down, CORS blocked, wrong URL)
+    console.error(`[fetchApi] Network error for ${url}:`, networkError);
+    throw new Error(
+      `Cannot reach backend at ${API_BASE_URL}. ` +
+      `Make sure the backend server is running on port 3001.`
+    );
+  }
 
   // ── Handle 401 — Token expired → try refresh ─────────────────────────────
   if (response.status === 401) {
@@ -40,11 +53,17 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
         ...headers,
         Authorization: `Bearer ${newToken}`,
       };
-      const retryResponse = await fetch(url, {
-        ...options,
-        headers: retryHeaders,
-        credentials: 'include',
-      });
+      let retryResponse: Response;
+      try {
+        retryResponse = await fetch(url, {
+          ...options,
+          headers: retryHeaders,
+          credentials: 'include',
+        });
+      } catch {
+        clearAuthState();
+        return;
+      }
       if (retryResponse.status === 401) {
         // Refresh also failed — force logout
         clearAuthState();

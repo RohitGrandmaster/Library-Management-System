@@ -64,19 +64,20 @@ export default function NotificationCenterPage() {
         </div>
       </div>
 
-      <div className="flex gap-6">
-        {/* Left Sidebar */}
-        <div className="eng-notif-sidebar">
+      <div className="flex flex-col gap-6">
+        {/* Top Filter Bar */}
+        <div className="eng-notif-topbar flex flex-wrap gap-3">
           {CATS.map(c => (
             <button key={c.id} onClick={() => setCat(c.id)}
-              className={`eng-notif-cat${cat === c.id ? ' eng-notif-cat--active' : ''}`}>
+              className={`eng-notif-cat${cat === c.id ? ' eng-notif-cat--active' : ''}`}
+              style={{ width: 'auto', padding: '8px 16px', borderRadius: '30px' }}>
               <span>{c.icon}</span><span>{c.label}</span>
             </button>
           ))}
         </div>
 
         {/* Notifications List */}
-        <div className="eng-card eng-card--flush eng-flex-1">
+        <div className="eng-card eng-card--flush">
           {filtered.length === 0 ? (
             <div className="eng-empty">
               <div className="eng-empty__icon">🔔</div>

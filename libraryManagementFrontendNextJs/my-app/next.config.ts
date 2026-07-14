@@ -3,6 +3,25 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
+  // NOTE: 'standalone' is for Docker only — Vercel handles its own output mode.
+  // Remove or comment this line when deploying to Vercel.
+  // output: 'standalone',
+
+  // ── Vercel / Production: Proxy API calls to backend ─────────────────────────
+  // This allows frontend to call /api/v1/* which gets forwarded to the backend.
+  // Set NEXT_PUBLIC_API_URL in Vercel env vars to your backend URL.
+  async rewrites() {
+    const backendUrl = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+    // Strip trailing slash
+    const base = backendUrl.replace(/\/$/, '');
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${base}/api/v1/:path*`,
+      },
+    ];
+  },
+
   // ── Security Headers ────────────────────────────────────────────────────────
   async headers() {
     return [
@@ -18,8 +37,6 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy',        value: 'strict-origin-when-cross-origin' },
           // Restrict browser features
           { key: 'Permissions-Policy',     value: 'camera=(), microphone=(), geolocation=(), payment=()' },
-          // Force HTTPS (1 year)
-          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
           // XSS protection (legacy browsers)
           { key: 'X-XSS-Protection',       value: '1; mode=block' },
         ],

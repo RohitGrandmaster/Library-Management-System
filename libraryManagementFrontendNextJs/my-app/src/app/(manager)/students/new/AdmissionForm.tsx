@@ -14,6 +14,7 @@ import {
 import AdmissionSuccessModal from './AdmissionSuccessModal';
 import { calcExpiryDate, formatDateIN } from '@/lib/whatsappUtils';
 import type { IdCardData } from './StudentIdCard';
+import { fetchApi } from '@/lib/api';
 
 /* ── Zod Schema ── */
 const schema = z.object({
@@ -100,32 +101,45 @@ export default function AdmissionForm() {
   const discount  = Number(watchedDiscount) || 0;
   const totalPayable = baseAmt - discount;
 
-  function onSubmit(data: FormValues) {
-    const joinDate = new Date();
-    const expiryDate = calcExpiryDate(joinDate, data.plan);
+  async function onSubmit(data: FormValues) {
+    try {
+      const joinDate = new Date();
+      const expiryDate = calcExpiryDate(joinDate, data.plan);
+      
+      const payload = {
+        ...data,
+      };
 
-    const admitted: AdmittedData = {
-      name:          data.fullName,
-      smartId:       SMART_ID,
-      phone:         data.phone,
-      parentPhone:   data.parentPhone,
-      shift:         data.shift,
-      seat:          data.seat,
-      locker:        data.locker,
-      plan:          data.plan,
-      joinDate:      formatDateIN(joinDate),
-      expiryDate:    formatDateIN(expiryDate),
-      branch:        'Main Branch',
-      college:       data.college,
-      amountPaid:    Number(data.amountPaid),
-      totalPayable,
-      discount,
-      paymentMode:   data.paymentMode,
-      transactionId: data.transactionId,
-    };
+      const res = await fetchApi('/students', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
 
-    setAdmittedData(admitted);
-    toast.success('🎉 Admission confirmed! ID Card ready.', { duration: 3000 });
+      const admitted: AdmittedData = {
+        name:          data.fullName,
+        smartId:       res.smartId || SMART_ID,
+        phone:         data.phone,
+        parentPhone:   data.parentPhone,
+        shift:         data.shift,
+        seat:          data.seat,
+        locker:        data.locker,
+        plan:          data.plan,
+        joinDate:      formatDateIN(joinDate),
+        expiryDate:    formatDateIN(expiryDate),
+        branch:        'Main Branch',
+        college:       data.college,
+        amountPaid:    Number(data.amountPaid),
+        totalPayable,
+        discount,
+        paymentMode:   data.paymentMode,
+        transactionId: data.transactionId,
+      };
+
+      setAdmittedData(admitted);
+      toast.success('🎉 Admission confirmed! ID Card ready.', { duration: 3000 });
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to submit admission');
+    }
   }
 
   return (

@@ -41,13 +41,13 @@ export class User {
   isActive: boolean;
 
   // ── Authentication Security Fields ───────────────────
-  @Column({ nullable: true, select: false })
+  @Column({ type: 'varchar', nullable: true, select: false })
   refreshTokenHash: string | null; // bcrypt hash of the refresh token stored in DB
 
   @Column({ default: 0 })
   failedLoginAttempts: number; // increments on wrong password
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   lockUntil: Date | null; // account locked until this time (after 5 failed attempts)
 
   @Column({ nullable: true })
@@ -57,7 +57,7 @@ export class User {
   lastLoginIp: string;
 
   // ── Soft Delete (never hard-delete) ──────────────────
-  @DeleteDateColumn()
+  @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date | null; // TypeORM soft delete — sets this field instead of DELETE
 
   @Column({ nullable: true })

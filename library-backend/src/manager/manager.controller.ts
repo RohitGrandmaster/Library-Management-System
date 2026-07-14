@@ -18,7 +18,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
  */
 @ApiTags('Manager')
 @ApiBearerAuth()
-@Controller('api/v1/manager')
+@Controller('manager')
 @UseGuards(JwtAuthGuard, RolesGuard, TenantGuard)
 @Roles('manager', 'admin', 'superadmin')
 export class ManagerController {
@@ -30,5 +30,17 @@ export class ManagerController {
     // branchId comes from the JWT token — NOT from request body/query
     // This prevents a manager from accessing another branch's data
     return this.managerService.getDashboardData(user.branchId);
+  }
+
+  @Get('reports')
+  @ApiOperation({ summary: 'Manager reports' })
+  async getReports() {
+    return this.managerService.getReportsData();
+  }
+
+  @Get('student-reports')
+  @ApiOperation({ summary: 'Student reports' })
+  async getStudentReports() {
+    return this.managerService.getStudentReportsData();
   }
 }

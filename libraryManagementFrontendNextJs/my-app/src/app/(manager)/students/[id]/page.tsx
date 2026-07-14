@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Phone, Mail, Armchair, Calendar, CreditCard, Lock, Shield } from 'lucide-react';
 import { calcExpiryDate, formatDateIN } from '@/lib/whatsappUtils';
 import { fetchApi } from '@/lib/api';
 
-export default function StudentProfilePage({ params }: { params: { id: string } }) {
+export default function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const unwrappedParams = use(params);
+  const id = unwrappedParams.id;
+  
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchApi(`/students/${params.id}`)
+    fetchApi(`/students/${id}`)
       .then(data => {
         setStudent(data);
         setLoading(false);
@@ -20,7 +23,7 @@ export default function StudentProfilePage({ params }: { params: { id: string } 
         console.error(err);
         setLoading(false);
       });
-  }, [params.id]);
+  }, [id]);
 
   if (loading) {
     return <div className="mgr-page"><div className="mgr-card" style={{ padding: 20 }}>Loading...</div></div>;
@@ -33,7 +36,7 @@ export default function StudentProfilePage({ params }: { params: { id: string } 
           <div className="mgr-empty-state">
             <div className="mgr-empty-icon">🔍</div>
             <p className="mgr-empty-title">Student not found</p>
-            <p className="mgr-empty-sub">ID: {params.id}</p>
+            <p className="mgr-empty-sub">ID: {id}</p>
           </div>
         </div>
       </div>
@@ -55,7 +58,7 @@ export default function StudentProfilePage({ params }: { params: { id: string } 
           <p className="mgr-breadcrumb">Manager › Students › {student.name}</p>
         </div>
         <div className="mgr-page-actions">
-          <Link href={`/students/${params.id}/edit`} className="mgr-btn-ghost mgr-btn-sm">
+          <Link href={`/students/${id}/edit`} className="mgr-btn-ghost mgr-btn-sm">
             Edit
           </Link>
         </div>

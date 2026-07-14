@@ -100,12 +100,13 @@ export default function WhatsappTemplatesPage() {
         <p className="eng-page-subtitle">Customize automated message templates sent to students.</p>
       </div>
 
-      <div className="flex gap-6 items-start">
-        {/* Left Sidebar */}
-        <div className="eng-tpl-sidebar">
+      <div className="flex flex-col gap-6">
+        {/* Top Filter Bar */}
+        <div className="eng-tpl-topbar flex flex-wrap gap-3">
           {templates.map(t => (
             <div key={t.id} onClick={() => setActiveId(t.id)}
-              className={`eng-tpl-item${activeId === t.id ? ' eng-tpl-item--active' : ''}`}>
+              className={`eng-tpl-item${activeId === t.id ? ' eng-tpl-item--active' : ''}`}
+              style={{ width: 'auto', padding: '8px 16px', borderRadius: '30px' }}>
               {t.icon} {t.label}
             </div>
           ))}

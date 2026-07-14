@@ -28,12 +28,14 @@ export interface LoginResponse {
 }
 
 // ─── Login ────────────────────────────────────────────────────────────────────
-export async function login(phone: string, password: string): Promise<LoginResponse> {
+// 'identifier' can be phone number or email — backend matches by phone field
+export async function login(identifier: string, password: string): Promise<LoginResponse> {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone, password }),
-    credentials: 'include', // Sends/receives cookies
+    // Backend LoginDto expects 'phone' field — we send identifier as phone
+    body: JSON.stringify({ phone: identifier, password }),
+    credentials: 'include',
   });
 
   if (!res.ok) {
@@ -43,17 +45,20 @@ export async function login(phone: string, password: string): Promise<LoginRespo
 
   const data: LoginResponse = await res.json();
 
-  // Store tokens in localStorage as fallback (middleware reads from cookies set by backend)
-  // Note: Backend should set httpOnly cookies via Set-Cookie header for production
+  // Store tokens for client-side use
   if (typeof window !== 'undefined') {
     localStorage.setItem('access_token', data.accessToken);
+    if (data.refreshToken) {
+      localStorage.setItem('refresh_token', data.refreshToken);
+    }
     localStorage.setItem('user', JSON.stringify(data.user));
-    // Store token in a cookie accessible to middleware (for same-domain deployments)
+    // Store token in cookie for middleware (server-side route protection)
     document.cookie = `access_token=${data.accessToken}; path=/; SameSite=Strict; max-age=900`;
   }
 
   return data;
 }
+
 
 // ─── Logout ───────────────────────────────────────────────────────────────────
 export async function logout(): Promise<void> {

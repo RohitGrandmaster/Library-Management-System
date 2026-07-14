@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { SeederService } from './seeder.service';
 
-@Controller('api/seed')
+@Controller('seed')
 export class SeederController {
   constructor(private readonly seederService: SeederService) {}
 

@@ -4,6 +4,7 @@ import { fetchApi } from '@/lib/api';
 import { CalendarDays, UserPlus, User } from 'lucide-react';
 
 interface SeatData {
+  uuid?: string;
   id: string;
   status: 'free' | 'occupied' | 'expiring' | 'maintenance';
   student?: string;
@@ -37,6 +38,7 @@ export default function SeatMatrixPage() {
   useEffect(() => {
     fetchApi('/seats_shifts_lockers/seat-matrix').then(data => {
       const mapped = data.map((s: any) => ({
+        uuid: s.id,
         id: s.seatNumber.replace('S-', ''),
         status: s.isActive ? 'free' : 'maintenance',
       }));
@@ -85,82 +87,79 @@ export default function SeatMatrixPage() {
         ))}
       </div>
 
-      {/* Grid + Sidebar */}
-      <div className="ss-matrix-wrap">
-
-        <div className="ss-matrix-grid-panel">
-          <div className="ss-matrix-grid-header">
-            <h2 className="ss-section-heading">A-Wing Floor Plan</h2>
-            <span className="ss-text-caption">{visible.filter(s => s.status === 'free').length} seats free</span>
-          </div>
-          <div className="ss-seat-grid">
-            {visible.map(seat => (
-              <button
-                key={seat.id}
-                className={`ss-seat-cell ss-seat-cell--${seat.status}`}
-                onClick={() => setSelectedSeat(seat)}
-                title={
-                  seat.student
-                    ? `${seat.student} · ${seat.shift} · Expires ${seat.expiry}`
-                    : seat.status === 'maintenance' ? 'Under Maintenance' : 'Available'
-                }
-              >
-                {seat.id}
-              </button>
-            ))}
-          </div>
+      {/* Full-width Grid Card */}
+      <div className="ss-card ss-card--p-lg ss-locker-grid-card">
+        <div className="ss-matrix-grid-header">
+          <h2 className="ss-section-heading">A-Wing Floor Plan</h2>
+          <span className="ss-text-caption">{visible.filter(s => s.status === 'free').length} seats free</span>
         </div>
+        <div className="ss-seat-grid">
+          {visible.map((seat, index) => (
+            <button
+              key={seat.uuid || seat.id + '-' + index}
+              className={`ss-seat-cell ss-seat-cell--${seat.status}`}
+              onClick={() => setSelectedSeat(seat)}
+              title={
+                seat.student
+                  ? `${seat.student} · ${seat.shift} · Expires ${seat.expiry}`
+                  : seat.status === 'maintenance' ? 'Under Maintenance' : 'Available'
+              }
+            >
+              {seat.id}
+            </button>
+          ))}
+        </div>
+      </div>
 
-        {/* Sidebar */}
-        <aside className="ss-matrix-side">
-          {!selectedSeat ? (
-            <div className="ss-detail-panel">
-              <p className="ss-text-secondary ss-text-caption">Click any seat to view details</p>
-            </div>
-          ) : selectedSeat.status === 'free' ? (
-            /* Free seat panel */
-            <div className="ss-detail-panel">
-              <div className="ss-occupied-header__row">
-                <span className="ss-badge ss-badge--success">Free</span>
-                <span className="ss-occupied-header__seat">Seat {selectedSeat.id}</span>
-              </div>
-              <p className="ss-text-secondary ss-text-caption">This seat is available for assignment.</p>
-              <button className="ss-btn-primary ss-btn--full">
-                <UserPlus size={15} />⚡ Assign Student
-              </button>
-              <button className="ss-btn-ghost ss-btn--full" onClick={() => setSelectedSeat(null)}>
-                Close
-              </button>
-            </div>
-          ) : selectedSeat.status === 'maintenance' ? (
-            /* Maintenance panel */
-            <div className="ss-detail-panel">
-              <div className="ss-occupied-header__row">
-                <span className="ss-badge ss-badge--inactive">Maintenance</span>
-                <span className="ss-occupied-header__seat">Seat {selectedSeat.id}</span>
-              </div>
-              <p className="ss-text-secondary ss-text-caption">This seat is under maintenance and unavailable.</p>
-              <button className="ss-btn-ghost ss-btn--full" onClick={() => setSelectedSeat(null)}>Close</button>
-            </div>
-          ) : (
-            /* Occupied / expiring panel */
-            <>
-              <div className="ss-occupied-header">
-                <div className="ss-occupied-header__row">
-                  <span className={`ss-badge ${selectedSeat.status === 'expiring' ? 'ss-badge--warning' : 'ss-badge--danger'}`}>
-                    {selectedSeat.status === 'expiring' ? 'Expiring Soon' : 'Occupied'}
-                  </span>
+      {/* Modal replacing the Sidebar */}
+      {selectedSeat && (
+        <div className="ss-modal-overlay" onClick={() => setSelectedSeat(null)}>
+          <div className="ss-modal" onClick={e => e.stopPropagation()}>
+            {selectedSeat.status === 'free' ? (
+              /* Free seat panel */
+              <>
+                <div className="ss-occupied-header__row" style={{marginBottom: '1rem'}}>
+                  <span className="ss-badge ss-badge--success">Free</span>
                   <span className="ss-occupied-header__seat">Seat {selectedSeat.id}</span>
                 </div>
-                <div className="ss-occupied-avatar-wrap">
-                  <div className="ss-occupied-avatar">
-                    <User size={40} className="ss-text-secondary" />
-                  </div>
-                  <h3 className="ss-occupied-name">{selectedSeat.student}</h3>
-                  <p className="ss-occupied-id">{selectedSeat.smartId}</p>
+                <p className="ss-text-secondary ss-text-caption" style={{marginBottom: '1.5rem'}}>This seat is available for assignment.</p>
+                <div className="ss-modal-footer">
+                  <button className="ss-btn-ghost" onClick={() => setSelectedSeat(null)}>Close</button>
+                  <button className="ss-btn-primary">
+                    <UserPlus size={15} /> Assign Student
+                  </button>
                 </div>
-              </div>
-              <div className="ss-detail-panel">
+              </>
+            ) : selectedSeat.status === 'maintenance' ? (
+              /* Maintenance panel */
+              <>
+                <div className="ss-occupied-header__row" style={{marginBottom: '1rem'}}>
+                  <span className="ss-badge ss-badge--inactive">Maintenance</span>
+                  <span className="ss-occupied-header__seat">Seat {selectedSeat.id}</span>
+                </div>
+                <p className="ss-text-secondary ss-text-caption" style={{marginBottom: '1.5rem'}}>This seat is under maintenance and unavailable.</p>
+                <div className="ss-modal-footer">
+                  <button className="ss-btn-ghost" onClick={() => setSelectedSeat(null)}>Close</button>
+                </div>
+              </>
+            ) : (
+              /* Occupied / expiring panel */
+              <>
+                <div className="ss-occupied-header" style={{margin: '-1.5rem -1.5rem 1.5rem -1.5rem'}}>
+                  <div className="ss-occupied-header__row">
+                    <span className={`ss-badge ${selectedSeat.status === 'expiring' ? 'ss-badge--warning' : 'ss-badge--danger'}`}>
+                      {selectedSeat.status === 'expiring' ? 'Expiring Soon' : 'Occupied'}
+                    </span>
+                    <span className="ss-occupied-header__seat">Seat {selectedSeat.id}</span>
+                  </div>
+                  <div className="ss-occupied-avatar-wrap">
+                    <div className="ss-occupied-avatar">
+                      <User size={40} className="ss-text-secondary" />
+                    </div>
+                    <h3 className="ss-occupied-name">{selectedSeat.student}</h3>
+                    <p className="ss-occupied-id">{selectedSeat.smartId}</p>
+                  </div>
+                </div>
                 <div className="ss-detail-grid">
                   <div className="ss-detail-cell">
                     <p className="ss-kpi-card__label">Shift</p>
@@ -175,18 +174,15 @@ export default function SeatMatrixPage() {
                     </p>
                   </div>
                 </div>
-                <button className="ss-btn-primary ss-btn--full">
-                  👁️ View Full Profile
-                </button>
-                <button className="ss-btn-ghost ss-btn--full" onClick={() => setSelectedSeat(null)}>
-                  Close
-                </button>
-              </div>
-            </>
-          )}
-        </aside>
-
-      </div>
+                <div className="ss-modal-footer" style={{marginTop: '1.5rem'}}>
+                  <button className="ss-btn-ghost" onClick={() => setSelectedSeat(null)}>Close</button>
+                  <button className="ss-btn-primary">View Full Profile</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

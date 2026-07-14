@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { SuperadminService } from './superadmin.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -14,7 +14,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
  */
 @ApiTags('Superadmin')
 @ApiBearerAuth()
-@Controller('api/v1/superadmin')
+@Controller('superadmin')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('superadmin')
 export class SuperadminController {
@@ -24,5 +24,23 @@ export class SuperadminController {
   @ApiOperation({ summary: 'Superadmin dashboard KPIs and system overview' })
   async getDashboard() {
     return await this.superadminService.getDashboardData();
+  }
+
+  @Get('libraries')
+  @ApiOperation({ summary: 'Get all libraries/branches' })
+  async getLibraries() {
+    return await this.superadminService.getLibraries();
+  }
+
+  @Put('libraries/:id')
+  @ApiOperation({ summary: 'Update library' })
+  async updateLibrary() {
+    return { success: true };
+  }
+
+  @Put('libraries/:id/status')
+  @ApiOperation({ summary: 'Update library status' })
+  async updateLibraryStatus() {
+    return { success: true };
   }
 }

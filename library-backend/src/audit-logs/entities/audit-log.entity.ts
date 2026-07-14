@@ -44,30 +44,30 @@ export class AuditLog {
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   performedBy: User | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   performedById: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   performedByName: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   performedByRole: string | null;
 
   // Multi-tenant context
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   tenantId: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   branchId: string | null;
 
   // Request context — for forensics
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   ipAddress: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   userAgent: string | null; // browser/device info
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   browser: string | null; // parsed browser name
 
   // Timestamp

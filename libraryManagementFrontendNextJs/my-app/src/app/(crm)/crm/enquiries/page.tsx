@@ -147,7 +147,7 @@ export default function EnquiriesPage() {
         phone: e.phone,
         shift: e.preferredShift,
         status: e.status.charAt(0).toUpperCase() + e.status.slice(1),
-        handledBy: 'Mock User',
+        handledBy: e.handledBy?.name || 'Unassigned',
         addedDate: new Date(e.createdAt).toLocaleDateString(),
         avatar: e.name.substring(0, 2).toUpperCase()
       }));
