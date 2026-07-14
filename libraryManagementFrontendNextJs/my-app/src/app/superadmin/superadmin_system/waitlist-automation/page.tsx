@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
-import { Switch } from '../reusable/Switch';
-import { Textarea } from '../reusable/Textarea';
-import { Badge } from '../reusable/Badge';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/app/superadmin/superadmin_system/reusable/Card';
+import { Button } from '@/app/superadmin/superadmin_system/reusable/Button';
+import { Input } from '@/app/superadmin/superadmin_system/reusable/Input';
+import { Label } from '@/app/superadmin/superadmin_system/reusable/Label';
+import { Switch } from '@/app/superadmin/superadmin_system/reusable/Switch';
+import { Textarea } from '@/app/superadmin/superadmin_system/reusable/Textarea';
+import { Badge } from '@/app/superadmin/superadmin_system/reusable/Badge';
 import { ListOrdered, ChevronRight } from 'lucide-react';
 
 const QUEUE = [

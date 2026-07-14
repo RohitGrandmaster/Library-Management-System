@@ -29,7 +29,7 @@ export default function AddEnquiryPage() {
 
   const onSubmit = async (formData: AddEnquiryFormData) => {
     await new Promise((r) => setTimeout(r, 800));
-    console.log('New enquiry submitted:', formData);
+
     toast.success('Lead saved successfully!', { className: 'crm-toast crm-toast--success' });
     setTimeout(() => router.push('/superadmin/superadmin_crm/enquiries'), 600);
   };

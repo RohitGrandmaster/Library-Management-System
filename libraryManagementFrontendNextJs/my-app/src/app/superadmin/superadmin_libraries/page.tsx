@@ -49,8 +49,8 @@ function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: {
       <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-[18px] font-bold text-[var(--text-primary)]">{lib.name}</h2>
-            <p className="text-[13px] text-[var(--text-secondary)] flex items-center gap-1 mt-1"><MapPin size={12} />{lib.location}</p>
+            <h2 className="text-[18px] font-bold text-primary">{lib.name}</h2>
+            <p className="text-[13px] text-secondary flex items-center gap-1 mt-1"><MapPin size={12} />{lib.location}</p>
           </div>
           <div className="flex items-center gap-1">
             {!editing && <button className="sa-btn-icon" onClick={() => setEditing(true)}><Edit2 size={15} /></button>}
@@ -88,13 +88,13 @@ function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: {
 
         <div className="sa-card p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[13px] font-semibold text-[var(--text-primary)] flex items-center gap-2"><Users size={14} /> Seat Occupancy</p>
+            <p className="text-[13px] font-semibold text-primary flex items-center gap-2"><Users size={14} /> Seat Occupancy</p>
             <span className={pct > 90 ? 'sa-occupancy-pct--high' : 'sa-occupancy-pct--ok'}>{pct}%</span>
           </div>
           <div className="sa-progress-track">
             <div className={pct > 90 ? 'sa-progress-fill--danger' : 'sa-progress-fill--success'} style={{ width: `${pct}%` }} />
           </div>
-          <p className="text-[12px] text-[var(--text-secondary)] mt-2">{lib.occupied} occupied / {lib.seats} total seats</p>
+          <p className="text-[12px] text-secondary mt-2">{lib.occupied} occupied / {lib.seats} total seats</p>
         </div>
 
         <div>
@@ -170,8 +170,8 @@ export default function LibrariesPage() {
       headerName: 'Library Name', field: 'name', flex: 2, minWidth: 180,
       cellRenderer: (p: ICellRendererParams<Library>) => (
         <div>
-          <p className="font-medium text-[var(--text-primary)]">{p.data?.name}</p>
-          <p className="text-[11px] text-[var(--text-secondary)]">{p.data?.plan} Plan</p>
+          <p className="font-medium text-primary">{p.data?.name}</p>
+          <p className="text-[11px] text-secondary">{p.data?.plan} Plan</p>
         </div>
       ),
     },
@@ -182,8 +182,8 @@ export default function LibrariesPage() {
         const pct = Math.round(((p.data?.occupied ?? 0) / (p.data?.seats ?? 1)) * 100);
         return (
           <div className="flex flex-col gap-1.5 justify-center h-full">
-            <span className="text-[13px] font-medium text-[var(--text-primary)]">
-              {p.data?.occupied}<span className="text-[var(--text-secondary)]">/{p.data?.seats}</span>
+            <span className="text-[13px] font-medium text-primary">
+              {p.data?.occupied}<span className="text-secondary">/{p.data?.seats}</span>
             </span>
             <div className="sa-progress-track w-20">
               <div className={pct > 90 ? 'sa-progress-fill--danger' : 'sa-progress-fill--success'} style={{ width: `${pct}%` }} />
@@ -237,7 +237,7 @@ export default function LibrariesPage() {
         <div className="sa-actions-bar justify-between">
           <input type="text" placeholder="Search by name or location..." className="sa-input w-72"
             onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)} />
-          <span className="text-[12px] text-[var(--text-secondary)]">{libraries.length} libraries</span>
+          <span className="text-[12px] text-secondary">{libraries.length} libraries</span>
         </div>
         <div style={{ height: 420 }}>
           <AgGridReact

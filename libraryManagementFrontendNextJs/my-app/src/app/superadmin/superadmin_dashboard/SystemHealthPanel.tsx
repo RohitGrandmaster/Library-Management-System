@@ -21,8 +21,8 @@ const METRICS = [
 export default function SystemHealthPanel({ data }: Props) {
   return (
     <div className="col-span-12 lg:col-span-7 sa-card flex flex-col overflow-hidden">
-      <div className="p-6 border-b border-[var(--border)]">
-        <h2 className="text-[16px] font-bold text-[var(--text-primary)]">System Health</h2>
+      <div className="p-6 border-b border-border">
+        <h2 className="text-[16px] font-bold text-primary">System Health</h2>
       </div>
 
       <div className="p-6 grid grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ export default function SystemHealthPanel({ data }: Props) {
         ))}
       </div>
 
-      <div className="mt-auto p-6 border-t border-[var(--border)]">
+      <div className="mt-auto p-6 border-t border-border">
         <Link href="/superadmin/superadmin_system-health" className="sa-panel-view-all">
           <ExternalLink size={13} /> View Full System Report
         </Link>

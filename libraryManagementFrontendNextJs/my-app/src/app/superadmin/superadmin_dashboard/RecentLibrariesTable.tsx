@@ -44,7 +44,7 @@ export default function RecentLibrariesTable({ data }: Props) {
           <div className="sa-avatar-cell">
             {p.data?.initials}
           </div>
-          <span className="font-medium text-[var(--text-primary)] text-[14px]">{p.data?.name}</span>
+          <span className="font-medium text-primary text-[14px]">{p.data?.name}</span>
         </div>
       ),
     },
@@ -53,7 +53,7 @@ export default function RecentLibrariesTable({ data }: Props) {
     {
       headerName: 'Students', field: 'students', flex: 0.8, minWidth: 90,
       cellRenderer: (p: ICellRendererParams<Library>) => (
-        <span className="font-bold text-[var(--primary)]">{p.data?.students}</span>
+        <span className="font-bold text-primary">{p.data?.students}</span>
       ),
     },
     {
@@ -78,9 +78,9 @@ export default function RecentLibrariesTable({ data }: Props) {
 
   return (
     <div className="sa-card overflow-hidden">
-      <div className="p-6 flex items-center justify-between border-b border-[var(--border)]">
-        <h2 className="text-[16px] font-bold text-[var(--text-primary)]">Recently Registered Libraries</h2>
-        <Link href="/superadmin/superadmin_libraries" className="text-[var(--primary)] text-[12px] font-bold flex items-center gap-1 hover:underline">
+      <div className="p-6 flex items-center justify-between border-b border-border">
+        <h2 className="text-[16px] font-bold text-primary">Recently Registered Libraries</h2>
+        <Link href="/superadmin/superadmin_libraries" className="text-primary text-[12px] font-bold flex items-center gap-1 hover:underline">
           View All <ExternalLink size={12} />
         </Link>
       </div>

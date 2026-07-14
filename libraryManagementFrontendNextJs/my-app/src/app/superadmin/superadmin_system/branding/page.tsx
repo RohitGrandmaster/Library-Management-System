@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/app/superadmin/superadmin_system/reusable/Card';
+import { Button } from '@/app/superadmin/superadmin_system/reusable/Button';
+import { Input } from '@/app/superadmin/superadmin_system/reusable/Input';
+import { Label } from '@/app/superadmin/superadmin_system/reusable/Label';
 import { Palette, ChevronRight, Upload, RotateCcw, Save } from 'lucide-react';
 
 function readToken(token: string) {

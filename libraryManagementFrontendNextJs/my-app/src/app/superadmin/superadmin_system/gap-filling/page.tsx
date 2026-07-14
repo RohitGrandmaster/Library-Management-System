@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
-import { Badge } from '../reusable/Badge';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../reusable/Select';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/app/superadmin/superadmin_system/reusable/Card';
+import { Button } from '@/app/superadmin/superadmin_system/reusable/Button';
+import { Input } from '@/app/superadmin/superadmin_system/reusable/Input';
+import { Label } from '@/app/superadmin/superadmin_system/reusable/Label';
+import { Badge } from '@/app/superadmin/superadmin_system/reusable/Badge';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/app/superadmin/superadmin_system/reusable/Select';
 import { GitBranch, ChevronRight, Zap } from 'lucide-react';
 
 const SEAT_GAPS = [

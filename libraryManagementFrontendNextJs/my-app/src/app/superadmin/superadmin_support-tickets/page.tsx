@@ -38,14 +38,14 @@ function TicketPanel({ tkt, onClose, onSave }: { tkt: Ticket; onClose: () => voi
       <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between">
           <div>
-            <span className="font-mono text-[11px] text-[var(--text-secondary)]">{tkt.id}</span>
-            <h2 className="text-[16px] font-bold text-[var(--text-primary)] mt-1 leading-snug">{tkt.subject}</h2>
+            <span className="font-mono text-[11px] text-secondary">{tkt.id}</span>
+            <h2 className="text-[16px] font-bold text-primary mt-1 leading-snug">{tkt.subject}</h2>
           </div>
           <button className="sa-btn-icon shrink-0" onClick={onClose}><X size={16} /></button>
         </div>
 
         <div className="sa-card p-4">
-          <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{tkt.desc}</p>
+          <p className="text-[13px] text-secondary leading-relaxed">{tkt.desc}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -108,11 +108,11 @@ export default function SupportTicketsPage() {
       headerName: 'Subject / Ticket ID', field: 'subject', flex: 2, minWidth: 200,
       cellRenderer: (p: ICellRendererParams<Ticket>) => (
         <div>
-          <p className="font-medium text-[var(--text-primary)]">{p.data?.subject}</p>
+          <p className="font-medium text-primary">{p.data?.subject}</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-[11px] font-mono text-[var(--text-secondary)]">{p.data?.id}</span>
-            <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
-            <span className="flex items-center gap-1 text-[11px] text-[var(--text-secondary)]">
+            <span className="text-[11px] font-mono text-secondary">{p.data?.id}</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
+            <span className="flex items-center gap-1 text-[11px] text-secondary">
               <MessageSquare size={10} /> {p.data?.replies} replies
             </span>
           </div>
@@ -139,7 +139,7 @@ export default function SupportTicketsPage() {
             p.data?.status === 'Resolved' ? 'sa-ticket-status--resolved' :
             p.data?.status === 'Open'     ? 'sa-ticket-status--open' : 'sa-ticket-status--progress'
           }`}>{p.data?.status}</p>
-          <p className="flex items-center gap-1 text-[11px] text-[var(--text-secondary)] mt-0.5">
+          <p className="flex items-center gap-1 text-[11px] text-secondary mt-0.5">
             <Clock size={10} /> {p.data?.age} ago
           </p>
         </div>
@@ -175,7 +175,7 @@ export default function SupportTicketsPage() {
             <button key={f} onClick={() => setFilter(f)}
               className={`sa-filter-tab ${filter === f ? 'sa-filter-tab--active' : ''}`}>{f}</button>
           ))}
-          <span className="ml-auto text-[12px] text-[var(--text-secondary)]">{filtered.length} tickets</span>
+          <span className="ml-auto text-[12px] text-secondary">{filtered.length} tickets</span>
         </div>
         <div style={{ height: 360 }}>
           <AgGridReact

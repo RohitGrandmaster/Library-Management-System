@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { formatCurrency, formatDate } from '../../lib/format';
+import { formatCurrency, formatDate } from '@/app/superadmin/superadmin_finance/lib/format';
 import { Printer, ArrowLeft, Send } from 'lucide-react';
 import { openWhatsApp } from '@/lib/whatsappUtils';
 import { printThermal } from '@/lib/thermalPrint';

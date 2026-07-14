@@ -43,8 +43,8 @@ function MetricRow({
     <div>
       <div className="flex justify-between items-end mb-2">
         <div>
-          <p className="text-[13px] font-medium text-[var(--text-primary)]">{label}</p>
-          <p className="text-[11px] text-[var(--text-secondary)]">{sub}</p>
+          <p className="text-[13px] font-medium text-primary">{label}</p>
+          <p className="text-[11px] text-secondary">{sub}</p>
         </div>
         {/* ✅ No inline style. colorKey drives className */}
         <span className={`text-[13px] font-bold ${COLOR_TEXT_CLS[colorKey]}`}>{val}</span>
@@ -86,7 +86,7 @@ export default function SystemHealthPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="sa-card p-6">
-          <h2 className="text-[14px] font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
+          <h2 className="text-[14px] font-bold text-primary mb-6 flex items-center gap-2">
             <Server size={16} className="sa-metric--primary" /> Main Infrastructure
           </h2>
           <div className="space-y-6">
@@ -95,7 +95,7 @@ export default function SystemHealthPage() {
         </div>
 
         <div className="sa-card p-6">
-          <h2 className="text-[14px] font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
+          <h2 className="text-[14px] font-bold text-primary mb-6 flex items-center gap-2">
             <Database size={16} className="sa-metric--warning" /> Databases & Cache
           </h2>
           <div className="space-y-6">
@@ -104,7 +104,7 @@ export default function SystemHealthPage() {
         </div>
 
         <div className="col-span-1 md:col-span-2 sa-card p-6">
-          <h2 className="text-[14px] font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
+          <h2 className="text-[14px] font-bold text-primary mb-5 flex items-center gap-2">
             <Globe size={16} className="sa-metric--primary" /> External Gateways
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 import toast from 'react-hot-toast';
-import { formatCurrency } from '../lib/format';
+import { formatCurrency } from '@/app/superadmin/superadmin_finance/lib/format';
 import { Undo2, Minus } from 'lucide-react';
 
 const STATUS_BADGE: Record<string, string> = {

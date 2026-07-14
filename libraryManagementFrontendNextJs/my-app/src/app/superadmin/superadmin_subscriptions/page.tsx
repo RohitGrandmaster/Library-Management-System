@@ -48,8 +48,8 @@ function SubPanel({ sub, onClose, onUpdate }: { sub: Sub; onClose: () => void; o
       <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-[18px] font-bold text-[var(--text-primary)]">{sub.tenant}</h2>
-            <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">{sub.plan}</p>
+            <h2 className="text-[18px] font-bold text-primary">{sub.tenant}</h2>
+            <p className="text-[13px] text-secondary mt-0.5">{sub.plan}</p>
           </div>
           <button className="sa-btn-icon" onClick={onClose}><X size={16} /></button>
         </div>
@@ -64,10 +64,10 @@ function SubPanel({ sub, onClose, onUpdate }: { sub: Sub; onClose: () => void; o
         </div>
 
         <div className="sa-card p-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2 text-secondary">
             <IndianRupee size={14} /> <span className="text-[13px]">Monthly Value</span>
           </div>
-          <span className="text-[22px] font-bold text-[var(--text-primary)]">₹{sub.mrr.toLocaleString()}</span>
+          <span className="text-[22px] font-bold text-primary">₹{sub.mrr.toLocaleString()}</span>
         </div>
 
         {editing ? (
@@ -134,8 +134,8 @@ export default function SubscriptionsPage() {
       headerName: 'Cycle & MRR', field: 'mrr', flex: 1, minWidth: 120,
       cellRenderer: (p: ICellRendererParams<Sub>) => (
         <div>
-          <p className="text-[14px] font-medium text-[var(--text-primary)]">₹{p.data?.mrr.toLocaleString()}</p>
-          <p className="text-[12px] text-[var(--text-secondary)]">{p.data?.cycle}</p>
+          <p className="text-[14px] font-medium text-primary">₹{p.data?.mrr.toLocaleString()}</p>
+          <p className="text-[12px] text-secondary">{p.data?.cycle}</p>
         </div>
       ),
     },
@@ -176,11 +176,11 @@ export default function SubscriptionsPage() {
                 <div className="sa-kpi-icon-box">
                   <Icon size={18} className={k.colorCls} />
                 </div>
-                <p className="text-[11px] font-semibold text-[var(--text-secondary)] uppercase tracking-widest text-right">{k.label}</p>
+                <p className="text-[11px] font-semibold text-secondary uppercase tracking-widest text-right">{k.label}</p>
               </div>
               <div>
-                <h2 className="text-[28px] font-bold text-[var(--text-primary)] leading-tight">{k.val}</h2>
-                <p className="text-[12px] mt-1 font-medium text-[var(--success)]">{k.trend}</p>
+                <h2 className="text-[28px] font-bold text-primary leading-tight">{k.val}</h2>
+                <p className="text-[12px] mt-1 font-medium text-success">{k.trend}</p>
               </div>
             </div>
           );
@@ -193,7 +193,7 @@ export default function SubscriptionsPage() {
             <button key={f} onClick={() => setFilter(f)}
               className={`sa-filter-tab ${filter === f ? 'sa-filter-tab--active' : ''}`}>{f}</button>
           ))}
-          <span className="ml-auto text-[12px] text-[var(--text-secondary)]">{filtered.length} records</span>
+          <span className="ml-auto text-[12px] text-secondary">{filtered.length} records</span>
         </div>
         <div style={{ height: 380 }}>
           <AgGridReact
@@ -210,8 +210,8 @@ export default function SubscriptionsPage() {
             suppressCellFocus={true}
           />
         </div>
-        <div className="p-4 border-t border-[var(--border)] text-center">
-          <span className="text-[13px] text-[var(--text-secondary)]">Showing {filtered.length} of 24 subscriptions</span>
+        <div className="p-4 border-t border-border text-center">
+          <span className="text-[13px] text-secondary">Showing {filtered.length} of 24 subscriptions</span>
         </div>
       </div>
     </>

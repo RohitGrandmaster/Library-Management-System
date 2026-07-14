@@ -89,7 +89,7 @@ export default function ReportsPage() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <h1 className="sa-page-title">Platform Reports & Analytics</h1>
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-1">
+            <div className="flex items-center gap-1 bg-card border border-border rounded-lg p-1">
               {DATE_RANGES.map(r => (
                 <button key={r} onClick={() => setRange(r)}
                   className={`sa-filter-tab ${range === r ? 'sa-filter-tab--active' : ''}`}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { formatCurrency } from '../lib/format';
+import { formatCurrency } from '@/app/superadmin/superadmin_finance/lib/format';
 import { Users, Trophy, Gift, IndianRupee } from 'lucide-react';
 
 type Referrer = {

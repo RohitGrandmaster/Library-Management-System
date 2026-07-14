@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
-import { Progress } from '../reusable/Progress';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/app/superadmin/superadmin_system/reusable/Card';
+import { Button } from '@/app/superadmin/superadmin_system/reusable/Button';
+import { Input } from '@/app/superadmin/superadmin_system/reusable/Input';
+import { Label } from '@/app/superadmin/superadmin_system/reusable/Label';
+import { Progress } from '@/app/superadmin/superadmin_system/reusable/Progress';
 import { User, Lock, Camera, Eye, EyeOff, ChevronRight } from 'lucide-react';
 
 function getStrength(pw: string): { score: number; label: string; color: string } {

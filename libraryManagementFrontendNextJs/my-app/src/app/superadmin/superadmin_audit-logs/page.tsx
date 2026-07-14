@@ -35,14 +35,14 @@ function LogPanel({ log, onClose }: { log: Log; onClose: () => void }) {
       <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <Shield size={16} className="text-[var(--primary)]" />
-            <span className="font-mono text-[12px] text-[var(--text-secondary)]">{log.id}</span>
+            <Shield size={16} className="text-primary" />
+            <span className="font-mono text-[12px] text-secondary">{log.id}</span>
           </div>
           <button className="sa-btn-icon" onClick={onClose}><X size={16} /></button>
         </div>
 
         <div className="sa-card p-4">
-          <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">{log.detail}</p>
+          <p className="text-[13px] text-secondary leading-relaxed">{log.detail}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -78,8 +78,8 @@ export default function AuditLogsPage() {
       headerName: 'Target Entity', field: 'target', flex: 1.5, minWidth: 160,
       cellRenderer: (p: ICellRendererParams<Log>) => (
         <div>
-          <span className="text-[11px] font-semibold text-[var(--text-secondary)] mr-1.5">{p.data?.entity}:</span>
-          <span className="text-[13px] text-[var(--text-primary)]">{p.data?.target}</span>
+          <span className="text-[11px] font-semibold text-secondary mr-1.5">{p.data?.entity}:</span>
+          <span className="text-[13px] text-primary">{p.data?.target}</span>
         </div>
       ),
     },
@@ -123,7 +123,7 @@ export default function AuditLogsPage() {
             <option>Deleted</option>
             <option>Fee_Collected</option>
           </select>
-          <span className="ml-auto text-[12px] text-[var(--text-secondary)]">{filtered.length} entries</span>
+          <span className="ml-auto text-[12px] text-secondary">{filtered.length} entries</span>
         </div>
         <div style={{ height: 420 }}>
           <AgGridReact

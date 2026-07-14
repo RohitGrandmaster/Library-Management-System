@@ -878,7 +878,7 @@
     margin-top: 4px;
   }
 
-  /* ── Table row with border (eliminates border-[var(--border)] inline usage) ── */
+  /* ── Table row with border (eliminates border-border inline usage) ── */
   .fin-table-row {
     border-bottom: 1px solid var(--border);
   }
@@ -886,7 +886,7 @@
     border-bottom: none;
   }
 
-  /* ── Primary text color helper (eliminates text-[var(--text-primary)] inline usage) ── */
+  /* ── Primary text color helper (eliminates text-primary inline usage) ── */
   .fin-text-primary {
     color: var(--text-primary);
   }

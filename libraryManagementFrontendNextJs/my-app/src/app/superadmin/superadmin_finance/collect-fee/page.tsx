@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { formatCurrency } from '../lib/format';
+import { formatCurrency } from '@/app/superadmin/superadmin_finance/lib/format';
 import { Search, CheckCircle, IndianRupee, BookOpen, MessageSquare, Printer, X } from 'lucide-react';
 import { openWhatsApp } from '@/lib/whatsappUtils';
 import { printThermal } from '@/lib/thermalPrint';

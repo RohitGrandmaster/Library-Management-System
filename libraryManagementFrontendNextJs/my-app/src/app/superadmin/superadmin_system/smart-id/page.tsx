@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Badge } from '../reusable/Badge';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/app/superadmin/superadmin_system/reusable/Card';
+import { Button } from '@/app/superadmin/superadmin_system/reusable/Button';
+import { Badge } from '@/app/superadmin/superadmin_system/reusable/Badge';
 import {
   Dialog, DialogTrigger, DialogContent, DialogHeader,
   DialogTitle, DialogDescription, DialogClose
-} from '../reusable/Dialog';
+} from '@/app/superadmin/superadmin_system/reusable/Dialog';
 import { Hash, ChevronRight, ArrowRight, AlertTriangle } from 'lucide-react';
 
 const ACTIVE_IDS = [1, 2, 4, 5, 6, 9, 10, 11, 12, 15, 16, 17, 18, 19, 20];

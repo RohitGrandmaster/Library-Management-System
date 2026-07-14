@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import toast from 'react-hot-toast';
-import { formatCurrency } from '../lib/format';
+import { formatCurrency } from '@/app/superadmin/superadmin_finance/lib/format';
 import { RefreshCw, Send } from 'lucide-react';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 
