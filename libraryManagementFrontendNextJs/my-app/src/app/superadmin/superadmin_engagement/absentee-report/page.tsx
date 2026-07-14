@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { ChevronRight, Send, Mail, Phone } from 'lucide-react';
-import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

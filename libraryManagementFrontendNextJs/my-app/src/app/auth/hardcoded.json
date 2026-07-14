@@ -7,7 +7,7 @@
       "icon": "👑",
       "email": "owner@smartlibrary.com",
       "password": "Owner@1234",
-      "redirectTo": "/superadmin/dashboard",
+      "redirectTo": "/superadmin/superadmin_dashboard",
       "setupComplete": true
     },
     {
@@ -17,7 +17,7 @@
       "icon": "🛡️",
       "email": "admin@smartlibrary.com",
       "password": "Admin@1234",
-      "redirectTo": "/admin/dashboard",
+      "redirectTo": "/admin/admin_dashboard",
       "setupComplete": true
     },
     {

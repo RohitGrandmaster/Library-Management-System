@@ -44,7 +44,7 @@ const MODE_BADGE: Record<string, string> = {
   bank: 'fin-badge fin-badge--bank',
 };
 
-import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 export default function Payments() {
   const router = useRouter();
   const [modeFilter, setModeFilter] = useState('all');

@@ -5,7 +5,7 @@ import { TrendingUp, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
