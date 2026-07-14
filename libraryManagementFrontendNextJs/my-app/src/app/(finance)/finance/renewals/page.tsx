@@ -8,7 +8,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../lib/format';
 import { RefreshCw, Send } from 'lucide-react';
-import { gridTheme } from '@/app/(manager)/manager/reusable/gridTheme';
+import { gridTheme } from '@/app/manager/reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

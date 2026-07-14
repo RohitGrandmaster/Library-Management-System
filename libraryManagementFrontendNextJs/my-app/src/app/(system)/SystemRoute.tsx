@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Sidebar from '@/app/(admin)/admin/Sidebar';
-import Header from '@/app/(admin)/admin/Header';
-import '@/app/(admin)/admin.css';
+import Sidebar from '@/app/admin/Sidebar';
+import Header from '@/app/admin/Header';
+import '@/app/admin/admin.css';
 import '@/app/(system)/system.css';
 import { getCurrentUser } from '@/lib/auth';
 

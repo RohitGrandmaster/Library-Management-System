@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ManagerRoute } from "@/app/(manager)/ManagerRoute";
-import { AdminRoute } from "@/app/(admin)/AdminRoute";
+import { ManagerRoute } from "@/app/manager/ManagerRoute";
+import { AdminRoute } from "@/app/admin/AdminRoute";
 import { FinanceRoute } from "@/app/(finance)/FinanceRoute";
 import { SuperadminRoute } from "@/app/superadmin/SuperadminRoute";
 import { EngagementRoute } from "@/app/(engagement)/EngagementRoute";

@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/(manager)/manager/reusable/gridTheme';
+import { gridTheme } from '@/app/manager/reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

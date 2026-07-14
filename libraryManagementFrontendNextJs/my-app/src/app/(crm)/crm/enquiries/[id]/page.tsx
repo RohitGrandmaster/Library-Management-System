@@ -304,7 +304,7 @@ export default function EnquiryDetailPage({
 
   const handleConvert = () => {
     router.push(
-      `/students/new?name=${encodeURIComponent(enquiry.name)}&phone=${encodeURIComponent(enquiry.phone)}`
+      `/manager/students/new?name=${encodeURIComponent(enquiry.name)}&phone=${encodeURIComponent(enquiry.phone)}`
     );
   };
 

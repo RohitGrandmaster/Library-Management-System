@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ChevronRight, Eye, X } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/(manager)/manager/reusable/gridTheme';
+import { gridTheme } from '@/app/manager/reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

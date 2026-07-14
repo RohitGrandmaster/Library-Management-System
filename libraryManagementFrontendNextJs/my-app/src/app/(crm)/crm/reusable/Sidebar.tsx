@@ -33,9 +33,9 @@ const NAV: NavGroup[] = [
   {
     group: 'Students',
     items: [
-      { href: '/students',                 Icon: Users,         label: 'All Students'    },
-      { href: '/students/new',   Icon: UserPlus,      label: 'New Admission'   },
-      { href: '/students/group-admission', Icon: Users2,        label: 'Group Admission' },
+      { href: '/manager/students',                 Icon: Users,         label: 'All Students'    },
+      { href: '/manager/students/new',   Icon: UserPlus,      label: 'New Admission'   },
+      { href: '/manager/students/group-admission', Icon: Users2,        label: 'Group Admission' },
       { href: '/alumni',                   Icon: GraduationCap, label: 'Alumni'          },
       { href: '/document-vault',           Icon: FolderLock,    label: 'Document Vault'  },
       { href: '/referral-bonus',           Icon: Medal,         label: 'Referral Bonus'  },
