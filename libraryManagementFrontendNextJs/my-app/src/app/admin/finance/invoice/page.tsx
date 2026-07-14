@@ -144,7 +144,7 @@ export default function InvoicesPage() {
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex items-center justify-end gap-2">
-                    <Link href={`/finance/invoice/${inv.id}`}>
+                    <Link href={`/admin/finance/invoice/${inv.id}`}>
                       <button className="fin-badge fin-badge--neutral cursor-pointer"><Eye size={11} /> View</button>
                     </Link>
                     <button className="fin-badge fin-badge--neutral cursor-pointer" onClick={() => handlePrint(inv)} title="Print (Thermal)">

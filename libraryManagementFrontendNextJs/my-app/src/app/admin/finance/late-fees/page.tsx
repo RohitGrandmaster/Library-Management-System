@@ -194,7 +194,7 @@ export default function LateFees() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         className="fin-badge fin-badge--info cursor-pointer"
-                        onClick={() => router.push(`/finance/collect-fee?studentId=${s.studentId}`)}
+                        onClick={() => router.push(`/admin/finance/collect-fee?studentId=${s.studentId}`)}
                       >
                         💰 Collect Now
                       </button>

@@ -311,7 +311,7 @@ export default function EnquiriesPage() {
                             key={enq.id}
                             enq={enq}
                             colClass={col.cardClass}
-                            onClick={() => router.push(`/crm/enquiries/${enq.id}`)}
+                            onClick={() => router.push(`/admin/crm/enquiries/${enq.id}`)}
                           />
                         ))
                       )}
@@ -362,7 +362,7 @@ export default function EnquiriesPage() {
                   {filtered.map((enq, idx) => (
                     <tr
                       key={enq.id}
-                      onClick={() => router.push(`/crm/enquiries/${enq.id}`)}
+                      onClick={() => router.push(`/admin/crm/enquiries/${enq.id}`)}
                     >
                       <td className="crm-td-index">{idx + 1}</td>
                       <td>
@@ -395,7 +395,7 @@ export default function EnquiriesPage() {
                             aria-label="View details"
                             onClick={(e) => {
                               e.stopPropagation();
-                              router.push(`/crm/enquiries/${enq.id}`);
+                              router.push(`/admin/crm/enquiries/${enq.id}`);
                             }}
                           >
                             <Eye size={14} />

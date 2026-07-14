@@ -181,14 +181,14 @@ export default function Payments() {
           <div className="flex items-center gap-2 h-full">
             <button
               className="fin-badge fin-badge--neutral cursor-pointer hover:border-[var(--mgr-primary)]"
-              onClick={() => router.push(`/finance/receipt/${params.data.id}`)}
+              onClick={() => router.push(`/superadmin/finance/receipt/${params.data.id}`)}
               title="View Receipt"
             >
               <Receipt size={14} />
             </button>
             <button
               className="fin-badge fin-badge--neutral cursor-pointer hover:border-[var(--mgr-primary)]"
-              onClick={() => router.push(`/finance/invoice/${params.data.id}`)}
+              onClick={() => router.push(`/superadmin/finance/invoice/${params.data.id}`)}
               title="View Invoice"
             >
               <FileText size={14} />

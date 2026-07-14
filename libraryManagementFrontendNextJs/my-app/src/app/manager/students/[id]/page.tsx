@@ -155,13 +155,13 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               <h2 className="mgr-section-title">Quick Actions</h2>
             </div>
             <div className="mgr-card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <Link href={`/finance/collect-fee?id=${student.smartId}`} className="mgr-btn-primary mgr-btn-full">
+              <Link href={`/manager/finance/collect-fee?id=${student.smartId}`} className="mgr-btn-primary mgr-btn-full">
                 Collect Fee
               </Link>
               <Link href={`/manager/students/id-card?id=${student.smartId}`} className="mgr-btn-ghost mgr-btn-full">
                 View ID Card
               </Link>
-              <Link href={`/finance/renewals?id=${student.smartId}`} className="mgr-btn-ghost mgr-btn-full">
+              <Link href={`/manager/finance/renewals?id=${student.smartId}`} className="mgr-btn-ghost mgr-btn-full">
                 Renew Subscription
               </Link>
             </div>

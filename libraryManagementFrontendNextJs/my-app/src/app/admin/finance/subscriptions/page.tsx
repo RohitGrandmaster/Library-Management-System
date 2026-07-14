@@ -149,7 +149,7 @@ export default function Subscriptions() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         className="fin-badge fin-badge--info cursor-pointer"
-                        onClick={() => router.push(`/finance/collect-fee?studentId=${s.id}&renew=true`)}
+                        onClick={() => router.push(`/admin/finance/collect-fee?studentId=${s.id}&renew=true`)}
                       >
                         <RefreshCw size={11} /> Renew
                       </button>
