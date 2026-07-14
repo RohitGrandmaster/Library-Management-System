@@ -34,11 +34,12 @@ const ACTIVITY: ActivityItem[] = [
 
 export default function LockerMatrixPage() {
   const [assignTarget, setAssignTarget] = useState<string | null>(null);
-  const [lockerData, setLockerData] = useState<{ id: string; status: 'free' | 'occupied' | 'maintenance' }[]>([]);
+  const [lockerData, setLockerData] = useState<{ uuid?: string; id: string; status: 'free' | 'occupied' | 'maintenance' }[]>([]);
 
   useEffect(() => {
     fetchApi('/seats_shifts_lockers/lockers').then(data => {
       const mapped = data.map((l: any) => ({
+        uuid: l.id,
         id: l.lockerNumber.replace('L-', ''),
         status: l.isActive ? 'free' : 'maintenance',
       }));
@@ -90,9 +91,9 @@ export default function LockerMatrixPage() {
       {/* Locker Grid */}
       <div className="ss-card ss-card--p-lg ss-locker-grid-card">
         <div className="ss-locker-grid">
-          {lockerData.map(({ id, status }) => (
+          {lockerData.map(({ uuid, id, status }, index) => (
             <button
-              key={id}
+              key={uuid || id + '-' + index}
               className={`ss-locker-cell ss-locker-cell--${status}`}
               onClick={() => handleCellClick(id, status)}
               title={status === 'free' ? 'Available — click to assign' : status === 'occupied' ? 'Occupied — click to view student' : 'Under Maintenance'}

@@ -494,3 +494,32 @@
   .eng-checkbox-row   { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; color: var(--text-primary); }
   .eng-required       { color: var(--danger); }
 }
+
+/* ── PREMIUM UI OVERRIDES ────────────────────────────────────────────── */
+
+.eng-notif-sidebar { width: 260px !important; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.eng-notif-cat { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: transparent; border: 1px solid transparent; cursor: pointer; color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; text-align: left; }
+.eng-notif-cat:hover { background-color: var(--bg-card); color: var(--text-primary); border-color: var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.eng-notif-cat--active { background-color: var(--primary) !important; color: white !important; border-color: var(--primary) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; }
+.eng-notif-cat--active:hover { opacity: 0.95; }
+
+.eng-notif-item { display: flex; gap: 20px !important; padding: 24px !important; border-bottom: 1px solid var(--border); transition: background-color 0.2s; position: relative; }
+.eng-notif-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: transparent; transition: background-color 0.2s; border-radius: 0 4px 4px 0; }
+.eng-notif-item:not(.eng-notif-read)::before { background-color: var(--primary); }
+.eng-notif-item:hover { background-color: var(--bg-hover) !important; }
+.eng-notif-icon { width: 48px !important; height: 48px !important; border-radius: 14px !important; display: flex; align-items: center; justify-content: center; font-size: 22px !important; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.eng-notif-title { font-weight: 600; font-size: 15px !important; color: var(--text-primary); margin-bottom: 4px; }
+.eng-notif-desc { font-size: 14px !important; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px; }
+.eng-notif-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px !important; font-weight: 500; color: var(--primary); text-decoration: none; padding: 6px 12px; border-radius: 6px; background-color: color-mix(in srgb, var(--primary) 8%, transparent); transition: all 0.2s; }
+.eng-notif-link:hover { background-color: color-mix(in srgb, var(--primary) 15%, transparent); transform: translateX(2px); }
+
+.eng-tpl-sidebar { width: 280px !important; flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; }
+.eng-tpl-item { padding: 14px 18px !important; border-radius: 12px !important; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border: 1px solid transparent !important; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 10px; }
+.eng-tpl-item:hover { background-color: var(--bg-card) !important; color: var(--text-primary) !important; border-color: var(--border) !important; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+.eng-tpl-item--active { background-color: color-mix(in srgb, var(--primary) 8%, transparent) !important; color: var(--primary) !important; border-color: color-mix(in srgb, var(--primary) 20%, transparent) !important; box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 10%, transparent); }
+
+.eng-var-chip { display: inline-flex; align-items: center; padding: 6px 12px !important; border-radius: 20px !important; font-size: 13px !important; font-weight: 600; font-family: monospace; background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important; color: var(--primary) !important; border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent) !important; cursor: pointer; transition: all 0.2s; }
+.eng-var-chip:hover { background-color: color-mix(in srgb, var(--primary) 18%, transparent) !important; transform: translateY(-1px); box-shadow: 0 2px 6px color-mix(in srgb, var(--primary) 15%, transparent); }
+
+.eng-tpl-preview { padding: 12px 16px !important; border-radius: 0 12px 12px 12px !important; background-color: #dcf8c6 !important; box-shadow: 0 1px 2px rgba(0,0,0,0.15); font-size: 14.5px !important; color: #111 !important; line-height: 1.5; position: relative; max-width: 85%; margin-top: 8px; border: none !important; }
+.eng-tpl-preview::before { content: ''; position: absolute; top: 0; left: -8px; width: 0; height: 0; border-style: solid; border-width: 0 8px 10px 0; border-color: transparent #dcf8c6 transparent transparent; }

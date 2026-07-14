@@ -14,6 +14,7 @@ import { Student } from '../students/entities/student.entity';
 import { Subscription } from '../subscriptions/entities/subscription.entity';
 import { Payment } from '../payments/entities/payment.entity';
 import { Expense } from '../expenses/entities/expense.entity';
+import { StudentSlot } from '../student-slots/entities/student-slot.entity';
 
 const BCRYPT_COST = 12;
 
@@ -57,6 +58,7 @@ export class SeederService {
     @InjectRepository(Plan) private planRepo: Repository<Plan>,
     @InjectRepository(Student) private studentRepo: Repository<Student>,
     @InjectRepository(Subscription) private subscriptionRepo: Repository<Subscription>,
+    @InjectRepository(StudentSlot) private slotRepo: Repository<StudentSlot>,
     @InjectRepository(Payment) private paymentRepo: Repository<Payment>,
     @InjectRepository(Expense) private expenseRepo: Repository<Expense>,
   ) {}
@@ -256,13 +258,13 @@ export class SeederService {
     }
     this.logger.log('✅ Plans seeded');
 
-    // ── Students & Payments ──────────────────────────────────────────────────
+    // ── Students, Slots, Subscriptions & Payments ────────────────────────────
     const studentDefs = [
-      { name: 'Rohan Sharma',  smartId: 'ST-002', phone: '9111000001' },
-      { name: 'Priya Mehta',   smartId: 'ST-003', phone: '9111000002' },
-      { name: 'Amit Verma',    smartId: 'ST-004', phone: '9111000003' },
-      { name: 'Sneha Rao',     smartId: 'ST-006', phone: '9111000004' },
-      { name: 'Karan Singh',   smartId: 'ST-010', phone: '9111000005' },
+      { name: 'Rohan Sharma',  smartId: 'ST-002', phone: '9111000001', status: 'active',    due: 0,   planName: 'Monthly',   shiftName: 'Morning', seatNum: 'S1' },
+      { name: 'Priya Mehta',   smartId: 'ST-003', phone: '9111000002', status: 'active',    due: 0,   planName: 'Quarterly', shiftName: 'Evening', seatNum: 'S2' },
+      { name: 'Amit Verma',    smartId: 'ST-004', phone: '9111000003', status: 'active',    due: 500, planName: 'Monthly',   shiftName: 'Morning', seatNum: 'S3' },
+      { name: 'Sneha Rao',     smartId: 'ST-006', phone: '9111000004', status: 'active',    due: 0,   planName: 'Yearly',    shiftName: 'Full Day', seatNum: 'S4' },
+      { name: 'Karan Singh',   smartId: 'ST-010', phone: '9111000005', status: 'suspended', due: 1500,planName: 'Monthly',   shiftName: 'Night',    seatNum: 'S5' },
     ];
 
     for (const s of studentDefs) {
@@ -273,17 +275,52 @@ export class SeederService {
         student.smartId = s.smartId;
         student.phone = s.phone;
         student.branch = branch;
+        student.status = s.status === 'suspended' ? 'suspended' : 'active';
         await this.studentRepo.save(student);
 
-        const payment = this.paymentRepo.create();
-        payment.amount = 1500;
-        payment.mode = 'UPI';
-        payment.paymentDate = new Date();
-        payment.student = student;
-        await this.paymentRepo.save(payment);
+        // Assign Plan (Subscription)
+        const plan = await this.planRepo.findOne({ where: { name: s.planName, branch: { id: bId } } });
+        if (plan) {
+          const sub = this.subscriptionRepo.create();
+          sub.student = student;
+          sub.plan = plan;
+          sub.baseAmount = plan.price;
+          sub.discountApplied = 0;
+          sub.totalAmount = plan.price;
+          sub.paidAmount = plan.price - s.due;
+          sub.dueAmount = s.due;
+          sub.status = s.status;
+          sub.startDate = new Date();
+          sub.endDate = new Date(new Date().setMonth(new Date().getMonth() + (plan.durationDays / 30)));
+          await this.subscriptionRepo.save(sub);
+
+          // Assign Slot (Shift & Seat)
+          const shift = await this.shiftRepo.findOne({ where: { name: s.shiftName, branch: { id: bId } } });
+          const seat = await this.seatRepo.findOne({ where: { seatNumber: s.seatNum, branch: { id: bId } } });
+          if (shift && seat) {
+            const slot = this.slotRepo.create();
+            slot.student = student;
+            slot.shift = shift;
+            slot.seat = seat;
+            slot.validFrom = sub.startDate;
+            slot.validTill = sub.endDate;
+            await this.slotRepo.save(slot);
+          }
+
+          // Payment Record
+          if (sub.paidAmount > 0) {
+            const payment = this.paymentRepo.create();
+            payment.amount = sub.paidAmount;
+            payment.mode = 'UPI';
+            payment.paymentDate = new Date();
+            payment.student = student;
+            payment.subscription = sub;
+            await this.paymentRepo.save(payment);
+          }
+        }
       }
     }
-    this.logger.log('✅ Students & Payments seeded');
+    this.logger.log('✅ Students, Slots & Subscriptions seeded');
 
     this.logger.log('Admin DB Seeding Completed!');
     return { message: 'Admin data seeding completed successfully' };

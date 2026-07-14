@@ -88,10 +88,10 @@ function ActionsCell({ data }: { data: Student }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, height: '100%' }}>
-      <Link href={`/students/${data.id}`} className="mgr-btn-icon" title="View Profile">
+      <Link href={`/students/${data.id || data.smartId}`} className="mgr-btn-icon" title="View Profile">
         <Eye size={13} />
       </Link>
-      <Link href={`/students/${data.id}/edit`} className="mgr-btn-icon" title="Edit">
+      <Link href={`/students/${data.id || data.smartId}/edit`} className="mgr-btn-icon" title="Edit">
         <Pencil size={13} />
       </Link>
       {data.due > 0 && (
@@ -113,6 +113,7 @@ export default function StudentsPage() {
 
   useEffect(() => {
     fetchApi('/students').then(data => {
+      console.log("FETCHED STUDENTS:", data);
       setStudents(data);
       setLoading(false);
     }).catch(err => {

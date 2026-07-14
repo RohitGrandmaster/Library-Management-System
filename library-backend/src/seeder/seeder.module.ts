@@ -14,9 +14,10 @@ import { Student } from '../students/entities/student.entity';
 import { Subscription } from '../subscriptions/entities/subscription.entity';
 import { Payment } from '../payments/entities/payment.entity';
 import { Expense } from '../expenses/entities/expense.entity';
+import { StudentSlot } from '../student-slots/entities/student-slot.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role, Permission, Tenant, Branch, User, Shift, Seat, Plan, Student, Subscription, Payment, Expense])],
+  imports: [TypeOrmModule.forFeature([Role, Permission, Tenant, Branch, User, Shift, Seat, Plan, Student, Subscription, Payment, Expense, StudentSlot])],
   controllers: [SeederController],
   providers: [SeederService],
 })
