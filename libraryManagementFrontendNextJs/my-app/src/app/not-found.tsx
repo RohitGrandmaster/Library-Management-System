@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import './(system)/system.css';
+import './system/system.css';
 
 export default function NotFound() {
   return (

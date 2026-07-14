@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import '@/app/auth.css';
+import '@/app/auth/auth.css';
 
 const AUTH_ROUTES = [
   '/auth'

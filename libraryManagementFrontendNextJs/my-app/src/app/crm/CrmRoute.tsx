@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import '@/app/crm.css';
+import '@/app/crm/crm.css';
 
 const CRM_ROUTES = ['/crm'];
 

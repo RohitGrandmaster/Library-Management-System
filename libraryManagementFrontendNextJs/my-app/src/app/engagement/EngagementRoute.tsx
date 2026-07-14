@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import '@/app/engagement.css';
+import '@/app/engagement/engagement.css';
 
 const ENGAGEMENT_ROUTES = ['/engagement'];
 

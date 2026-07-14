@@ -1,7 +1,7 @@
 'use client';
 import { Toaster } from 'react-hot-toast';
 import { usePathname } from 'next/navigation';
-import '@/app/finance.css';
+import '@/app/finance/finance.css';
 
 const FINANCE_ROUTES = ['/finance'];
 

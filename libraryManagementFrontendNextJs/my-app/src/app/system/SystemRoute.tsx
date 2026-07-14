@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Sidebar from '@/app/admin/Sidebar';
 import Header from '@/app/admin/Header';
 import '@/app/admin/admin.css';
-import '@/app/system.css';
+import '@/app/system/system.css';
 import { getCurrentUser } from '@/lib/auth';
 
 // ALL system routes — including ones previously missing from the guard
