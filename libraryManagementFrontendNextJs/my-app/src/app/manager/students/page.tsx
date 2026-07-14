@@ -7,7 +7,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/manager/reusable/gridTheme';
 import { openWhatsApp } from '@/lib/whatsappUtils';
-import { formatCurrency } from '@/app/(finance)/finance/lib/format';
+import { formatCurrency } from '@/app/finance/lib/format';
 import { fetchApi } from '@/lib/api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
