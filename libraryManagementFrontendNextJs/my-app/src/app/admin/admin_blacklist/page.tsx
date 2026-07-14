@@ -51,7 +51,7 @@ export default function AdminBlacklistPage() {
   const [list, setList]         = useState<BlacklistedStudent[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/blacklist').then(data => {
+    fetchApi('/admin/admin_blacklist').then(data => {
       const mapped = data.map((b: any) => ({
         id: b.id,
         name: 'Blacklisted Student', // mock

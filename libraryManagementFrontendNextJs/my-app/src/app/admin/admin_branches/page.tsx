@@ -35,7 +35,7 @@ export default function AdminBranchesPage() {
   const [branches, setBranches] = useState<Branch[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/branches').then(data => {
+    fetchApi('/admin/admin_branches').then(data => {
       const mapped = data.map((b: any) => ({
         id: b.id,
         name: b.name,

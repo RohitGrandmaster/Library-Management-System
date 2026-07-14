@@ -271,11 +271,11 @@ export default function SetupWizardPage() {
     setLaunching(true);
     await new Promise(res => setTimeout(res, 2000));
     setLaunched(true);
-    setTimeout(() => { window.location.href = '/superadmin/dashboard'; }, 1000);
+    setTimeout(() => { window.location.href = '/superadmin/superadmin_dashboard'; }, 1000);
   };
 
   const handleSkipToDashboard = () => {
-    window.location.href = '/superadmin/dashboard';
+    window.location.href = '/superadmin/superadmin_dashboard';
   };
 
   return (

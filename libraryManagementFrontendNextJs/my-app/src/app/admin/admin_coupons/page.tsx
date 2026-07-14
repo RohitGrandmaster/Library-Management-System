@@ -61,7 +61,7 @@ export default function AdminCouponsPage() {
   const [coupons, setCoupons]   = useState<Coupon[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/coupons').then(data => {
+    fetchApi('/admin/admin_coupons').then(data => {
       const mapped = data.map((c: any) => ({
         id: c.id,
         code: c.code,

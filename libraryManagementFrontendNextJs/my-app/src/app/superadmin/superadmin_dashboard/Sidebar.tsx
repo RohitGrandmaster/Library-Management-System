@@ -9,16 +9,16 @@ import {
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/superadmin/dashboard',       icon: LayoutDashboard, label: 'Dashboard'         },
-  { href: '/superadmin/setup-wizard',    icon: Wand2,           label: 'Setup Wizard'      },
-  { href: '/superadmin/libraries',       icon: Building2,       label: 'Libraries'         },
-  { href: '/superadmin/subscriptions',   icon: CreditCard,      label: 'Subscriptions'     },
-  { href: '/superadmin/billing',         icon: Receipt,         label: 'Billing'           },
-  { href: '/superadmin/support-tickets', icon: HeadphonesIcon,  label: 'Support Tickets'   },
-  { href: '/superadmin/audit-logs',      icon: ScrollText,      label: 'Audit Logs'        },
-  { href: '/superadmin/system-health',   icon: Activity,        label: 'System Health'     },
-  { href: '/superadmin/reports',         icon: BarChart2,       label: 'Reports'           },
-  { href: '/superadmin/settings',        icon: Settings,        label: 'Platform Settings' },
+  { href: '/superadmin/superadmin_dashboard',       icon: LayoutDashboard, label: 'Dashboard'         },
+  { href: '/superadmin/superadmin_setup-wizard',    icon: Wand2,           label: 'Setup Wizard'      },
+  { href: '/superadmin/superadmin_libraries',       icon: Building2,       label: 'Libraries'         },
+  { href: '/superadmin/superadmin_subscriptions',   icon: CreditCard,      label: 'Subscriptions'     },
+  { href: '/superadmin/superadmin_billing',         icon: Receipt,         label: 'Billing'           },
+  { href: '/superadmin/superadmin_support-tickets', icon: HeadphonesIcon,  label: 'Support Tickets'   },
+  { href: '/superadmin/superadmin_audit-logs',      icon: ScrollText,      label: 'Audit Logs'        },
+  { href: '/superadmin/superadmin_system-health',   icon: Activity,        label: 'System Health'     },
+  { href: '/superadmin/superadmin_reports',         icon: BarChart2,       label: 'Reports'           },
+  { href: '/superadmin/superadmin_settings',        icon: Settings,        label: 'Platform Settings' },
 ];
 
 interface SidebarProps {

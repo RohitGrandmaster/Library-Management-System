@@ -18,7 +18,7 @@ const ROLE_DEST_LABEL: Record<string, string> = {
 
 // Per-role accent colors — still using CSS variables, just different tokens
 function getRedirectUrl(role: typeof ROLES[0]): string {
-  if (role.id === 'superadmin' && !role.setupComplete) return '/superadmin/setup-wizard';
+  if (role.id === 'superadmin' && !role.setupComplete) return '/superadmin/superadmin_setup-wizard';
   return role.redirectTo;
 }
 

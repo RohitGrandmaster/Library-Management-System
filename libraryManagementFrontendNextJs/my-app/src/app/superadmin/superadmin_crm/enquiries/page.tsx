@@ -173,7 +173,7 @@ export default function EnquiriesPage() {
     const enq = enquiries.find((x) => x.id === id);
     if (!enq) return;
     router.push(
-      `/manager/students/new?name=${encodeURIComponent(enq.name)}&phone=${encodeURIComponent(enq.phone)}`
+      `/manager/manager_students/new?name=${encodeURIComponent(enq.name)}&phone=${encodeURIComponent(enq.phone)}`
     );
   };
 

@@ -16,7 +16,7 @@ export default function AdminExpensesPage() {
   const { selectedBranch } = useAdmin();
 
   useEffect(() => {
-    fetchApi('/admin/expenses').then(data => {
+    fetchApi('/admin/admin_expenses').then(data => {
       const mapped = data.map((e: any) => ({
         id: e.id,
         date: new Date(e.expenseDate).toLocaleDateString(),

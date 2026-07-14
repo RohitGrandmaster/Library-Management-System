@@ -48,7 +48,7 @@ export default function AdminReportsPage() {
   const [data, setData]     = useState<any>(null);
 
   useEffect(() => {
-    fetchApi('/admin/reports').then(setData).catch(console.error);
+    fetchApi('/admin/admin_reports').then(setData).catch(console.error);
   }, []);
 
   if (!data) return <div className="p-8">Loading reports...</div>;

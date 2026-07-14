@@ -78,7 +78,7 @@ export default function AdminAuditLogsPage() {
   const [logs, setLogs] = useState<AuditLog[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/audit-logs').then(data => {
+    fetchApi('/admin/admin_audit-logs').then(data => {
       const mapped = data.map((l: any) => ({
         id: l.id,
         action: l.action,

@@ -35,7 +35,7 @@ export default function AdminStaffUsersPage() {
   const [staff, setStaff]       = useState<StaffMember[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/staff-users').then(data => {
+    fetchApi('/admin/admin_staff-users').then(data => {
       const mapped = data.map((u: any) => ({
         id: u.id,
         name: u.fullName,

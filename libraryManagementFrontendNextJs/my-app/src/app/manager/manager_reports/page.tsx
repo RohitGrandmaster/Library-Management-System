@@ -66,7 +66,7 @@ export default function ManagerReportsPage() {
   const [dateRange, setDateRange] = useState('This Month');
 
   useEffect(() => {
-    fetchApi(`/manager/reports?range=${encodeURIComponent(dateRange)}`)
+    fetchApi(`/manager/manager_reports?range=${encodeURIComponent(dateRange)}`)
       .then(res => { setData(res); setLoading(false); })
       .catch(err => { console.error(err); setLoading(false); });
   }, [dateRange]);

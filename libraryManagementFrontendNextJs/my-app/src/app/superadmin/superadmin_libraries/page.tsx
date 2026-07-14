@@ -31,7 +31,7 @@ function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const updated = await fetchApi(`/superadmin/libraries/${lib.id}`, {
+      const updated = await fetchApi(`/superadmin/superadmin_libraries/${lib.id}`, {
         method: 'PATCH',
         body: JSON.stringify(form),
       });
@@ -138,7 +138,7 @@ export default function LibrariesPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   useEffect(() => {
-    fetchApi('/superadmin/libraries')
+    fetchApi('/superadmin/superadmin_libraries')
       .then(data => { setLibraries(data); setLoading(false); })
       .catch(err => { console.error(err); setLoading(false); });
   }, []);
@@ -154,7 +154,7 @@ export default function LibrariesPage() {
     if (!lib) return;
     const newStatus = lib.status === 'Active' ? 'Maintenance' : 'Active';
     try {
-      await fetchApi(`/superadmin/libraries/${id}/status`, {
+      await fetchApi(`/superadmin/superadmin_libraries/${id}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status: newStatus }),
       });

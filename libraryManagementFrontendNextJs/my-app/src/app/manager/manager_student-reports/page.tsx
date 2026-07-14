@@ -27,7 +27,7 @@ export default function StudentReportsPage() {
   const [dateRange, setDateRange] = useState('This Month');
 
   useEffect(() => {
-    fetchApi(`/manager/student-reports?range=${encodeURIComponent(dateRange)}`)
+    fetchApi(`/manager/manager_student-reports?range=${encodeURIComponent(dateRange)}`)
       .then(res => { setData(res); setLoading(false); })
       .catch(err => { console.error(err); setLoading(false); });
   }, [dateRange]);

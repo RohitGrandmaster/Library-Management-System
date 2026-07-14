@@ -55,7 +55,7 @@ export default function SeatMatrixGrid({ seats, shifts }: Props) {
 
   function handleCellClick(seat: SeatData) {
     if (seat.status === 'occupied' || seat.status === 'expiring') {
-      router.push(seat.studentId ? `/manager/students/${seat.studentId}` : '/manager/students');
+      router.push(seat.studentId ? `/manager/manager_students/${seat.studentId}` : '/manager/manager_students');
     } else if (seat.status === 'free') {
       router.push('/manager/manager_students/new');
     }

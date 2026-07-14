@@ -35,7 +35,7 @@ export default function SignupPage() {
 
   const onSubmit = async (_: SignupFormData) => {
     await new Promise(res => setTimeout(res, 1200));
-    window.location.href = '/superadmin/setup-wizard';
+    window.location.href = '/superadmin/superadmin_setup-wizard';
   };
 
   return (

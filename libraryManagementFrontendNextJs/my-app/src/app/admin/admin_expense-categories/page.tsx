@@ -25,7 +25,7 @@ export default function ExpenseCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/expense-categories').then(data => {
+    fetchApi('/admin/admin_expense-categories').then(data => {
       const mapped = data.map((c: any) => ({
         id: c.id,
         name: c.name,

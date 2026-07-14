@@ -26,13 +26,13 @@ const STATUS_CLASS: Record<string, string> = {
 };
 
 const QUICK_LINKS = [
-  { title: 'All Students',    href: '/manager/students'                 },
-  { title: 'Enquiries',       href: '/crm/enquiries'            },
-  { title: 'Collect Fee',     href: '/finance/collect-fee'      },
-  { title: 'Add Complaint',   href: '/communication/complaints' },
+  { title: 'All Students',    href: '/manager/manager_students'                 },
+  { title: 'Enquiries',       href: '/manager/manager_crm/enquiries'            },
+  { title: 'Collect Fee',     href: '/manager/manager_finance/collect-fee'      },
+  { title: 'Add Complaint',   href: '/manager/manager_communication/complaints' },
   { title: 'Waitlist',        href: '#'                         },
-  { title: 'Mark Attendance', href: '/engagement/attendance'    },
-  { title: 'QR Scanner',      href: '/engagement/qr-scanner'    },
+  { title: 'Mark Attendance', href: '/manager/manager_engagement/attendance'    },
+  { title: 'QR Scanner',      href: '/manager/manager_engagement/qr-scanner'    },
   { title: 'My Profile',      href: '#'                         },
 ];
 
@@ -60,7 +60,7 @@ export default function ManagerDashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchApi('/manager/dashboard')
+    fetchApi('/manager/manager_dashboard')
       .then(res => {
         setData(res);
         setLoading(false);

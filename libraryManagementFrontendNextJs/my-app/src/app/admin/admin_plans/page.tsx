@@ -50,7 +50,7 @@ export default function AdminPlansPage() {
   const [plans, setPlans]       = useState<Plan[]>([]);
 
   useEffect(() => {
-    fetchApi('/admin/plans').then(data => {
+    fetchApi('/admin/admin_plans').then(data => {
       const mapped = data.map((p: any) => ({
         id: p.id,
         name: p.name,

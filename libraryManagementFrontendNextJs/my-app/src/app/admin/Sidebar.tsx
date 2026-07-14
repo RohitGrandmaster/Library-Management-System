@@ -23,22 +23,22 @@ type NavItem =
   | { href: string; icon: LucideIcon; label: string };
 
 const NAV: NavItem[] = [
-  { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/reports',   icon: BarChart2,       label: 'Reports'   },
+  { href: '/admin/admin_dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/admin/admin_reports',   icon: BarChart2,       label: 'Reports'   },
   { group: 'Admin' },
-  { href: '/admin/branches',    icon: Building2, label: 'Branches'      },
-  { href: '/admin/staff-users', icon: User,      label: 'Staff & Users' },
-  { href: '/admin/permissions', icon: Key,       label: 'Permissions'   },
-  { href: '/admin/plans',       icon: FileText,  label: 'Plans'         },
-  { href: '/admin/coupons',     icon: Tag,       label: 'Coupons'       },
-  { href: '/admin/blacklist',   icon: Ban,       label: 'Blacklist'     },
-  { href: '/admin/audit-logs',  icon: History,   label: 'Audit Logs'    },
+  { href: '/admin/admin_branches',    icon: Building2, label: 'Branches'      },
+  { href: '/admin/admin_staff-users', icon: User,      label: 'Staff & Users' },
+  { href: '/admin/admin_permissions', icon: Key,       label: 'Permissions'   },
+  { href: '/admin/admin_plans',       icon: FileText,  label: 'Plans'         },
+  { href: '/admin/admin_coupons',     icon: Tag,       label: 'Coupons'       },
+  { href: '/admin/admin_blacklist',   icon: Ban,       label: 'Blacklist'     },
+  { href: '/admin/admin_audit-logs',  icon: History,   label: 'Audit Logs'    },
   { group: 'Operations (All Branches)' },
-  { href: '/admin/expenses',    icon: IndianRupee, label: 'Expenses'    },
-  { href: '/admin/students',    icon: Users,       label: 'Students'    },
+  { href: '/admin/admin_expenses',    icon: IndianRupee, label: 'Expenses'    },
+  { href: '/admin/admin_students',    icon: Users,       label: 'Students'    },
   { group: 'Configuration' },
-  { href: '/admin/expense-categories', icon: Tag, label: 'Expense Types' },
-  { href: '/admin/settings',    icon: Key,       label: 'Settings'      },
+  { href: '/admin/admin_expense-categories', icon: Tag, label: 'Expense Types' },
+  { href: '/admin/admin_settings',    icon: Key,       label: 'Settings'      },
 ];
 
 interface Props {

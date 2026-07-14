@@ -16,7 +16,7 @@ export default function AdminStudentsPage() {
   const { selectedBranch } = useAdmin();
 
   useEffect(() => {
-    fetchApi('/admin/students').then(data => {
+    fetchApi('/admin/admin_students').then(data => {
       const mapped = data.map((s: any) => ({
         id: 'STU-' + s.id.substring(0, 4).toUpperCase(),
         name: s.fullName,

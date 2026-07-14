@@ -11,10 +11,10 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 const ACTION_LINKS: Record<string, string> = {
-  'warning':         '/superadmin/libraries',
-  'credit_card_off': '/superadmin/subscriptions',
-  'support_agent':   '/superadmin/support-tickets',
-  'cloud_upload':    '/superadmin/system-health',
+  'warning':         '/superadmin/superadmin_libraries',
+  'credit_card_off': '/superadmin/superadmin_subscriptions',
+  'support_agent':   '/superadmin/superadmin_support-tickets',
+  'cloud_upload':    '/superadmin/superadmin_system-health',
 };
 
 export default function ActionItemsPanel({ data }: Props) {
@@ -28,7 +28,7 @@ export default function ActionItemsPanel({ data }: Props) {
         {data.map((item, i) => {
           const isError = item.type === 'error';
           const Icon = ICON_MAP[item.icon] ?? AlertTriangle;
-          const href = ACTION_LINKS[item.icon] ?? '/superadmin/dashboard';
+          const href = ACTION_LINKS[item.icon] ?? '/superadmin/superadmin_dashboard';
           return (
             <Link key={i} href={href}
               className={`sa-action-row ${isError ? 'sa-action-row--error' : 'sa-action-row--info'}`}>
