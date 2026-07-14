@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { AgGridReact } from 'ag-grid-react';
 import type { ColDef, ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { themeQuartz, AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/(superadmin)/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
 import { ExternalLink } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

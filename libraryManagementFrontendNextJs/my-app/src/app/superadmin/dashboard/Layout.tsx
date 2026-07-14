@@ -1,4 +1,4 @@
-// src/app/(superadmin)/dashboard/Layout.tsx
+// src/app/superadmin/dashboard/Layout.tsx
 // Note: This wrapper is imported by pages inside superadmin/dashboard/
 import Sidebar from './Sidebar';
 import Header from './Header';

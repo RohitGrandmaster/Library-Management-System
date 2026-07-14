@@ -3,7 +3,7 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/(superadmin)/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
 import { Eye, Edit2, ShieldAlert, Plus, X, MapPin, Users, CheckCircle, AlertTriangle, Save, Loader } from 'lucide-react';
 import Link from 'next/link';
 import { fetchApi } from '@/lib/api';

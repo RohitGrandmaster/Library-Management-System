@@ -3,7 +3,7 @@ import { useState, useRef, useCallback, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import type { ColDef, ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/(superadmin)/superadmin/reusable/gridTheme';
+import { gridTheme } from '@/app/superadmin/reusable/gridTheme';
 import { Eye, ReceiptText, Users, TrendingDown, X, Calendar, IndianRupee, CheckCircle, Edit2, Save } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

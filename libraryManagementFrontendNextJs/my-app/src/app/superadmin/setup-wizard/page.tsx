@@ -11,8 +11,8 @@ import {
   shiftsSchema,       type ShiftsData,
   seatsSchema,        type SeatsData,
   plansSchema,        type PlansData,
-} from '@/app/(superadmin)/superadmin/reusable/schema';
-import hardcoded from '@/app/(superadmin)/superadmin/hardcoded.json';
+} from '@/app/superadmin/reusable/schema';
+import hardcoded from '@/app/superadmin/hardcoded.json';
 
 const d = hardcoded.setupWizard;
 

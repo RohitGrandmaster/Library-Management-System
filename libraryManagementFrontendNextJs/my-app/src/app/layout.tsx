@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ManagerRoute } from "@/app/(manager)/ManagerRoute";
 import { AdminRoute } from "@/app/(admin)/AdminRoute";
 import { FinanceRoute } from "@/app/(finance)/FinanceRoute";
-import { SuperadminRoute } from "@/app/(superadmin)/SuperadminRoute";
+import { SuperadminRoute } from "@/app/superadmin/SuperadminRoute";
 import { EngagementRoute } from "@/app/(engagement)/EngagementRoute";
 import { SystemRoute } from "@/app/(system)/SystemRoute";
 import { CrmRoute } from "@/app/(crm)/CrmRoute";

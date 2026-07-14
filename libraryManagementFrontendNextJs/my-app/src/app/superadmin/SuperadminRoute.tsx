@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Sidebar from '@/app/(superadmin)/superadmin/dashboard/Sidebar';
-import Header from '@/app/(superadmin)/superadmin/dashboard/Header';
-import '@/app/(superadmin)/superadmin.css';
+import Sidebar from '@/app/superadmin/dashboard/Sidebar';
+import Header from '@/app/superadmin/dashboard/Header';
+import '@/app/superadmin/superadmin.css';
 import { getCurrentUser, clearAuthState } from '@/lib/auth';
 
 const SUPERADMIN_ROUTES = ['/superadmin'];
