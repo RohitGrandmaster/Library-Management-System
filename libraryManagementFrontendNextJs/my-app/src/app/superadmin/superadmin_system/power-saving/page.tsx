@@ -135,8 +135,8 @@ export default function PowerSavingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/30">
-                {ALERT_LOG.map((log, i) => (
-                  <tr key={i} className="hover:bg-surface-container-high transition-colors">
+                {ALERT_LOG.map((log) => (
+                  <tr key={log.date + log.zone} className="hover:bg-surface-container-high transition-colors">
                     <td className="py-3 pr-4 text-on-surface-variant">{log.date}</td>
                     <td className="py-3 pr-4 text-on-surface">{log.shift}</td>
                     <td className="py-3 pr-4 text-on-surface">{log.zone}</td>

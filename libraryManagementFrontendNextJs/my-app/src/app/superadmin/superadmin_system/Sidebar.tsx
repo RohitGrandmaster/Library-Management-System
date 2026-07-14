@@ -87,7 +87,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
           {NAV.map((item, i) => {
             if ('group' in item) {
               if (collapsed && !mobileOpen) return null;
-              return <div key={i} className="admin-nav-group-label">{item.group}</div>;
+              return <div key={'group-' + item.group} className="admin-nav-group-label">{item.group}</div>;
             }
             const Icon = item.icon;
             const isExactMatch = pathname === item.href;

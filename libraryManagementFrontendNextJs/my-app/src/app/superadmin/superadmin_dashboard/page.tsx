@@ -1,28 +1,11 @@
-import KpiCard from './KpiCard';
-import SystemHealthPanel from './SystemHealthPanel';
-import ActionItemsPanel from './ActionItemsPanel';
-import RecentLibrariesTable from './RecentLibrariesTable';
+import KpiCard from '@/app/superadmin/superadmin_dashboard/KpiCard';
+import SystemHealthPanel from '@/app/superadmin/superadmin_dashboard/SystemHealthPanel';
+import ActionItemsPanel from '@/app/superadmin/superadmin_dashboard/ActionItemsPanel';
+import RecentLibrariesTable from '@/app/superadmin/superadmin_dashboard/RecentLibrariesTable';
 import Link from 'next/link';
 import { Activity, Clock } from 'lucide-react';
-import { cookies } from 'next/headers';
-
-async function getDashboardData() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('access_token')?.value || '';
-
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
-  const res = await fetch(`${API_BASE}/superadmin/dashboard`, {
-    cache: 'no-store',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    return null;
-  }
-  return res.json();
-}
+import { fetchDashboardData } from '@/app/superadmin/superadmin_dashboard/dashboard_service';
+import type { DashboardKpiCard } from '@/app/superadmin/superadmin_dashboard/superadmin_dashboard_types';
 
 // Recent platform activity feed (hardcoded)
 const RECENT_ACTIVITY = [
@@ -64,7 +47,7 @@ const RECENT_ACTIVITY = [
 ];
 
 export default async function SuperAdminDashboardPage() {
-  const data = await getDashboardData();
+  const data = await fetchDashboardData();
   
   if (!data) return <div>Failed to load dashboard</div>;
 
@@ -85,7 +68,7 @@ export default async function SuperAdminDashboardPage() {
 
       {/* Row 1: KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {data.kpiCards?.map((card: any, i: number) => (
+        {data.kpiCards?.map((card: DashboardKpiCard, i: number) => (
           <KpiCard key={i} {...card} />
         ))}
       </div>
@@ -97,7 +80,7 @@ export default async function SuperAdminDashboardPage() {
       </div>
 
       {/* Row 3: Libraries Table */}
-      <RecentLibrariesTable data={(data.recentLibraries as any) || []} />
+      <RecentLibrariesTable data={data.recentLibraries || []} />
 
       {/* Row 4: Recent Platform Activity */}
       <div className="sa-card overflow-hidden mt-8">

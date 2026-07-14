@@ -1,6 +1,6 @@
 'use client';
 import { type LabelHTMLAttributes, forwardRef } from 'react';
-import { cn } from './utils';
+import { cn } from '@/app/superadmin/superadmin_system/reusable/utils';
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
 

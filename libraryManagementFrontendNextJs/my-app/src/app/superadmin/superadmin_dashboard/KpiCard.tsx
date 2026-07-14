@@ -1,14 +1,6 @@
 import { TrendingUp, AlertTriangle } from 'lucide-react';
 
-interface KpiCardProps {
-  title: string;
-  value: string;
-  icon: string;
-  subtitle?: string;
-  trend?: string;
-  progress?: number;
-  alert?: string;
-}
+import type { DashboardKpiCard as KpiCardProps } from '@/app/superadmin/superadmin_dashboard/superadmin_dashboard_types';
 
 const ICON_MAP: Record<string, string> = {
   store:           '🏛️',

@@ -12,9 +12,7 @@ import {
   seatsSchema,        type SeatsData,
   plansSchema,        type PlansData,
 } from '@/app/superadmin/superadmin_reusable/schema';
-import hardcoded from '@/app/superadmin/hardcoded.json';
-
-const d = hardcoded.setupWizard;
+import { SETUP_WIZARD_DATA as d } from '@/app/superadmin/superadmin_setup-wizard/setupWizard_constants';
 
 const STEPS = [
   { num: 1, title: 'Branch Details', desc: 'Library info & address' },

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { AlertTriangle, CreditCard, Headphones, CloudUpload, ChevronRight, Lightbulb, ExternalLink } from 'lucide-react';
 
-interface Props { data: any[]; }
+import type { DashboardActionItem } from '@/app/superadmin/superadmin_dashboard/superadmin_dashboard_types';
+
+interface Props { data: DashboardActionItem[]; }
 
 const ICON_MAP: Record<string, React.ElementType> = {
   warning:         AlertTriangle,
@@ -34,7 +36,7 @@ export default function ActionItemsPanel({ data }: Props) {
               className={`sa-action-row ${isError ? 'sa-action-row--error' : 'sa-action-row--info'}`}>
               <div className="flex items-center gap-3">
                 <Icon size={16} className={isError ? 'sa-metric--danger' : 'sa-metric--info'} />
-                <span className="text-[13px] font-semibold text-primary">{item.text}</span>
+                <span className="text-[13px] font-semibold text-primary">{item.title}</span>
               </div>
               <ChevronRight size={15} className="sa-metric--muted" />
             </Link>

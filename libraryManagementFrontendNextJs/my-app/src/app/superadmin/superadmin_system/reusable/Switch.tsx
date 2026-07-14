@@ -1,6 +1,6 @@
 'use client';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
-import { cn } from './utils';
+import { cn } from '@/app/superadmin/superadmin_system/reusable/utils';
 
 interface SwitchProps {
   checked?: boolean;

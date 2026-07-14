@@ -9,15 +9,7 @@ import { ExternalLink } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface Library {
-  initials: string;
-  name: string;
-  owner: string;
-  students: number;
-  status: 'active' | 'setup' | 'inactive';
-  plan: string;
-  joinedAt: string;
-}
+import type { RecentLibrary as Library } from '@/app/superadmin/superadmin_dashboard/superadmin_dashboard_types';
 
 interface Props { data: Library[]; }
 

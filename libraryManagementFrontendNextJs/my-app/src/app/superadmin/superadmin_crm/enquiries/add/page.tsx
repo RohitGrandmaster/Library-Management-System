@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { X, Save, PhoneCall } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { addEnquirySchema, type AddEnquiryFormData } from '@/app/superadmin/superadmin_crm/reusable/schema';
-import data from '@/app/superadmin/superadmin_crm/reusable/hardcoded.json';
+import { CRM_CONSTANTS as data } from '@/app/superadmin/superadmin_crm/crm_constants';
 
 export default function AddEnquiryPage() {
   const router = useRouter();

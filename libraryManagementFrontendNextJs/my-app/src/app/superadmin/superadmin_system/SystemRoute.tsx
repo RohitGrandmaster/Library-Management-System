@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Sidebar from './Sidebar';
-import Header from './Header';
+import Sidebar from '@/app/superadmin/superadmin_system/Sidebar';
+import Header from '@/app/superadmin/superadmin_system/Header';
 import '@/app/superadmin/superadmin.css';
 import '@/app/superadmin/superadmin_system/system.css';
 import { getCurrentUser } from '@/lib/auth';

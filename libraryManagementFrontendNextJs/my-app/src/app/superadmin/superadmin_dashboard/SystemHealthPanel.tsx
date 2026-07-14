@@ -1,12 +1,7 @@
 import Link from 'next/link';
 import { CheckCircle, Users, Zap, HardDrive, ExternalLink } from 'lucide-react';
 
-interface SystemHealth {
-  uptime: string;
-  activeUsers: number;
-  apiLatency: string;
-  lastBackup: string;
-}
+import type { DashboardSystemHealth as SystemHealth } from '@/app/superadmin/superadmin_dashboard/superadmin_dashboard_types';
 
 interface Props { data: SystemHealth; }
 

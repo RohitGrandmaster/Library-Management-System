@@ -19,7 +19,7 @@ import {
   Edit2,
   AlertTriangle,
 } from 'lucide-react';
-import data from '@/app/superadmin/superadmin_crm/reusable/hardcoded.json';
+import { CRM_CONSTANTS as data } from '@/app/superadmin/superadmin_crm/crm_constants';
 import {
   type Enquiry,
   type EnquiryStatus,
