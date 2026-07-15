@@ -39,8 +39,15 @@ export async function login(identifier: string, password: string): Promise<Login
   });
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'Login failed' }));
-    throw new Error(error.message || `Login failed: ${res.status}`);
+    const errorBody = await res.json().catch(() => ({ message: 'Login failed' }));
+    let errorMsg = errorBody.message;
+    if (typeof errorMsg === 'object' && errorMsg !== null) {
+      errorMsg = errorMsg.message || JSON.stringify(errorMsg);
+    }
+    if (Array.isArray(errorMsg)) {
+      errorMsg = errorMsg.join(', ');
+    }
+    throw new Error(errorMsg || `Login failed: ${res.status}`);
   }
 
   const data: LoginResponse = await res.json();

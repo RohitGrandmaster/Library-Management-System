@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import AdmissionForm from './AdmissionForm';
+import AdmissionForm from '../manager_students_components/AdmissionForm';
 
 export default function NewAdmissionPage() {
   return (

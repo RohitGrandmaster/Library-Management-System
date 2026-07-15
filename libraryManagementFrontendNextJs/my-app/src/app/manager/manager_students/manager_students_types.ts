@@ -9,6 +9,7 @@ export interface Student {
   plan: string; 
   due: number; 
   joined: string;
+  branch?: string;
 }
 
 export type FetchState = 'idle' | 'loading' | 'success' | 'error';

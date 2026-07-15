@@ -50,7 +50,7 @@ export const useSeatsStore = create<SeatsState>((set, get) => ({
       const mapped = data.map((l: any) => ({
         uuid: l.id,
         id: l.lockerNumber.replace('L-', ''),
-        status: l.isActive ? 'free' : 'maintenance',
+        status: (l.isActive ? 'free' : 'maintenance') as 'free' | 'maintenance',
       }));
       set({ lockerData: mapped, status: 'success' });
     } catch (err: unknown) {

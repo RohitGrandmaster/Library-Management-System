@@ -13,8 +13,10 @@ import {
 } from 'lucide-react';
 import AdmissionSuccessModal from './AdmissionSuccessModal';
 import { calcExpiryDate, formatDateIN } from '@/lib/whatsappUtils';
+import { useStudentsStore } from '../manager_students_context/manager_students_store';
 import type { IdCardData } from './StudentIdCard';
 import { fetchApi } from '@/lib/api';
+import { createStudent } from '../manager_students_api/manager_students_api';
 
 /* ── Zod Schema ── */
 const schema = z.object({
@@ -110,10 +112,7 @@ export default function AdmissionForm() {
         ...data,
       };
 
-      const res = await fetchApi('/students', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
+      const res = await createStudent(payload);
 
       const admitted: AdmittedData = {
         name:          data.fullName,
