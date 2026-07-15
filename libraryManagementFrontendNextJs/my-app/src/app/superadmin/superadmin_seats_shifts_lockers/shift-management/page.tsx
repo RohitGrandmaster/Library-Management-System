@@ -55,7 +55,7 @@ export default function ShiftManagementPage() {
   function handleSave() {
     if (!validate()) return;
     if (editShift) {
-      setShifts(prev => prev.map(s => s.id === editShift.id ? { ...s, ...form } : s));
+      setShifts(prev => prev.map((s: any) => s.id === editShift.id ? { ...s, ...form } : s));
       toast.success('Shift updated.');
     } else {
       setShifts(prev => [...prev, { id: Date.now().toString(), ...form, occupancy: 0, capacity: 40 }]);
@@ -66,13 +66,13 @@ export default function ShiftManagementPage() {
 
   function handleDeactivate() {
     if (!deactivateTarget) return;
-    setShifts(prev => prev.map(s => s.id === deactivateTarget.id ? { ...s, active: false } : s));
+    setShifts(prev => prev.map((s: any) => s.id === deactivateTarget.id ? { ...s, active: false } : s));
     toast.success(`${deactivateTarget.name} shift deactivated.`);
     setDeactivateTarget(null);
   }
 
   function handleActivate(shift: Shift) {
-    setShifts(prev => prev.map(s => s.id === shift.id ? { ...s, active: true } : s));
+    setShifts(prev => prev.map((s: any) => s.id === shift.id ? { ...s, active: true } : s));
     toast.success(`${shift.name} shift activated.`);
   }
 
@@ -99,7 +99,7 @@ export default function ShiftManagementPage() {
           </div>
         ) : (
           <div className="ss-shift-cards-grid">
-            {shifts.map(shift => (
+            {shifts.map((shift: any) => (
               <div key={shift.id} className={`ss-shift-card${!shift.active ? ' ss-shift-card--inactive' : ''}`}>
                 <div className="ss-shift-card__body">
 

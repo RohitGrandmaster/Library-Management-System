@@ -34,7 +34,7 @@ export default function DailySettlementPage() {
   const [entries, setEntries] = useState(MOCK);
 
   const handleSettle = (id: number) => {
-    setEntries(p => p.map(e => e.id === id ? { ...e, status: 'settled', settledBy: 'Current User' } : e));
+    setEntries(p => p.map((e: any) => e.id === id ? { ...e, status: 'settled', settledBy: 'Current User' } : e));
     toast.success('Shift settled successfully.');
   };
 

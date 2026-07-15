@@ -77,7 +77,7 @@ export default function SeatGapReportPage() {
           <tbody>
             {visible.length === 0 ? (
               <tr><td colSpan={7}><div className="fin-empty-state"><div className="fin-empty-state__icon">🪑</div><p className="fin-empty-state__title">No gap seats found.</p></div></td></tr>
-            ) : visible.map(r => (
+            ) : visible.map((r: any) => (
               <tr key={r.seatNo} className="fin-table-hover-row fin-table-row">
                 <td className="py-3 px-4 fin-cell-name">{r.seatNo}</td>
                 <td className="py-3 px-4 fin-cell-subtext">{r.shift}</td>

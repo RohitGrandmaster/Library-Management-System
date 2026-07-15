@@ -38,10 +38,10 @@ export default function AttendancePage() {
   const late     = filtered.filter(s => s.status === 'late').length;
 
   const setStatus = (id: string, status: AttStatus) =>
-    setStudents(p => p.map(s => s.id === id ? { ...s, status } : s));
+    setStudents(p => p.map((s: any) => s.id === id ? { ...s, status } : s));
 
   const setField = (id: string, field: 'inTime'|'outTime', val: string) =>
-    setStudents(p => p.map(s => s.id === id ? { ...s, [field]: val } : s));
+    setStudents(p => p.map((s: any) => s.id === id ? { ...s, [field]: val } : s));
 
   const handleAlert = (id: string) => setAlerted(p => new Set(p).add(id));
 
@@ -133,7 +133,7 @@ export default function AttendancePage() {
               <p className="eng-empty-title">No students in this shift</p>
               <p className="eng-empty-sub">Try selecting a different shift or date.</p>
             </div>
-          ) : filtered.map(s => {
+          ) : filtered.map((s: any) => {
             const isAlert = s.consecutiveAbsent >= 3;
             const hasAlerted = alerted.has(s.id);
             return (
@@ -150,7 +150,7 @@ export default function AttendancePage() {
 
                 {/* Status buttons */}
                 <div className="eng-seg-group">
-                  {(['present', 'absent', 'late'] as AttStatus[]).map(st => (
+                  {(['present', 'absent', 'late'] as AttStatus[]).map((st: any) => (
                     <button key={st} onClick={() => setStatus(s.id, st)}
                       className={`eng-seg-btn${s.status === st ? ` eng-seg-btn--${st}` : ''}`}>
                       {st === 'present' ? <><CheckCircle size={12}/> Present</>

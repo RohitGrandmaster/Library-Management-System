@@ -30,7 +30,7 @@ export function useLibraries() {
       method: 'PATCH',
       body: JSON.stringify(updates),
     });
-    setLibraries((libs) => libs.map((l) => (l.id === id ? { ...l, ...updated } : l)));
+    setLibraries((libs) => libs.map((l: any) => (l.id === id ? { ...l, ...updated } : l)));
     return updated;
   };
 
@@ -44,7 +44,7 @@ export function useLibraries() {
       body: JSON.stringify({ status: newStatus }),
     });
     
-    setLibraries((libs) => libs.map((l) => (l.id === id ? { ...l, status: newStatus } : l)));
+    setLibraries((libs) => libs.map((l: any) => (l.id === id ? { ...l, status: newStatus } : l)));
     return newStatus;
   };
 

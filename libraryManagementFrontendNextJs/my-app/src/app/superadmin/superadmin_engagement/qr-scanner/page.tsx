@@ -174,7 +174,7 @@ export default function QrScannerPage() {
         {history.length > 0 && (
           <div className="eng-card eng-mt-4">
             <div className="eng-card-title eng-mb-4">Recent Scans</div>
-            {history.map(h => (
+            {history.map((h: any) => (
               <div key={h.id} className="eng-scan-history-row">
                 <span className={`eng-badge ${h.type==='IN' ? 'eng-badge--success' : 'eng-badge--danger'}`}>
                   {h.type}

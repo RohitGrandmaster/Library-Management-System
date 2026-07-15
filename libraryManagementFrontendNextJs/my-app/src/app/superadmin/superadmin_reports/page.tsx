@@ -90,7 +90,7 @@ export default function ReportsPage() {
           <h1 className="sa-page-title">Platform Reports & Analytics</h1>
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex items-center gap-1 bg-card border border-border rounded-lg p-1">
-              {DATE_RANGES.map(r => (
+              {DATE_RANGES.map((r: any) => (
                 <button key={r} onClick={() => setRange(r)}
                   className={`sa-filter-tab ${range === r ? 'sa-filter-tab--active' : ''}`}>
                   {r}
@@ -111,7 +111,7 @@ export default function ReportsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        {KPI_CARDS.map(k => (
+        {KPI_CARDS.map((k: any) => (
           <div key={k.label} className="sa-reports-kpi">
             <div className={`sa-reports-kpi-icon ${k.iconCls}`}>
               <k.Icon size={20} />

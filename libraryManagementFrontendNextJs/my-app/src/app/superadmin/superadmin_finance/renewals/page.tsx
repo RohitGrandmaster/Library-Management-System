@@ -161,7 +161,7 @@ export default function Renewals() {
 
       {/* Filter tabs */}
       <div className="flex gap-2">
-        {FILTERS.map((f) => (
+        {FILTERS.map((f: any) => (
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
@@ -211,7 +211,7 @@ export default function Renewals() {
                     }
                   }}
                 >
-                  {PLANS.map((p) => (
+                  {PLANS.map((p: any) => (
                     <option key={p.id} value={String(p.id)}>{p.name} — {formatCurrency(p.price)}</option>
                   ))}
                 </select>

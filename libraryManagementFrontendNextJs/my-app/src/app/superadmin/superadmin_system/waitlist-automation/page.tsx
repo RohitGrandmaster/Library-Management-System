@@ -109,7 +109,7 @@ export default function WaitlistAutomationPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {QUEUE.map(student => (
+            {QUEUE.map((student: any) => (
               <div
                 key={student.position}
                 className="flex items-center gap-4 p-3 rounded-xl bg-surface-container-high border border-outline-variant/50 hover:border-outline-variant transition-colors"

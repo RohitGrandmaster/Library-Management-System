@@ -59,7 +59,7 @@ export default function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: 
               <label className="sa-label">Plan</label>
               <select className="sa-select w-full" value={form.plan}
                 onChange={e => setForm(f => ({ ...f, plan: e.target.value }))}>
-                {['Basic','Pro','Enterprise'].map(p => <option key={p} value={p}>{p}</option>)}
+                {['Basic','Pro','Enterprise'].map((p: any) => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
           </div>

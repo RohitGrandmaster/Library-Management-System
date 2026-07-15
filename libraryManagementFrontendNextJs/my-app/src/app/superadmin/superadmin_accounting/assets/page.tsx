@@ -36,7 +36,7 @@ export default function AssetsPage() {
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ name: '', category: 'Furniture', purchaseDate: '', purchaseValue: '', location: '' });
 
-  const categories = [...new Set(MOCK.map(a => a.category))];
+  const categories = [...new Set(MOCK.map((a: any) => a.category))];
   const visible = catFilter === 'all' ? assets : assets.filter(a => a.category === catFilter);
   const totalValue = assets.filter(a => a.status !== 'disposed').reduce((s, a) => s + a.currentValue, 0);
 
@@ -69,7 +69,7 @@ export default function AssetsPage() {
       <div className="fin-filter-bar">
         <select className="fin-select w-44" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
           <option value="all">All Categories</option>
-          {categories.map(c => <option key={c}>{c}</option>)}
+          {categories.map((c: any) => <option key={c}>{c}</option>)}
         </select>
       </div>
 
@@ -89,7 +89,7 @@ export default function AssetsPage() {
           <tbody>
             {visible.length === 0 ? (
               <tr><td colSpan={7}><div className="fin-empty-state"><div className="fin-empty-state__icon">🏷️</div><p className="fin-empty-state__title">No assets found.</p></div></td></tr>
-            ) : visible.map(a => (
+            ) : visible.map((a: any) => (
               <tr key={a.id} className={`fin-table-hover-row fin-table-row ${a.status === 'disposed' ? 'opacity-50' : ''}`}>
                 <td className="py-3 px-4 fin-cell-name">{a.name}</td>
                 <td className="py-3 px-4"><span className="fin-badge fin-badge--neutral">{a.category}</span></td>
@@ -111,7 +111,7 @@ export default function AssetsPage() {
             <button className="fin-dialog__close" onClick={() => setShowAdd(false)}>✕</button>
             <div className="space-y-3">
               <div><label className="fin-label">Asset Name <span className="fin-text-danger">*</span></label><input className="fin-input" placeholder="e.g. AC Unit" value={form.name} onChange={e => setForm(p=>({...p,name:e.target.value}))} /></div>
-              <div><label className="fin-label">Category</label><select className="fin-select" value={form.category} onChange={e => setForm(p=>({...p,category:e.target.value}))}>{[...categories,'Other'].map(c=><option key={c}>{c}</option>)}</select></div>
+              <div><label className="fin-label">Category</label><select className="fin-select" value={form.category} onChange={e => setForm(p=>({...p,category:e.target.value}))}>{[...categories,'Other'].map((c: any) =><option key={c}>{c}</option>)}</select></div>
               <div><label className="fin-label">Purchase Date <span className="fin-text-danger">*</span></label><input type="date" className="fin-input" value={form.purchaseDate} onChange={e => setForm(p=>({...p,purchaseDate:e.target.value}))} /></div>
               <div><label className="fin-label">Purchase Value ₹ <span className="fin-text-danger">*</span></label><input type="number" className="fin-input" placeholder="0" value={form.purchaseValue} onChange={e => setForm(p=>({...p,purchaseValue:e.target.value}))} /></div>
               <div><label className="fin-label">Location <span className="fin-text-danger">*</span></label><input className="fin-input" placeholder="e.g. Ground Floor" value={form.location} onChange={e => setForm(p=>({...p,location:e.target.value}))} /></div>

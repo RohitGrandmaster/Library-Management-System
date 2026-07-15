@@ -142,7 +142,7 @@ export default function ExpensesPage() {
         </div>
         <div className="fin-kpi-card">
           <p className="fin-kpi-label">Categories</p>
-          <p className="fin-kpi-value">{new Set(expenses.map(e=>e.category)).size}</p>
+          <p className="fin-kpi-value">{new Set(expenses.map((e: any) =>e.category)).size}</p>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ export default function ExpensesPage() {
           <label className="fin-label text-xs mb-1">Filter by Category</label>
           <select className="fin-select w-48" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
             <option value="all">All Categories</option>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            {CATEGORIES.map((c: any) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <button className="fin-badge fin-badge--neutral cursor-pointer hover:border-[var(--mgr-primary)] flex items-center gap-1" onClick={() => router.push('/superadmin/superadmin_accounting/expenses/add')}>
@@ -192,7 +192,7 @@ export default function ExpensesPage() {
             <button className="fin-dialog__close hover:text-red-500" onClick={() => setShowAdd(false)}>✕</button>
             <div className="space-y-4">
               <div><label className="fin-label text-sm font-semibold mb-1 block">Date <span className="fin-text-danger">*</span></label><input type="date" className="fin-input w-full" value={form.date} onChange={e => setForm(p=>({...p,date:e.target.value}))} /></div>
-              <div><label className="fin-label text-sm font-semibold mb-1 block">Category</label><select className="fin-select w-full" value={form.category} onChange={e => setForm(p=>({...p,category:e.target.value}))}>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select></div>
+              <div><label className="fin-label text-sm font-semibold mb-1 block">Category</label><select className="fin-select w-full" value={form.category} onChange={e => setForm(p=>({...p,category:e.target.value}))}>{CATEGORIES.map((c: any) =><option key={c}>{c}</option>)}</select></div>
               <div><label className="fin-label text-sm font-semibold mb-1 block">Description <span className="fin-text-danger">*</span></label><input className="fin-input w-full" placeholder="Enter description" value={form.description} onChange={e => setForm(p=>({...p,description:e.target.value}))} /></div>
               <div><label className="fin-label text-sm font-semibold mb-1 block">Amount ₹ <span className="fin-text-danger">*</span></label><input type="number" className="fin-input w-full" placeholder="0" value={form.amount} onChange={e => setForm(p=>({...p,amount:e.target.value}))} /></div>
               <div><label className="fin-label text-sm font-semibold mb-1 block">Paid By <span className="fin-text-danger">*</span></label><input className="fin-input w-full" placeholder="Name" value={form.paidBy} onChange={e => setForm(p=>({...p,paidBy:e.target.value}))} /></div>

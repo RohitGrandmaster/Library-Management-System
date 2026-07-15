@@ -90,7 +90,7 @@ export default function SystemHealthPage() {
             <Server size={16} className="sa-metric--primary" /> Main Infrastructure
           </h2>
           <div className="space-y-6">
-            {BASE_INFRA.map(m => <MetricRow key={m.label} {...m} />)}
+            {BASE_INFRA.map((m: any) => <MetricRow key={m.label} {...m} />)}
           </div>
         </div>
 
@@ -99,7 +99,7 @@ export default function SystemHealthPage() {
             <Database size={16} className="sa-metric--warning" /> Databases & Cache
           </h2>
           <div className="space-y-6">
-            {BASE_DB.map(m => <MetricRow key={m.label} {...m} />)}
+            {BASE_DB.map((m: any) => <MetricRow key={m.label} {...m} />)}
           </div>
         </div>
 
@@ -108,7 +108,7 @@ export default function SystemHealthPage() {
             <Globe size={16} className="sa-metric--primary" /> External Gateways
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {GATEWAYS.map(s => (
+            {GATEWAYS.map((s: any) => (
               <div key={s.n} className="sa-gateway-card">
                 <div className={`sa-status-dot ${s.dotCls}`} />
                 <div>

@@ -150,7 +150,7 @@ export default function TrustScores() {
                 </td>
               </tr>
             ) : (
-              filtered.map((s) => {
+              filtered.map((s: any) => {
                 const Icon = BADGE_ICON[s.badge] || ShieldCheck;
                 return (
                   <tr key={s.smartId} className="fin-table-hover-row fin-table-row">

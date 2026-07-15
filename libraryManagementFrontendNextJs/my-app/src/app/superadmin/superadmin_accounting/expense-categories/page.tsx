@@ -46,7 +46,7 @@ export default function ExpenseCategoriesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map(c => {
+        {categories.map((c: any) => {
           const pct = Math.min(Math.round((c.spent / c.budget) * 100), 100);
           const over = c.spent > c.budget;
           return (
@@ -85,7 +85,7 @@ export default function ExpenseCategoriesPage() {
               <div>
                 <label className="fin-label">Color</label>
                 <div className="flex gap-2 mt-1 flex-wrap">
-                  {COLORS.map(col => (
+                  {COLORS.map((col: any) => (
                     <button key={col} onClick={() => setForm(p=>({...p,color:col}))} className={`w-7 h-7 rounded-full border-2 transition-all ${form.color === col ? 'border-white' : 'border-transparent'}`} style={{ backgroundColor: col }} />
                   ))}
                 </div>

@@ -49,8 +49,8 @@ export default function Refunds() {
   const [deductReason, setDeductReason] = useState('');
 
   useEffect(() => {
-    fetchApi('/finance/refunds').then(data => {
-      const mapped = data.map((r) => ({
+    fetchApi('/finance/refunds').then((data: any) => {
+      const mapped = data.map((r: any) => ({
         id: parseInt(r.id),
         studentName: r.name,
         smartId: 'S-001',
@@ -74,7 +74,7 @@ export default function Refunds() {
     setIsSubmitting(true);
     setTimeout(() => {
       setAllRefunds((prev) =>
-        prev.map((r) =>
+        prev.map((r: any) =>
           r.id === processDialog.id
             ? { ...r, status: 'processed', processedDate: new Date().toISOString().split('T')[0], paymentMethod: paymentMethod.toUpperCase() }
             : r
@@ -90,7 +90,7 @@ export default function Refunds() {
     setIsSubmitting(true);
     setTimeout(() => {
       setAllRefunds((prev) =>
-        prev.map((r) =>
+        prev.map((r: any) =>
           r.id === deductDialog.id
             ? { ...r, deductionAmount: parseFloat(deductAmt), netRefund: r.depositHeld - parseFloat(deductAmt) }
             : r
@@ -172,7 +172,7 @@ export default function Refunds() {
                 </td>
               </tr>
             ) : (
-              filtered.map((r) => (
+              filtered.map((r: any) => (
                 <tr key={r.id} className="fin-table-hover-row fin-table-row">
                   <td className="py-3 px-4">
                     <div className="fin-cell-name">{r.studentName}</div>

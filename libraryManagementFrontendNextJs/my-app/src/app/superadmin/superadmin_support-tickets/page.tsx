@@ -60,7 +60,7 @@ function TicketPanel({ tkt, onClose, onSave }: { tkt: Ticket; onClose: () => voi
         <div>
           <p className="sa-label mb-2">Update Status</p>
           <div className="flex gap-2">
-            {(['Open', 'In-Progress', 'Resolved'] as const).map(s => (
+            {(['Open', 'In-Progress', 'Resolved'] as const).map((s: any) => (
               <button key={s} type="button" onClick={() => setStatus(s)}
                 className={`sa-status-btn ${
                   status === s
@@ -97,7 +97,7 @@ export default function SupportTicketsPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   const handleSave = (updated: Ticket) => {
-    setTickets(t => t.map(x => x.id === updated.id ? updated : x));
+    setTickets(t => t.map((x: any) => x.id === updated.id ? updated : x));
     showToast(`✅ ${updated.id} updated to ${updated.status}`);
   };
 
@@ -171,7 +171,7 @@ export default function SupportTicketsPage() {
 
       <div className="sa-card overflow-hidden">
         <div className="sa-actions-bar gap-2">
-          {['All', 'Open', 'In-Progress', 'Resolved'].map(f => (
+          {['All', 'Open', 'In-Progress', 'Resolved'].map((f: any) => (
             <button key={f} onClick={() => setFilter(f)}
               className={`sa-filter-tab ${filter === f ? 'sa-filter-tab--active' : ''}`}>{f}</button>
           ))}

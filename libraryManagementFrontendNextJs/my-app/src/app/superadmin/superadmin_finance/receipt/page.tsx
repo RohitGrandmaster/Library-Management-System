@@ -88,7 +88,7 @@ export default function ReceiptsPage() {
           { label: 'TOTAL RECEIPTS',  value: MOCK_RECEIPTS.length.toString() },
           { label: 'TOTAL COLLECTED', value: formatCurrency(totalCollected), success: true },
           { label: 'THIS MONTH',      value: MOCK_RECEIPTS.filter(r => r.date.startsWith(new Date().toISOString().slice(0, 7))).length.toString() },
-        ].map(k => (
+        ].map((k: any) => (
           <div key={k.label} className="fin-kpi-card">
             <div className="fin-kpi-card__header"><p className="fin-kpi-label">{k.label}</p><Receipt size={18} className="fin-icon-muted" /></div>
             <p className={`fin-kpi-value${k.success ? ' fin-text-success' : ''}`}>{k.value}</p>
@@ -126,7 +126,7 @@ export default function ReceiptsPage() {
           <tbody>
             {filtered.length === 0 ? (
               <tr><td colSpan={7}><div className="fin-empty-state"><div className="fin-empty-state__icon">🧾</div><p className="fin-empty-state__title">No receipts found.</p></div></td></tr>
-            ) : filtered.map(r => (
+            ) : filtered.map((r: any) => (
               <tr key={r.id} className="fin-table-hover-row fin-table-row">
                 <td className="py-3 px-4"><span className="fin-mono">{r.receiptNumber}</span></td>
                 <td className="py-3 px-4">

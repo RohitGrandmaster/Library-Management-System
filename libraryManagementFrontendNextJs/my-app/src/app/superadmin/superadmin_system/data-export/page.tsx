@@ -56,7 +56,7 @@ export default function DataExportPage() {
     });
   };
 
-  const selectAll = () => setSelected(new Set(EXPORT_MODULES.map(m => m.id)));
+  const selectAll = () => setSelected(new Set(EXPORT_MODULES.map((m: any) => m.id)));
   const clearAll  = () => setSelected(new Set());
 
   const estimatedTotal = EXPORT_MODULES.filter(m => selected.has(m.id)).reduce((sum, m) => sum + m.estimatedRows, 0);
@@ -89,7 +89,7 @@ export default function DataExportPage() {
       <div className="mb-8">
         <h2 className="text-base font-semibold text-on-surface mb-3">⚡ Quick Exports</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {QUICK_EXPORTS.map(qe => (
+          {QUICK_EXPORTS.map((qe: any) => (
             <Card key={qe.id} className="hover:border-primary/40 transition-colors cursor-pointer group">
               <CardContent className="flex items-start gap-3 py-4">
                 <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -140,7 +140,7 @@ export default function DataExportPage() {
         <CardContent className="space-y-5">
           {/* Module selection */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {EXPORT_MODULES.map(mod => {
+            {EXPORT_MODULES.map((mod: any) => {
               const isSelected = selected.has(mod.id);
               return (
                 <div
@@ -166,7 +166,7 @@ export default function DataExportPage() {
                     </div>
                     <p className="text-xs text-on-surface-variant mt-0.5 leading-snug">{mod.description}</p>
                     <div className="flex gap-1 mt-1.5">
-                      {mod.formats.map(f => <Badge key={f} variant="outline">{f}</Badge>)}
+                      {mod.formats.map((f: any) => <Badge key={f} variant="outline">{f}</Badge>)}
                     </div>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function DataExportPage() {
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-on-surface-variant uppercase tracking-wide">Output Format</label>
               <div className="flex gap-2">
-                {(['CSV', 'XLSX'] as const).map(f => (
+                {(['CSV', 'XLSX'] as const).map((f: any) => (
                   <button
                     key={f}
                     id={`format-${f.toLowerCase()}`}

@@ -14,7 +14,7 @@ export default function SettingsPage() {
   const [platform, setPlatform] = useState({ name: 'Smart Library 360', email: 'support@library360.com', phone: '+91 9988776655' });
   const [security, setSecurity] = useState({ maxAttempts: 5, autoLogout: 30 });
   const [checks, setChecks] = useState<Record<string, boolean>>(
-    Object.fromEntries(NOTIF_ITEMS.map(n => [n.id, n.default]))
+    Object.fromEntries(NOTIF_ITEMS.map((n: any) => [n.id, n.default]))
   );
 
   const handleSave = () => {
@@ -77,7 +77,7 @@ export default function SettingsPage() {
               <Mail size={15} className="text-success" /> SaaS Auto-Notifications
             </h2>
             <div className="space-y-4">
-              {NOTIF_ITEMS.map(item => (
+              {NOTIF_ITEMS.map((item: any) => (
                 <div key={item.id} className="flex items-center gap-3 cursor-pointer"
                   onClick={() => setChecks(c => ({ ...c, [item.id]: !c[item.id] }))}>
                   <div className={`sa-toggle-track ${checks[item.id] ? 'sa-toggle-track--on' : ''}`}>

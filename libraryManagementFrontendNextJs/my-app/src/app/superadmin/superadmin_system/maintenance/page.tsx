@@ -70,7 +70,7 @@ export default function MaintenancePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/30">
-                {SEATS.map(seat => (
+                {SEATS.map((seat: any) => (
                   <tr key={seat.id} className="hover:bg-surface-container-high transition-colors">
                     <td className="py-3 pr-4 font-mono font-medium text-on-surface">{seat.id}</td>
                     <td className="py-3 pr-4">
@@ -114,7 +114,7 @@ export default function MaintenancePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/30">
-                {ASSETS.map(asset => (
+                {ASSETS.map((asset: any) => (
                   <tr key={asset.name} className="hover:bg-surface-container-high transition-colors">
                     <td className="py-3 pr-4 font-medium text-on-surface">{asset.name}</td>
                     <td className="py-3 pr-4 text-center text-on-surface-variant">{asset.qty}</td>
@@ -161,7 +161,7 @@ export default function MaintenancePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/30">
-                {LOCKERS.map(locker => (
+                {LOCKERS.map((locker: any) => (
                   <tr key={locker.id} className="hover:bg-surface-container-high transition-colors">
                     <td className="py-3 pr-4 font-mono font-medium text-on-surface">{locker.id}</td>
                     <td className="py-3 pr-4">

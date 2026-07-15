@@ -21,7 +21,7 @@ const CATEGORY_BREAKDOWN = [
   { category: 'Miscellaneous', amount: 2200,  pct: 9  },
 ];
 
-const maxIncome = Math.max(...MONTHLY.map(m => m.income));
+const maxIncome = Math.max(...MONTHLY.map((m: any) => m.income));
 
 export default function FinancialReportsPage() {
   const [period, setPeriod] = useState('monthly');
@@ -38,7 +38,7 @@ export default function FinancialReportsPage() {
           <p className="fin-page-subtitle">Income vs expense overview and category breakdown.</p>
         </div>
         <div className="flex gap-2">
-          {['monthly', 'quarterly', 'yearly'].map(p => (
+          {['monthly', 'quarterly', 'yearly'].map((p: any) => (
             <button key={p} onClick={() => setPeriod(p)} className={`fin-badge cursor-pointer ${period === p ? 'fin-badge--info' : 'fin-badge--neutral'}`}>
               {p.charAt(0).toUpperCase() + p.slice(1)}
             </button>
@@ -65,7 +65,7 @@ export default function FinancialReportsPage() {
       <div className="fin-card p-6">
         <p className="fin-section-label mb-4">Monthly Income vs Expense</p>
         <div className="flex items-end gap-3 h-48 overflow-x-auto pb-2">
-          {MONTHLY.map(m => (
+          {MONTHLY.map((m: any) => (
             <div key={m.month} className="flex flex-col items-center gap-1 flex-1 min-w-[48px]">
               <div className="flex items-end gap-1 w-full justify-center" style={{ height: 160 }}>
                 <div
@@ -93,7 +93,7 @@ export default function FinancialReportsPage() {
       <div className="fin-card p-6">
         <p className="fin-section-label mb-4">Expense Category Breakdown</p>
         <div className="space-y-3">
-          {CATEGORY_BREAKDOWN.map(c => (
+          {CATEGORY_BREAKDOWN.map((c: any) => (
             <div key={c.category}>
               <div className="flex justify-between mb-1">
                 <span className="fin-text-body">{c.category}</span>

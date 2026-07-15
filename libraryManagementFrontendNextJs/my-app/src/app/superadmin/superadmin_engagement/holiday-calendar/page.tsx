@@ -186,7 +186,7 @@ export default function HolidayCalendarPage() {
 
             {/* Day headers */}
             <div className="eng-cal-grid eng-cal-mb-2">
-              {WEEK_DAYS.map(d => (
+              {WEEK_DAYS.map((d: any) => (
                 <div key={d} className="eng-cal-day-hdr">{d}</div>
               ))}
             </div>
@@ -248,7 +248,7 @@ export default function HolidayCalendarPage() {
               </div>
             ) : (
               <div className="eng-holiday-list">
-                {thisMonthHolidays.map(h => (
+                {thisMonthHolidays.map((h: any) => (
                   <div key={h.id} className="eng-holiday-item">
                     <div>
                       <div className="eng-holiday-name">{h.name}</div>
@@ -278,7 +278,7 @@ export default function HolidayCalendarPage() {
                 <div className="eng-holiday-list">
                   {holidays
                     .sort((a,b)=>a.date.localeCompare(b.date))
-                    .map(h => (
+                    .map((h: any) => (
                     <div key={h.id} className="eng-holiday-item">
                       <div>
                         <div className="eng-holiday-name--sm">{h.name}</div>

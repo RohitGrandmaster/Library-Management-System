@@ -123,7 +123,7 @@ export default function AddEnquiryPage() {
                   {...register('preferredShift')}
                 >
                   <option value="">Select a shift</option>
-                  {data.shifts.map((s) => (
+                  {data.shifts.map((s: any) => (
                     <option key={s.id} value={s.name}>
                       {s.name} ({s.time})
                     </option>
@@ -166,7 +166,7 @@ export default function AddEnquiryPage() {
                   {...register('handledBy')}
                 >
                   <option value="">Assign a staff member</option>
-                  {data.staff.map((s) => (
+                  {data.staff.map((s: any) => (
                     <option key={s.id} value={s.name}>
                       {s.name}
                     </option>

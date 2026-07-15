@@ -103,7 +103,7 @@ export default function BillingPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   const handleMarkPaid = (id: string) => {
-    setInvoices(inv => inv.map(i => i.id === id ? { ...i, status: 'Paid', method: 'Manual' } : i));
+    setInvoices(inv => inv.map((i: any) => i.id === id ? { ...i, status: 'Paid', method: 'Manual' } : i));
     showToast('✅ Invoice marked as Paid');
   };
 

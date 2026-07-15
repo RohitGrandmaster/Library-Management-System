@@ -88,7 +88,7 @@ export default function InvoicesPage() {
           { label: 'TOTAL INVOICES',    value: MOCK_INVOICES.length.toString() },
           { label: 'TOTAL BILLED',      value: formatCurrency(MOCK_INVOICES.reduce((s, i) => s + i.grandTotal, 0)), success: true },
           { label: 'PENDING / OVERDUE', value: MOCK_INVOICES.filter(i => i.paymentStatus !== 'paid').length.toString(), warning: true },
-        ].map(k => (
+        ].map((k: any) => (
           <div key={k.label} className={`fin-kpi-card${k.warning ? ' fin-kpi-card--warning' : ''}`}>
             <div className="fin-kpi-card__header"><p className={`fin-kpi-label${k.warning ? ' fin-kpi-label--warning' : ''}`}>{k.label}</p><FileText size={18} className={k.warning ? 'fin-text-warning' : 'fin-icon-muted'} /></div>
             <p className={`fin-kpi-value${k.success ? ' fin-text-success' : k.warning ? ' fin-kpi-value--warning' : ''}`}>{k.value}</p>
@@ -125,7 +125,7 @@ export default function InvoicesPage() {
           <tbody>
             {filtered.length === 0 ? (
               <tr><td colSpan={7}><div className="fin-empty-state"><div className="fin-empty-state__icon">🧾</div><p className="fin-empty-state__title">No invoices found.</p></div></td></tr>
-            ) : filtered.map(inv => (
+            ) : filtered.map((inv: any) => (
               <tr key={inv.id} className="fin-table-hover-row fin-table-row">
                 <td className="py-3 px-4"><span className="fin-mono">{inv.invoiceNumber}</span></td>
                 <td className="py-3 px-4">

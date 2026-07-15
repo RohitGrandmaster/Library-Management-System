@@ -55,8 +55,8 @@ export default function Payments() {
   const [allPayments, setAllPayments] = useState<Payment[]>([]);
 
   useEffect(() => {
-    fetchApi('/finance/payments').then(data => {
-      const mapped = data.map((p: ICellRendererParams) => ({
+    fetchApi('/finance/payments').then((data: any) => {
+      const mapped = data.map((p: any) => ({
         id: p.id,
         receiptNumber: 'REC-' + p.id.substring(0, 8),
         date: new Date(p.date).toISOString().split('T')[0],
@@ -83,7 +83,7 @@ export default function Payments() {
     setIsDeleting(true);
     setTimeout(() => {
       setAllPayments((prev) =>
-        prev.map((p) =>
+        prev.map((p: any) =>
           p.id === deleteDialog.id ? { ...p, status: 'deleted', deletionReason: deleteReason } : p
         )
       );

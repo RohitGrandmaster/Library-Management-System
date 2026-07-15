@@ -33,7 +33,7 @@ export default function WhatsappTemplatesPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
 
   const updateBody = (body: string) =>
-    setTemplates(prev => prev.map(t => t.id === activeId ? { ...t, body } : t));
+    setTemplates(prev => prev.map((t: any) => t.id === activeId ? { ...t, body } : t));
 
   const insertVar = (v: string) => {
     const el = textareaRef.current;
@@ -103,7 +103,7 @@ export default function WhatsappTemplatesPage() {
       <div className="flex flex-col gap-6">
         {/* Top Filter Bar */}
         <div className="eng-tpl-topbar flex flex-wrap gap-3">
-          {templates.map(t => (
+          {templates.map((t: any) => (
             <div key={t.id} onClick={() => setActiveId(t.id)}
               className={`eng-tpl-item${activeId === t.id ? ' eng-tpl-item--active' : ''}`}
               style={{ width: 'auto', padding: '8px 16px', borderRadius: '30px' }}>
@@ -137,7 +137,7 @@ export default function WhatsappTemplatesPage() {
           <div className="eng-tpl-section">
             <label className="eng-label">Insert Variable</label>
             <div className="eng-tpl-var-row">
-              {VARS.map(v => (
+              {VARS.map((v: any) => (
                 <button key={v} onClick={() => insertVar(v)} className="eng-var-chip">{v}</button>
               ))}
             </div>

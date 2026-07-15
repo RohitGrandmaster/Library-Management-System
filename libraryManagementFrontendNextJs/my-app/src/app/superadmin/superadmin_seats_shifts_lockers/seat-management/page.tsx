@@ -93,7 +93,7 @@ export default function SeatManagementPage() {
   function handleSave() {
     if (!validate()) return;
     if (editSeat) {
-      setSeats(prev => prev.map(s => s.id === editSeat.id ? { ...s, ...form } : s));
+      setSeats(prev => prev.map((s: any) => s.id === editSeat.id ? { ...s, ...form } : s));
       toast.success('Seat updated.');
     } else {
       setSeats(prev => [...prev, { id: Date.now().toString(), ...form, assignedTo: '—', lastMaintenance: '—' }]);
@@ -103,13 +103,13 @@ export default function SeatManagementPage() {
   }
 
   function handleMarkFixed(seat: Seat) {
-    setSeats(prev => prev.map(s => s.id === seat.id ? { ...s, status: 'Working' } : s));
+    setSeats(prev => prev.map((s: any) => s.id === seat.id ? { ...s, status: 'Working' } : s));
     toast.success(`Seat ${seat.seatNo} marked as Working.`);
   }
 
   function confirmMarkBroken() {
     if (!confirmBroken) return;
-    setSeats(prev => prev.map(s => s.id === confirmBroken.id ? { ...s, status: 'Broken' } : s));
+    setSeats(prev => prev.map((s: any) => s.id === confirmBroken.id ? { ...s, status: 'Broken' } : s));
     toast.success(`Seat ${confirmBroken.seatNo} marked as Broken.`);
     setConfirmBroken(null);
   }

@@ -139,9 +139,9 @@ export default function EnquiriesPage() {
   const [statusFilter, setStatusFilter] = useState<string>('All');
 
   useEffect(() => {
-    fetchApi('/crm/enquiries').then(data => {
+    fetchApi('/crm/enquiries').then((data: any) => {
       // Map DB schema to frontend Enquiry schema
-      const mapped = data.map((e) => ({
+      const mapped = data.map((e: any) => ({
         id: e.id,
         name: e.name,
         phone: e.phone,
@@ -180,7 +180,7 @@ export default function EnquiriesPage() {
   const handleQuickLost = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     setEnquiries((prev) =>
-      prev.map((x) => (x.id === id ? { ...x, status: 'Lost' as EnquiryStatus } : x))
+      prev.map((x: any) => (x.id === id ? { ...x, status: 'Lost' as EnquiryStatus } : x))
     );
   };
 
@@ -306,7 +306,7 @@ export default function EnquiriesPage() {
                           </p>
                         </div>
                       ) : (
-                        cards.map((enq) => (
+                        cards.map((enq: any) => (
                           <KanbanCard
                             key={enq.id}
                             enq={enq}

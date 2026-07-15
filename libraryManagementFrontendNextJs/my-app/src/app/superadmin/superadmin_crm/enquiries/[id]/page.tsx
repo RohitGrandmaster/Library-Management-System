@@ -176,7 +176,7 @@ export default function EnquiryDetailPage({
   useEffect(() => {
     import('@/lib/api').then(({ fetchApi }) => {
       fetchApi(`/crm/enquiries/${id}`)
-        .then((e) => {
+        .then((e: any) => {
           if (!e) {
             setLoading(false);
             return;
@@ -443,7 +443,7 @@ export default function EnquiryDetailPage({
                 </div>
               ) : (
                 <div className="crm-timeline">
-                  {enquiry.followUps.map((fu) => (
+                  {enquiry.followUps.map((fu: any) => (
                     <div className="crm-timeline-entry" key={fu.id}>
                       <div className={`crm-timeline-dot ${timelineDotClass(fu.by)}`} />
                       <div className="crm-timeline-card">
@@ -479,7 +479,7 @@ export default function EnquiryDetailPage({
                     value={currentStatus}
                     onChange={(e) => setCurrentStatus(e.target.value as EnquiryStatus)}
                   >
-                    {STATUS_OPTIONS.map((s) => (
+                    {STATUS_OPTIONS.map((s: any) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>

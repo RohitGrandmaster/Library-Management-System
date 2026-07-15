@@ -123,7 +123,7 @@ export default function Subscriptions() {
                 </td>
               </tr>
             ) : (
-              rows.map((s) => (
+              rows.map((s: any) => (
                 <tr key={s.id} className="fin-table-hover-row fin-table-row">
                   <td className="py-3 px-4 fin-cell-name">{s.studentName}</td>
                   <td className="py-3 px-4 fin-mono">{s.smartId}</td>

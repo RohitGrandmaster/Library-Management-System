@@ -178,7 +178,7 @@ export default function LateFees() {
                 </td>
               </tr>
             ) : (
-              overdue.map((s) => (
+              overdue.map((s: any) => (
                 <tr key={s.studentId} className="fin-table-hover-row fin-table-row">
                   <td className="py-3 px-4">
                     <div className="fin-cell-name">{s.studentName}</div>

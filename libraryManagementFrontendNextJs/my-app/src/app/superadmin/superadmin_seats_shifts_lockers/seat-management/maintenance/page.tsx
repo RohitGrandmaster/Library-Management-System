@@ -120,7 +120,7 @@ export default function SeatMaintenancePage() {
         <div className="ss-filter-bar">
           <div className="ss-filter-bar__select-wrap">
             <select className="ss-select" value={selectedSeat} onChange={e => setSelectedSeat(e.target.value)}>
-              {SEATS.map(s => <option key={s}>{s}</option>)}
+              {SEATS.map((s: any) => <option key={s}>{s}</option>)}
             </select>
             <ChevronDown size={14} className="ss-select-icon" />
           </div>

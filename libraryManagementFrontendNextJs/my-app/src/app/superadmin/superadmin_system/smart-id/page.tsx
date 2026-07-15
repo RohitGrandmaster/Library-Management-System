@@ -86,7 +86,7 @@ export default function SmartIdPage() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2 mb-4">
-            {ALL_IDS.map(id => {
+            {ALL_IDS.map((id: any) => {
               const isGap = GAP_IDS.includes(id);
               return (
                 <span

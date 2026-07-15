@@ -42,7 +42,7 @@ export default function ReceiptDetail() {
       r('ID      :', RECEIPT_DATA.studentId),
       r('Phone   :', RECEIPT_DATA.phone), ln,
       r('Plan    :', RECEIPT_DATA.plan), ln,
-      ...RECEIPT_DATA.items.map(i => r(i.label.slice(0,9)+':', `Rs.${i.amount.toLocaleString('en-IN')}`)),
+      ...RECEIPT_DATA.items.map((i: any) => r(i.label.slice(0,9)+':', `Rs.${i.amount.toLocaleString('en-IN')}`)),
       dln,
       r('TOTAL   :', `Rs.${RECEIPT_DATA.total.toLocaleString('en-IN')}`),
       dln,
@@ -131,7 +131,7 @@ export default function ReceiptDetail() {
             </div>
             {/* Items */}
             <div className="text-left mb-4 w-full">
-              {RECEIPT_DATA.items.map(item => (
+              {RECEIPT_DATA.items.map((item: any) => (
                 <div key={item.label} className="flex justify-between text-sm">
                   <span className="fin-cell-subtext">{item.label}</span>
                   <span className="fin-text-body">Rs.{item.amount.toLocaleString('en-IN')}</span>

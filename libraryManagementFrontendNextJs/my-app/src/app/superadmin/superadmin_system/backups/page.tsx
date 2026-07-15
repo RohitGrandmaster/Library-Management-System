@@ -271,8 +271,8 @@ export default function BackupsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/30">
-                {backups.map(backup => {
-                  const cfg  = STATUS_CFG[backup.status];
+                {backups.map((backup) => {
+                  const cfg  = STATUS_CFG[backup.status as keyof typeof STATUS_CFG];
                   const Icon = cfg.icon;
                   return (
                     <tr key={backup.id} className="hover:bg-surface-container-high transition-colors group">
@@ -297,7 +297,7 @@ export default function BackupsPage() {
                       </td>
                       <td className="py-3 pr-4">
                         <div className="flex flex-wrap gap-1">
-                          {backup.modules.slice(0, 3).map(m => (
+                          {backup.modules.slice(0, 3).map((m: any) => (
                             <span key={m} className="text-xs px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant">{m}</span>
                           ))}
                           {backup.modules.length > 3 && (

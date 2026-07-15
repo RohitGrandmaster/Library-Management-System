@@ -55,7 +55,7 @@ export default function SecurityDeposits() {
   const handleRefund = () => {
     if (!refundDialog) return;
     setDeposits((prev) =>
-      prev.map((d) =>
+      prev.map((d: any) =>
         d.id === refundDialog.id
           ? { ...d, status: 'refunded', refundedDate: new Date().toISOString().split('T')[0], deductionAmount: parseFloat(deductionAmount) || d.deductionAmount, deductionReason: deductionReason || d.deductionReason }
           : d
@@ -68,7 +68,7 @@ export default function SecurityDeposits() {
   const handleDeduction = () => {
     if (!deductDialog || !deductAmt || !deductReason) return;
     setDeposits((prev) =>
-      prev.map((d) =>
+      prev.map((d: any) =>
         d.id === deductDialog.id ? { ...d, deductionAmount: parseFloat(deductAmt), deductionReason: deductReason } : d
       )
     );
@@ -128,7 +128,7 @@ export default function SecurityDeposits() {
                 </td>
               </tr>
             ) : (
-              filtered.map((d) => (
+              filtered.map((d: any) => (
                 <tr key={d.id} className="fin-table-hover-row fin-table-row">
                   <td className="py-3 px-4">
                     <div className="fin-cell-name">{d.studentName}</div>

@@ -147,7 +147,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div key={gi}>
           {group.group && <p className="crm-nav-group-label">{group.group}</p>}
 
-          {group.items.map((item) => {
+          {group.items.map((item: any) => {
             const active =
               item.href === '/crm/enquiries'
                 ? pathname.startsWith('/crm/enquiries')

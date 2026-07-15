@@ -51,7 +51,7 @@ export default function ShiftGapAnalyzerPage() {
 
       {/* Shift Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {MOCK.map(m => (
+        {MOCK.map((m: any) => (
           <div key={m.shift} className="fin-card p-5 space-y-3">
             <div className="flex items-center justify-between">
               <p className="fin-cell-name">{m.shift}</p>

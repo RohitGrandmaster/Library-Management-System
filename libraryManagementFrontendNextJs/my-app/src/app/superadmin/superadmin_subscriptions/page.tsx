@@ -74,7 +74,7 @@ function SubPanel({ sub, onClose, onUpdate }: { sub: Sub; onClose: () => void; o
           <div className="space-y-3">
             <label className="sa-label">Change Plan</label>
             <select className="sa-select w-full" value={plan} onChange={e => setPlan(e.target.value)}>
-              {PLANS.map(p => <option key={p}>{p}</option>)}
+              {PLANS.map((p: any) => <option key={p}>{p}</option>)}
             </select>
             <div className="flex gap-2">
               <button className="sa-btn-primary sa-btn-primary--flex" onClick={handleSavePlan}>
@@ -116,7 +116,7 @@ export default function SubscriptionsPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   const handleUpdate = (updated: Sub) => {
-    setSubs(s => s.map(x => x.id === updated.id ? updated : x));
+    setSubs(s => s.map((x: any) => x.id === updated.id ? updated : x));
     setSelected(updated);
     showToast(`✅ ${updated.tenant} subscription updated`);
   };
@@ -168,7 +168,7 @@ export default function SubscriptionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {KPI.map(k => {
+        {KPI.map((k: any) => {
           const Icon = k.icon;
           return (
             <div key={k.label} className="sa-kpi-card">
@@ -189,7 +189,7 @@ export default function SubscriptionsPage() {
 
       <div className="sa-card overflow-hidden">
         <div className="sa-actions-bar gap-2">
-          {['All', 'Paid', 'Due Soon', 'Overdue'].map(f => (
+          {['All', 'Paid', 'Due Soon', 'Overdue'].map((f: any) => (
             <button key={f} onClick={() => setFilter(f)}
               className={`sa-filter-tab ${filter === f ? 'sa-filter-tab--active' : ''}`}>{f}</button>
           ))}

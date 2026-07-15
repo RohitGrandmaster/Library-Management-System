@@ -230,7 +230,7 @@ export default function CollectFee() {
                     { l: 'Receipt', v: receiptData.receiptNo },
                     { l: 'Amount',  v: formatCurrency(receiptData.total), color: 'var(--success)' },
                     { l: 'Mode',    v: MODE_LABELS[receiptData.mode] },
-                  ].map(r => (
+                  ].map((r: any) => (
                     <div key={r.l} className="fin-receipt-modal-info-row">
                       <span className="fin-cell-subtext">{r.l}</span>
                       <span className="fin-cell-name" style={{ color: (r as any).color }}>{r.v}</span>
@@ -264,7 +264,7 @@ export default function CollectFee() {
                 <div className="fin-dropdown-list">
                   {filteredStudents.length === 0 ? (
                     <div className="fin-table-empty-cell">No students found</div>
-                  ) : filteredStudents.map(s => (
+                  ) : filteredStudents.map((s: any) => (
                     <button key={s.id} className="fin-dropdown-item" onClick={() => {
                       setSelectedStudent(s); setSearch(s.name); setShowDropdown(false);
                       if (s.dueAmount > 0) { setLateFee('50'); setAmount(s.dueAmount.toString()); }
@@ -306,8 +306,8 @@ export default function CollectFee() {
               <div>
                 <label className="fin-label">Payment Mode</label>
                 <div className="flex gap-2 mt-1 flex-wrap">
-                  {MODES.map(m => (
-                    <button key={m} onClick={() => setMode(m)} className={`fin-badge cursor-pointer ${mode === m ? 'fin-badge--info' : 'fin-badge--neutral'}`}>
+                  {MODES.map((m) => (
+                    <button key={m} onClick={() => setMode(m)} className={`fin-badge cursor-pointer hover:opacity-80 transition-opacity ${mode === m ? 'fin-badge--info ring-2 ring-blue-500' : 'fin-badge--neutral'}`}>
                       {MODE_LABELS[m]}
                     </button>
                   ))}

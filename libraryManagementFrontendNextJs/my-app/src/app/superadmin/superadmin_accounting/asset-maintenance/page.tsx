@@ -39,7 +39,7 @@ export default function AssetMaintenancePage() {
   const totalCost = logs.filter(l => l.status === 'completed').reduce((s, l) => s + l.cost, 0);
 
   const handleComplete = (id: number) => {
-    setLogs(p => p.map(l => l.id === id ? { ...l, status: 'completed' } : l));
+    setLogs(p => p.map((l: any) => l.id === id ? { ...l, status: 'completed' } : l));
     toast.success('Marked as completed.');
   };
 
@@ -94,7 +94,7 @@ export default function AssetMaintenancePage() {
           <tbody>
             {visible.length === 0 ? (
               <tr><td colSpan={8}><div className="fin-empty-state"><div className="fin-empty-state__icon">🔧</div><p className="fin-empty-state__title">No maintenance records found.</p></div></td></tr>
-            ) : visible.map(l => (
+            ) : visible.map((l: any) => (
               <tr key={l.id} className="fin-table-hover-row fin-table-row">
                 <td className="py-3 px-4 fin-cell-name">{l.assetName}</td>
                 <td className="py-3 px-4 fin-text-body">{l.issue}</td>

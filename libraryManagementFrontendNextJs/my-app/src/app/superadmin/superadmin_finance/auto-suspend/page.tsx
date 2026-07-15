@@ -157,7 +157,7 @@ export default function AutoSuspend() {
                 </td>
               </tr>
             ) : (
-              suspended.map((s) => (
+              suspended.map((s: any) => (
                 <tr key={s.id} className="fin-table-hover-row fin-table-row">
                   <td className="py-3 px-4">
                     <div className="fin-cell-name">{s.studentName}</div>
