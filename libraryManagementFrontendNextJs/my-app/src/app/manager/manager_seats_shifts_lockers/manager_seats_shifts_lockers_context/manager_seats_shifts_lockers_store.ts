@@ -5,18 +5,50 @@ import type { SeatData, FetchState } from '../manager_seats_shifts_lockers_types
 
 interface SeatsState {
   seatsData: SeatData[];
+  lockerData: { uuid?: string; id: string; status: 'free' | 'occupied' | 'maintenance' }[];
   status: FetchState;
   error: string | null;
-  setSeatsData: (data: SeatData[]) => void;
-  setStatus: (status: FetchState) => void;
-  setError: (error: string) => void;
+  fetchData: () => Promise<void>;
+  fetchLockers: () => Promise<void>;
 }
 
-export const useSeatsStore = create<SeatsState>((set) => ({
+export const useSeatsStore = create<SeatsState>((set, get) => ({
   seatsData: [],
+  lockerData: [],
   status: 'idle',
   error: null,
-  setSeatsData: (data) => set({ seatsData: data }),
-  setStatus: (status) => set({ status }),
-  setError: (error) => set({ error }),
+  fetchData: async () => {
+    if (get().status === 'loading') return;
+    set({ status: 'loading' });
+    try {
+      const { fetchSeatMatrix } = await import('../manager_seats_shifts_lockers_api/manager_seats_shifts_lockers_api');
+      const data = await fetchSeatMatrix();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapped = data.map((s: any) => ({
+        uuid: s.id,
+        id: s.seatNumber.replace('S-', ''),
+        status: (s.isActive ? 'free' : 'maintenance') as 'free' | 'maintenance',
+      }));
+      set({ seatsData: mapped, status: 'success' });
+    } catch (err: unknown) {
+      set({ error: err instanceof Error ? err.message : 'Unknown error', status: 'error' });
+    }
+  },
+  fetchLockers: async () => {
+    if (get().status === 'loading') return;
+    set({ status: 'loading' });
+    try {
+      const { fetchLockerMatrix } = await import('../manager_seats_shifts_lockers_api/manager_seats_shifts_lockers_api');
+      const data = await fetchLockerMatrix();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapped = data.map((l: any) => ({
+        uuid: l.id,
+        id: l.lockerNumber.replace('L-', ''),
+        status: l.isActive ? 'free' : 'maintenance',
+      }));
+      set({ lockerData: mapped, status: 'success' });
+    } catch (err: unknown) {
+      set({ error: err instanceof Error ? err.message : 'Unknown error', status: 'error' });
+    }
+  }
 }));

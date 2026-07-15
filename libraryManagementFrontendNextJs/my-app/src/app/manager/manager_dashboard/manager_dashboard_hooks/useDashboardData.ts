@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { fetchDashboardData } from '../manager_dashboard_api/manager_dashboard_api';
 import { useDashboardStore } from '../manager_dashboard_context/manager_dashboard_store';
 
 /**
@@ -7,33 +6,14 @@ import { useDashboardStore } from '../manager_dashboard_context/manager_dashboar
  * DATA FLOW: API → useDashboardData → ManagerDashboardClient
  */
 export function useDashboardData() {
-  const { data, status, error, setData, setStatus, setError } = useDashboardStore();
+  const { data, status, error, fetchData } = useDashboardStore();
 
-  // Refetch when component mounts
+  // Fetch data on mount if idle, dependencies included to satisfy linter
   useEffect(() => {
-    let mounted = true;
-
-    async function loadData() {
-      setStatus('loading');
-      try {
-        const result = await fetchDashboardData();
-        if (mounted) {
-          setData(result);
-          setStatus('success');
-        }
-      } catch (err: unknown) {
-        if (mounted) {
-          setError(err instanceof Error ? err.message : 'Unknown error');
-          setStatus('error');
-        }
-      }
+    if (status === 'idle') {
+      fetchData();
     }
-    loadData();
-
-    return () => {
-      mounted = false;
-    };
-  }, [setData, setStatus, setError]);
+  }, [status, fetchData]);
 
   return { data, status, error };
 }

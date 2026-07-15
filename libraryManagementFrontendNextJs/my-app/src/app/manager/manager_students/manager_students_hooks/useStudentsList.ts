@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { fetchStudents } from '../manager_students_api/manager_students_api';
 import { useDebounce } from './useDebounce';
 import { useStudentsStore } from '../manager_students_context/manager_students_store';
 
@@ -8,38 +7,18 @@ import { useStudentsStore } from '../manager_students_context/manager_students_s
  * DATA FLOW: API → useStudentsList → ManagerStudentsClient
  */
 export function useStudentsList() {
-  const { students, status, error, setStudents, setStatus, setError } = useStudentsStore();
+  const { students, status, error, fetchData } = useStudentsStore();
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [shiftFilter, setShiftFilter] = useState('all');
 
-  // Refetch when component mounts
+  // Fetch data on mount if idle, dependencies included to satisfy linter
   useEffect(() => {
-    let mounted = true;
-
-    async function loadData() {
-      setStatus('loading');
-      try {
-        const data = await fetchStudents();
-        if (mounted) {
-          setStudents(data);
-          setStatus('success');
-        }
-      } catch (err: unknown) {
-        if (mounted) {
-          setError(err instanceof Error ? err.message : 'Unknown error');
-          setStatus('error');
-        }
-      }
+    if (status === 'idle') {
+      fetchData();
     }
-
-    loadData();
-
-    return () => {
-      mounted = false;
-    };
-  }, [setStudents, setStatus, setError]);
+  }, [status, fetchData]);
 
   const debouncedSearch = useDebounce(search, 300);
 

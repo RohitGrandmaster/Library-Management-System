@@ -7,20 +7,37 @@ interface CrmState {
   enquiries: Enquiry[];
   status: FetchState;
   error: string | null;
-  setEnquiries: (enquiries: Enquiry[]) => void;
+  fetchData: () => Promise<void>;
   updateEnquiryStatus: (id: string, status: Enquiry['status']) => void;
-  setStatus: (status: FetchState) => void;
-  setError: (error: string) => void;
 }
 
-export const useCrmStore = create<CrmState>((set) => ({
+export const useCrmStore = create<CrmState>((set, get) => ({
   enquiries: [],
   status: 'idle',
   error: null,
-  setEnquiries: (enquiries) => set({ enquiries }),
+  fetchData: async () => {
+    if (get().status === 'loading') return;
+    set({ status: 'loading' });
+    try {
+      const { fetchEnquiries } = await import('../manager_crm_api/manager_crm_api');
+      const data = await fetchEnquiries();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapped = data.map((e: any) => ({
+        id: e.id,
+        name: e.name,
+        phone: e.phone,
+        shift: e.preferredShift,
+        status: e.status.charAt(0).toUpperCase() + e.status.slice(1),
+        handledBy: e.handledBy?.name || 'Unassigned',
+        addedDate: new Date(e.createdAt).toLocaleDateString(),
+        avatar: e.name.substring(0, 2).toUpperCase()
+      }));
+      set({ enquiries: mapped, status: 'success' });
+    } catch (err: unknown) {
+      set({ error: err instanceof Error ? err.message : 'Unknown error', status: 'error' });
+    }
+  },
   updateEnquiryStatus: (id, status) => set((state) => ({
     enquiries: state.enquiries.map(enq => enq.id === id ? { ...enq, status } : enq)
-  })),
-  setStatus: (status) => set({ status }),
-  setError: (error) => set({ error }),
+  }))
 }));

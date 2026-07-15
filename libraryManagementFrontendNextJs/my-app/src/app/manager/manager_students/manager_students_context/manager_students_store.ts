@@ -7,16 +7,22 @@ interface StudentsState {
   students: Student[];
   status: FetchState;
   error: string | null;
-  setStudents: (students: Student[]) => void;
-  setStatus: (status: FetchState) => void;
-  setError: (error: string) => void;
+  fetchData: () => Promise<void>;
 }
 
-export const useStudentsStore = create<StudentsState>((set) => ({
+export const useStudentsStore = create<StudentsState>((set, get) => ({
   students: [],
   status: 'idle',
   error: null,
-  setStudents: (students) => set({ students }),
-  setStatus: (status) => set({ status }),
-  setError: (error) => set({ error }),
+  fetchData: async () => {
+    if (get().status === 'loading') return;
+    set({ status: 'loading' });
+    try {
+      const { fetchStudents } = await import('../manager_students_api/manager_students_api');
+      const students = await fetchStudents();
+      set({ students, status: 'success' });
+    } catch (err: unknown) {
+      set({ error: err instanceof Error ? err.message : 'Unknown error', status: 'error' });
+    }
+  }
 }));
