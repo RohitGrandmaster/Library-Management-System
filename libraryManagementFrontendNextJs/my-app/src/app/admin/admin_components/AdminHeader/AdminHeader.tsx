@@ -1,8 +1,11 @@
 'use client';
 
+// RESPONSIBILITY: Renders the top header for the admin module.
+// DATA FLOW: AdminRoute -> AdminHeader
+
 import { Building2, Bell, Menu } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { useAdmin } from '@/app/admin/AdminContext';
+import { useAdmin } from '@/app/admin/admin_context/AdminContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 
@@ -11,7 +14,7 @@ interface HeaderProps {
   onMobileOpen: () => void;
 }
 
-export default function Header({ sidebarWidth, onMobileOpen }: HeaderProps) {
+export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps) {
   const { selectedBranch, setSelectedBranch } = useAdmin();
 
   return (

@@ -1,13 +1,12 @@
 'use client';
 
+// RESPONSIBILITY: Renders the sidebar navigation for the admin module.
+// DATA FLOW: AdminRoute -> AdminSidebar
+
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {
-  LayoutDashboard, BarChart2, History,
-  FileText, User, Building2, Key, Tag,
-  Ban, LogOut, Menu, X, type LucideIcon, IndianRupee, Users
-} from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,29 +16,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-
-type NavItem =
-  | { group: string }
-  | { href: string; icon: LucideIcon; label: string };
-
-const NAV: NavItem[] = [
-  { href: '/admin/admin_dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/admin_reports',   icon: BarChart2,       label: 'Reports'   },
-  { group: 'Admin' },
-  { href: '/admin/admin_branches',    icon: Building2, label: 'Branches'      },
-  { href: '/admin/admin_staff-users', icon: User,      label: 'Staff & Users' },
-  { href: '/admin/admin_permissions', icon: Key,       label: 'Permissions'   },
-  { href: '/admin/admin_plans',       icon: FileText,  label: 'Plans'         },
-  { href: '/admin/admin_coupons',     icon: Tag,       label: 'Coupons'       },
-  { href: '/admin/admin_blacklist',   icon: Ban,       label: 'Blacklist'     },
-  { href: '/admin/admin_audit-logs',  icon: History,   label: 'Audit Logs'    },
-  { group: 'Operations (All Branches)' },
-  { href: '/admin/admin_expenses',    icon: IndianRupee, label: 'Expenses'    },
-  { href: '/admin/admin_students',    icon: Users,       label: 'Students'    },
-  { group: 'Configuration' },
-  { href: '/admin/admin_expense-categories', icon: Tag, label: 'Expense Types' },
-  { href: '/admin/admin_settings',    icon: Key,       label: 'Settings'      },
-];
+import { ADMIN_SIDEBAR_NAV } from '@/app/admin/admin_constants/admin_constants';
 
 interface Props {
   collapsed: boolean;
@@ -48,7 +25,7 @@ interface Props {
   onMobileClose: () => void;
 }
 
-export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Props) {
+export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
@@ -84,7 +61,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
         </div>
 
         <nav className="admin-sidebar-nav">
-          {NAV.map((item, i) => {
+          {ADMIN_SIDEBAR_NAV.map((item, i) => {
             if ('group' in item) {
               if (collapsed && !mobileOpen) return null;
               return <div key={i} className="admin-nav-group-label">{item.group}</div>;
@@ -92,10 +69,9 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
             const Icon = item.icon;
             const isExactMatch = pathname === item.href;
             const isSubRouteMatch = pathname.startsWith(item.href + '/');
-            const isActive = isExactMatch || (isSubRouteMatch && !NAV.some(
+            const isActive = isExactMatch || (isSubRouteMatch && !ADMIN_SIDEBAR_NAV.some(
               nav => 'href' in nav && nav.href !== item.href && (pathname === nav.href || pathname.startsWith(nav.href + '/'))
             ));
-
 
             return (
               <Link
