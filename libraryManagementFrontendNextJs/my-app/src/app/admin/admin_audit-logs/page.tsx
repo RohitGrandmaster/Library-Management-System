@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_audit-logs module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Search, ShieldAlert, ShieldCheck, Shield, AlertTriangle, Info } from 'lucide-react';

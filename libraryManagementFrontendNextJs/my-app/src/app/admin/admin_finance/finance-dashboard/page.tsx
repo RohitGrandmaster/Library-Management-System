@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useEffect } from 'react';
 import {
   PiggyBank, Users, Clock, Ban, UsersRound, ShieldAlert,

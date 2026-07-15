@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_engagement module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, Save, FileBarChart2, Bell, CheckCircle, Clock } from 'lucide-react';

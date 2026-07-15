@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_communication module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import { ChevronRight, Eye, X } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';

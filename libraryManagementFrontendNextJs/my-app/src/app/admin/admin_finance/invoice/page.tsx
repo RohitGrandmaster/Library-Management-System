@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { formatCurrency, formatDate } from '../lib/format';

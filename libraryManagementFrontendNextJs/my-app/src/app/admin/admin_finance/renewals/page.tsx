@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AgGridReact } from 'ag-grid-react';
@@ -8,7 +11,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../lib/format';
 import { RefreshCw, Send } from 'lucide-react';
-import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
+import { gridTheme } from '@/app/admin/admin_finance/admin_finance_components/AdminFinancegridTheme/AdminFinancegridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

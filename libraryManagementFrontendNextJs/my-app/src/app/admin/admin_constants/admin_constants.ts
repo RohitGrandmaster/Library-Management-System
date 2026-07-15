@@ -36,16 +36,12 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
 export const ADMIN_KPI_META = [
   { icon: Users,       iconColor: 'var(--primary)', iconBg: 'var(--icon-bg-primary)' },
   { icon: IndianRupee, iconColor: 'var(--success)', iconBg: 'var(--icon-bg-success)' },
-  { icon: ArmchairFallback,    iconColor: 'var(--warning)', iconBg: 'var(--icon-bg-warning)' },
+  { icon: Armchair,    iconColor: 'var(--warning)', iconBg: 'var(--icon-bg-warning)' },
   { icon: AlertCircle, iconColor: 'var(--danger)',  iconBg: 'var(--icon-bg-danger)'  },
 ] as const;
 
-// Fallback since Armchair might not be exported from lucide-react if version mismatch, 
-// using Users or another icon as fallback for compilation safety or import it if confirmed.
+// Importing Armchair to use in KPI_META
 import { Armchair } from 'lucide-react';
-function ArmchairFallback(props: any) {
-  return Armchair ? <Armchair {...props} /> : <Users {...props} />;
-}
 
 
 /**

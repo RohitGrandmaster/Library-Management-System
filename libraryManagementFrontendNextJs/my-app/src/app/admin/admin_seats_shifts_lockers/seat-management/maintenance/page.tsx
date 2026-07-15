@@ -1,9 +1,12 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_seats_shifts_lockers module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo } from 'react';
 import { ChevronDown, AlertTriangle, Plus } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry, type ColDef } from 'ag-grid-community';
-import { gridTheme } from '@/app/admin/admin_seats_shifts_lockers/reusable/gridTheme';
+import { gridTheme } from '@/app/admin/admin_seats_shifts_lockers/admin_seats_shifts_lockers_components/AdminSeatsShiftsLockersgridTheme/AdminSeatsShiftsLockersgridTheme';
 import toast from 'react-hot-toast';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

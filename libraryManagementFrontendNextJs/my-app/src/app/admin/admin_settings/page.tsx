@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_settings module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import { Save, CheckCircle, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';

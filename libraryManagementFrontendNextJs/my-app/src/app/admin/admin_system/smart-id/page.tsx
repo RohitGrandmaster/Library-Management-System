@@ -1,12 +1,15 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_system module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Badge } from '../reusable/Badge';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../admin_system_components/AdminSystemCard/AdminSystemCard';
+import { Button } from '../admin_system_components/AdminSystemButton/AdminSystemButton';
+import { Badge } from '../admin_system_components/AdminSystemBadge/AdminSystemBadge';
 import {
   Dialog, DialogTrigger, DialogContent, DialogHeader,
   DialogTitle, DialogDescription, DialogClose
-} from '../reusable/Dialog';
+} from '../admin_system_components/AdminSystemDialog/AdminSystemDialog';
 import { Hash, ChevronRight, ArrowRight, AlertTriangle } from 'lucide-react';
 
 const ACTIVE_IDS = [1, 2, 4, 5, 6, 9, 10, 11, 12, 15, 16, 17, 18, 19, 20];

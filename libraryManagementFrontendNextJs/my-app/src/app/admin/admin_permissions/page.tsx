@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_permissions module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Shield, CheckCircle } from 'lucide-react';

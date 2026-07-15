@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_crm module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, use, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -19,7 +22,7 @@ import {
   Edit2,
   AlertTriangle,
 } from 'lucide-react';
-import data from '@/app/admin/admin_crm/reusable/hardcoded.json';
+import data from '@/app/admin/admin_crm/admin_crm_components/hardcoded.json';
 import {
   type Enquiry,
   type EnquiryStatus,
@@ -27,13 +30,13 @@ import {
   STATUS_BADGE,
   maskPhone,
   getInitials,
-} from '@/app/admin/admin_crm/reusable/types';
+} from '@/app/admin/admin_crm/admin_crm_components/AdminCrmtypes/AdminCrmtypes';
 import {
   followUpSchema,
   type FollowUpFormData,
   markLostSchema,
   type MarkLostFormData,
-} from '@/app/admin/admin_crm/reusable/schema';
+} from '@/app/admin/admin_crm/admin_crm_components/AdminCrmschema/AdminCrmschema';
 
 /* ── Status Select options ─────────────────────────────── */
 const STATUS_OPTIONS: EnquiryStatus[] = ['New', 'Visited', 'Interested', 'Converted', 'Lost'];

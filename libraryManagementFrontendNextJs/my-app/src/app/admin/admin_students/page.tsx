@@ -1,12 +1,15 @@
 'use client';
 
+// RESPONSIBILITY: Renders the Admin Students page, managing client-side fetching and AG Grid presentation.
+// DATA FLOW: fetchAdminStudents -> AdminStudentsPage -> AgGridReact
+
 import { useState, useMemo, useEffect } from 'react';
 import { Users, Download, Search } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
-import { useAdmin } from '@/app/admin/AdminContext';
-import { fetchApi } from '@/lib/api';
+import { useAdmin } from '@/app/admin/admin_context/AdminContext';
+import { fetchAdminStudents } from '@/app/admin/admin_api/admin_api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -16,7 +19,7 @@ export default function AdminStudentsPage() {
   const { selectedBranch } = useAdmin();
 
   useEffect(() => {
-    fetchApi('/admin/admin_students').then(data => {
+    fetchAdminStudents().then(data => {
       const mapped = data.map((s: any) => ({
         id: 'STU-' + s.id.substring(0, 4).toUpperCase(),
         name: s.fullName,

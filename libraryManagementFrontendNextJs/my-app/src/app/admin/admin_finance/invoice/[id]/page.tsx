@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useRouter } from 'next/navigation';
 import { formatCurrency, formatDate } from '../../lib/format';
 import { Printer, ArrowLeft, Send } from 'lucide-react';

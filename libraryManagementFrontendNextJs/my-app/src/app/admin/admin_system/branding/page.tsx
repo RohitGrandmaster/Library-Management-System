@@ -1,9 +1,12 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_system module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../admin_system_components/AdminSystemCard/AdminSystemCard';
+import { Button } from '../admin_system_components/AdminSystemButton/AdminSystemButton';
+import { Input } from '../admin_system_components/AdminSystemInput/AdminSystemInput';
+import { Label } from '../admin_system_components/AdminSystemLabel/AdminSystemLabel';
 import { Palette, ChevronRight, Upload, RotateCcw, Save } from 'lucide-react';
 
 function readToken(token: string) {

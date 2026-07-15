@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, BookOpen, CheckCircle, Printer, Send } from 'lucide-react';
 import { openWhatsApp } from '@/lib/whatsappUtils';

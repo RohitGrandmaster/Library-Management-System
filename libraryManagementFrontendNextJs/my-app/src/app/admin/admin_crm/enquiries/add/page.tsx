@@ -1,12 +1,15 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_crm module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X, Save, PhoneCall } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
-import { addEnquirySchema, type AddEnquiryFormData } from '@/app/admin/admin_crm/reusable/schema';
-import data from '@/app/admin/admin_crm/reusable/hardcoded.json';
+import { addEnquirySchema, type AddEnquiryFormData } from '@/app/admin/admin_crm/admin_crm_components/AdminCrmschema/AdminCrmschema';
+import data from '@/app/admin/admin_crm/admin_crm_components/hardcoded.json';
 
 export default function AddEnquiryPage() {
   const router = useRouter();

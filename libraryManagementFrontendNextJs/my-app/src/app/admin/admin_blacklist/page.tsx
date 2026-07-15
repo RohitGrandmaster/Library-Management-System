@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_blacklist module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Trash2, CheckCircle, AlertOctagon, ShieldAlert, X } from 'lucide-react';

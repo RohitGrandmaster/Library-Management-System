@@ -1,12 +1,15 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_system module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
-import { KpiCard } from '../reusable/KpiCard';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
-import { Switch } from '../reusable/Switch';
-import { Badge } from '../reusable/Badge';
+import { KpiCard } from '../admin_system_components/AdminSystemKpiCard/AdminSystemKpiCard';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../admin_system_components/AdminSystemCard/AdminSystemCard';
+import { Button } from '../admin_system_components/AdminSystemButton/AdminSystemButton';
+import { Input } from '../admin_system_components/AdminSystemInput/AdminSystemInput';
+import { Label } from '../admin_system_components/AdminSystemLabel/AdminSystemLabel';
+import { Switch } from '../admin_system_components/AdminSystemSwitch/AdminSystemSwitch';
+import { Badge } from '../admin_system_components/AdminSystemBadge/AdminSystemBadge';
 import { BarChart3, ChevronRight, Zap, ArrowRight } from 'lucide-react';
 
 export default function AutoScalePage() {

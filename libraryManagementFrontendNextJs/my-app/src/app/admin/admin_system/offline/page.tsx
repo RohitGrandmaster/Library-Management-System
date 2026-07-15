@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_system module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useEffect, useState } from 'react';
 import { WifiOff, RefreshCw, CheckCircle, XCircle } from 'lucide-react';
 

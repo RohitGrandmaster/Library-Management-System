@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_communication module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { ChevronRight, Plus, X, Eye, RefreshCw, CheckCircle } from 'lucide-react';

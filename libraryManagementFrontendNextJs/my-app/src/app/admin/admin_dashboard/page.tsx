@@ -1,8 +1,8 @@
+// RESPONSIBILITY: Renders the Admin Dashboard, fetching data server-side and displaying KPI metrics, seating, and actions.
+// DATA FLOW: Server Fetch -> AdminDashboardPage -> (KpiCard, SeatMatrixGrid, ActionItemsList, RecentPaymentsFeed)
+
 import { cookies } from 'next/headers';
-import {
-  Users, IndianRupee, Armchair, AlertCircle,
-  RotateCcw, Phone, MessageSquare, Handshake, ChevronRight,
-} from 'lucide-react';
+import { ChevronRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import KpiCard from '@/app/admin/admin_reusable/KpiCard';
 import SeatMatrixGrid from '@/app/admin/admin_reusable/SeatMatrixGrid';
@@ -10,13 +10,18 @@ import ActionItemsList, { type ActionItem } from '@/app/admin/admin_reusable/Act
 import RecentPaymentsFeed from '@/app/admin/admin_reusable/RecentPaymentsFeed';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { ADMIN_KPI_META, ADMIN_ACTION_ICONS } from '@/app/admin/admin_constants/admin_constants';
+import { ADMIN_API_ROUTES } from '@/app/admin/admin_url_config';
+
 
 async function getDashboardData() {
   const cookieStore = await cookies();
   const token = cookieStore.get('access_token')?.value || '';
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
-  const res = await fetch(`${API_BASE}/admin/dashboard`, {
+  const url = `${API_BASE}${ADMIN_API_ROUTES.DASHBOARD}`;
+  
+  const res = await fetch(url, {
     cache: 'no-store',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -29,24 +34,6 @@ async function getDashboardData() {
   return res.json();
 }
 
-/**
- * Icon color & background tokens for KPI cards.
- * Values MUST be CSS token strings — no hex allowed in TSX files.
- * These are dynamic values from a data array → style={{}} usage is permitted.
- */
-const KPI_META = [
-  { icon: Users,       iconColor: 'var(--primary)', iconBg: 'var(--icon-bg-primary)' },
-  { icon: IndianRupee, iconColor: 'var(--success)', iconBg: 'var(--icon-bg-success)' },
-  { icon: Armchair,    iconColor: 'var(--warning)', iconBg: 'var(--icon-bg-warning)' },
-  { icon: AlertCircle, iconColor: 'var(--danger)',  iconBg: 'var(--icon-bg-danger)'  },
-] as const;
-
-const ACTION_ICONS: Record<string, any> = {
-  'Fee Renewals Due': RotateCcw,
-  'New Enquiries':    Phone,
-  'Complaint Open':   MessageSquare,
-  'PTP Dates Today':  Handshake,
-};
 
 export default async function AdminDashboardPage() {
   const data = await getDashboardData();
@@ -54,7 +41,7 @@ export default async function AdminDashboardPage() {
 
   const actionItems: ActionItem[] = data.actionItems.map((a: any) => ({
     ...a,
-    icon: ACTION_ICONS[a.label] ?? AlertCircle,
+    icon: ADMIN_ACTION_ICONS[a.label] ?? AlertCircle,
     type: a.type as 'danger' | 'warning',
   }));
 
@@ -82,9 +69,9 @@ export default async function AdminDashboardPage() {
             key={i}
             label={card.label}
             value={card.value}
-            icon={KPI_META[i].icon}
-            iconColor={KPI_META[i].iconColor}
-            iconBg={KPI_META[i].iconBg}
+            icon={ADMIN_KPI_META[i].icon}
+            iconColor={ADMIN_KPI_META[i].iconColor}
+            iconBg={ADMIN_KPI_META[i].iconBg}
             trend={card.trend as { value: string; up: boolean }}
             sub={card.sub}
           />

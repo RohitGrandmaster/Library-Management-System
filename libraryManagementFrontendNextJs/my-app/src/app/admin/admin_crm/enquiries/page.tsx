@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_crm module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -25,7 +28,7 @@ import {
   KANBAN_COLUMNS,
   STATUS_BADGE,
   maskPhone,
-} from '@/app/admin/admin_crm/reusable/types';
+} from '@/app/admin/admin_crm/admin_crm_components/AdminCrmtypes/AdminCrmtypes';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 function StatusBadge({ status }: { status: EnquiryStatus }) {

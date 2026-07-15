@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_staff-users module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { UserPlus, Pencil, Trash2, CheckCircle, Search, Users } from 'lucide-react';

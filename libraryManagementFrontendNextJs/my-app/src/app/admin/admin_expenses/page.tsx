@@ -1,11 +1,14 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_expenses module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useEffect } from 'react';
 import { IndianRupee, Download, Search } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
-import { useAdmin } from '@/app/admin/AdminContext';
+import { useAdmin } from '@/app/admin/admin_context/AdminContext';
 import { fetchApi } from '@/lib/api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

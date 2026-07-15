@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_seats_shifts_lockers module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import { ChevronDown, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';

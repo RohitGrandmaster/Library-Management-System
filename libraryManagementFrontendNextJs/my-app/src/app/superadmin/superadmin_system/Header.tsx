@@ -2,7 +2,7 @@
 
 import { Building2, Bell, Menu } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { useAdmin } from '@/app/admin/AdminContext';
+import { useAdmin } from '@/app/admin/admin_context/AdminContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 

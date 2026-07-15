@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_finance module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { formatCurrency } from '../lib/format';

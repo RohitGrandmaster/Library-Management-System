@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_plans module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Plus, Pencil, Trash2, CheckCircle, IndianRupee } from 'lucide-react';

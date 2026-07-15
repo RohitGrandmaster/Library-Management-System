@@ -1,4 +1,4 @@
-// admin/reusable/gridTheme.ts
+// admin/admin_reusable_components/gridTheme.ts
 // ⚠️ NO hardcoded values here — all values come from admin.css
 import { themeQuartz } from 'ag-grid-community';
 

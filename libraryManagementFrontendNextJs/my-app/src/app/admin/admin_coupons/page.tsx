@@ -1,5 +1,8 @@
 'use client';
 
+// RESPONSIBILITY: Entry page for the admin_coupons module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Plus, Trash2, CheckCircle, Tag } from 'lucide-react';

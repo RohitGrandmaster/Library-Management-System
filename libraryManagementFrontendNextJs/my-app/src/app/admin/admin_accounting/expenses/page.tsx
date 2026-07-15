@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_accounting module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TrendingUp, Plus, Trash2 } from 'lucide-react';

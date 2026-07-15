@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Sidebar from '@/app/admin/Sidebar';
-import Header from '@/app/admin/Header';
+import AdminSidebar from '@/app/admin/admin_components/AdminSidebar/AdminSidebar';
+import AdminHeader from '@/app/admin/admin_components/AdminHeader/AdminHeader';
 import '@/app/admin/admin.css';
 import '@/app/admin/admin_system/system.css';
 import { getCurrentUser } from '@/lib/auth';
@@ -62,15 +62,18 @@ export function SystemRoute({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="admin-theme admin-shell-flex">
-      <Sidebar
+      <AdminSidebar
         collapsed={collapsed}
         onToggle={() => setCollapsed(c => !c)}
         mobileOpen={mobileOpen}
         onMobileClose={() => setMobileOpen(false)}
       />
+      
       <div className="admin-main-offset" style={{ marginLeft: sidebarWidth }}>
-        <Header sidebarWidth={sidebarWidth} onMobileOpen={() => setMobileOpen(true)} />
-        <main className="admin-shell-content">
+        <AdminHeader
+          sidebarWidth={sidebarWidth}
+          onMobileOpen={() => setMobileOpen(true)}
+        /><main className="admin-shell-content">
           {children}
         </main>
       </div>

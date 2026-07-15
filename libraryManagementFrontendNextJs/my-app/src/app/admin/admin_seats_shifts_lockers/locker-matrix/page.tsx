@@ -1,4 +1,7 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_seats_shifts_lockers module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState, useEffect } from 'react';
 import { User, KeyRound, LockKeyhole, Settings } from 'lucide-react';
 import type { ReactNode } from 'react';

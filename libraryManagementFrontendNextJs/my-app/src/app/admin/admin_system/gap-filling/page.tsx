@@ -1,11 +1,14 @@
 'use client';
+// RESPONSIBILITY: Entry page for the admin_system module.
+// DATA FLOW: Next.js Router -> Page -> Components
+
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../reusable/Card';
-import { Button } from '../reusable/Button';
-import { Input } from '../reusable/Input';
-import { Label } from '../reusable/Label';
-import { Badge } from '../reusable/Badge';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../reusable/Select';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../admin_system_components/AdminSystemCard/AdminSystemCard';
+import { Button } from '../admin_system_components/AdminSystemButton/AdminSystemButton';
+import { Input } from '../admin_system_components/AdminSystemInput/AdminSystemInput';
+import { Label } from '../admin_system_components/AdminSystemLabel/AdminSystemLabel';
+import { Badge } from '../admin_system_components/AdminSystemBadge/AdminSystemBadge';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../admin_system_components/AdminSystemSelect/AdminSystemSelect';
 import { GitBranch, ChevronRight, Zap } from 'lucide-react';
 
 const SEAT_GAPS = [
