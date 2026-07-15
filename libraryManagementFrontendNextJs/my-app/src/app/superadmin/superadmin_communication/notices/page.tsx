@@ -1,4 +1,5 @@
 'use client';
+import type { ICellRendererParams } from 'ag-grid-community';
 import { useState, useEffect } from 'react';
 import { ChevronRight, Plus, X, Edit2, Trash2, Send } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
@@ -27,7 +28,7 @@ export default function NoticesPage() {
 
   useEffect(() => {
     fetchApi('/communication/notices').then(data => {
-      const mapped = data.map((n: any) => ({
+      const mapped = data.map((n) => ({
         id: n.id,
         title: n.title,
         message: n.message,
@@ -71,26 +72,26 @@ export default function NoticesPage() {
   };
 
   const colDefs = [
-    { field: 'title', headerName: 'Title', width: 220, cellRenderer: (p: any) => <span className="eng-td-bold text-[var(--mgr-text-primary)]">{p.value}</span> },
-    { field: 'message', headerName: 'Message', flex: 1, minWidth: 250, cellRenderer: (p: any) => <span className="eng-td-muted text-sm truncate block w-full pt-1" title={p.value}>{p.value}</span> },
+    { field: 'title', headerName: 'Title', width: 220, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-bold text-[var(--mgr-text-primary)]">{p.value}</span> },
+    { field: 'message', headerName: 'Message', flex: 1, minWidth: 250, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-muted text-sm truncate block w-full pt-1" title={p.value}>{p.value}</span> },
     { 
       field: 'status', 
       headerName: 'Status', 
       width: 120,
-      cellRenderer: (p: any) => (
+      cellRenderer: (p: ICellRendererParams) => (
         <span className={`eng-badge ${p.value === 'Active' ? 'eng-badge--success' : 'eng-badge--outline'} mt-2 inline-block`}>
           {p.value === 'Active' ? '✅ Active' : 'Expired'}
         </span>
       )
     },
-    { field: 'validTill', headerName: 'Valid Till', width: 130, cellRenderer: (p: any) => <span className="eng-td-mono text-sm">{p.value}</span> },
-    { field: 'postedBy', headerName: 'Posted By', width: 130, cellRenderer: (p: any) => <span className="eng-td-muted text-sm">{p.value}</span> },
-    { field: 'postedDate', headerName: 'Posted Date', width: 130, cellRenderer: (p: any) => <span className="eng-td-mono text-sm">{p.value}</span> },
+    { field: 'validTill', headerName: 'Valid Till', width: 130, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-mono text-sm">{p.value}</span> },
+    { field: 'postedBy', headerName: 'Posted By', width: 130, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-muted text-sm">{p.value}</span> },
+    { field: 'postedDate', headerName: 'Posted Date', width: 130, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-mono text-sm">{p.value}</span> },
     {
       headerName: 'Actions',
       width: 140,
       sortable: false,
-      cellRenderer: (params: any) => (
+      cellRenderer: (params: ICellRendererParams) => (
         <div className="h-full flex items-center gap-2">
           <button onClick={() => openEdit(params.data)} className="eng-btn-icon hover:bg-[var(--mgr-primary)] hover:text-white transition-colors duration-200" title="Edit"><Edit2 size={14} /></button>
           <button onClick={() => setBroadcastItem(params.data)} className="eng-btn-icon hover:bg-[var(--mgr-primary)] hover:text-white transition-colors duration-200" title="Broadcast"><Send size={14} /></button>

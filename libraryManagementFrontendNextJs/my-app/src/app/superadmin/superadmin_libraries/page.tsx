@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { AgGridReact } from 'ag-grid-react';
 import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -44,7 +45,7 @@ export default function LibrariesPage() {
       cellRenderer: (p: ICellRendererParams<Library>) => (
         <div>
           <p className="font-medium text-primary">{p.data?.name}</p>
-          <p className="text-[11px] text-secondary">{p.data?.plan} Plan</p>
+          <p className="text-xs text-secondary">{p.data?.plan} Plan</p>
         </div>
       ),
     },
@@ -55,7 +56,7 @@ export default function LibrariesPage() {
         const pct = Math.round(((p.data?.occupied ?? 0) / (p.data?.seats ?? 1)) * 100);
         return (
           <div className="flex flex-col gap-1.5 justify-center h-full">
-            <span className="text-[13px] font-medium text-primary">
+            <span className="text-sm font-medium text-primary">
               {p.data?.occupied}<span className="text-secondary">/{p.data?.seats}</span>
             </span>
             <div className="sa-progress-track w-20">
@@ -110,7 +111,7 @@ export default function LibrariesPage() {
         <div className="sa-actions-bar justify-between">
           <input type="text" placeholder="Search by name or location..." className="sa-input w-72"
             onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)} />
-          <span className="text-[12px] text-secondary">{libraries.length} libraries</span>
+          <span className="text-xs text-secondary">{libraries.length} libraries</span>
         </div>
         <div style={{ height: 420 }}>
           <AgGridReact

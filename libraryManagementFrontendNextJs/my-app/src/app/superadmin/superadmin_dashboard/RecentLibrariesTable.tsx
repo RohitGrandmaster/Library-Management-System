@@ -36,7 +36,7 @@ export default function RecentLibrariesTable({ data }: Props) {
           <div className="sa-avatar-cell">
             {p.data?.initials}
           </div>
-          <span className="font-medium text-primary text-[14px]">{p.data?.name}</span>
+          <span className="font-medium text-primary text-sm">{p.data?.name}</span>
         </div>
       ),
     },
@@ -52,14 +52,14 @@ export default function RecentLibrariesTable({ data }: Props) {
       headerName: 'Plan', field: 'plan', flex: 0.8, minWidth: 100,
       cellRenderer: (p: ICellRendererParams<Library>) => {
         const cls = PLAN_CLS[p.data?.plan ?? ''] ?? 'sa-badge--info';
-        return <span className={`sa-badge ${cls} text-[10px] uppercase tracking-tight`}>{p.data?.plan}</span>;
+        return <span className={`sa-badge ${cls} text-xs uppercase tracking-tight`}>{p.data?.plan}</span>;
       },
     },
     {
       headerName: 'Status', field: 'status', flex: 0.9, minWidth: 100,
       cellRenderer: (p: ICellRendererParams<Library>) => {
         const s = STATUS_CONFIG[p.data?.status ?? 'inactive'];
-        return <span className={`sa-badge ${s.cls} text-[10px] uppercase tracking-tight`}>{s.label}</span>;
+        return <span className={`sa-badge ${s.cls} text-xs uppercase tracking-tight`}>{s.label}</span>;
       },
     },
     { headerName: 'Joined', field: 'joinedAt', flex: 0.9, minWidth: 100,
@@ -71,8 +71,8 @@ export default function RecentLibrariesTable({ data }: Props) {
   return (
     <div className="sa-card overflow-hidden">
       <div className="p-6 flex items-center justify-between border-b border-border">
-        <h2 className="text-[16px] font-bold text-primary">Recently Registered Libraries</h2>
-        <Link href="/superadmin/superadmin_libraries" className="text-primary text-[12px] font-bold flex items-center gap-1 hover:underline">
+        <h2 className="text-base font-bold text-primary">Recently Registered Libraries</h2>
+        <Link href="/superadmin/superadmin_libraries" className="text-primary text-xs font-bold flex items-center gap-1 hover:underline">
           View All <ExternalLink size={12} />
         </Link>
       </div>

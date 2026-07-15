@@ -85,10 +85,10 @@ export default async function SuperAdminDashboardPage() {
       {/* Row 4: Recent Platform Activity */}
       <div className="sa-card overflow-hidden mt-8">
         <div className="p-6 flex items-center justify-between border-b border-border">
-          <h2 className="text-[16px] font-bold text-primary flex items-center gap-2">
+          <h2 className="text-base font-bold text-primary flex items-center gap-2">
             <Clock size={16} className="sa-metric--primary" /> Recent Platform Activity
           </h2>
-          <Link href="/superadmin/superadmin_audit-logs" className="text-primary text-[12px] font-bold flex items-center gap-1 hover:underline">
+          <Link href="/superadmin/superadmin_audit-logs" className="text-primary text-xs font-bold flex items-center gap-1 hover:underline">
             View All Logs
           </Link>
         </div>

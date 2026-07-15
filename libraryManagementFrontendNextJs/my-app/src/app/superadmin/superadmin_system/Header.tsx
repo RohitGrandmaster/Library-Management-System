@@ -50,7 +50,7 @@ export default function Header({ sidebarWidth, onMobileOpen }: HeaderProps) {
           <Bell size={17} />
           <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
         </Button>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white text-xs font-bold">
           LA
         </div>
       </div>

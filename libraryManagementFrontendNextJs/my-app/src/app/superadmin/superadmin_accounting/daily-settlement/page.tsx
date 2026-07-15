@@ -1,5 +1,5 @@
 'use client';
-
+import type { ICellRendererParams } from 'ag-grid-community';
 import { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -43,48 +43,48 @@ export default function DailySettlementPage() {
   const totalExp  = entries.reduce((s, e) => s + e.expenses, 0);
 
   const colDefs = [
-    { field: 'shift', headerName: 'Shift', flex: 1, minWidth: 180, cellRenderer: (p: any) => <span className="fin-cell-name font-medium">{p.value}</span> },
+    { field: 'shift', headerName: 'Shift', flex: 1, minWidth: 180, cellRenderer: (p: ICellRendererParams) => <span className="fin-cell-name font-medium">{p.value}</span> },
     { 
       field: 'openingBalance', 
       headerName: 'Opening ₹', 
       width: 130,
       cellStyle: { textAlign: 'right' },
-      cellRenderer: (p: any) => <span className="fin-cell-subtext text-sm">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="fin-cell-subtext text-sm">₹{p.value.toLocaleString()}</span>
     },
     { 
       field: 'cashCollected', 
       headerName: 'Cash ₹', 
       width: 120,
       cellStyle: { textAlign: 'right' },
-      cellRenderer: (p: any) => <span className="fin-text-success font-medium">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="fin-text-success font-medium">₹{p.value.toLocaleString()}</span>
     },
     { 
       field: 'upiCollected', 
       headerName: 'UPI ₹', 
       width: 120,
       cellStyle: { textAlign: 'right' },
-      cellRenderer: (p: any) => <span className="fin-text-info font-medium">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="fin-text-info font-medium">₹{p.value.toLocaleString()}</span>
     },
     { 
       field: 'expenses', 
       headerName: 'Expenses ₹', 
       width: 130,
       cellStyle: { textAlign: 'right' },
-      cellRenderer: (p: any) => <span className="fin-text-danger font-medium">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="fin-text-danger font-medium">₹{p.value.toLocaleString()}</span>
     },
     { 
       field: 'closingBalance', 
       headerName: 'Closing ₹', 
       width: 130,
       cellStyle: { textAlign: 'right', fontWeight: 600 },
-      cellRenderer: (p: any) => <span className="fin-text-body">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="fin-text-body">₹{p.value.toLocaleString()}</span>
     },
-    { field: 'settledBy', headerName: 'Settled By', width: 140, cellRenderer: (p: any) => <span className="fin-cell-subtext">{p.value}</span> },
+    { field: 'settledBy', headerName: 'Settled By', width: 140, cellRenderer: (p: ICellRendererParams) => <span className="fin-cell-subtext">{p.value}</span> },
     { 
       field: 'status', 
       headerName: 'Status', 
       width: 120,
-      cellRenderer: (p: any) => (
+      cellRenderer: (p: ICellRendererParams) => (
         <span className={`fin-badge ${p.value === 'settled' ? 'fin-badge--success' : 'fin-badge--warning'} inline-block mt-2`}>
           {p.value}
         </span>
@@ -95,7 +95,7 @@ export default function DailySettlementPage() {
       width: 120,
       sortable: false,
       cellStyle: { textAlign: 'right' },
-      cellRenderer: (params: any) => {
+      cellRenderer: (params: ICellRendererParams) => {
         if (params.data.status === 'pending') {
           return (
             <div className="h-full flex justify-end items-center">

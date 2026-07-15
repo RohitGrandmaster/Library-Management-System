@@ -46,14 +46,14 @@ function InvoicePanel({ inv, onClose, onMarkPaid }: { inv: Invoice; onClose: () 
               <FileText size={16} className="sa-metric--primary" />
               <span className="sa-invoice-id-text">{inv.id}</span>
             </div>
-            <h2 className="text-[18px] font-bold text-primary">{inv.tenant}</h2>
+            <h2 className="text-lg font-bold text-primary">{inv.tenant}</h2>
           </div>
           <button className="sa-btn-icon" onClick={onClose}><X size={16} /></button>
         </div>
 
         <div className="sa-card p-4 text-center">
-          <p className="text-[12px] text-secondary mb-1">Invoice Amount</p>
-          <p className="text-[36px] font-bold text-primary">₹{inv.amount.toLocaleString()}</p>
+          <p className="text-xs text-secondary mb-1">Invoice Amount</p>
+          <p className="text-3xl font-bold text-primary">₹{inv.amount.toLocaleString()}</p>
           <div className="flex justify-center mt-2">
             {inv.status === 'Paid'
               ? <span className="sa-badge sa-badge--success"><CheckCircle size={11} /> Paid</span>

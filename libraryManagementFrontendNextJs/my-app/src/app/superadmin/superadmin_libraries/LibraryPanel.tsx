@@ -37,8 +37,8 @@ export default function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: 
       <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-[18px] font-bold text-primary">{lib.name}</h2>
-            <p className="text-[13px] text-secondary flex items-center gap-1 mt-1"><MapPin size={12} />{lib.location}</p>
+            <h2 className="text-lg font-bold text-primary">{lib.name}</h2>
+            <p className="text-sm text-secondary flex items-center gap-1 mt-1"><MapPin size={12} />{lib.location}</p>
           </div>
           <div className="flex items-center gap-1">
             {!editing && <button className="sa-btn-icon" onClick={() => setEditing(true)}><Edit2 size={15} /></button>}
@@ -76,13 +76,13 @@ export default function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: 
 
         <div className="sa-card p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[13px] font-semibold text-primary flex items-center gap-2"><Users size={14} /> Seat Occupancy</p>
+            <p className="text-sm font-semibold text-primary flex items-center gap-2"><Users size={14} /> Seat Occupancy</p>
             <span className={pct > 90 ? 'sa-occupancy-pct--high' : 'sa-occupancy-pct--ok'}>{pct}%</span>
           </div>
           <div className="sa-progress-track">
             <div className={pct > 90 ? 'sa-progress-fill--danger' : 'sa-progress-fill--success'} style={{ width: `${pct}%` }} />
           </div>
-          <p className="text-[12px] text-secondary mt-2">{lib.occupied} occupied / {lib.seats} total seats</p>
+          <p className="text-xs text-secondary mt-2">{lib.occupied} occupied / {lib.seats} total seats</p>
         </div>
 
         <div>

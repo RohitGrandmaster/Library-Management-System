@@ -23,7 +23,7 @@ export default function ActionItemsPanel({ data }: Props) {
   return (
     <div className="col-span-12 lg:col-span-5 sa-card flex flex-col overflow-hidden">
       <div className="p-6 border-b border-border">
-        <h2 className="text-[16px] font-bold text-primary">Action Items</h2>
+        <h2 className="text-base font-bold text-primary">Action Items</h2>
       </div>
 
       <div className="p-6 space-y-3">
@@ -36,7 +36,7 @@ export default function ActionItemsPanel({ data }: Props) {
               className={`sa-action-row ${isError ? 'sa-action-row--error' : 'sa-action-row--info'}`}>
               <div className="flex items-center gap-3">
                 <Icon size={16} className={isError ? 'sa-metric--danger' : 'sa-metric--info'} />
-                <span className="text-[13px] font-semibold text-primary">{item.title}</span>
+                <span className="text-sm font-semibold text-primary">{item.title}</span>
               </div>
               <ChevronRight size={15} className="sa-metric--muted" />
             </Link>
@@ -49,7 +49,7 @@ export default function ActionItemsPanel({ data }: Props) {
           <div className="sa-lightbulb-box">
             <Lightbulb size={14} className="sa-metric--primary" />
           </div>
-          <p className="text-[12px] text-secondary leading-relaxed">
+          <p className="text-xs text-secondary leading-relaxed">
             5 newly registered libraries are yet to complete their initial setup wizard.
           </p>
         </div>

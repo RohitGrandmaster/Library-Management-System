@@ -1,4 +1,5 @@
 'use client';
+import type { ICellRendererParams } from 'ag-grid-community';
 import { useState } from 'react';
 import { ChevronRight, Eye, X } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
@@ -51,14 +52,14 @@ export default function WhatsappLogsPage() {
   });
 
   const colDefs = [
-    { field: 'dateTime', headerName: 'Date / Time', width: 160, cellRenderer: (p: any) => <span className="eng-td-muted text-sm">{p.value}</span> },
-    { field: 'phone', headerName: 'Phone', width: 130, cellRenderer: (p: any) => <span className="eng-td-mono font-medium">{p.value}</span> },
-    { field: 'student', headerName: 'Student', flex: 1, minWidth: 150, cellRenderer: (p: any) => <span className="eng-td-bold">{p.value}</span> },
+    { field: 'dateTime', headerName: 'Date / Time', width: 160, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-muted text-sm">{p.value}</span> },
+    { field: 'phone', headerName: 'Phone', width: 130, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-mono font-medium">{p.value}</span> },
+    { field: 'student', headerName: 'Student', flex: 1, minWidth: 150, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-bold">{p.value}</span> },
     { 
       field: 'type', 
       headerName: 'Type', 
       width: 130,
-      cellRenderer: (p: any) => (
+      cellRenderer: (p: ICellRendererParams) => (
         <span className={`eng-badge ${TYPE_BADGE[p.value]} inline-block mt-2 text-xs`}>
           {TYPE_LABEL[p.value]}
         </span>
@@ -68,18 +69,18 @@ export default function WhatsappLogsPage() {
       field: 'status', 
       headerName: 'Status', 
       width: 120,
-      cellRenderer: (p: any) => (
+      cellRenderer: (p: ICellRendererParams) => (
         <span className={`eng-badge ${STATUS_BADGE[p.value]} inline-block mt-2 text-xs`}>
           {p.value}
         </span>
       )
     },
-    { field: 'error', headerName: 'Error', width: 180, cellRenderer: (p: any) => <span className="eng-td-danger text-xs truncate max-w-[160px] inline-block" title={p.value}>{p.value || '—'}</span> },
+    { field: 'error', headerName: 'Error', width: 180, cellRenderer: (p: ICellRendererParams) => <span className="eng-td-danger text-xs truncate max-w-[160px] inline-block" title={p.value}>{p.value || '—'}</span> },
     {
       headerName: 'Actions',
       width: 100,
       sortable: false,
-      cellRenderer: (params: any) => (
+      cellRenderer: (params: ICellRendererParams) => (
         <div className="h-full flex items-center">
           <button onClick={() => setViewLog(params.data)} className="eng-btn-icon hover:bg-[var(--mgr-primary)] hover:text-white transition-colors duration-200" title="View Message">
             <Eye size={16} />

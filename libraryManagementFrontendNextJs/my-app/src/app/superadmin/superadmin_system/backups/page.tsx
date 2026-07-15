@@ -298,10 +298,10 @@ export default function BackupsPage() {
                       <td className="py-3 pr-4">
                         <div className="flex flex-wrap gap-1">
                           {backup.modules.slice(0, 3).map(m => (
-                            <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant">{m}</span>
+                            <span key={m} className="text-xs px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant">{m}</span>
                           ))}
                           {backup.modules.length > 3 && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant">+{backup.modules.length - 3}</span>
+                            <span className="text-xs px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant">+{backup.modules.length - 3}</span>
                           )}
                         </div>
                       </td>

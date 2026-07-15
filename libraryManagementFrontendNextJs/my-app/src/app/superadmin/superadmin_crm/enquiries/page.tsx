@@ -141,7 +141,7 @@ export default function EnquiriesPage() {
   useEffect(() => {
     fetchApi('/crm/enquiries').then(data => {
       // Map DB schema to frontend Enquiry schema
-      const mapped = data.map((e: any) => ({
+      const mapped = data.map((e) => ({
         id: e.id,
         name: e.name,
         phone: e.phone,

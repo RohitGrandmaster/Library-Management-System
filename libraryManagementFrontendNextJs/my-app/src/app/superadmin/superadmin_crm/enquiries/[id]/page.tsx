@@ -176,7 +176,7 @@ export default function EnquiryDetailPage({
   useEffect(() => {
     import('@/lib/api').then(({ fetchApi }) => {
       fetchApi(`/crm/enquiries/${id}`)
-        .then((e: any) => {
+        .then((e) => {
           if (!e) {
             setLoading(false);
             return;
@@ -443,7 +443,7 @@ export default function EnquiryDetailPage({
                 </div>
               ) : (
                 <div className="crm-timeline">
-                  {enquiry.followUps.map((fu: any) => (
+                  {enquiry.followUps.map((fu) => (
                     <div className="crm-timeline-entry" key={fu.id}>
                       <div className={`crm-timeline-dot ${timelineDotClass(fu.by)}`} />
                       <div className="crm-timeline-card">

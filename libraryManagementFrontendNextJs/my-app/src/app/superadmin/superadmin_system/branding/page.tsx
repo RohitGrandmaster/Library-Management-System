@@ -152,7 +152,7 @@ export default function BrandingPage() {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-on-surface leading-tight">{form.libraryName || 'Library'}</p>
-                      {form.tagline && <p className="text-[10px] text-on-surface-variant leading-tight truncate w-28">{form.tagline}</p>}
+                      {form.tagline && <p className="text-xs text-on-surface-variant leading-tight truncate w-28">{form.tagline}</p>}
                     </div>
                   </div>
                   {['Dashboard', 'Students', 'Finance', 'Reports'].map((item, i) => (
@@ -173,7 +173,7 @@ export default function BrandingPage() {
                       📚
                     </div>
                     <p className="text-sm font-bold text-on-surface">{form.libraryName || 'Library'}</p>
-                    {form.tagline && <p className="text-[10px] text-on-surface-variant">{form.tagline}</p>}
+                    {form.tagline && <p className="text-xs text-on-surface-variant">{form.tagline}</p>}
                   </div>
                   <div className="space-y-2">
                     <div className="h-7 rounded-lg bg-surface-container-highest" />
@@ -198,8 +198,8 @@ export default function BrandingPage() {
                     <div className="h-12 w-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-xl">👤</div>
                     <div>
                       <p className="text-xs font-bold text-on-surface">Rahul Sharma</p>
-                      <p className="text-[10px] text-on-surface-variant">ID: #0042 | Morning Shift</p>
-                      <p className="text-[10px] text-on-surface-variant">Valid till: June 2026</p>
+                      <p className="text-xs text-on-surface-variant">ID: #0042 | Morning Shift</p>
+                      <p className="text-xs text-on-surface-variant">Valid till: June 2026</p>
                     </div>
                   </div>
                 </div>

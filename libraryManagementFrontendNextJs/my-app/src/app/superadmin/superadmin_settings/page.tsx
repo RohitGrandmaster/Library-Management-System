@@ -47,7 +47,7 @@ export default function SettingsPage() {
 
           {/* Platform Identity */}
           <div className="sa-card p-6">
-            <h2 className="text-[15px] font-bold text-primary mb-5 flex items-center gap-2">
+            <h2 className="text-base font-bold text-primary mb-5 flex items-center gap-2">
               <Building size={15} className="text-primary" /> Platform Identity
             </h2>
             <div className="space-y-4">
@@ -73,7 +73,7 @@ export default function SettingsPage() {
 
           {/* Notifications */}
           <div className="sa-card p-6">
-            <h2 className="text-[15px] font-bold text-primary mb-5 flex items-center gap-2">
+            <h2 className="text-base font-bold text-primary mb-5 flex items-center gap-2">
               <Mail size={15} className="text-success" /> SaaS Auto-Notifications
             </h2>
             <div className="space-y-4">
@@ -83,7 +83,7 @@ export default function SettingsPage() {
                   <div className={`sa-toggle-track ${checks[item.id] ? 'sa-toggle-track--on' : ''}`}>
                     <div className={`sa-toggle-thumb ${checks[item.id] ? 'sa-toggle-thumb--on' : ''}`} />
                   </div>
-                  <span className="text-[14px] text-primary select-none">{item.label}</span>
+                  <span className="text-sm text-primary select-none">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -93,10 +93,10 @@ export default function SettingsPage() {
         <div className="space-y-6">
           {/* Security */}
           <div className="sa-card p-6">
-            <h2 className="text-[15px] font-bold text-primary mb-4 flex items-center gap-2">
+            <h2 className="text-base font-bold text-primary mb-4 flex items-center gap-2">
               <ShieldCheck size={15} className="text-warning" /> Security Defaults
             </h2>
-            <p className="text-[13px] text-secondary mb-4 leading-relaxed">
+            <p className="text-sm text-secondary mb-4 leading-relaxed">
               These settings enforce strict security policies across all newly provisioned library branches automatically.
             </p>
             <div className="space-y-4 pt-4 border-t border-border">
