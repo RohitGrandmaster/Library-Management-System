@@ -221,11 +221,11 @@ export default function GlobalConfigPage() {
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-medium max-w-3xl">Set the default rules, schemas, and limitations for all newly registered libraries. Individual libraries can override these if their assigned plan permits.</p>
       </div>
 
-      <div className="flex flex-col xl:flex-row gap-6 items-start">
+      <div className="flex flex-col xl:flex-row gap-6 items-stretch flex-1 min-h-0">
         
         {/* Left Side Navigation List */}
-        <div className="w-full xl:w-80 shrink-0 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden p-3">
-          <div className="space-y-1 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+        <div className="w-full xl:w-80 shrink-0 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden p-3 flex flex-col">
+          <div className="space-y-1 overflow-y-auto custom-scrollbar pr-2 flex-1">
             {SUB_MENUS.map(menu => (
               <button
                 key={menu.id}
@@ -270,7 +270,7 @@ export default function GlobalConfigPage() {
               </div>
             </div>
             
-            <div className="p-8">
+            <div className="p-8 overflow-y-auto custom-scrollbar flex-1 min-h-0">
               {renderConfigContent()}
             </div>
           </form>
