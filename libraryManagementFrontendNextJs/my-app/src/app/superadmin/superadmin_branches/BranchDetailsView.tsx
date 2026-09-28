@@ -125,15 +125,15 @@ export default function BranchDetailsView({
     }
 
     const datasets: Record<string, Array<[string,string,string]>> = {
-      Users: [['U-1001','Amit Kumar','Librarian'],['U-1002','Neha Singh','Assistant'],['U-1003','Sanjay Verma','Operator']],
-      Books: [['BK-1022','Clean Code','Available'],['BK-2201','Atomic Habits','Issued'],['BK-3018','The Alchemist','Reserved']],
-      Members: [['MB-1001','Rahul Singh','Active'],['MB-1002','Pooja Kumari','Active'],['MB-1003','Ankit Raj','Blocked']],
-      Circulation: [['LN-9911','Rahul Singh','Due 29 Sep'],['LN-9912','Pooja Kumari','Due 30 Sep'],['LN-9913','Amit Kumar','Overdue']],
-      Inventory: [['INV-01','Books','5,420'],['INV-02','Magazines','460'],['INV-03','Digital Assets','1,280']],
-      Reservations: [['RS-8821','Atomic Habits','Queued'],['RS-8822','The Psychology of Money','Ready'],['RS-8823','Ikigai','Expired']],
-      Fines: [['FN-2211','Rahul Singh','₹120'],['FN-2212','Pooja Kumari','₹80'],['FN-2213','Ankit Raj','₹350']],
-      Reports: [['RPT-01','Daily Circulation','Ready'],['RPT-02','Inventory Summary','Ready'],['RPT-03','Fine Collection','Generated']],
-      Audit: [['AUD-01','Manager updated','Super Admin'],['AUD-02','Loan issued','Librarian'],['AUD-03','Settings changed','Super Admin']],
+      Users: [['U-1001','Amit Kumar','Librarian'],['U-1002','Neha Singh','Assistant'],['U-1003','Sanjay Verma','Operator'],['U-1004','Priya Desai','Assistant'],['U-1005','Rajiv Sharma','Security'],['U-1006','Anjali Gupta','Librarian'],['U-1007','Vikram Patel','IT Admin'],['U-1008','Swathi Reddy','Assistant']],
+      Books: [['BK-1022','Clean Code','Available'],['BK-2201','Atomic Habits','Issued'],['BK-3018','The Alchemist','Reserved'],['BK-4091','Sapiens','Available'],['BK-5012','Deep Work','Available'],['BK-6102','Thinking, Fast and Slow','Issued'],['BK-7211','The Lean Startup','Reserved'],['BK-8109','Zero to One','Available']],
+      Members: [['MB-1001','Rahul Singh','Active'],['MB-1002','Pooja Kumari','Active'],['MB-1003','Ankit Raj','Blocked'],['MB-1004','Ramesh Rao','Active'],['MB-1005','Karthik N','Active'],['MB-1006','Sneha Kulkarni','Expired'],['MB-1007','Ayan Das','Active'],['MB-1008','Ritu Sharma','Pending']],
+      Circulation: [['LN-9911','Rahul Singh','Due 29 Sep'],['LN-9912','Pooja Kumari','Due 30 Sep'],['LN-9913','Amit Kumar','Overdue'],['LN-9914','Sneha Kulkarni','Returned'],['LN-9915','Ayan Das','Due 02 Oct'],['LN-9916','Ankit Raj','Overdue'],['LN-9917','Ramesh Rao','Returned'],['LN-9918','Karthik N','Due 05 Oct']],
+      Inventory: [['INV-01','Books','5,420'],['INV-02','Magazines','460'],['INV-03','Digital Assets','1,280'],['INV-04','Journals','320'],['INV-05','Audiobooks','150'],['INV-06','CDs/DVDs','80'],['INV-07','Periodicals','600'],['INV-08','Newspapers','1,200']],
+      Reservations: [['RS-8821','Atomic Habits','Queued'],['RS-8822','The Psychology of Money','Ready'],['RS-8823','Ikigai','Expired'],['RS-8824','Deep Work','Ready'],['RS-8825','Sapiens','Queued'],['RS-8826','Clean Code','Collected'],['RS-8827','Zero to One','Expired'],['RS-8828','The Lean Startup','Queued']],
+      Fines: [['FN-2211','Rahul Singh','₹120'],['FN-2212','Pooja Kumari','₹80'],['FN-2213','Ankit Raj','₹350'],['FN-2214','Sneha Kulkarni','₹50'],['FN-2215','Ayan Das','₹10'],['FN-2216','Ramesh Rao','₹200'],['FN-2217','Karthik N','₹0'],['FN-2218','Ritu Sharma','₹15']],
+      Reports: [['RPT-01','Daily Circulation','Ready'],['RPT-02','Inventory Summary','Ready'],['RPT-03','Fine Collection','Generated'],['RPT-04','Member Registrations','Ready'],['RPT-05','Overdue Books','Generated'],['RPT-06','Staff Attendance','Ready'],['RPT-07','Monthly Financials','Pending'],['RPT-08','Security Logs','Ready']],
+      Audit: [['AUD-01','Manager updated','Super Admin'],['AUD-02','Loan issued','Librarian'],['AUD-03','Settings changed','Super Admin'],['AUD-04','Branch created','System'],['AUD-05','User blocked','Super Admin'],['AUD-06','Limit adjusted','Super Admin'],['AUD-07','Fine waived','Manager'],['AUD-08','Book archived','Librarian']],
     };
     const rows = datasets[activeTab] || [];
     return (

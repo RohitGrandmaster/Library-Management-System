@@ -46,6 +46,11 @@ const inventory = [
   { code: 'INV-002', title: 'Reference Books', total: 920, available: 900, issued: 12, damaged: 8, status: 'Healthy' },
   { code: 'INV-003', title: 'Magazines', total: 460, available: 430, issued: 20, damaged: 10, status: 'Watch' },
   { code: 'INV-004', title: 'Digital Assets', total: 1280, available: 1280, issued: 0, damaged: 0, status: 'Healthy' },
+  { code: 'INV-005', title: 'Journals', total: 320, available: 200, issued: 110, damaged: 10, status: 'Watch' },
+  { code: 'INV-006', title: 'Audiobooks', total: 150, available: 145, issued: 5, damaged: 0, status: 'Healthy' },
+  { code: 'INV-007', title: 'CDs/DVDs', total: 80, available: 50, issued: 25, damaged: 5, status: 'Critical' },
+  { code: 'INV-008', title: 'Periodicals', total: 600, available: 580, issued: 15, damaged: 5, status: 'Healthy' },
+  { code: 'INV-009', title: 'Newspapers', total: 1200, available: 1100, issued: 0, damaged: 100, status: 'Watch' },
 ];
 
 const auditLogs = [
@@ -53,6 +58,11 @@ const auditLogs = [
   { id: 'AUD-1002', action: 'Manager changed', actor: 'Super Admin', target: 'Boring Road Branch', time: 'Today, 09:20 AM', severity: 'info' },
   { id: 'AUD-1003', action: 'Branch suspended', actor: 'Super Admin', target: 'Mumbai Andheri West', time: 'Yesterday, 05:12 PM', severity: 'warning' },
   { id: 'AUD-1004', action: 'Limits updated', actor: 'Super Admin', target: 'Kankarbagh Branch', time: 'Yesterday, 03:05 PM', severity: 'info' },
+  { id: 'AUD-1005', action: 'New Manager Assigned', actor: 'Super Admin', target: 'Bangalore Koramangala', time: 'Yesterday, 01:15 PM', severity: 'info' },
+  { id: 'AUD-1006', action: 'Branch Archived', actor: 'Super Admin', target: 'Kolkata Salt Lake', time: '2 Days Ago, 11:30 AM', severity: 'warning' },
+  { id: 'AUD-1007', action: 'Branch Limits Adjusted', actor: 'System Auto', target: 'Chennai Anna Nagar', time: '3 Days Ago, 08:00 AM', severity: 'info' },
+  { id: 'AUD-1008', action: 'Mass Status Update', actor: 'Super Admin', target: 'Multiple Branches', time: '3 Days Ago, 06:45 PM', severity: 'warning' },
+  { id: 'AUD-1009', action: 'Branch Ownership Transferred', actor: 'Super Admin', target: 'Pune Deccan', time: '4 Days Ago, 10:20 AM', severity: 'info' },
 ];
 
 export default function BranchesPage() {
