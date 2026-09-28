@@ -27,38 +27,45 @@ export default function LibrariesPage() {
   const colDefs = useMemo<any[]>(() => [
     {
       headerName: 'Library Name', field: 'name', flex: 2, minWidth: 220,
-      cellRenderer: (p: ICellRendererParams<Library>) => (
-        <div className="flex items-center gap-3 h-full cursor-pointer group">
-          <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
-            {p.data?.name.substring(0,2).toUpperCase()}
+      cellRenderer: (p: ICellRendererParams<Library>) => {
+        if (!p.data) return null;
+        return (
+          <div className="flex items-center gap-3 h-full cursor-pointer group">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
+              {p.data.name.substring(0,2).toUpperCase()}
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">{p.data.name}</p>
+              <p className="text-[11px] text-gray-500 font-semibold">{p.data.plan} Plan</p>
+            </div>
           </div>
-          <div className="flex flex-col justify-center">
-            <p className="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight">{p.data?.name}</p>
-            <p className="text-[11px] text-gray-500 font-semibold">{p.data?.plan} Plan</p>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     { 
       headerName: 'Location', field: 'location', flex: 1.5, minWidth: 150,
-      cellRenderer: (p: ICellRendererParams<Library>) => (
-        <div className="flex items-center h-full text-sm font-medium text-gray-600 dark:text-gray-300">
-          {p.data?.location || 'Unknown Location'}
-        </div>
-      )
+      cellRenderer: (p: ICellRendererParams<Library>) => {
+        if (!p.data) return null;
+        return (
+          <div className="flex items-center h-full text-sm font-medium text-gray-600 dark:text-gray-300">
+            {p.data.location || 'Unknown Location'}
+          </div>
+        );
+      }
     },
     { 
       headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
       cellRenderer: (p: ICellRendererParams<Library>) => {
+        if (!p.data) return null;
         let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
-        if (p.data?.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
-        if (p.data?.status === 'Pending') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
-        if (p.data?.status === 'Suspended') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
+        if (p.data.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
+        if (p.data.status === 'Pending') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
+        if (p.data.status === 'Suspended') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
         
         return (
           <div className="flex items-center h-full">
             <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>
-              {p.data?.status}
+              {p.data.status}
             </span>
           </div>
         )
@@ -67,11 +74,12 @@ export default function LibrariesPage() {
     {
       headerName: 'Utilization', field: 'occupied', flex: 1.5, minWidth: 150,
       cellRenderer: (p: ICellRendererParams<Library>) => {
-        const pct = Math.round(((p.data?.occupied ?? 0) / (p.data?.seats ?? 1)) * 100);
+        if (!p.data) return null;
+        const pct = Math.round(((p.data.occupied ?? 0) / (p.data.seats ?? 1)) * 100);
         return (
           <div className="flex flex-col justify-center h-full gap-1.5 w-full pr-4">
             <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300">
-              <span>{p.data?.occupied} / {p.data?.seats}</span>
+              <span>{p.data.occupied} / {p.data.seats}</span>
               <span className={pct > 90 ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}>{pct}%</span>
             </div>
             <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">

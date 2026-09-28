@@ -101,46 +101,56 @@ export default function BranchesPage() {
   const colDefs = useMemo<any[]>(() => [
     {
       headerName: 'Branch Details', field: 'name', flex: 2, minWidth: 240,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex items-center gap-3 h-full cursor-pointer group min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm shrink-0">
-            {p.data?.name.substring(0,2).toUpperCase()}
+      cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
+        return (
+          <div className="flex items-center gap-3 h-full cursor-pointer group min-w-0">
+            <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm shrink-0">
+              {p.data.name.substring(0,2).toUpperCase()}
+            </div>
+            <div className="flex flex-col justify-center min-w-0">
+              <p className="font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors leading-tight truncate">{p.data.name}</p>
+              <p className="text-[11px] text-gray-500 font-semibold truncate">{p.data.code} | {p.data.parent}</p>
+            </div>
           </div>
-          <div className="flex flex-col justify-center min-w-0">
-            <p className="font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors leading-tight truncate">{p.data?.name}</p>
-            <p className="text-[11px] text-gray-500 font-semibold truncate">{p.data?.code} | {p.data?.parent}</p>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       headerName: 'Location & Manager', field: 'location', flex: 1.5, minWidth: 180,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex flex-col justify-center h-full min-w-0">
-          <p className="text-sm font-bold text-gray-700 dark:text-gray-300 truncate">{p.data?.location}</p>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">Mgr: {p.data?.manager || 'Unassigned'}</p>
-        </div>
-      )
+      cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
+        return (
+          <div className="flex flex-col justify-center h-full min-w-0">
+            <p className="text-sm font-bold text-gray-700 dark:text-gray-300 truncate">{p.data.location}</p>
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">Mgr: {p.data.manager || 'Unassigned'}</p>
+          </div>
+        );
+      }
     },
     {
       headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
       cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
         let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
-        if (p.data?.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
-        if (p.data?.status === 'Pending') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
-        if (p.data?.status === 'Suspended') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
-        if (p.data?.status === 'Archived') colors = 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 border border-slate-200 dark:border-slate-800';
-        return <div className="flex items-center h-full"><span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>{p.data?.status}</span></div>
+        if (p.data.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
+        if (p.data.status === 'Pending') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
+        if (p.data.status === 'Suspended') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
+        if (p.data.status === 'Archived') colors = 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 border border-slate-200 dark:border-slate-800';
+        return <div className="flex items-center h-full"><span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>{p.data.status}</span></div>;
       }
     },
     {
       headerName: 'Utilization (Capacity)', field: 'occupied', flex: 1.5, minWidth: 150,
       cellRenderer: (p: ICellRendererParams) => {
-        const pct = Math.round(((p.data?.occupied ?? 0) / (p.data?.capacity ?? 1)) * 100);
-        return <div className="flex flex-col justify-center h-full gap-1.5 w-full pr-4 min-w-0">
-          <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 gap-2"><span>{p.data?.occupied} / {p.data?.capacity}</span><span className={pct > 90 ? 'text-red-600' : 'text-emerald-600'}>{pct}%</span></div>
-          <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className={`h-full ${pct > 90 ? 'bg-red-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(100, pct)}%` }} /></div>
-        </div>;
+        if (!p.data) return null;
+        const pct = Math.round(((p.data.occupied ?? 0) / (p.data.capacity ?? 1)) * 100);
+        return (
+          <div className="flex flex-col justify-center h-full gap-1.5 w-full pr-4 min-w-0">
+            <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 gap-2"><span>{p.data.occupied} / {p.data.capacity}</span><span className={pct > 90 ? 'text-red-600' : 'text-emerald-600'}>{pct}%</span></div>
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className={`h-full ${pct > 90 ? 'bg-red-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(100, pct)}%` }} /></div>
+          </div>
+        );
       }
     }
   ], []);
