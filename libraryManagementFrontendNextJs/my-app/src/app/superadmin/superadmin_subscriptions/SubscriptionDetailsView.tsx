@@ -29,6 +29,77 @@ export default function SubscriptionDetailsView({ onBack }: { onBack: () => void
 
   const meta = getTabMeta(activeTab);
 
+  const notify = (msg: string) => {
+    window.alert(msg);
+  };
+
+  const renderTabContent = () => {
+    if (activeTab === "Overview") {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 animate-in fade-in duration-300">
+          {[
+            ['Active Tenants', '12', <Activity size={20} />],
+            ['Total Revenue', '$23,880', <Banknote size={20} />],
+            ['Pending Renewals', '3', <CalendarClock size={20} />],
+            ['Coupons Used', '45', <CheckCircle size={20} />],
+          ].map(([label, value, icon]) => (
+            <div key={label as string} className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-5">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-pink-600 shadow-sm">{icon}</div>
+              <p className="text-xs font-bold text-gray-500 mt-4">{label as string}</p>
+              <p className="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">{value as string}</p>
+            </div>
+          ))}
+          <div className="sm:col-span-2 xl:col-span-4 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 mt-2 bg-gray-50 dark:bg-[#1E293B]">
+            <h4 className="font-extrabold text-gray-900 dark:text-white mb-4">Plan Limits Configuration</h4>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-[#0F172A] border shadow-sm">
+              <div>
+                <p className="font-bold text-pink-600 flex items-center gap-2"><CreditCard size={16}/> Pro Monthly Plan Base</p>
+                <p className="text-xs font-bold text-gray-500 mt-1">Includes 5 Libraries, 100GB Storage, Priority Support</p>
+              </div>
+              <button onClick={() => notify('Opening plan settings...')} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold">Edit Limits</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const datasets: Record<string, Array<string[]>> = {
+      "Usage & Limits": [['LIB-1','Storage','85%','Warning'],['LIB-2','Members','45%','Normal'],['LIB-3','API Calls','99%','Critical']],
+      "Invoices": [['INV-2024-01','StudyNest Patna','$199.00','Paid'],['INV-2024-02','Readers Den Delhi','$199.00','Paid'],['INV-2024-03','LibroHub Mumbai','$199.00','Pending']],
+      "Payments": [['PAY-991','Stripe','Success','INV-2024-01'],['PAY-992','PayPal','Success','INV-2024-02'],['PAY-993','Bank Transfer','Processing','INV-2024-03']],
+      "Refunds": [['REF-001','BookHaven BLR','$49.00','Processed'],['REF-002','Knowledge Lounge','$199.00','Pending']],
+      "Coupons / Discounts": [['WELCOME50','50% OFF First Month','Active','12 Uses'],['YEARLY20','20% OFF Annual','Active','5 Uses'],['BLACKFRIDAY','30% OFF','Expired','89 Uses']],
+      "Subscription History": [['LOG-1','Plan Created','System','Jan 2024'],['LOG-2','Price Updated','Admin','Feb 2024'],['LOG-3','Features Added','Admin','Mar 2024']],
+    };
+
+    const rows = datasets[activeTab] || [];
+    
+    return (
+      <div className="space-y-5 animate-in fade-in duration-300">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Total Records</p><p className="text-2xl font-extrabold mt-1">{rows.length}</p></div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Recent Updates</p><p className="text-2xl font-extrabold mt-1">{Math.max(1, rows.length - 1)}</p></div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Status</p><p className="text-2xl font-extrabold mt-1 text-emerald-500">Healthy</p></div>
+        </div>
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-[#0F172A]">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] flex items-center justify-between"><h4 className="font-extrabold">{activeTab} Details</h4><button onClick={()=>notify(`${activeTab} refresh requested.`)} className="text-xs font-bold text-pink-600">Refresh Data</button></div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-sm">
+              <thead><tr className="text-left text-xs uppercase text-gray-500 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B]"><th className="p-4">Ref ID</th><th className="p-4">Detail</th><th className="p-4">Value / Type</th><th className="p-4">Status</th></tr></thead>
+              <tbody>
+                {rows.length > 0 ? rows.map(row=><tr key={row[0]} className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50"><td className="p-4 font-mono text-xs text-gray-500">{row[0]}</td><td className="p-4 font-bold text-gray-900 dark:text-gray-100">{row[1]}</td><td className="p-4 text-gray-600 dark:text-gray-400">{row[2] || '-'}</td><td className="p-4"><span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-bold">{row[3] || 'N/A'}</span></td></tr>) : <tr><td colSpan={4} className="p-8 text-center text-gray-500 font-bold">No {activeTab} Records Found for Pro Monthly Plan.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={()=>notify(`Create ${activeTab} action opened.`)} className="px-4 py-2.5 rounded-xl bg-pink-600 text-white font-bold text-sm shadow-sm hover:bg-pink-700 transition-colors">Add New {activeTab}</button>
+          <button onClick={()=>notify(`${activeTab} report downloading...`)} className="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Export CSV</button>
+        </div>
+      </div>
+    );
+  };
+
   const operations = [
     { label: "Assign Plan", icon: <Edit size={14} />, color: "text-blue-600 hover:bg-blue-50" },
     { label: "Upgrade Plan", icon: <ArrowUpCircle size={14} />, color: "text-emerald-600 hover:bg-emerald-50" },
@@ -118,76 +189,20 @@ export default function SubscriptionDetailsView({ onBack }: { onBack: () => void
           ))}
         </div>
         
-  const notify = (msg: string) => {
-    window.alert(msg);
-  };
-
-  const renderTabContent = () => {
-    if (activeTab === "Overview") {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 animate-in fade-in duration-300">
-          {[
-            ['Active Tenants', '12', <Activity size={20} />],
-            ['Total Revenue', '$23,880', <Banknote size={20} />],
-            ['Pending Renewals', '3', <CalendarClock size={20} />],
-            ['Coupons Used', '45', <CheckCircle size={20} />],
-          ].map(([label, value, icon]) => (
-            <div key={label as string} className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-5">
-              <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-pink-600 shadow-sm">{icon}</div>
-              <p className="text-xs font-bold text-gray-500 mt-4">{label as string}</p>
-              <p className="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">{value as string}</p>
+        {/* Dynamic Tab Content Area */}
+        <div className="p-8 min-h-[500px] flex flex-col">
+          <div className="flex items-center gap-4 mb-8">
+            <div className={`w-12 h-12 rounded-2xl ${meta.bg} dark:bg-opacity-20 flex items-center justify-center ${meta.color} shadow-sm`}>
+              {meta.icon}
             </div>
-          ))}
-          <div className="sm:col-span-2 xl:col-span-4 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 mt-2 bg-gray-50 dark:bg-[#1E293B]">
-            <h4 className="font-extrabold text-gray-900 dark:text-white mb-4">Plan Limits Configuration</h4>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-[#0F172A] border shadow-sm">
-              <div>
-                <p className="font-bold text-pink-600 flex items-center gap-2"><CreditCard size={16}/> Pro Monthly Plan Base</p>
-                <p className="text-xs font-bold text-gray-500 mt-1">Includes 5 Libraries, 100GB Storage, Priority Support</p>
-              </div>
-              <button onClick={() => notify('Opening plan settings...')} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold">Edit Limits</button>
+            <div>
+              <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white">{activeTab}</h3>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Viewing detailed {activeTab.toLowerCase()} data for the Pro Monthly Plan.</p>
             </div>
           </div>
+          
+          {renderTabContent()}
         </div>
-      );
-    }
-
-    const datasets: Record<string, Array<string[]>> = {
-      "Usage & Limits": [['LIB-1','Storage','85%','Warning'],['LIB-2','Members','45%','Normal'],['LIB-3','API Calls','99%','Critical']],
-      "Invoices": [['INV-2024-01','StudyNest Patna','$199.00','Paid'],['INV-2024-02','Readers Den Delhi','$199.00','Paid'],['INV-2024-03','LibroHub Mumbai','$199.00','Pending']],
-      "Payments": [['PAY-991','Stripe','Success','INV-2024-01'],['PAY-992','PayPal','Success','INV-2024-02'],['PAY-993','Bank Transfer','Processing','INV-2024-03']],
-      "Refunds": [['REF-001','BookHaven BLR','$49.00','Processed'],['REF-002','Knowledge Lounge','$199.00','Pending']],
-      "Coupons / Discounts": [['WELCOME50','50% OFF First Month','Active','12 Uses'],['YEARLY20','20% OFF Annual','Active','5 Uses'],['BLACKFRIDAY','30% OFF','Expired','89 Uses']],
-      "Subscription History": [['LOG-1','Plan Created','System','Jan 2024'],['LOG-2','Price Updated','Admin','Feb 2024'],['LOG-3','Features Added','Admin','Mar 2024']],
-    };
-
-    const rows = datasets[activeTab] || [];
-    
-    return (
-      <div className="space-y-5 animate-in fade-in duration-300">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Total Records</p><p className="text-2xl font-extrabold mt-1">{rows.length}</p></div>
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Recent Updates</p><p className="text-2xl font-extrabold mt-1">{Math.max(1, rows.length - 1)}</p></div>
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Status</p><p className="text-2xl font-extrabold mt-1 text-emerald-500">Healthy</p></div>
-        </div>
-        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-[#0F172A]">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] flex items-center justify-between"><h4 className="font-extrabold">{activeTab} Details</h4><button onClick={()=>notify(`${activeTab} refresh requested.`)} className="text-xs font-bold text-pink-600">Refresh Data</button></div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-sm">
-              <thead><tr className="text-left text-xs uppercase text-gray-500 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B]"><th className="p-4">Ref ID</th><th className="p-4">Detail</th><th className="p-4">Value / Type</th><th className="p-4">Status</th></tr></thead>
-              <tbody>
-                {rows.length > 0 ? rows.map(row=><tr key={row[0]} className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50"><td className="p-4 font-mono text-xs text-gray-500">{row[0]}</td><td className="p-4 font-bold text-gray-900 dark:text-gray-100">{row[1]}</td><td className="p-4 text-gray-600 dark:text-gray-400">{row[2] || '-'}</td><td className="p-4"><span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-bold">{row[3] || 'N/A'}</span></td></tr>) : <tr><td colSpan={4} className="p-8 text-center text-gray-500 font-bold">No {activeTab} Records Found for Pro Monthly Plan.</td></tr>}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button onClick={()=>notify(`Create ${activeTab} action opened.`)} className="px-4 py-2.5 rounded-xl bg-pink-600 text-white font-bold text-sm shadow-sm hover:bg-pink-700 transition-colors">Add New {activeTab}</button>
-          <button onClick={()=>notify(`${activeTab} report downloading...`)} className="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Export CSV</button>
-        </div>
-      </div>
-    );
-  };
       </div>
     </div>
   );
