@@ -6,11 +6,11 @@
     --primary:          #6366F1;
     --primary-hover:    #4F46E5;
     --primary-subtle:   #EEF2FF;
-    --bg-page:          #0F0F1A;
-    --bg-card:          #1A1A2E;
-    --bg-sidebar:       #12121F;
-    --bg-header:        #16162A;
-    --bg-input:         #1E1E32;
+    --bg-page:          #030712;
+    --bg-card:          #0F172A;
+    --bg-sidebar:       #030712;
+    --bg-header:        #030712;
+    --bg-input:         #1E293B;
     --bg-preview:       #1B1A26;
     --bg-preview-card:  #1F1E2A;
     --border:           #2A2A3E;
@@ -903,7 +903,7 @@
 
 /* AG Grid CSS variables (read by gridTheme.ts) */
 :root {
-  --ag-bg:              #1A1A2E;
+  --ag-bg:              #0F172A;
   --ag-fg:              #F0F0FF;
   --ag-header-bg:       rgba(99,102,241,0.08);
   --ag-header-text:     #8888AA;

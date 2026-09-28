@@ -5,16 +5,16 @@
     --primary:          #6366F1;
     --primary-hover:    #4F46E5;
     --primary-subtle:   rgba(99,102,241,0.08);
-    --bg-page:          #0F0F1A;
-    --bg-card:          #1A1A2E;
-    --bg-sidebar:       #12121F;
-    --bg-header:        #16162A;
-    --bg-input:         #1E1E32;
-    --border:           #2A2A3E;
+    --bg-page:          #030712;
+    --bg-card:          #0F172A;
+    --bg-sidebar:       #030712;
+    --bg-header:        #030712;
+    --bg-input:         #1E293B;
+    --border:           #1E293B;
     --border-focus:     #6366F1;
-    --text-primary:     #F0F0FF;
-    --text-secondary:   #8888AA;
-    --text-disabled:    #44445A;
+    --text-primary:     #F8FAFC;
+    --text-secondary:   #94A3B8;
+    --text-disabled:    #475569;
     --success:          #10B981;
     --success-bg:       #064E3B;
     --warning:          #F59E0B;
@@ -25,10 +25,10 @@
     --info-bg:          #1E3A5F;
     --purple:           #8B5CF6;
     --purple-bg:        #2E1065;
-    --sb-bg:            #12121F;
-    --sb-text:          #F0F0FF;
+    --sb-bg:            #030712;
+    --sb-text:          #F8FAFC;
     --sb-active:        #6366F1;
-    --sb-muted:         #8888AA;
+    --sb-muted:         #94A3B8;
 
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -44,13 +44,7 @@
     box-sizing: border-box;
   }
 
-  /* Force dark background on every surface so no white bleeds through */
-  .superadmin-theme body,
-  .superadmin-theme main,
-  .superadmin-theme section,
-  .superadmin-theme div:not([class*="ag-"]) {
-    color: var(--text-primary);
-  }
+
 }
 
 @layer components {
@@ -292,6 +286,7 @@
   }
   .sa-shell-content {
     flex: 1;
+    min-width: 0; /* CRITICAL: prevents flex item from growing past screen width */
     margin-left: 240px;
     min-height: 100vh;
   }
@@ -1024,6 +1019,7 @@
     gap: 12px;
     padding-left: 8px;
     padding-right: 8px;
+    flex-shrink: 0;
   }
 
   /* ── Tip box inside card ── */
@@ -1468,7 +1464,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    height: 100%;
+    height: 100dvh;
     width: 240px;
     background-color: var(--bg-sidebar);
     padding: 32px 16px;
@@ -1476,7 +1472,6 @@
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--border);
-    overflow-y: auto;
     transition: transform 0.3s ease;
   }
   .sa-sidebar--hidden { transform: translateX(-100%); }
@@ -1551,6 +1546,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
   }
   .sa-sidebar-logo-name {
     font-size: 15px;
@@ -1566,6 +1562,13 @@
   .sa-sidebar-nav {
     flex: 1;
     overflow-y: auto;
+    min-height: 0;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .sa-sidebar-nav::-webkit-scrollbar {
+    display: none;
   }
   .sa-sidebar-footer-avatar {
     overflow: hidden;
@@ -2027,7 +2030,7 @@
 
 /* ── AG Grid Theme Tokens (read by reusable/gridTheme.ts) ── */
 :root {
-  --ag-bg:              #1A1A2E;
+  --ag-bg:              #0F172A;
   --ag-fg:              #F0F0FF;
   --ag-header-bg:       rgba(99,102,241,0.08);
   --ag-header-text:     #8888AA;

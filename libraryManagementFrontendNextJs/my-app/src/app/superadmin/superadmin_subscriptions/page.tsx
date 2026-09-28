@@ -1,219 +1,186 @@
 'use client';
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import type { ColDef, ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
+import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
-import { Eye, ReceiptText, Users, TrendingDown, X, Calendar, IndianRupee, CheckCircle, Edit2, Save } from 'lucide-react';
+
+import CreatePlanForm from './CreatePlanForm';
+import SubscriptionDetailsView from './SubscriptionDetailsView';
+import { CreditCard, Search, Filter, Plus, Activity, Clock } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const INITIAL_SUBS = [
-  { id: '1', tenant: 'The Alexandria Modern', plan: 'Enterprise (Annual)', cycle: 'Yearly',  nextInvoice: '12 Oct, 2026', status: 'Paid',     mrr: 15000, seats: 120, startDate: '12 Oct, 2025' },
-  { id: '2', tenant: 'City Reading Hub',       plan: 'Pro (Monthly)',      cycle: 'Monthly', nextInvoice: '15 Apr, 2026', status: 'Due Soon', mrr: 2999,  seats: 80,  startDate: '15 Mar, 2025' },
-  { id: '3', tenant: 'Scholar Spaces',         plan: 'Basic (Monthly)',    cycle: 'Monthly', nextInvoice: '01 Apr, 2026', status: 'Overdue',  mrr: 999,   seats: 150, startDate: '01 Jan, 2025' },
-  { id: '4', tenant: 'Quiet Corner Lib',       plan: 'Basic (Monthly)',    cycle: 'Monthly', nextInvoice: '28 Apr, 2026', status: 'Paid',     mrr: 999,   seats: 40,  startDate: '28 Feb, 2025' },
+const SUB_MENUS = [
+  "Plans", "Create Plan", "Active Subscriptions", "Trials", 
+  "Expired Subscriptions", "Suspended Subscriptions", "Usage & Limits", 
+  "Invoices", "Payments", "Refunds", "Coupons / Discounts", "Subscription History"
 ];
 
-type Sub = typeof INITIAL_SUBS[0];
-const PLANS = ['Basic (Monthly)', 'Pro (Monthly)', 'Enterprise (Annual)'];
-
-const KPI = [
-  { label: 'Active Subscriptions',      val: '24',        icon: Users,        colorCls: 'sa-metric--primary', trend: '+3 this month' },
-  { label: 'Monthly Recurring Revenue', val: '₹1,42,500', icon: ReceiptText,  colorCls: 'sa-metric--success', trend: '↑ 12% vs last month' },
-  { label: 'Churn Rate',                val: '1.2%',       icon: TrendingDown, colorCls: 'sa-metric--warning', trend: 'Healthy ✓' },
+// Mock Data
+const mockPlans = [
+  { id: '1', name: 'Pro Monthly Plan', price: '$199.00/mo', cycle: 'Monthly', status: 'Active', activeTenants: 12, maxLibs: 5, trial: '14 Days' },
+  { id: '2', name: 'Enterprise Annual', price: '$1990.00/yr', cycle: 'Annually', status: 'Active', activeTenants: 5, maxLibs: 'Unlimited', trial: '30 Days' },
+  { id: '3', name: 'Basic Tier', price: '$49.00/mo', cycle: 'Monthly', status: 'Suspended', activeTenants: 45, maxLibs: 1, trial: '7 Days' },
+  { id: '4', name: 'Lifetime Legacy', price: '$4999.00', cycle: 'One-Time', status: 'Expired', activeTenants: 2, maxLibs: 3, trial: 'None' },
 ];
-
-function SubPanel({ sub, onClose, onUpdate }: { sub: Sub; onClose: () => void; onUpdate: (s: Sub) => void }) {
-  const [editing, setEditing] = useState(false);
-  const [plan, setPlan] = useState(sub.plan);
-  const [renewed, setRenewed] = useState(false);
-  const [saved, setSaved] = useState(false);
-
-  const handleRenew = () => {
-    setRenewed(true);
-    onUpdate({ ...sub, status: 'Paid' });
-    setTimeout(() => setRenewed(false), 2000);
-  };
-
-  const handleSavePlan = () => {
-    onUpdate({ ...sub, plan });
-    setSaved(true);
-    setTimeout(() => { setSaved(false); setEditing(false); }, 1200);
-  };
-
-  return (
-    <div className="sa-panel-overlay" onClick={onClose}>
-      <div className="sa-panel-backdrop" />
-      <div className="sa-panel-drawer" onClick={e => e.stopPropagation()}>
-        <div className="flex items-start justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-primary">{sub.tenant}</h2>
-            <p className="text-sm text-secondary mt-0.5">{sub.plan}</p>
-          </div>
-          <button className="sa-btn-icon" onClick={onClose}><X size={16} /></button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          {[['Billing Cycle',sub.cycle],['Start Date',sub.startDate],['Next Invoice',sub.nextInvoice],['Seats',`${sub.seats} seats`]].map(([label,val]) => (
-            <div key={label} className="sa-panel-info-cell">
-              <p className="sa-panel-info-label">{label}</p>
-              <p className="sa-panel-info-value">{val}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="sa-card p-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-secondary">
-            <IndianRupee size={14} /> <span className="text-sm">Monthly Value</span>
-          </div>
-          <span className="text-xl font-bold text-primary">₹{sub.mrr.toLocaleString()}</span>
-        </div>
-
-        {editing ? (
-          <div className="space-y-3">
-            <label className="sa-label">Change Plan</label>
-            <select className="sa-select w-full" value={plan} onChange={e => setPlan(e.target.value)}>
-              {PLANS.map((p: any) => <option key={p}>{p}</option>)}
-            </select>
-            <div className="flex gap-2">
-              <button className="sa-btn-primary sa-btn-primary--flex" onClick={handleSavePlan}>
-                {saved ? <><CheckCircle size={14} /> Saved!</> : <><Save size={14} /> Save Plan</>}
-              </button>
-              <button className="sa-btn-ghost sa-btn-primary--flex" onClick={() => setEditing(false)}>Cancel</button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            {sub.status === 'Paid'     && <span className="sa-badge sa-badge--success">✅ Paid</span>}
-            {sub.status === 'Due Soon' && <span className="sa-badge sa-badge--info">🔵 Due Soon</span>}
-            {sub.status === 'Overdue'  && <span className="sa-badge sa-badge--danger">🔴 Overdue</span>}
-          </div>
-        )}
-
-        {!editing && (
-          <div className="flex gap-3 pt-2">
-            <button className="sa-btn-primary sa-btn-primary--flex" onClick={handleRenew} disabled={renewed}>
-              {renewed ? <><CheckCircle size={14} /> Renewed!</> : <><Calendar size={14} /> Renew Now</>}
-            </button>
-            <button className="sa-btn-ghost sa-btn-primary--flex" onClick={() => setEditing(true)}>
-              <Edit2 size={14} /> Edit Plan
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function SubscriptionsPage() {
-  const [subs, setSubs] = useState(INITIAL_SUBS);
-  const [filter, setFilter] = useState('All');
-  const [selected, setSelected] = useState<Sub | null>(null);
-  const [toast, setToast] = useState('');
+  const [activeMenu, setActiveMenu] = useState("Plans");
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const gridRef = useRef<AgGridReact>(null);
-
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
-
-  const handleUpdate = (updated: Sub) => {
-    setSubs(s => s.map((x: any) => x.id === updated.id ? updated : x));
-    setSelected(updated);
-    showToast(`✅ ${updated.tenant} subscription updated`);
-  };
-
-  const filtered = filter === 'All' ? subs : subs.filter(s => s.status === filter);
 
   const colDefs = useMemo<any[]>(() => [
     {
-      headerName: 'Tenant', field: 'tenant', flex: 2, minWidth: 160,
-      cellClass: () => 'sa-cell-primary-bold',
-    },
-    { headerName: 'Plan', field: 'plan', flex: 1.5, minWidth: 140,
-      cellClass: () => 'sa-cell-plan' },
-    {
-      headerName: 'Cycle & MRR', field: 'mrr', flex: 1, minWidth: 120,
-      cellRenderer: (p: ICellRendererParams<Sub>) => (
-        <div>
-          <p className="text-sm font-medium text-primary">₹{p.data?.mrr.toLocaleString()}</p>
-          <p className="text-xs text-secondary">{p.data?.cycle}</p>
+      headerName: 'Plan Details', field: 'name', flex: 2, minWidth: 240,
+      cellRenderer: (p: ICellRendererParams) => (
+        <div className="flex items-center gap-3 h-full cursor-pointer group">
+          <div className="w-10 h-10 rounded-xl bg-pink-100 dark:bg-pink-900/40 flex items-center justify-center text-pink-600 dark:text-pink-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-sm">
+            {p.data?.name.substring(0,3).toUpperCase()}
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="font-bold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors leading-tight">{p.data?.name}</p>
+            <p className="text-[11px] text-gray-500 font-semibold">{p.data?.cycle} Billing</p>
+          </div>
         </div>
       ),
     },
-    { headerName: 'Next Invoice', field: 'nextInvoice', flex: 1, minWidth: 130,
-      cellClass: () => 'sa-cell-invoice-date' },
-    {
-      headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
-      cellRenderer: (p: ICellRendererParams<Sub>) => (
-        <>
-          {p.data?.status === 'Paid'     && <span className="sa-badge sa-badge--success">✅ Paid</span>}
-          {p.data?.status === 'Due Soon' && <span className="sa-badge sa-badge--info">🔵 Due Soon</span>}
-          {p.data?.status === 'Overdue'  && <span className="sa-badge sa-badge--danger">🔴 Overdue</span>}
-        </>
-      ),
+    { 
+      headerName: 'Pricing & Trial', field: 'price', flex: 1.5, minWidth: 150,
+      cellRenderer: (p: ICellRendererParams) => (
+        <div className="flex flex-col justify-center h-full">
+          <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data?.price}</p>
+          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1"><Clock size={10} /> Trial: {p.data?.trial}</p>
+        </div>
+      )
     },
+    { 
+      headerName: 'Platform Limits', field: 'maxLibs', flex: 1.5, minWidth: 160,
+      cellRenderer: (p: ICellRendererParams) => (
+        <div className="flex items-center h-full text-sm font-semibold text-gray-700 dark:text-gray-300">
+          Max Libraries: {p.data?.maxLibs}
+        </div>
+      )
+    },
+    { 
+      headerName: 'Active Tenants', field: 'activeTenants', flex: 1.2, minWidth: 140,
+      cellRenderer: (p: ICellRendererParams) => (
+        <div className="flex items-center gap-2 h-full">
+          <Activity size={16} className="text-blue-500" />
+          <span className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data?.activeTenants} Orgs</span>
+        </div>
+      )
+    },
+    { 
+      headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
+      cellRenderer: (p: ICellRendererParams) => {
+        let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
+        if (p.data?.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
+        if (p.data?.status === 'Suspended') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
+        if (p.data?.status === 'Expired') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
+        
+        return (
+          <div className="flex items-center h-full">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>
+              {p.data?.status}
+            </span>
+          </div>
+        )
+      }
+    }
   ], []);
 
   const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
+  const getFilteredPlans = () => {
+    // Basic mock filtering logic for demonstration
+    if (activeMenu === "Expired Subscriptions") return mockPlans.filter(p => p.status === 'Expired');
+    if (activeMenu === "Suspended Subscriptions") return mockPlans.filter(p => p.status === 'Suspended');
+    if (activeMenu === "Active Subscriptions") return mockPlans.filter(p => p.status === 'Active');
+    return mockPlans;
+  };
+
+  if (selectedPlan) {
+    return <SubscriptionDetailsView onBack={() => setSelectedPlan(null)} />;
+  }
+
   return (
-    <>
-      {toast && <div className="sa-toast">{toast}</div>}
-      {selected && <SubPanel sub={selected} onClose={() => setSelected(null)} onUpdate={handleUpdate} />}
-
-      <div className="flex flex-col gap-1 mb-8">
-        <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Subscriptions</span>
-        </div>
-        <h1 className="sa-page-title">SaaS Subscriptions</h1>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {KPI.map((k: any) => {
-          const Icon = k.icon;
-          return (
-            <div key={k.label} className="sa-kpi-card">
-              <div className="flex items-start justify-between">
-                <div className="sa-kpi-icon-box">
-                  <Icon size={18} className={k.colorCls} />
-                </div>
-                <p className="text-xs font-semibold text-secondary uppercase tracking-widest text-right">{k.label}</p>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-primary leading-tight">{k.val}</h2>
-                <p className="text-xs mt-1 font-medium text-success">{k.trend}</p>
-              </div>
+    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <span>Nexus 360</span><span>/</span><span className="text-pink-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Plans & Subscriptions</span>
+          </div>
+          <h1 className="sa-page-title text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
+            <div className="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-xl shadow-sm border border-pink-200/50 dark:border-pink-800/50">
+              <CreditCard size={28} className="text-pink-600 dark:text-pink-400" />
             </div>
-          );
-        })}
+            Plans & Subscriptions
+          </h1>
+        </div>
+        <button 
+          onClick={() => setActiveMenu("Create Plan")}
+          className="flex items-center gap-2 px-5 py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-xl shadow-lg shadow-pink-600/20 transition-all hover:-translate-y-0.5"
+        >
+          <Plus size={18} /> Create New Plan
+        </button>
       </div>
 
-      <div className="sa-card overflow-hidden">
-        <div className="sa-actions-bar gap-2">
-          {['All', 'Paid', 'Due Soon', 'Overdue'].map((f: any) => (
-            <button key={f} onClick={() => setFilter(f)}
-              className={`sa-filter-tab ${filter === f ? 'sa-filter-tab--active' : ''}`}>{f}</button>
-          ))}
-          <span className="ml-auto text-xs text-secondary">{filtered.length} records</span>
-        </div>
-        <div style={{ height: 380 }}>
-          <AgGridReact
-            ref={gridRef}
-            theme={gridTheme}
-            rowData={filtered}
-            columnDefs={colDefs as any}
-            rowHeight={56}
-            headerHeight={44}
-            onGridReady={onGridReady}
-            onRowClicked={p => setSelected(p.data)}
-            pagination={true}
-            paginationPageSize={10}
-            suppressCellFocus={true}
-          />
-        </div>
-        <div className="p-4 border-t border-border text-center">
-          <span className="text-sm text-secondary">Showing {filtered.length} of 24 subscriptions</span>
-        </div>
+      {/* Sub-menu Tabs */}
+      <div className="flex overflow-x-auto custom-scrollbar gap-2 pb-2">
+        {SUB_MENUS.map(menu => (
+          <button
+            key={menu}
+            onClick={() => setActiveMenu(menu)}
+            className={`px-5 py-2.5 text-sm font-bold rounded-xl whitespace-nowrap transition-all shadow-sm ${
+              activeMenu === menu 
+                ? 'bg-pink-600 text-white shadow-pink-600/20 scale-105' 
+                : 'bg-white dark:bg-[#0F172A] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:bg-pink-50 dark:hover:bg-[#1E293B] hover:text-pink-600 hover:border-pink-200'
+            }`}
+          >
+            {menu}
+          </button>
+        ))}
       </div>
-    </>
+
+      {/* Main Content Area based on Tab */}
+      {activeMenu === "Create Plan" ? (
+        <CreatePlanForm onCancel={() => setActiveMenu("Plans")} />
+      ) : (
+        <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col">
+          <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 dark:bg-[#0D1F3C]">
+            <div className="relative max-w-md w-full">
+              <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input 
+                type="text" 
+                placeholder="Search plans or subscriptions..." 
+                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all shadow-sm"
+                onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)}
+              />
+            </div>
+            <button className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
+              <Filter size={16} className="text-gray-500" /> Plan Filters
+            </button>
+          </div>
+          
+          <div className="h-[650px] w-full">
+            <AgGridReact
+              ref={gridRef}
+              theme={gridTheme}
+              rowData={getFilteredPlans()}
+              columnDefs={colDefs}
+              rowHeight={72}
+              headerHeight={52}
+              onGridReady={onGridReady}
+              onRowClicked={p => setSelectedPlan(p.data)}
+              pagination={true}
+              paginationPageSize={15}
+              rowClass="cursor-pointer hover:bg-pink-50/50 dark:hover:bg-pink-900/10 transition-colors"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

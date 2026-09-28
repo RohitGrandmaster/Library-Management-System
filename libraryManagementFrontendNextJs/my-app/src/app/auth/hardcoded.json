@@ -5,8 +5,8 @@
       "label": "Super Admin",
       "description": "First-time setup — configure library, shifts & plans",
       "icon": "👑",
-      "email": "owner@smartlibrary.com",
-      "password": "Owner@1234",
+      "email": "superadmin@nexus360.com",
+      "password": "password123",
       "redirectTo": "/superadmin/superadmin_dashboard",
       "setupComplete": true
     },
@@ -15,8 +15,8 @@
       "label": "Admin",
       "description": "Branch management — students, fees, reports",
       "icon": "🛡️",
-      "email": "admin@smartlibrary.com",
-      "password": "Admin@1234",
+      "email": "admin@nexus360.com",
+      "password": "password123",
       "redirectTo": "/admin/admin_dashboard",
       "setupComplete": true
     },
@@ -25,9 +25,9 @@
       "label": "Manager",
       "description": "Daily ops — admissions, seat matrix, renewals",
       "icon": "📋",
-      "email": "manager@smartlibrary.com",
-      "password": "Manager@1234",
-      "redirectTo": "/manager/manager_seats_shifts_lockers/seat-matrix",
+      "email": "manager@nexus360.com",
+      "password": "password123",
+      "redirectTo": "/manager/manager_dashboard",
       "setupComplete": true
     }
   ],

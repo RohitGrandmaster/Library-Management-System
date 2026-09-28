@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 
   // NOTE: 'standalone' is for Docker only — Vercel handles its own output mode.
   // Remove or comment this line when deploying to Vercel.

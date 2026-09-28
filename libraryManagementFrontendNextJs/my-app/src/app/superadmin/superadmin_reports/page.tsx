@@ -1,230 +1,239 @@
 'use client';
-import { useState } from 'react';
-import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-} from 'recharts';
-import { IndianRupee, TrendingUp, TrendingDown, Users, Download, FileSpreadsheet, CheckCircle } from 'lucide-react';
+import { useState, useRef, useCallback, useMemo } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 
-// ── Chart data ────────────────────────────────────────────────────────────────
-const REVENUE_EXPENSE = [
-  { month: 'Nov', Revenue: 142000, Expenses: 45000 },
-  { month: 'Dec', Revenue: 158000, Expenses: 52000 },
-  { month: 'Jan', Revenue: 134000, Expenses: 41000 },
-  { month: 'Feb', Revenue: 172000, Expenses: 58000 },
-  { month: 'Mar', Revenue: 196000, Expenses: 61000 },
-  { month: 'Apr', Revenue: 214000, Expenses: 67000 },
+import { 
+  BarChart2, Filter, FileText, Download, Printer, 
+  PieChart, TrendingUp, Building2, Users, Database, FileSpreadsheet, RefreshCw
+} from 'lucide-react';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+const SUB_MENUS = [
+  "Platform Overview", "Library Reports", "Branch Reports", "User Reports", 
+  "Usage Reports", "Subscription Reports", "Financial Reports", "Circulation Summary", 
+  "Book & Member Summary", "Security Reports", "Audit Reports", "Server Reports", 
+  "API Reports", "Custom Reports"
 ];
 
-const REVENUE_TREND = [
-  { month: 'May', Revenue: 88000  }, { month: 'Jun', Revenue: 97000  },
-  { month: 'Jul', Revenue: 112000 }, { month: 'Aug', Revenue: 125000 },
-  { month: 'Sep', Revenue: 138000 }, { month: 'Oct', Revenue: 119000 },
-  { month: 'Nov', Revenue: 142000 }, { month: 'Dec', Revenue: 158000 },
-  { month: 'Jan', Revenue: 134000 }, { month: 'Feb', Revenue: 172000 },
-  { month: 'Mar', Revenue: 196000 }, { month: 'Apr', Revenue: 214000 },
+// Mock Data for Reports Grid
+const mockReportData = [
+  { id: 'lib_01', name: 'StudyNest Patna', plan: 'Enterprise', status: 'Active', branches: 4, users: 450, books: 12500, revenue: '$499/mo', usage: '92%' },
+  { id: 'lib_02', name: 'Readers Den Delhi', plan: 'Professional', status: 'Active', branches: 1, users: 120, books: 5400, revenue: '$199/mo', usage: '78%' },
+  { id: 'lib_03', name: 'LibroHub Mumbai', plan: 'Basic', status: 'Suspended', branches: 1, users: 45, books: 1200, revenue: '$49/mo', usage: '12%' },
+  { id: 'lib_04', name: 'Knowledge Tree', plan: 'Enterprise', status: 'Active', branches: 8, users: 1250, books: 45000, revenue: '$999/mo', usage: '98%' },
 ];
 
-const STUDENT_GROWTH = [
-  { month: 'Nov', Joined: 320, Exited: 85  },
-  { month: 'Dec', Joined: 410, Exited: 110 },
-  { month: 'Jan', Joined: 280, Exited: 70  },
-  { month: 'Feb', Joined: 490, Exited: 130 },
-  { month: 'Mar', Joined: 520, Exited: 95  },
-  { month: 'Apr', Joined: 380, Exited: 88  },
-];
+export default function ReportsAnalyticsPage() {
+  const [activeMenu, setActiveMenu] = useState("Platform Overview");
+  const [isExporting, setIsExporting] = useState<string | null>(null);
+  const gridRef = useRef<AgGridReact>(null);
 
-const OCCUPANCY = [
-  { name: 'Morning',     value: 42 },
-  { name: 'Afternoon',   value: 31 },
-  { name: 'Evening',     value: 18 },
-  { name: 'Unallocated', value: 9  },
-];
+  const colDefs = useMemo<any[]>(() => [
+    { field: 'name', headerName: 'Tenant Library', flex: 2, minWidth: 200, cellClass: 'font-bold text-gray-900 dark:text-white' },
+    { field: 'plan', headerName: 'Subscription Plan', flex: 1.5, minWidth: 150, cellRenderer: (p: ICellRendererParams) => (
+      <span className="text-xs font-bold text-sky-700 bg-sky-100 dark:bg-sky-900/30 dark:text-sky-400 px-2 py-1 rounded">{p.value}</span>
+    )},
+    { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, cellRenderer: (p: ICellRendererParams) => (
+      <span className={`text-xs font-bold px-2 py-1 rounded ${p.value === 'Active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>{p.value}</span>
+    )},
+    { field: 'branches', headerName: 'Branches', flex: 1, minWidth: 120 },
+    { field: 'users', headerName: 'Total Users', flex: 1, minWidth: 120 },
+    { field: 'books', headerName: 'Book Inventory', flex: 1, minWidth: 150 },
+    { field: 'revenue', headerName: 'MRR Revenue', flex: 1, minWidth: 130, cellClass: 'font-bold text-emerald-600 dark:text-emerald-400' },
+    { field: 'usage', headerName: 'Platform Usage', flex: 1, minWidth: 140, cellRenderer: (p: ICellRendererParams) => (
+      <div className="flex items-center gap-2 h-full">
+        <div className="w-16 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-full bg-sky-500" style={{ width: p.value }} />
+        </div>
+        <span className="text-[10px] font-bold text-gray-500">{p.value}</span>
+      </div>
+    )},
+  ], []);
 
-// Dynamic data-driven colours — CSS var strings (Rule 3 allowed)
-const PIE_COLORS = ['var(--primary)', 'var(--success)', 'var(--warning)', 'var(--border)'];
+  const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
-// ── KPI cards ─────────────────────────────────────────────────────────────────
-const KPI_CARDS = [
-  { label: 'Total Revenue This Month', value: '₹2,14,000', iconCls: 'sa-reports-kpi-icon--primary', Icon: IndianRupee,  trend: '+18% vs last month', trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-  { label: 'Total Expenses',           value: '₹67,000',   iconCls: 'sa-reports-kpi-icon--danger',  Icon: TrendingDown, trend: '+9% vs last month',  trendCls: 'sa-reports-kpi-trend--down', TrendIcon: TrendingDown },
-  { label: 'Net Profit',               value: '₹1,47,000', iconCls: 'sa-reports-kpi-icon--success', Icon: TrendingUp,   trend: '+22% vs last month', trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-  { label: 'Active Libraries',         value: '38',         iconCls: 'sa-reports-kpi-icon--warning', Icon: Users,        trend: '+4 this month',      trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-];
+  const handleExport = (type: string) => {
+    setIsExporting(type);
+    setTimeout(() => setIsExporting(null), 1500);
+  };
 
-const DATE_RANGES = ['This Month', 'Last 3 Months', 'Last 6 Months', 'This Year'];
+  const renderContent = () => {
+    if (activeMenu === "Custom Reports") {
+      return (
+        <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden p-16 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
+           <div className="p-5 bg-sky-100 dark:bg-sky-900/40 rounded-full mb-6 shadow-inner">
+            <Database size={48} className="text-sky-500 dark:text-sky-400" />
+          </div>
+          <h4 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-3">Custom SQL Query Builder</h4>
+          <p className="text-gray-500 font-medium max-w-lg mx-auto mb-8">
+            Create completely custom views by dragging and dropping fields or writing raw SQL queries. Custom reports can be scheduled and exported directly.
+          </p>
+          <button className="px-6 py-3 text-sm font-bold text-white bg-sky-600 hover:bg-sky-700 rounded-xl shadow-lg shadow-sky-500/20 transition-all">
+            Open Query Builder
+          </button>
+        </div>
+      );
+    }
 
-// ── Shared chart style (CSS var strings — no hex) ─────────────────────────────
-const AXIS_TICK = { fill: 'var(--text-secondary)', fontSize: 11, fontFamily: 'Inter, sans-serif' } as const;
-const GRID_COLOR = 'var(--border)';
-const TOOLTIP_CONTENT_STYLE = {
-  background: 'var(--bg-sidebar)',
-  border: '1px solid var(--border)',
-  borderRadius: 8,
-  fontSize: 12,
-  color: 'var(--text-primary)',
-};
+    if (activeMenu === "Platform Overview") {
+      return (
+        <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-[#0F172A] p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 rounded-xl"><Building2 size={24} /></div>
+                <span className="px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center gap-1"><TrendingUp size={10} /> +12%</span>
+              </div>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Total Libraries</h3>
+              <p className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">452</p>
+            </div>
+            
+            <div className="bg-white dark:bg-[#0F172A] p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded-xl"><Users size={24} /></div>
+                <span className="px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center gap-1"><TrendingUp size={10} /> +5.4%</span>
+              </div>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Global Active Users</h3>
+              <p className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">84.2K</p>
+            </div>
 
-// Type-safe recharts formatters (cast needed — recharts ValueType includes arrays)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rupeeFormatter = (value: any) => [`₹${Number(value ?? 0).toLocaleString()}`, ''] as [string, string];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const pctFormatter   = (value: any) => [`${value ?? 0}%`, ''] as [string, string];
+            <div className="bg-white dark:bg-[#0F172A] p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl"><PieChart size={24} /></div>
+              </div>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Total MRR</h3>
+              <p className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">$42,500</p>
+            </div>
+          </div>
 
-export default function ReportsPage() {
-  const [range,    setRange]    = useState('Last 6 Months');
-  const [exported, setExported] = useState(false);
+          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden p-6 flex items-center justify-center h-64 border-dashed">
+            <p className="text-gray-400 font-bold flex items-center gap-2"><BarChart2 /> Advanced Charts Visualization Area</p>
+          </div>
+        </div>
+      );
+    }
 
-  const handleExport = () => {
-    setExported(true);
-    setTimeout(() => setExported(false), 2000);
+    // Default Grid for Library/Financial/Etc Reports
+    return (
+      <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+        <div className="p-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0D1F3C] flex justify-between items-center">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <FileSpreadsheet size={20} className="text-sky-500" /> {activeMenu} Data
+          </h3>
+          <p className="text-xs text-gray-500 font-bold">Showing {mockReportData.length} records based on filters</p>
+        </div>
+        <div className="h-[500px] w-full">
+          <AgGridReact
+            ref={gridRef}
+            theme={gridTheme}
+            rowData={mockReportData}
+            columnDefs={colDefs}
+            rowHeight={56}
+            headerHeight={48}
+            onGridReady={onGridReady}
+          />
+        </div>
+      </div>
+    );
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-1 mb-8">
-        <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Reports</span>
-        </div>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <h1 className="sa-page-title">Platform Reports & Analytics</h1>
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1 bg-card border border-border rounded-lg p-1">
-              {DATE_RANGES.map((r: any) => (
-                <button key={r} onClick={() => setRange(r)}
-                  className={`sa-filter-tab ${range === r ? 'sa-filter-tab--active' : ''}`}>
-                  {r}
-                </button>
-              ))}
-            </div>
-            <button className="sa-btn-export" onClick={handleExport}>
-              {exported
-                ? <><CheckCircle size={13} className="sa-metric--success" /> Exported!</>
-                : <><Download size={13} /> Export PDF</>}
-            </button>
-            <button className="sa-btn-export" onClick={handleExport}>
-              <FileSpreadsheet size={13} /> Export Excel
-            </button>
+    <div className="flex flex-col gap-6 w-full h-full">
+      
+      {/* Header & Export Actions */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <span>Nexus 360</span><span>/</span><span className="text-sky-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Reports & Analytics</span>
           </div>
+          <h1 className="sa-page-title text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
+            <div className="p-2 bg-sky-100 dark:bg-sky-900/30 rounded-xl shadow-sm border border-sky-200/50 dark:border-sky-800/50">
+              <BarChart2 size={28} className="text-sky-600 dark:text-sky-400" />
+            </div>
+            Global Reports & Analytics
+          </h1>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-medium max-w-3xl">Aggregate platform data, visualize financial trends, and export compliance-ready CSV/PDF reports.</p>
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-2">
+          {['PDF', 'Excel', 'CSV'].map(format => (
+            <button 
+              key={format}
+              onClick={() => handleExport(format)}
+              disabled={isExporting !== null}
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all disabled:opacity-50"
+            >
+              {isExporting === format ? <RefreshCw size={14} className="animate-spin text-sky-500" /> : (format === 'PDF' ? <FileText size={14} className="text-red-500" /> : <Download size={14} className="text-emerald-500" />)}
+              {isExporting === format ? 'Exporting...' : `Export ${format}`}
+            </button>
+          ))}
+          <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
+            <Printer size={14} /> Print
+          </button>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        {KPI_CARDS.map((k: any) => (
-          <div key={k.label} className="sa-reports-kpi">
-            <div className={`sa-reports-kpi-icon ${k.iconCls}`}>
-              <k.Icon size={20} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="sa-reports-kpi-label">{k.label}</p>
-              <p className="sa-reports-kpi-value">{k.value}</p>
-              <span className={`sa-reports-kpi-trend ${k.trendCls}`}>
-                <k.TrendIcon size={12} /> {k.trend}
-              </span>
-            </div>
-          </div>
+      {/* Global Filter Bar */}
+      <div className="bg-white dark:bg-[#0F172A] p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-wrap items-center gap-3 sticky top-4 z-10">
+        <div className="flex items-center gap-2 mr-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+          <Filter size={16} className="text-sky-500" /> Filters:
+        </div>
+        <select className="px-3 py-2 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold outline-none focus:border-sky-500 shadow-sm text-gray-600 dark:text-gray-300">
+          <option>Date: Year to Date (YTD)</option>
+          <option>Last 30 Days</option>
+          <option>Custom Range...</option>
+        </select>
+        <select className="px-3 py-2 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold outline-none focus:border-sky-500 shadow-sm text-gray-600 dark:text-gray-300">
+          <option>All Libraries</option>
+          <option>StudyNest</option>
+          <option>LibroHub</option>
+        </select>
+        <select className="px-3 py-2 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold outline-none focus:border-sky-500 shadow-sm text-gray-600 dark:text-gray-300">
+          <option>All Branches</option>
+          <option>Main Branch Only</option>
+        </select>
+        <select className="px-3 py-2 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold outline-none focus:border-sky-500 shadow-sm text-gray-600 dark:text-gray-300">
+          <option>All Plans</option>
+          <option>Enterprise</option>
+          <option>Free Trial</option>
+        </select>
+        <select className="px-3 py-2 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold outline-none focus:border-sky-500 shadow-sm text-gray-600 dark:text-gray-300">
+          <option>Status: All</option>
+          <option>Active</option>
+          <option>Suspended</option>
+        </select>
+        
+        <div className="flex-1"></div>
+        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors">
+          Apply Filters
+        </button>
+      </div>
+
+      {/* Sub-menu Tabs */}
+      <div className="flex overflow-x-auto custom-scrollbar gap-2 pb-2">
+        {SUB_MENUS.map(menu => (
+          <button
+            key={menu}
+            onClick={() => setActiveMenu(menu)}
+            className={`px-5 py-2.5 text-sm font-bold rounded-xl whitespace-nowrap transition-all shadow-sm ${
+              activeMenu === menu 
+                ? 'bg-sky-600 text-white shadow-sky-600/20 scale-105' 
+                : 'bg-white dark:bg-[#0F172A] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:bg-sky-50 dark:hover:bg-[#1E293B] hover:text-sky-600 hover:border-sky-200'
+            }`}
+          >
+            {menu}
+          </button>
         ))}
       </div>
 
-      {/* 2×2 Chart Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
-        {/* Revenue vs Expenses */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Revenue vs Expenses</p>
-              <p className="sa-chart-card-sub">Grouped comparison — last 6 months</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={REVENUE_EXPENSE} barCategoryGap="30%">
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false}
-                  tickFormatter={v => `₹${(Number(v) / 1000).toFixed(0)}k`} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={rupeeFormatter} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-                <Bar dataKey="Revenue"  fill="var(--primary)" radius={[4,4,0,0]} />
-                <Bar dataKey="Expenses" fill="var(--danger)"  radius={[4,4,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Shift Occupancy Donut */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Shift-wise Seat Occupancy</p>
-              <p className="sa-chart-card-sub">Percentage of occupied seats per shift</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={OCCUPANCY} dataKey="value" nameKey="name"
-                  cx="50%" cy="50%" innerRadius={70} outerRadius={110} paddingAngle={3}>
-                  {OCCUPANCY.map((_, i) => (
-                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={pctFormatter} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Revenue Trend Line */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Monthly Revenue Trend</p>
-              <p className="sa-chart-card-sub">Rolling 12-month platform revenue</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={REVENUE_TREND}>
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false}
-                  tickFormatter={v => `₹${(Number(v) / 1000).toFixed(0)}k`} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={rupeeFormatter} />
-                <Line type="monotone" dataKey="Revenue" stroke="var(--success)" strokeWidth={2}
-                  dot={{ fill: 'var(--success)', r: 4 }} activeDot={{ r: 7 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Student Growth */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Student Growth</p>
-              <p className="sa-chart-card-sub">Joined vs Exited per month</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={STUDENT_GROWTH} barCategoryGap="30%">
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-                <Bar dataKey="Joined" fill="var(--info)"   radius={[4,4,0,0]} />
-                <Bar dataKey="Exited" fill="var(--danger)" radius={[4,4,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
+      {/* Dynamic Content */}
+      <div className="w-full mt-2">
+        {renderContent()}
       </div>
-    </>
+    </div>
   );
 }

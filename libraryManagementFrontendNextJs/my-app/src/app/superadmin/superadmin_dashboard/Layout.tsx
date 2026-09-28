@@ -1,5 +1,6 @@
-// src/app/superadmin/dashboard/Layout.tsx
-// Note: This wrapper is imported by pages inside superadmin/dashboard/
+'use client';
+
+import { useState } from 'react';
 import Sidebar from '@/app/superadmin/superadmin_dashboard/Sidebar';
 import Header from '@/app/superadmin/superadmin_dashboard/Header';
 
@@ -8,16 +9,24 @@ export default function SuperAdminDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen bg-surface text-on-surface overflow-hidden">
+    <div className="superadmin-theme sa-shell dark bg-[#030712] text-[#F0F0FF]">
+      {/* Mobile Overlay */}
+      <div 
+        className={`sa-sidebar-mobile-overlay ${sidebarOpen ? 'sa-sidebar-mobile-overlay--visible' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* Fixed Sidebar */}
-      <Sidebar />
+      <Sidebar open={sidebarOpen} />
 
       {/* Main Content Area */}
-      <div className="flex-1 ml-[240px] min-h-screen">
-        <Header />
+      <div className="sa-shell-content">
+        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
-        <main className="pt-20 p-8 min-h-screen space-y-8">
+        <main className="sa-shell-main space-y-6">
           {children}
         </main>
       </div>

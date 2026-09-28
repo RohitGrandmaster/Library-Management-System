@@ -9,22 +9,36 @@ export async function fetchDashboardData(): Promise<DashboardDataResponse | null
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
   const url = `${API_BASE}${DASHBOARD_URL_CONFIG.ENDPOINTS.GET_DASHBOARD}`;
 
-  try {
-    const res = await fetch(url, {
-      cache: 'no-store',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!res.ok) {
-      return null;
-    }
-    
-    return await res.json();
-  } catch (err) {
-    console.error('Failed to fetch dashboard data', err);
-    return null;
-  }
+  // MOCKED for Frontend Prototype since Backend isn't active
+  return {
+    kpiCards: [], // Note: Superadmin currently renders static cards in DashboardOverview.tsx
+    systemHealth: {
+      uptime: '99.98%',
+      activeUsers: 143,
+      apiLatency: '42ms',
+      lastBackup: '2 mins ago'
+    },
+    actionItems: [
+      {
+        id: '1',
+        title: 'Database Backup Needed',
+        description: 'No full backup in 48 hours.',
+        type: 'warning',
+        icon: 'Database',
+        actionLabel: 'Run Backup',
+        actionUrl: '/superadmin/superadmin_backup'
+      }
+    ],
+    recentLibraries: [
+      {
+        initials: 'SN',
+        name: 'StudyNest Patna',
+        owner: 'Rahul K.',
+        students: 240,
+        status: 'active',
+        plan: 'Enterprise',
+        joinedAt: '2 Days ago'
+      }
+    ]
+  };
 }

@@ -9,16 +9,29 @@ import {
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/superadmin/superadmin_dashboard',       icon: LayoutDashboard, label: 'Dashboard'         },
-  { href: '/superadmin/superadmin_setup-wizard',    icon: Wand2,           label: 'Setup Wizard'      },
-  { href: '/superadmin/superadmin_libraries',       icon: Building2,       label: 'Libraries'         },
-  { href: '/superadmin/superadmin_subscriptions',   icon: CreditCard,      label: 'Subscriptions'     },
-  { href: '/superadmin/superadmin_billing',         icon: Receipt,         label: 'Billing'           },
-  { href: '/superadmin/superadmin_support-tickets', icon: HeadphonesIcon,  label: 'Support Tickets'   },
-  { href: '/superadmin/superadmin_audit-logs',      icon: ScrollText,      label: 'Audit Logs'        },
-  { href: '/superadmin/superadmin_system-health',   icon: Activity,        label: 'System Health'     },
-  { href: '/superadmin/superadmin_reports',         icon: BarChart2,       label: 'Reports'           },
-  { href: '/superadmin/superadmin_settings',        icon: Settings,        label: 'Platform Settings' },
+  { href: '/superadmin/superadmin_dashboard',             icon: LayoutDashboard, label: '01. Dashboard' },
+  { href: '/superadmin/superadmin_libraries',             icon: Building2,       label: '02. Libraries / Organizations' },
+  { href: '/superadmin/superadmin_branches',              icon: Building2,       label: '03. Branch Management' },
+  { href: '/superadmin/superadmin_users',                 icon: Settings,        label: '04. Platform Users' },
+  { href: '/superadmin/superadmin_roles',                 icon: Settings,        label: '05. Roles & Permissions' },
+  { href: '/superadmin/superadmin_subscriptions',         icon: CreditCard,      label: '06. Plans & Subscriptions' },
+  { href: '/superadmin/superadmin_features',              icon: Wand2,           label: '07. Feature Management' },
+  { href: '/superadmin/superadmin_global-config',         icon: Settings,        label: '08. Global Library Configuration' },
+  { href: '/superadmin/superadmin_server',                icon: Activity,        label: '09. Server & Infrastructure' },
+  { href: '/superadmin/superadmin_database',              icon: Activity,        label: '10. Database & Data' },
+  { href: '/superadmin/superadmin_jobs',                  icon: Activity,        label: '11. Jobs & Scheduler' },
+  { href: '/superadmin/superadmin_api',                   icon: Activity,        label: '12. API & Integrations' },
+  { href: '/superadmin/superadmin_communication',         icon: HeadphonesIcon,  label: '13. Notifications & Communication' },
+  { href: '/superadmin/superadmin_security',              icon: Activity,        label: '14. Security Center' },
+  { href: '/superadmin/superadmin_audit-logs',            icon: ScrollText,      label: '15. Global Audit Center' },
+  { href: '/superadmin/superadmin_backup',                icon: Activity,        label: '16. Backup & Disaster Recovery' },
+  { href: '/superadmin/superadmin_monitoring',            icon: Activity,        label: '17. Monitoring & Alerts' },
+  { href: '/superadmin/superadmin_reports',               icon: BarChart2,       label: '18. Reports & Analytics' },
+  { href: '/superadmin/superadmin_support-tickets',       icon: HeadphonesIcon,  label: '19. Support & Operations' },
+  { href: '/superadmin/superadmin_governance',            icon: Settings,        label: '20. Data Governance & Compliance' },
+  { href: '/superadmin/superadmin_settings',              icon: Settings,        label: '21. System Settings' },
+  { href: '/superadmin/superadmin_profile',               icon: Settings,        label: '22. My Profile' },
+  { href: '#logout',                                      icon: LogOut,          label: '23. Logout' },
 ];
 
 interface SidebarProps {
@@ -49,6 +62,19 @@ export default function Sidebar({ open }: SidebarProps) {
           const isActive = pathname === href || pathname.startsWith(href + '/');
           const iconColors = ['#4F46E5', '#059669', '#D97706', '#2563EB', '#7C3AED', '#E11D48', '#0D9488'];
           const color = iconColors[i % iconColors.length];
+          
+          if (href === '#logout') {
+            return (
+              <button
+                key={href}
+                onClick={() => setShowLogout(true)}
+                className="sa-nav-link text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors text-left"
+              >
+                <Icon size={17} />
+                <span className="font-bold">{label}</span>
+              </button>
+            )
+          }
 
           return (
             <Link
@@ -72,8 +98,8 @@ export default function Sidebar({ open }: SidebarProps) {
         <button
           className="sa-btn-icon sa-btn-icon--danger"
           onClick={() => setShowLogout(true)}
-          title="Log out"
-          aria-label="Log out"
+          title="Logout"
+          aria-label="Logout"
         >
           <LogOut size={15} />
         </button>
@@ -85,11 +111,11 @@ export default function Sidebar({ open }: SidebarProps) {
             <div className="sa-wizard-modal-icon">
               <LogOut size={20} className="sa-metric--warning" />
             </div>
-            <p className="sa-wizard-modal-title">Log out?</p>
-            <p className="sa-wizard-modal-desc">Are you sure you want to log out of the Super Admin panel?</p>
-            <div className="flex gap-3 mt-4">
-              <button className="sa-btn-ghost sa-btn-ghost--sm flex-1" onClick={() => setShowLogout(false)}>Cancel</button>
-              <button className="sa-btn-ghost sa-btn-ghost--danger flex-1" onClick={() => router.push('/auth/login')}>Log out</button>
+            <p className="sa-wizard-modal-title">Logout</p>
+            <p className="sa-wizard-modal-desc font-bold text-gray-800 dark:text-gray-200 mt-2">Are you sure you want to logout?</p>
+            <div className="flex gap-3 mt-6">
+              <button className="sa-btn-ghost sa-btn-ghost--sm flex-1 font-bold" onClick={() => setShowLogout(false)}>Cancel</button>
+              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => router.push('/auth/login')}>Logout</button>
             </div>
           </div>
         </div>

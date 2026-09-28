@@ -21,17 +21,30 @@ async function getDashboardData() {
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
   const url = `${API_BASE}${ADMIN_API_ROUTES.DASHBOARD}`;
   
-  const res = await fetch(url, {
-    cache: 'no-store',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    return null;
-  }
-  return res.json();
+  // Mocked for Frontend UI Prototype
+  return {
+    kpiCards: [
+      { label: 'Active Students', value: 245, trend: { value: '12%', up: true }, sub: 'Vs last month' },
+      { label: 'Today\'s Revenue', value: '₹12,450', trend: { value: '5%', up: true }, sub: 'From 8 renewals' },
+      { label: 'Expiring (7d)', value: 18, trend: { value: '3', up: false }, sub: 'Needs reminder' },
+      { label: 'Available Seats', value: 12, trend: { value: '4', up: true }, sub: 'Across 3 shifts' }
+    ],
+    seats: [
+      { id: '1', number: 'A1', type: 'Premium', price: 1000, features: ['AC', 'Charging'] },
+      { id: '2', number: 'A2', type: 'Standard', price: 800, features: ['Charging'] }
+    ],
+    shifts: [
+      { id: 's1', name: 'Morning (6AM - 2PM)' },
+      { id: 's2', name: 'Evening (2PM - 10PM)' }
+    ],
+    actionItems: [
+      { id: 'a1', label: 'Student Expiring', message: 'Rahul expires tomorrow', type: 'warning', count: 1 }
+    ],
+    recentPayments: [
+      { id: 'p1', student: 'Amit Kumar', amount: 1500, date: '2026-09-28', status: 'Success' },
+      { id: 'p2', student: 'Neha Singh', amount: 1200, date: '2026-09-28', status: 'Success' }
+    ]
+  };
 }
 
 

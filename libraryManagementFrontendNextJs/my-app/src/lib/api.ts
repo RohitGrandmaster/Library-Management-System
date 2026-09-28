@@ -29,63 +29,29 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   };
 
   let response: Response;
-  try {
-    response = await fetch(url, {
-      ...options,
-      headers,
-      credentials: 'include',
-    });
-  } catch (networkError) {
-    // Network-level failure (server down, CORS blocked, wrong URL)
-    console.error(`[fetchApi] Network error for ${url}:`, networkError);
-    throw new Error(
-      `Cannot reach backend at ${API_BASE_URL}. ` +
-      `Make sure the backend server is running on port 3001.`
-    );
+  // Always use Frontend Auto-Mock (No backend calls)
+  console.log(`[fetchApi] Backend calls disabled. Using Frontend Auto-Mock for ${url}`);
+  
+  if (url.includes('superadmin_libraries')) {
+    return [
+      { id: '1', name: 'Nexus Library Elite', location: 'New Delhi', status: 'Active', plan: 'Enterprise', seats: 500, occupied: 450 },
+      { id: '2', name: 'Study Space Pro', location: 'Mumbai', status: 'Pending', plan: 'Pro', seats: 200, occupied: 0 },
+      { id: '3', name: 'Quiet Zone Hub', location: 'Bangalore', status: 'Suspended', plan: 'Basic', seats: 100, occupied: 100 },
+    ];
   }
 
-  // ── Handle 401 — Token expired → try refresh ─────────────────────────────
-  if (response.status === 401) {
-    const newToken = await refreshAccessToken();
-    if (newToken) {
-      // Retry original request with new token
-      const retryHeaders = {
-        ...headers,
-        Authorization: `Bearer ${newToken}`,
-      };
-      let retryResponse: Response;
-      try {
-        retryResponse = await fetch(url, {
-          ...options,
-          headers: retryHeaders,
-          credentials: 'include',
-        });
-      } catch {
-        clearAuthState();
-        throw new Error('Session expired. Please log in again.');
-      }
-      if (retryResponse.status === 401) {
-        // Refresh also failed — force logout
-        clearAuthState();
-        throw new Error('Session expired. Please log in again.');
-      }
-      return handleResponse(retryResponse);
-    } else {
-      // No refresh token — force logout
-      clearAuthState();
-      throw new Error('Session expired. Please log in again.');
-    }
+  if (url.includes('superadmin_users')) {
+    return [
+      { id: 'u1', name: 'Rohit Sharma', email: 'rohit@nexus.com', role: 'manager', status: 'Active' },
+      { id: 'u2', name: 'Amit Kumar', email: 'amit@nexus.com', role: 'admin', status: 'Active' },
+    ];
   }
 
-  // ── Handle 403 — Access denied ────────────────────────────────────────────
-  if (response.status === 403) {
-    if (typeof window !== 'undefined') {
-      window.location.href = '/403';
-    }
-    throw new Error('Access denied: You do not have permission to perform this action.');
-  }
+  // Default empty array/object fallback to prevent .map() or .filter() crashes in UI grids
+  return [];
 
-  return handleResponse(response);
+  // Removed 401 and 403 handling since no backend is called
+  return [];
 }
 
 async function handleResponse(response: Response) {

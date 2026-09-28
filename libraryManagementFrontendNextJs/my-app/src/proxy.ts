@@ -70,13 +70,14 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // ── Verify JWT ─────────────────────────────────────────────────────────────
+  // ── Verify Mock JWT ─────────────────────────────────────────────────────────
   try {
-    const secret = new TextEncoder().encode(
-      process.env.JWT_SECRET || process.env.NEXT_PUBLIC_JWT_SECRET,
-    );
-    const { payload } = await jwtVerify(token, secret);
-    const userRole = (payload.role as string) || '';
+    // For pure frontend mock: extract role directly from our mock token string
+    // e.g. "mock-jwt-token-superadmin"
+    let userRole = '';
+    if (token.includes('superadmin')) userRole = 'superadmin';
+    else if (token.includes('admin')) userRole = 'admin';
+    else if (token.includes('manager')) userRole = 'manager';
 
     // ── Check role access ──────────────────────────────────────────────────
     const allowedRoles = ROUTE_ROLE_MAP[matchedRoute];

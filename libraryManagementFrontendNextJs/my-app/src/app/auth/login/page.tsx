@@ -33,13 +33,18 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '', role: 'superadmin' },
+    defaultValues: { email: 'superadmin@nexus360.com', password: 'password123', role: 'superadmin' },
   });
 
   const handleRoleSelect = (role: typeof ROLES[0]) => {
     setSelectedRole(role);
-    setValue('email', '', { shouldValidate: false });
-    setValue('password', '', { shouldValidate: false });
+    if (role.id === 'superadmin') {
+      setValue('email', 'superadmin@nexus360.com', { shouldValidate: true });
+      setValue('password', 'password123', { shouldValidate: true });
+    } else {
+      setValue('email', '', { shouldValidate: false });
+      setValue('password', '', { shouldValidate: false });
+    }
     setValue('role', role.id as LoginFormData['role']);
   };
 
