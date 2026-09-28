@@ -105,8 +105,16 @@ export default function CreateBranchForm({
               <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Parent Library <span className="text-red-500">*</span></label>
               <select required value={form.parent} onChange={e => updateField("parent", e.target.value)} className="w-full p-2.5 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none shadow-sm hover:border-indigo-300 transition-all cursor-pointer">
                 <option value="">Select a Library to attach this branch to...</option>
-                <option value="SN-001">StudyNest Patna (SN-001)</option>
-                <option value="RD-092">Readers Den Delhi (RD-092)</option>
+                <option value="StudyNest Patna">StudyNest Patna (SN-001)</option>
+                <option value="Readers Den Delhi">Readers Den Delhi (RD-092)</option>
+                <option value="LibroHub Mumbai">LibroHub Mumbai (LM-103)</option>
+                <option value="BookHaven BLR">BookHaven BLR (BH-044)</option>
+                <option value="Pune Readers">Pune Readers (PR-005)</option>
+                <option value="Knowledge Lounge">Knowledge Lounge Kolkata (KL-091)</option>
+                <option value="Chennai Nexus">Chennai Nexus (CN-022)</option>
+                <option value="Hyd Library">Hyd Library (HL-109)</option>
+                <option value="Ahm Library">Ahm Library (AL-003)</option>
+                <option value="Jaipur Readers">Jaipur Readers (JR-055)</option>
               </select>
             </div>
             <div><label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Branch Name <span className="text-red-500">*</span></label><input required type="text" className="w-full p-2.5 bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all shadow-sm hover:border-indigo-300" placeholder="e.g. Kankarbagh Branch" value={form.name} onChange={e => updateField("name", e.target.value)} /></div>
