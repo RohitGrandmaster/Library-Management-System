@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
@@ -11,18 +10,19 @@ import BranchDetailsView from './BranchDetailsView';
 import {
   Building2, Search, Filter, Plus, Building, Users, Settings,
   BarChart3, Package, FileClock, RefreshCw, Save, UserPlus, Download,
-  CheckCircle2, MapPin
+  CheckCircle2, MapPin, Store, Layers
 } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const SUB_MENUS = [
-  'All Branches', 'Create Branch', 'Active Branches', 'Pending Branches',
-  'Suspended Branches', 'Archived Branches', 'Branch Managers', 'Branch Settings',
-  'Branch Usage', 'Branch Inventory', 'Branch Audit'
+  { id: "Branch Directory", icon: Store, color: "blue", tabClass: "bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800/50 dark:text-blue-400", iconClass: "text-blue-600 dark:text-blue-400" },
+  { id: "Register Branch", icon: Plus, color: "emerald", tabClass: "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-900/20 dark:border-emerald-800/50 dark:text-emerald-400", iconClass: "text-emerald-600 dark:text-emerald-400" },
+  { id: "Branch Managers", icon: Users, color: "indigo", tabClass: "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-900/20 dark:border-indigo-800/50 dark:text-indigo-400", iconClass: "text-indigo-600 dark:text-indigo-400" },
+  { id: "Global Inventory", icon: Layers, color: "violet", tabClass: "bg-violet-50 border-violet-200 text-violet-700 dark:bg-violet-900/20 dark:border-violet-800/50 dark:text-violet-400", iconClass: "text-violet-600 dark:text-violet-400" }
 ];
 
-const initialBranches = [
+const mockBranches = [
   { id: '1', name: 'Kankarbagh Branch', code: 'SN-KKB', parent: 'StudyNest Patna', location: 'Patna, Bihar', manager: 'Amit Kumar', status: 'Active', capacity: 300, occupied: 250 },
   { id: '2', name: 'Boring Road Branch', code: 'SN-BOR', parent: 'StudyNest Patna', location: 'Patna, Bihar', manager: 'Neha Singh', status: 'Active', capacity: 200, occupied: 180 },
   { id: '3', name: 'Delhi South Extension', code: 'RD-DSE', parent: 'Readers Den Delhi', location: 'New Delhi', manager: 'Rajiv Sharma', status: 'Pending', capacity: 500, occupied: 0 },
@@ -31,222 +31,238 @@ const initialBranches = [
   { id: '6', name: 'Pune Deccan', code: 'PR-DCN', parent: 'Pune Readers', location: 'Pune, MH', manager: 'Sneha Kulkarni', status: 'Active', capacity: 250, occupied: 150 },
   { id: '7', name: 'Kolkata Salt Lake', code: 'KL-SLK', parent: 'Knowledge Lounge', location: 'Kolkata, WB', manager: 'Ayan Das', status: 'Archived', capacity: 350, occupied: 0 },
   { id: '8', name: 'Chennai Anna Nagar', code: 'CN-AN', parent: 'Chennai Nexus', location: 'Chennai, TN', manager: 'Karthik N', status: 'Active', capacity: 450, occupied: 300 },
-  { id: '9', name: 'Hyderabad Gachibowli', code: 'HL-GAC', parent: 'Hyd Library', location: 'Hyderabad, TS', manager: 'Swathi Reddy', status: 'Active', capacity: 800, occupied: 780 },
-  { id: '10', name: 'Ahmedabad Navrangpura', code: 'AL-NVR', parent: 'Ahm Library', location: 'Ahmedabad, GJ', manager: 'Vikram Patel', status: 'Pending', capacity: 300, occupied: 0 },
-  { id: '11', name: 'Jaipur Malviya Nagar', code: 'JP-MLV', parent: 'Jaipur Readers', location: 'Jaipur, RJ', manager: 'Ritu Sharma', status: 'Active', capacity: 150, occupied: 100 },
-  { id: '12', name: 'Lucknow Gomti Nagar', code: 'LK-GOM', parent: 'Lucknow Library', location: 'Lucknow, UP', manager: 'Sandeep Singh', status: 'Active', capacity: 200, occupied: 120 },
-  { id: '13', name: 'Chandigarh Sector 17', code: 'CH-S17', parent: 'Chandigarh Central', location: 'Chandigarh', manager: 'Preeti Kaur', status: 'Suspended', capacity: 400, occupied: 100 },
-  { id: '14', name: 'Indore Vijay Nagar', code: 'IN-VJY', parent: 'Indore InfoHub', location: 'Indore, MP', manager: 'Manish Jain', status: 'Active', capacity: 320, occupied: 290 },
-  { id: '15', name: 'Bhopal MP Nagar', code: 'BP-MPN', parent: 'Bhopal Library', location: 'Bhopal, MP', manager: 'Anjali Verma', status: 'Active', capacity: 180, occupied: 150 },
-  { id: '16', name: 'Nagpur Dharampeth', code: 'NG-DHM', parent: 'Nagpur Nexus', location: 'Nagpur, MH', manager: 'Ramesh Rao', status: 'Active', capacity: 220, occupied: 110 }
-];
-
-const inventory = [
-  { code: 'INV-001', title: 'Books', total: 8400, available: 8120, issued: 240, damaged: 20, status: 'Healthy' },
-  { code: 'INV-002', title: 'Reference Books', total: 920, available: 900, issued: 12, damaged: 8, status: 'Healthy' },
-  { code: 'INV-003', title: 'Magazines', total: 460, available: 430, issued: 20, damaged: 10, status: 'Watch' },
-  { code: 'INV-004', title: 'Digital Assets', total: 1280, available: 1280, issued: 0, damaged: 0, status: 'Healthy' },
-  { code: 'INV-005', title: 'Journals', total: 320, available: 200, issued: 110, damaged: 10, status: 'Watch' },
-  { code: 'INV-006', title: 'Audiobooks', total: 150, available: 145, issued: 5, damaged: 0, status: 'Healthy' },
-  { code: 'INV-007', title: 'CDs/DVDs', total: 80, available: 50, issued: 25, damaged: 5, status: 'Critical' },
-  { code: 'INV-008', title: 'Periodicals', total: 600, available: 580, issued: 15, damaged: 5, status: 'Healthy' },
-  { code: 'INV-009', title: 'Newspapers', total: 1200, available: 1100, issued: 0, damaged: 100, status: 'Watch' },
-];
-
-const auditLogs = [
-  { id: 'AUD-1001', action: 'Branch created', actor: 'Super Admin', target: 'Delhi South Extension', time: 'Today, 10:42 AM', severity: 'info' },
-  { id: 'AUD-1002', action: 'Manager changed', actor: 'Super Admin', target: 'Boring Road Branch', time: 'Today, 09:20 AM', severity: 'info' },
-  { id: 'AUD-1003', action: 'Branch suspended', actor: 'Super Admin', target: 'Mumbai Andheri West', time: 'Yesterday, 05:12 PM', severity: 'warning' },
-  { id: 'AUD-1004', action: 'Limits updated', actor: 'Super Admin', target: 'Kankarbagh Branch', time: 'Yesterday, 03:05 PM', severity: 'info' },
-  { id: 'AUD-1005', action: 'New Manager Assigned', actor: 'Super Admin', target: 'Bangalore Koramangala', time: 'Yesterday, 01:15 PM', severity: 'info' },
-  { id: 'AUD-1006', action: 'Branch Archived', actor: 'Super Admin', target: 'Kolkata Salt Lake', time: '2 Days Ago, 11:30 AM', severity: 'warning' },
-  { id: 'AUD-1007', action: 'Branch Limits Adjusted', actor: 'System Auto', target: 'Chennai Anna Nagar', time: '3 Days Ago, 08:00 AM', severity: 'info' },
-  { id: 'AUD-1008', action: 'Mass Status Update', actor: 'Super Admin', target: 'Multiple Branches', time: '3 Days Ago, 06:45 PM', severity: 'warning' },
-  { id: 'AUD-1009', action: 'Branch Ownership Transferred', actor: 'Super Admin', target: 'Pune Deccan', time: '4 Days Ago, 10:20 AM', severity: 'info' },
 ];
 
 export default function BranchesPage() {
-  const [branches, setBranches] = useState(initialBranches);
-  const [activeMenu, setActiveMenu] = useState('All Branches');
-  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
-  const [toast, setToast] = useState<string | null>(null);
-  const [managerSearch, setManagerSearch] = useState('');
-  const [inventorySearch, setInventorySearch] = useState('');
-  const [inventoryData, setInventoryData] = useState(inventory);
-  const [auditFilter, setAuditFilter] = useState('All');
-  const [settings, setSettings] = useState({
-    autoAssignManager: true,
-    allowSelfRegistration: false,
-    allowTransfers: true,
-    enforceBranchLimits: true,
-    defaultWorkingHours: '09:00 AM - 08:00 PM',
-    timezone: 'Asia/Kolkata',
-    notificationMode: 'Email + In-app',
-  });
-  const [usageTick, setUsageTick] = useState(0);
+  const [activeMenu, setActiveMenu] = useState("Branch Directory");
+  const [selectedBranch, setSelectedBranch] = useState<any>(null);
   const gridRef = useRef<AgGridReact>(null);
-
-  const notify = (message: string) => {
-    setToast(message);
-    window.setTimeout(() => setToast(null), 2500);
-  };
-
-  const updateBranchStatus = (id: string, status: string) => {
-    setBranches(prev => prev.map(b => b.id === id ? { ...b, status } : b));
-    notify(`Branch status changed to ${status}.`);
-  };
-
-  const selectedBranch = branches.find(b => b.id === selectedBranchId);
 
   const colDefs = useMemo<any[]>(() => [
     {
-      headerName: 'Branch Details', field: 'name', flex: 2, minWidth: 240,
+      headerName: 'Branch Details', field: 'name', flex: 2, minWidth: 260,
       cellRenderer: (p: ICellRendererParams) => {
         if (!p.data) return null;
         return (
-          <div className="flex items-center gap-3 h-full cursor-pointer group min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm shrink-0">
-              {p.data.name.substring(0,2).toUpperCase()}
+          <div className="flex items-center gap-3 h-full cursor-pointer group" onClick={() => setSelectedBranch(p.data)}>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/40 border border-blue-200 dark:border-blue-800/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm shrink-0">
+              <Store size={18} />
             </div>
             <div className="flex flex-col justify-center min-w-0">
-              <p className="font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors leading-tight truncate">{p.data.name}</p>
-              <p className="text-[11px] text-gray-500 font-semibold truncate">{p.data.code} | {p.data.parent}</p>
+              <p className="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors leading-tight truncate">{p.data.name}</p>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider truncate flex items-center gap-1 mt-0.5"><MapPin size={10}/> {p.data.location}</p>
             </div>
           </div>
         );
       },
     },
-    {
-      headerName: 'Location & Manager', field: 'location', flex: 1.5, minWidth: 180,
+    { 
+      headerName: 'Parent Library', field: 'parent', flex: 1.5, minWidth: 160,
       cellRenderer: (p: ICellRendererParams) => {
         if (!p.data) return null;
         return (
-          <div className="flex flex-col justify-center h-full min-w-0">
-            <p className="text-sm font-bold text-gray-700 dark:text-gray-300 truncate">{p.data.location}</p>
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">Mgr: {p.data.manager || 'Unassigned'}</p>
+          <div className="flex items-center gap-2 h-full text-xs font-bold text-gray-700 dark:text-gray-300">
+            <Building2 size={12} className="text-gray-400" /> {p.data.parent}
           </div>
         );
       }
     },
-    {
+    { 
+      headerName: 'Branch Manager', field: 'manager', flex: 1.5, minWidth: 160,
+      cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
+        return (
+          <div className="flex items-center gap-2 h-full text-xs font-bold text-gray-700 dark:text-gray-300">
+            <Users size={12} className="text-indigo-400" /> {p.data.manager}
+          </div>
+        );
+      }
+    },
+    { 
+      headerName: 'Capacity & Occupancy', field: 'capacity', flex: 1.5, minWidth: 180,
+      cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
+        const percentage = Math.min((p.data.occupied / p.data.capacity) * 100, 100);
+        const colorClass = percentage > 90 ? 'bg-rose-500' : percentage > 75 ? 'bg-amber-500' : 'bg-emerald-500';
+        
+        return (
+          <div className="flex flex-col justify-center h-full">
+            <div className="flex justify-between items-center text-[10px] font-extrabold uppercase tracking-wider text-gray-500 mb-1">
+              <span>{p.data.occupied} / {p.data.capacity} Users</span>
+              <span>{Math.round(percentage)}%</span>
+            </div>
+            <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div className={`h-full ${colorClass}`} style={{ width: `${percentage}%` }} />
+            </div>
+          </div>
+        );
+      }
+    },
+    { 
       headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
       cellRenderer: (p: ICellRendererParams) => {
         if (!p.data) return null;
-        let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
-        if (p.data.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
-        if (p.data.status === 'Pending') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
-        if (p.data.status === 'Suspended') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
-        if (p.data.status === 'Archived') colors = 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 border border-slate-200 dark:border-slate-800';
-        return <div className="flex items-center h-full"><span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>{p.data.status}</span></div>;
-      }
-    },
-    {
-      headerName: 'Utilization (Capacity)', field: 'occupied', flex: 1.5, minWidth: 150,
-      cellRenderer: (p: ICellRendererParams) => {
-        if (!p.data) return null;
-        const pct = Math.round(((p.data.occupied ?? 0) / (p.data.capacity ?? 1)) * 100);
+        let colors = 'bg-gray-50 text-gray-700 dark:bg-gray-900/40 dark:text-gray-400 border-gray-200 dark:border-gray-700';
+        let dot = 'bg-gray-400';
+        
+        if (p.data.status === 'Active') {
+          colors = 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50';
+          dot = 'bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.5)]';
+        } else if (p.data.status === 'Pending') {
+          colors = 'bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 border-amber-200 dark:border-amber-800/50';
+          dot = 'bg-amber-500';
+        } else if (p.data.status === 'Suspended' || p.data.status === 'Archived') {
+          colors = 'bg-rose-50 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400 border-rose-200 dark:border-rose-800/50';
+          dot = 'bg-rose-500';
+        }
+        
         return (
-          <div className="flex flex-col justify-center h-full gap-1.5 w-full pr-4 min-w-0">
-            <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 gap-2"><span>{p.data.occupied} / {p.data.capacity}</span><span className={pct > 90 ? 'text-red-600' : 'text-emerald-600'}>{pct}%</span></div>
-            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className={`h-full ${pct > 90 ? 'bg-red-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(100, pct)}%` }} /></div>
+          <div className="flex items-center h-full">
+            <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-sm border flex items-center gap-1.5 ${colors}`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${dot}`}></div> {p.data.status}
+            </span>
           </div>
-        );
+        )
       }
     }
   ], []);
 
-  const onGridReady = useCallback((e: GridReadyEvent) => e.api.sizeColumnsToFit(), []);
-  const getFilteredBranches = () => {
-    if (activeMenu === 'Pending Branches') return branches.filter(b => b.status === 'Pending');
-    if (activeMenu === 'Active Branches') return branches.filter(b => b.status === 'Active');
-    if (activeMenu === 'Suspended Branches') return branches.filter(b => b.status === 'Suspended');
-    if (activeMenu === 'Archived Branches') return branches.filter(b => b.status === 'Archived');
-    return branches;
-  };
-
-  const handleCreated = (branch: any) => {
-    setBranches(prev => [...prev, branch]);
-    setActiveMenu('All Branches');
-    notify('Branch created successfully.');
-  };
-
-  const managers = branches.filter(b => !managerSearch || [b.manager, b.name, b.location].join(' ').toLowerCase().includes(managerSearch.toLowerCase()));
-  const inventoryRows = inventoryData.filter(i => !inventorySearch || [i.code, i.title].join(' ').toLowerCase().includes(inventorySearch.toLowerCase()));
-  const filteredInventoryRows = inventoryRows;
-  const filteredAudit = auditFilter === 'All' ? auditLogs : auditLogs.filter(x => x.severity === auditFilter.toLowerCase());
+  const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
   if (selectedBranch) {
-    return <BranchDetailsView branch={selectedBranch} onBack={() => setSelectedBranchId(null)} onStatusChange={status => updateBranchStatus(selectedBranch.id, status)} />;
+    return <BranchDetailsView branch={selectedBranch} onBack={() => setSelectedBranch(null)} />;
   }
 
-  const pageTitleIcon = activeMenu === 'Branch Managers' ? <Users size={28} className="text-indigo-600" />
-    : activeMenu === 'Branch Settings' ? <Settings size={28} className="text-indigo-600" />
-    : activeMenu === 'Branch Usage' ? <BarChart3 size={28} className="text-indigo-600" />
-    : activeMenu === 'Branch Inventory' ? <Package size={28} className="text-indigo-600" />
-    : activeMenu === 'Branch Audit' ? <FileClock size={28} className="text-indigo-600" />
-    : <Building size={28} className="text-indigo-600" />;
+  const renderContent = () => {
+    switch (activeMenu) {
+      case "Register Branch":
+        return (
+          <div className="animate-in fade-in zoom-in-95 duration-300">
+            <CreateBranchForm />
+          </div>
+        );
+        
+      case "Branch Managers":
+      case "Global Inventory":
+        return (
+          <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl p-16 flex flex-col items-center justify-center text-center bg-gray-50/30 dark:bg-[#0D1F3C]/20 animate-in zoom-in-95 duration-500 min-h-[400px]">
+            <div className="p-5 bg-gray-100 dark:bg-gray-800 rounded-full mb-6 shadow-inner">
+               {activeMenu === "Branch Managers" ? <Users size={48} className="text-gray-400" /> : <Layers size={48} className="text-gray-400" />}
+            </div>
+            <h4 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-3">{activeMenu}</h4>
+            <p className="text-gray-500 font-medium max-w-lg mx-auto">
+              Configure cross-branch operations, manage branch-level personnel, or track physical and digital assets across all multi-branch setups.
+            </p>
+          </div>
+        )
+
+      case "Branch Directory":
+      default:
+        return (
+          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 flex flex-col min-h-0 h-full">
+            
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 shrink-0">
+              {[
+                { title: 'Total Branches', value: '412', icon: <Store size={24} />, color: 'blue' },
+                { title: 'Active Operations', value: '394', icon: <Building2 size={24} />, color: 'emerald' },
+                { title: 'Avg Capacity', value: '84%', icon: <BarChart3 size={24} />, color: 'indigo' },
+                { title: 'Global Inventory', value: '48.2K', icon: <Layers size={24} />, color: 'violet' }
+              ].map(stat => (
+                <div key={stat.title} className="bg-white dark:bg-[#0F172A] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center justify-between group overflow-hidden relative">
+                   <div className={`absolute top-0 right-0 w-24 h-24 bg-${stat.color}-500/5 dark:bg-${stat.color}-500/10 rounded-bl-full transition-transform group-hover:scale-110`}></div>
+                  <div className="relative z-10">
+                    <h3 className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider mb-2">{stat.title}</h3>
+                    <div className="text-3xl font-black text-gray-900 dark:text-white leading-none">{stat.value}</div>
+                  </div>
+                  <div className={`relative z-10 w-14 h-14 rounded-2xl bg-${stat.color}-50 dark:bg-${stat.color}-900/20 text-${stat.color}-600 dark:text-${stat.color}-400 flex items-center justify-center border border-${stat.color}-100 dark:border-${stat.color}-800/50 shadow-sm`}>
+                    {stat.icon}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl flex flex-col flex-1 min-h-[400px]">
+              <div className="p-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0D1F3C]/50 flex justify-between items-center shrink-0">
+                <h3 className="text-lg font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
+                  <MapPin size={20} className="text-blue-500" /> Multi-Branch Fleet
+                </h3>
+                <div className="flex gap-2">
+                  <button className="p-2 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-gray-500 hover:text-blue-600 shadow-sm"><Filter size={16} /></button>
+                  <div className="relative">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input type="text" placeholder="Search Branches..." className="pl-9 pr-4 py-2 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-lg text-sm outline-none shadow-sm" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex-1 w-full relative">
+                <div className="absolute inset-0">
+                  <AgGridReact
+                    ref={gridRef}
+                    theme={gridTheme}
+                    rowData={mockBranches}
+                    columnDefs={colDefs}
+                    rowHeight={64}
+                    headerHeight={48}
+                    onGridReady={onGridReady}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-6 w-full min-w-0 animate-in fade-in zoom-in-95 duration-300">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 min-w-0">
-        <div className="min-w-0">
-          <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider"><span>Nexus 360</span><span>/</span><span className="text-indigo-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Branches</span></div>
-          <h1 className="sa-page-title text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3 min-w-0"><div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl shadow-sm border border-indigo-200/50 shrink-0">{pageTitleIcon}</div><span className="truncate">{activeMenu === 'Create Branch' ? 'Create New Branch' : activeMenu}</span></h1>
+    <div className="flex flex-col gap-6 w-full h-[calc(100vh-6rem)]">
+      
+      {/* Page Header */}
+      <div className="shrink-0">
+        <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <span>Nexus 360</span><span>/</span><span className="text-blue-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Branches</span>
         </div>
-        <button onClick={() => setActiveMenu('Create Branch')} className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all"><Plus size={18} /> Register New Branch</button>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h1 className="sa-page-title text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm border border-blue-200/50 dark:border-blue-800/50">
+                <Store size={24} />
+              </div>
+              Branch Operations
+            </h1>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-medium max-w-3xl">Monitor multi-location library fleets, track capacity and inventory distribution, and register child branches for existing tenants.</p>
+          </div>
+        </div>
       </div>
 
-      <div className="flex gap-1.5 pb-2 pt-1 px-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {SUB_MENUS.map(menu => <button key={menu} onClick={() => setActiveMenu(menu)} className={`shrink-0 px-3 py-2 text-[11px] font-bold rounded-lg whitespace-nowrap transition-all shadow-sm ${activeMenu === menu ? 'bg-indigo-600 text-white shadow-indigo-600/20' : 'bg-white dark:bg-[#0F172A] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:bg-indigo-50 dark:hover:bg-[#1E293B] hover:text-indigo-600'}`}>{menu}</button>)}
-      </div>
-
-      {activeMenu === 'Create Branch' && <CreateBranchForm onCancel={() => setActiveMenu('All Branches')} onCreated={handleCreated} />}
-
-      {['All Branches','Active Branches','Pending Branches','Suspended Branches','Archived Branches'].includes(activeMenu) && (
-        <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col w-full min-w-0 h-[650px]">
-          <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 dark:bg-[#0D1F3C] shrink-0">
-            <div className="relative w-full sm:max-w-xl">
-              <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="text" placeholder="Search branches by name, code, parent or location..." className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm outline-none" onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)} />
-            </div>
-            <button onClick={() => { gridRef.current?.api.setFilterModel(null); gridRef.current?.api.setGridOption('quickFilterText', ''); const input = document.querySelector('input[placeholder^="Search branches"]') as HTMLInputElement; if (input) input.value = ''; }} className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 shrink-0">
-              <Filter size={16} /> Reset Filters
+      {/* Sub-menu Grid */}
+      <div className="shrink-0 grid grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+        {SUB_MENUS.map(menu => {
+          const Icon = menu.icon;
+          const isActive = activeMenu === menu.id;
+          
+          return (
+            <button
+              key={menu.id}
+              onClick={() => setActiveMenu(menu.id)}
+              className={`flex flex-col items-center justify-center p-4 gap-2 rounded-2xl border text-center transition-all ${
+                isActive 
+                  ? `${menu.tabClass} shadow-md scale-[1.02]`
+                  : 'bg-white dark:bg-[#0F172A] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#1E293B] hover:text-gray-900 dark:hover:text-white shadow-sm'
+              }`}
+            >
+              <Icon size={20} className={isActive ? menu.iconClass : 'opacity-70'} />
+              <span className="text-[11px] font-extrabold uppercase tracking-wider">{menu.id}</span>
             </button>
-          </div>
-          <div className="flex-1 w-full h-full relative">
-            <AgGridReact key={activeMenu} ref={gridRef} theme={gridTheme} rowData={getFilteredBranches()} columnDefs={colDefs} rowHeight={72} headerHeight={52} onGridSizeChanged={e => e.api.sizeColumnsToFit()} onRowClicked={p => setSelectedBranchId(p.data!.id)} pagination paginationPageSize={15} rowClass="cursor-pointer" />
-          </div>
-        </div>
-      )}
+          )
+        })}
+      </div>
 
-      {activeMenu === 'Branch Managers' && (
-        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden">
-          <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 md:items-center md:justify-between"><div><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Managers</h2><p className="text-xs text-gray-500 mt-1">Review assignments and manage ownership for every branch.</p></div><div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto"><input value={managerSearch} onChange={e=>setManagerSearch(e.target.value)} placeholder="Search manager or branch" className="w-full sm:w-72 px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] text-sm"/><button onClick={()=>{ const target=window.prompt('Branch name to assign a manager to', branches[0]?.name || ''); const name=window.prompt('New manager name'); if(target && name && name.trim()){ setBranches(prev=>prev.map(b=>b.name.toLowerCase()===target.toLowerCase()?{...b,manager:name.trim()}:b)); notify('Manager assigned successfully.'); } }} className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm flex items-center justify-center gap-2"><UserPlus size={16}/> Assign Manager</button></div></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-5">{managers.map(b=><div key={b.id} className="rounded-xl border border-gray-200 dark:border-gray-700 p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="font-bold text-gray-900 dark:text-white truncate">{b.manager || 'Unassigned'}</p><p className="text-xs text-gray-500 truncate">{b.name}</p></div><span className={`text-[10px] font-bold px-2 py-1 rounded-full ${b.status==='Active'?'bg-emerald-100 text-emerald-700':'bg-gray-100 text-gray-600'}`}>{b.status}</span></div><div className="mt-4 flex items-center gap-2 text-xs text-gray-500"><MapPin size={14}/> {b.location}</div><button onClick={()=>{ const next=window.prompt(`New manager for ${b.name}`, b.manager || ''); if(next && next.trim()){ setBranches(prev=>prev.map(x=>x.id===b.id?{...x,manager:next.trim()}:x)); notify('Manager updated successfully.'); } }} className="mt-4 w-full py-2 rounded-lg border border-indigo-200 text-indigo-600 font-bold text-xs hover:bg-indigo-50">Change Manager</button></div>)}</div>
-        </section>
-      )}
-
-      {activeMenu === 'Branch Settings' && (
-        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl p-5 sm:p-7"><div className="mb-6"><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Settings</h2><p className="text-xs text-gray-500 mt-1">Default controls applied across branch operations.</p></div><div className="grid grid-cols-1 md:grid-cols-2 gap-4">{[
-          ['autoAssignManager','Auto-assign first available manager'],['allowSelfRegistration','Allow branch self-registration'],['allowTransfers','Allow inter-branch transfers'],['enforceBranchLimits','Enforce subscription branch limits']
-        ].map(([key,label])=><label key={key} className="flex items-center justify-between gap-4 p-4 rounded-xl bg-gray-50 dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700"><span className="font-bold text-sm text-gray-800 dark:text-gray-200">{label}</span><input type="checkbox" checked={Boolean((settings as any)[key])} onChange={e=>setSettings(s=>({...s,[key]:e.target.checked}))} className="h-5 w-5 accent-indigo-600"/></label>)}</div><div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"><input value={settings.defaultWorkingHours} onChange={e=>setSettings(s=>({...s,defaultWorkingHours:e.target.value}))} className="px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]" placeholder="Working hours"/><select value={settings.timezone} onChange={e=>setSettings(s=>({...s,timezone:e.target.value}))} className="px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]"><option>Asia/Kolkata</option><option>Asia/Dubai</option><option>Asia/Singapore</option></select><select value={settings.notificationMode} onChange={e=>setSettings(s=>({...s,notificationMode:e.target.value}))} className="px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]"><option>Email + In-app</option><option>In-app only</option><option>Email only</option></select></div><div className="mt-6 flex justify-end"><button onClick={()=>notify('Branch settings saved successfully.')} className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold flex items-center gap-2"><Save size={16}/> Save Settings</button></div></section>
-      )}
-
-      {activeMenu === 'Branch Usage' && (
-        <section className="w-full space-y-5"><div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">{[
-          ['Branches',branches.length,'bg-indigo-50 text-indigo-600'],['Active',branches.filter(b=>b.status==='Active').length,'bg-emerald-50 text-emerald-600'],['Occupied Seats',branches.reduce((n,b)=>n+b.occupied,0),'bg-amber-50 text-amber-600'],['Capacity',branches.reduce((n,b)=>n+b.capacity,0),'bg-cyan-50 text-cyan-600']
-        ].map(([label,value,cls])=><div key={label as string} className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm"><div className={`inline-flex p-2 rounded-xl ${cls as string}`}><BarChart3 size={20}/></div><p className="text-xs font-bold text-gray-500 mt-4">{label as string}</p><p className="text-2xl font-extrabold text-gray-900 dark:text-white">{value as number}</p></div>)}</div><div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden"><div className="p-5 flex items-center justify-between border-b border-gray-200 dark:border-gray-800"><div><h3 className="font-extrabold text-gray-900 dark:text-white">Live Branch Usage</h3><p className="text-xs text-gray-500">Refresh tick: {usageTick}</p></div><button onClick={()=>{setUsageTick(x=>x+1);notify('Usage metrics refreshed.')}} className="px-4 py-2 rounded-xl border font-bold text-sm flex items-center gap-2"><RefreshCw size={15}/> Refresh</button></div><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b"><th className="p-4">Branch</th><th className="p-4">Members</th><th className="p-4">Books</th><th className="p-4">Seats</th><th className="p-4">Utilization</th></tr></thead><tbody>{branches.map(b=>{const pct=Math.round((b.occupied/b.capacity)*100);return <tr key={b.id} className="border-b last:border-0"><td className="p-4 font-bold">{b.name}</td><td className="p-4">{Math.round(b.capacity*0.7)}</td><td className="p-4">{Math.round(b.capacity*18)}</td><td className="p-4">{b.occupied}/{b.capacity}</td><td className="p-4 font-bold">{pct}%</td></tr>})}</tbody></table></div></div></section>
-      )}
-
-      {activeMenu === 'Branch Inventory' && (
-        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden"><div className="p-5 border-b flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"><div><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Inventory</h2><p className="text-xs text-gray-500 mt-1">Track stock, availability and exceptions.</p></div><div className="flex gap-2"><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} placeholder="Search inventory" className="w-full sm:w-64 px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]"/><button onClick={()=>{ const code=window.prompt('Inventory code to adjust', inventoryRows[0]?.code || ''); const delta=window.prompt('Quantity change (+/-)', '10'); const amount=Number(delta); if(code && Number.isFinite(amount)){ setInventoryData((prev: any[]) =>prev.map((x: any)=>x.code===code?{...x,total:Math.max(0,x.total+amount),available:Math.max(0,x.available+amount)}:x)); notify('Inventory stock adjusted successfully.'); } }} className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm">Adjust Stock</button></div></div><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b"><th className="p-4">Code</th><th className="p-4">Category</th><th className="p-4">Total</th><th className="p-4">Available</th><th className="p-4">Issued</th><th className="p-4">Damaged</th><th className="p-4">Status</th></tr></thead><tbody>{filteredInventoryRows.map(row=><tr key={row.code} className="border-b last:border-0"><td className="p-4 font-mono text-xs">{row.code}</td><td className="p-4 font-bold">{row.title}</td><td className="p-4">{row.total}</td><td className="p-4">{row.available}</td><td className="p-4">{row.issued}</td><td className="p-4">{row.damaged}</td><td className="p-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold ${row.status==='Healthy'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}`}>{row.status}</span></td></tr>)}</tbody></table></div></section>
-      )}
-
-      {activeMenu === 'Branch Audit' && (
-        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden"><div className="p-5 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Audit</h2><p className="text-xs text-gray-500 mt-1">Review branch-level administrative activity.</p></div><div className="flex gap-2"><select value={auditFilter} onChange={e=>setAuditFilter(e.target.value)} className="px-3 py-2 rounded-xl border bg-gray-50 dark:bg-[#1E293B] text-sm"><option>All</option><option>Info</option><option>Warning</option></select><button onClick={()=>{ const payload=JSON.stringify(filteredAudit,null,2); const blob=new Blob([payload],{type:'application/json'}); const url=URL.createObjectURL(blob); const link=document.createElement('a'); link.href=url; link.download='branch-audit.json'; link.click(); URL.revokeObjectURL(url); notify('Audit export downloaded.'); }} className="px-4 py-2 rounded-xl border font-bold text-sm flex items-center gap-2"><Download size={15}/> Export</button></div></div><div className="divide-y dark:divide-gray-800">{filteredAudit.map(item=><div key={item.id} className="p-5 flex flex-col md:flex-row md:items-center gap-3 md:justify-between"><div><p className="font-bold text-gray-900 dark:text-white">{item.action}</p><p className="text-xs text-gray-500 mt-1">{item.target} • {item.actor}</p></div><div className="flex items-center gap-3"><span className="font-mono text-[11px] text-gray-400">{item.id}</span><span className={`text-xs font-bold px-2.5 py-1 rounded-full ${item.severity==='warning'?'bg-amber-100 text-amber-700':'bg-blue-100 text-blue-700'}`}>{item.severity}</span><span className="text-xs text-gray-500">{item.time}</span></div></div>)}</div></section>
-      )}
-
-      {toast && <div className="fixed bottom-5 right-5 z-[100] rounded-xl bg-gray-900 text-white px-4 py-3 text-sm font-bold shadow-2xl flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-400"/>{toast}</div>}
+      {/* Dynamic Content */}
+      <div className="w-full flex-1 min-h-0 relative">
+        {renderContent()}
+      </div>
     </div>
   );
 }
