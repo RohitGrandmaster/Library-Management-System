@@ -69,7 +69,7 @@ export default function MonitoringPage() {
           <div className="flex flex-col xl:flex-row gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
             
             {/* Active Alerts Feed (PagerDuty Style) */}
-            <div className="flex-1 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col">
+            <div className="flex-1 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col flex-1">
               <div className="p-5 border-b border-gray-100 dark:border-gray-800 bg-violet-50/50 dark:bg-[#0D1F3C] flex justify-between items-center">
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">

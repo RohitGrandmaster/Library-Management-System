@@ -68,7 +68,7 @@ export default function RoleMatrixBuilder() {
   const currentRoleObj = ROLES.find(r => r.id === activeRole);
 
   return (
-    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300">
       
       {/* Role Selection Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -108,7 +108,7 @@ export default function RoleMatrixBuilder() {
       </div>
 
       {/* Permission Matrix */}
-      <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col">
+      <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col flex-1">
         <div className="p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0D1F3C] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">

@@ -9,7 +9,7 @@ export default function AuditDetailsView({ audit, onBack }: { audit: any, onBack
   const isDiff = audit.oldValue && audit.newValue;
 
   return (
-    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300">
       
       {/* Header */}
       <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-lg p-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4">

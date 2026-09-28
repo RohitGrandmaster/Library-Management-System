@@ -206,7 +206,7 @@ export default function GlobalConfigPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300 h-full">
+    <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300 h-full">
       {/* Page Header */}
       <div>
         <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">

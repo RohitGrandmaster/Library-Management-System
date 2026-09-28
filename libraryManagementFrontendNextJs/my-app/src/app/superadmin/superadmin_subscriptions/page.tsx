@@ -105,7 +105,7 @@ export default function SubscriptionsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
@@ -148,7 +148,7 @@ export default function SubscriptionsPage() {
       {activeMenu === "Create Plan" ? (
         <CreatePlanForm onCancel={() => setActiveMenu("Plans")} />
       ) : (
-        <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col">
+        <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col flex-1">
           <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 dark:bg-[#0D1F3C]">
             <div className="relative max-w-md w-full">
               <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -164,7 +164,7 @@ export default function SubscriptionsPage() {
             </button>
           </div>
           
-          <div className="h-[calc(100vh-260px)] min-h-[400px] w-full">
+          <div className="flex-1 w-full min-h-0 relative">
             <AgGridReact
               ref={gridRef}
               theme={gridTheme}

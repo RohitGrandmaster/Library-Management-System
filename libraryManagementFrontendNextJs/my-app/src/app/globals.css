@@ -124,3 +124,9 @@
   background: rgba(255, 255, 255, 0.85);
   border: 1px solid #E5E7EB;
 }
+
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

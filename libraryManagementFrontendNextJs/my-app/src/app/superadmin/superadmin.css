@@ -35,7 +35,8 @@
     color: var(--text-primary);
     background-color: var(--bg-page);
     box-sizing: border-box;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .superadmin-theme *,
@@ -279,7 +280,7 @@
   /* ── App shell layout ── */
   .sa-shell {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--bg-page);
     color: var(--text-primary);
     overflow: hidden;
@@ -288,11 +289,13 @@
     flex: 1;
     min-width: 0; /* CRITICAL: prevents flex item from growing past screen width */
     margin-left: 240px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
   .sa-shell-main {
     padding: 80px 32px 32px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
 
   /* ── KPI card value & subtitle ── */

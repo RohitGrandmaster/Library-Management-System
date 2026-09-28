@@ -35,7 +35,7 @@ export default function FeatureDetailsView({ feature, onBack }: { feature: any, 
   ];
 
   return (
-    <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300">
       {/* Header & Feature Operations */}
       <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-lg p-6">
         <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6">
