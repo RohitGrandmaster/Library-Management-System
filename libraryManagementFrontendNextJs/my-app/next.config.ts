@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: { optimizePackageImports: ['lucide-react', 'ag-grid-community', 'ag-grid-react', 'recharts'] },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -65,3 +66,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
