@@ -28,10 +28,16 @@ export default function NotFound() {
 
         <div className="flex gap-3 justify-center flex-wrap">
           <Link
-            href="/dashboard"
+            href="/"
             className="sys-btn-primary !no-underline"
           >
-            ← Go to Dashboard
+            ← Landing Page
+          </Link>
+          <Link
+            href="/superadmin/superadmin_dashboard"
+            className="sys-btn-primary !no-underline bg-indigo-600 border-indigo-600"
+          >
+            Superadmin
           </Link>
           <button
             className="sys-btn-ghost"
