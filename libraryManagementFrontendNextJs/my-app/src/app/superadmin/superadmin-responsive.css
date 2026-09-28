@@ -116,38 +116,63 @@
   flex-shrink: 0;
 }
 
+/* Tablet: keep the complete navigation visible instead of collapsing to icon-only. */
 @media (max-width: 1279px) and (min-width: 768px) {
   .superadmin-theme .sa-sidebar {
-    width: 60px;
-    padding: 20px 8px 12px;
+    width: 276px;
+    padding: 20px 12px 12px;
   }
   .superadmin-theme .sa-sidebar-logo-area > div:not(.sa-sidebar-logo-box) {
-    display: none;
+    display: block;
+    min-width: 0;
   }
-  .superadmin-theme .sa-nav-link span {
-    display: none;
+  .superadmin-theme .sa-sidebar-nav .sa-nav-link {
+    justify-content: flex-start;
+    padding: 10px 12px;
   }
-  .superadmin-theme .sa-nav-link {
-    justify-content: center;
-    padding: 0;
+  .superadmin-theme .sa-sidebar-nav .sa-nav-link > svg,
+  .superadmin-theme .sa-sidebar-footer .sa-header-avatar-icon,
+  .superadmin-theme .sa-sidebar-footer .sa-btn-icon {
+    flex: 0 0 auto;
   }
-  .superadmin-theme .sa-sidebar-footer-avatar {
-    display: none;
+  .superadmin-theme .sa-sidebar-nav .sa-nav-link > span {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .superadmin-theme .sa-sidebar-footer {
-    flex-direction: column;
-    gap: 16px;
-    padding-left: 0;
-    padding-right: 0;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 8px;
+    padding-right: 4px;
+  }
+  .superadmin-theme .sa-sidebar-footer-avatar {
+    display: block;
+    min-width: 0;
   }
   .superadmin-theme .sa-shell-content {
-    width: calc(100% - 60px);
-    margin-left: 60px;
+    width: calc(100% - 276px);
+    margin-left: 276px;
   }
   .superadmin-theme .sa-header {
-    width: calc(100% - 60px);
-    left: 60px;
+    width: calc(100% - 276px);
+    left: 276px;
   }
+}
+
+/* Never let a sidebar icon shrink or a label disappear because of flex sizing. */
+.superadmin-theme .sa-sidebar-nav .sa-nav-link > svg {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+.superadmin-theme .sa-sidebar-nav .sa-nav-link > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
