@@ -203,7 +203,7 @@ export default function DatabasePage() {
                         <p className="text-xs text-gray-500">2026-09-28 02:00 AM (Complete)</p>
                       </div>
                     </div>
-                    <button className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:text-cyan-600 text-[11px] font-bold rounded-lg transition-colors">
+                    <button onClick={() => setActiveMenu("Database Health")} className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:text-cyan-600 text-[11px] font-bold rounded-lg transition-colors">
                       View Log
                     </button>
                   </div>
@@ -216,7 +216,7 @@ export default function DatabasePage() {
                         <p className="text-xs text-gray-500">Soft deletes kept for 90 days</p>
                       </div>
                     </div>
-                    <button className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:text-cyan-600 text-[11px] font-bold rounded-lg transition-colors">
+                    <button onClick={() => setActiveMenu("Data Retention")} className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:text-cyan-600 text-[11px] font-bold rounded-lg transition-colors">
                       Configure
                     </button>
                   </div>
