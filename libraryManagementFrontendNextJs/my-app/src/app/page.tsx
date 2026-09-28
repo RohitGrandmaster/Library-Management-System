@@ -210,7 +210,7 @@ export default function LibraryOSLanding() {
   if (!mounted) return <div className="min-h-screen bg-[#030712]" />;
 
   return (
-    <div className="bg-[#030712] text-white overflow-hidden" style={{ fontFamily: "'Inter', 'Outfit', sans-serif" }}>
+    <div className="bg-[#030712] text-white overflow-x-hidden" style={{ fontFamily: "'Inter', 'Outfit', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap');
         

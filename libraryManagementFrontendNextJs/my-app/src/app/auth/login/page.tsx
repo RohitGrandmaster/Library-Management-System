@@ -60,7 +60,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen bg-[#030712] text-white font-sans overflow-hidden">
+    <main className="flex min-h-screen bg-[#030712] text-white font-sans overflow-x-hidden overflow-y-auto">
       <style>{`
         .glass-panel {
           background: rgba(5, 13, 26, 0.7);
@@ -137,14 +137,14 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <div className="glass-panel rounded-3xl p-8 glow-cyan">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-black tracking-tight mb-2">Sign In</h2>
-              <p className="text-slate-400 text-sm">Select your role and enter your credentials</p>
+          <div className="glass-panel rounded-3xl p-6 glow-cyan">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-black tracking-tight mb-1.5">Sign In</h2>
+              <p className="text-slate-400 text-xs">Select your role and enter your credentials</p>
             </div>
 
             {/* Role Selector */}
-            <div className="bg-[#0A1628] p-1.5 rounded-xl flex gap-1 mb-8 border border-white/5">
+            <div className="bg-[#0A1628] p-1 rounded-xl flex gap-1 mb-6 border border-white/5">
               {ROLES.map((role) => {
                 const isActive = selectedRole.id === role.id;
                 return (
@@ -152,7 +152,7 @@ export default function LoginPage() {
                     key={role.id}
                     type="button"
                     onClick={() => handleRoleSelect(role)}
-                    className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 ${
                       isActive
                         ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
                         : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -166,7 +166,7 @@ export default function LoginPage() {
             </div>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
               <input type="hidden" {...register('role')} />
 
               {/* Email */}
@@ -177,7 +177,7 @@ export default function LoginPage() {
                     type="text"
                     placeholder="Enter your email"
                     {...register('email')}
-                    className={`w-full bg-[#0A1628] border ${errors.email ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition-colors`}
+                    className={`w-full bg-[#0A1628] border ${errors.email ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-colors`}
                   />
                 </div>
                 {errors.email && <p className="text-rose-400 text-xs font-medium mt-1">{errors.email.message}</p>}
@@ -196,12 +196,12 @@ export default function LoginPage() {
                     type={showPw ? 'text' : 'password'}
                     placeholder="Enter your password"
                     {...register('password')}
-                    className={`w-full bg-[#0A1628] border ${errors.password ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition-colors pr-12`}
+                    className={`w-full bg-[#0A1628] border ${errors.password ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-colors pr-10`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw(!showPw)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                   >
                     {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -218,7 +218,7 @@ export default function LoginPage() {
               )}
 
               {/* Access Info Alert */}
-              <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 flex items-start gap-3 mt-4">
+              <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-2.5 flex items-start gap-2.5 mt-2">
                 <div className="text-blue-400 mt-0.5">{selectedRole.icon}</div>
                 <div>
                   <div className="text-xs font-bold text-blue-300">{selectedRole.label} Access</div>
@@ -230,7 +230,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black text-sm py-4 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-all active:scale-[0.98] mt-6 flex justify-center items-center gap-2"
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black text-sm py-3 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-all active:scale-[0.98] mt-5 flex justify-center items-center gap-2"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -243,7 +243,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-8 text-center border-t border-white/10 pt-6">
+            <div className="mt-5 text-center border-t border-white/10 pt-5">
               <p className="text-sm text-slate-400">
                 New to LibraryOS?{' '}
                 <Link href="/auth/signup" className="text-cyan-400 font-bold hover:text-cyan-300 transition-colors">
