@@ -171,7 +171,7 @@ export default function ReportsAnalyticsPage() {
               {isExporting === format ? 'Exporting...' : `Export ${format}`}
             </button>
           ))}
-          <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
+          <button onClick={() => window.print()} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
             <Printer size={14} /> Print
           </button>
         </div>
@@ -208,7 +208,7 @@ export default function ReportsAnalyticsPage() {
         </select>
         
         <div className="flex-1"></div>
-        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors">
+        <button onClick={() => gridRef.current?.api.onFilterChanged()} className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors">
           Apply Filters
         </button>
       </div>
