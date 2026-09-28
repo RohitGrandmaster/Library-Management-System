@@ -41,6 +41,12 @@ export default function LoginPage() {
     if (role.id === 'superadmin') {
       setValue('email', 'superadmin@nexus360.com', { shouldValidate: true });
       setValue('password', 'password123', { shouldValidate: true });
+    } else if (role.id === 'admin') {
+      setValue('email', 'admin@library.com', { shouldValidate: true });
+      setValue('password', 'password123', { shouldValidate: true });
+    } else if (role.id === 'manager') {
+      setValue('email', 'manager@library.com', { shouldValidate: true });
+      setValue('password', 'password123', { shouldValidate: true });
     } else {
       setValue('email', '', { shouldValidate: false });
       setValue('password', '', { shouldValidate: false });
