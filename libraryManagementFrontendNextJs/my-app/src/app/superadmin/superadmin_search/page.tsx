@@ -24,7 +24,9 @@ const ITEMS = [
   { title: 'My Profile', description: 'Manage the Super Admin profile.', href: '/superadmin/superadmin_profile', keywords: 'profile account' },
 ];
 
-export default function SuperAdminSearchPage() {
+import { Suspense } from 'react';
+
+function SuperAdminSearchContent() {
   const params = useSearchParams();
   const query = (params.get('q') || '').trim();
   const results = useMemo(() => {
@@ -63,5 +65,13 @@ export default function SuperAdminSearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SuperAdminSearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuperAdminSearchContent />
+    </Suspense>
   );
 }

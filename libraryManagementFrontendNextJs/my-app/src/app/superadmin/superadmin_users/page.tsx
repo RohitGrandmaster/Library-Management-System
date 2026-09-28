@@ -183,7 +183,7 @@ export default function UsersPage() {
               rowHeight={72}
               headerHeight={52}
               onGridReady={onGridReady}
-              onRowClicked={p => setSelectedUser(p.data)}
+              onRowClicked={(p: any) => setSelectedUser(p.data)}
               pagination={true}
               paginationPageSize={15}
               rowClass="cursor-pointer hover:bg-teal-50/50 dark:hover:bg-teal-900/10 transition-colors"

@@ -186,7 +186,7 @@ export default function SupportTicketsPage() {
             rowHeight={60}
             headerHeight={44}
             onGridReady={onGridReady}
-            onRowClicked={p => setSelected(p.data)}
+            onRowClicked={(p: any) => setSelected(p.data)}
             pagination={true}
             paginationPageSize={10}
             suppressCellFocus={true}

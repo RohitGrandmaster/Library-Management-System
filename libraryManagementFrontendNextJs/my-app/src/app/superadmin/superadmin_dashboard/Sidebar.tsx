@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Wand2, Building2, CreditCard, Users, ShieldCheck,
   SlidersHorizontal, Server, Database, ListChecks, Plug, MessageCircle,
   Shield, DatabaseBackup, Activity, BarChart2, LifeBuoy, FileCheck,
-  Settings, UserCircle, LogOut,
+  Settings, UserCircle, LogOut, ScrollText,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -120,7 +120,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
             <p className="sa-wizard-modal-desc font-bold text-gray-800 dark:text-gray-200 mt-2">Are you sure you want to logout?</p>
             <div className="flex gap-3 mt-6">
               <button className="sa-btn-ghost sa-btn-ghost--sm flex-1 font-bold" onClick={() => setShowLogout(false)}>Cancel</button>
-              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => clearAuthState(); router.replace('/auth/login')}>Logout</button>
+              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => { clearAuthState(); router.replace('/auth/login'); }}>Logout</button>
             </div>
           </div>
         </div>

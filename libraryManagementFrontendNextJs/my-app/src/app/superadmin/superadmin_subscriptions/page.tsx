@@ -173,7 +173,7 @@ export default function SubscriptionsPage() {
               rowHeight={72}
               headerHeight={52}
               onGridReady={onGridReady}
-              onRowClicked={p => setSelectedPlan(p.data)}
+              onRowClicked={(p: any) => setSelectedPlan(p.data)}
               pagination={true}
               paginationPageSize={15}
               rowClass="cursor-pointer hover:bg-pink-50/50 dark:hover:bg-pink-900/10 transition-colors"
