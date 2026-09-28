@@ -35,7 +35,6 @@ const NAV_ITEMS = [
   { href: '/superadmin/superadmin_compliance',            icon: FileCheck,       label: '20. Data Governance & Compliance' },
   { href: '/superadmin/superadmin_settings',              icon: Settings,        label: '21. System Settings' },
   { href: '/superadmin/superadmin_profile',               icon: UserCircle,      label: '22. My Profile' },
-  { href: '#logout',                                      icon: LogOut,          label: '23. Logout' },
 ];
 
 interface SidebarProps {
@@ -68,18 +67,6 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
           const iconColors = ['#4F46E5', '#059669', '#D97706', '#2563EB', '#7C3AED', '#E11D48', '#0D9488'];
           const color = iconColors[i % iconColors.length];
           
-          if (href === '#logout') {
-            return (
-              <button
-                key={href}
-                onClick={() => setShowLogout(true)}
-                className="sa-nav-link text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors text-left"
-              >
-                <Icon size={17} />
-                <span className="font-bold">{label}</span>
-              </button>
-            )
-          }
 
           return (
             <Link
