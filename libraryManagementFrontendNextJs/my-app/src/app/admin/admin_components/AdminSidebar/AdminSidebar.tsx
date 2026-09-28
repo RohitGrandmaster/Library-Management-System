@@ -111,16 +111,37 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
       </aside>
 
       <Dialog open={showLogout} onOpenChange={setShowLogout}>
-        <DialogContent className="max-w-[360px]">
-          <DialogHeader>
-            <DialogTitle>Log out?</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to log out of your session?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mt-4 sm:justify-end gap-2">
-            <Button variant="outline" onClick={() => setShowLogout(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={() => router.push('/auth/login')}>Log out</Button>
+        <DialogContent className="max-w-[400px] p-0 overflow-hidden bg-card border-none rounded-3xl shadow-2xl">
+          <div className="bg-gradient-to-b from-red-500/20 to-transparent p-6 text-center pt-8">
+            <div className="w-20 h-20 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+               <LogOut size={36} strokeWidth={2.5} className="ml-1" />
+            </div>
+            <DialogHeader className="text-center">
+              <DialogTitle className="text-2xl font-extrabold text-foreground mb-1">Ready to leave?</DialogTitle>
+              <DialogDescription className="text-sm font-medium text-muted-foreground max-w-[280px] mx-auto">
+                Are you sure you want to securely log out of your Admin session?
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <DialogFooter className="p-6 pt-2 grid grid-cols-2 gap-3 sm:justify-center">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowLogout(false)}
+              className="w-full rounded-xl border-border bg-background hover:bg-muted font-bold h-12"
+            >
+              Stay Logged In
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={() => {
+                // Simulate session destruction
+                alert('Session successfully destroyed.');
+                router.push('/auth/login');
+              }}
+              className="w-full rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold h-12 shadow-md shadow-red-500/20"
+            >
+              Yes, Log out
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
