@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import '@/app/superadmin/superadmin_system/system.css';
 
@@ -39,12 +38,6 @@ export default function NotFound() {
           >
             Superadmin
           </Link>
-          <button
-            className="sys-btn-ghost"
-            onClick={() => window.history.back()}
-          >
-            Go Back
-          </button>
         </div>
 
         {/* Decorative glow */}
