@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Search, Menu, Bell, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Search, Menu, Bell, CheckCircle, AlertTriangle, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface HeaderProps {
@@ -9,6 +10,9 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick }: HeaderProps) {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [read, setRead] = useState(false);
+  const router = useRouter();
   const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,7 +22,13 @@ export default function Header({ onMenuClick }: HeaderProps) {
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    const submitSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    const q = search.trim();
+    if (q) router.push(`/superadmin/superadmin_search?q=${encodeURIComponent(q)}`);
+  };
+
+  return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -28,10 +38,11 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <button className="sa-mobile-menu-btn" onClick={onMenuClick} title="Toggle menu">
           <Menu size={18} />
         </button>
-        <div className="sa-header-search">
+        <form className="sa-header-search" onSubmit={submitSearch} role="search">
           <Search size={14} className="sa-metric--muted shrink-0" />
-          <input placeholder="Search libraries, tickets, logs..." />
-        </div>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search libraries, tickets, logs..." aria-label="Search Super Admin" />
+          {search && <button type="button" aria-label="Clear search" onClick={() => setSearch("")} className="sa-btn-icon"><X size={13} /></button>}
+        </form>
       </div>
 
       {/* Right — bell only */}
@@ -44,7 +55,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             onClick={() => setNotifOpen(!notifOpen)}
           >
             <Bell size={17} />
-            <span className="sa-header-notif-badge" />
+            {!read && <span className="sa-header-notif-badge" />}
           </button>
 
           {notifOpen && (
@@ -52,12 +63,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
               <div className="sa-notif-dropdown-header">
                 <div>
                   <h4 className="sa-notif-title">Notifications</h4>
-                  <p className="sa-notif-subtitle">You have 2 new messages</p>
+                  <p className="sa-notif-subtitle">{read ? "You are all caught up" : "You have 2 new messages"}</p>
                 </div>
-                <button className="sa-btn-ghost sa-btn-ghost--sm">Mark all read</button>
+                <button className="sa-btn-ghost sa-btn-ghost--sm" onClick={() => setRead(true)} disabled={read}>Mark all read</button>
               </div>
               <div className="sa-notif-list">
-                <div className="sa-notif-item sa-notif-item--unread">
+                <div className={`sa-notif-item ${!read ? "sa-notif-item--unread" : ""}`}>
                   <div className="sa-notif-item-icon sa-notif-item-icon--success">
                     <CheckCircle size={14} />
                   </div>
@@ -65,7 +76,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     <p className="sa-notif-item-title">System updated</p>
                     <p className="sa-notif-item-time">2 mins ago</p>
                   </div>
-                  <div className="sa-notif-unread-dot" />
+                  {!read && <div className="sa-notif-unread-dot" />}
                 </div>
                 <div className="sa-notif-item sa-notif-item--unread">
                   <div className="sa-notif-item-icon sa-notif-item-icon--warning">
@@ -88,7 +99,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 </div>
               </div>
               <div className="sa-notif-dropdown-footer">
-                <button className="sa-panel-view-all">View all notifications</button>
+                <button className="sa-panel-view-all" onClick={() => { setNotifOpen(false); router.push("/superadmin/superadmin_notifications"); }}>View all notifications</button>
               </div>
             </div>
           )}
