@@ -139,6 +139,7 @@ export default function BranchesPage() {
 
   const managers = branches.filter(b => !managerSearch || [b.manager, b.name, b.location].join(' ').toLowerCase().includes(managerSearch.toLowerCase()));
   const inventoryRows = inventory.filter(i => !inventorySearch || [i.code, i.title].join(' ').toLowerCase().includes(inventorySearch.toLowerCase()));
+  const filteredInventoryRows = inventoryRows;
   const filteredAudit = auditFilter === 'All' ? auditLogs : auditLogs.filter(x => x.severity === auditFilter.toLowerCase());
 
   if (selectedBranch) {
