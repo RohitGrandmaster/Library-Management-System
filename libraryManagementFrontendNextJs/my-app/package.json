@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node -e \"const fs=require('fs');fs.rmSync('.next',{recursive:true,force:true});fs.rmSync('node_modules/.cache',{recursive:true,force:true})\" && next dev",
+    "dev": "next dev --webpack -p 3005",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -54,3 +54,5 @@
     "typescript": "^5"
   }
 }
+
+
