@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { clearAuthState } from '@/lib/auth';
 import {
   LayoutDashboard, Wand2, Building2, CreditCard, Receipt,
   HeadphonesIcon, ScrollText, Activity, Settings, BarChart2, LogOut,
@@ -28,7 +29,7 @@ const NAV_ITEMS = [
   { href: '/superadmin/superadmin_monitoring',            icon: Activity,        label: '17. Monitoring & Alerts' },
   { href: '/superadmin/superadmin_reports',               icon: BarChart2,       label: '18. Reports & Analytics' },
   { href: '/superadmin/superadmin_support-tickets',       icon: HeadphonesIcon,  label: '19. Support & Operations' },
-  { href: '/superadmin/superadmin_governance',            icon: Settings,        label: '20. Data Governance & Compliance' },
+  { href: '/superadmin/superadmin_compliance',            icon: Settings,        label: '20. Data Governance & Compliance' },
   { href: '/superadmin/superadmin_settings',              icon: Settings,        label: '21. System Settings' },
   { href: '/superadmin/superadmin_profile',               icon: Settings,        label: '22. My Profile' },
   { href: '#logout',                                      icon: LogOut,          label: '23. Logout' },
@@ -38,7 +39,7 @@ interface SidebarProps {
   open?: boolean;
 }
 
-export default function Sidebar({ open }: SidebarProps) {
+export default function Sidebar({ open, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
@@ -80,7 +81,7 @@ export default function Sidebar({ open }: SidebarProps) {
             <Link
               key={href}
               href={href}
-              className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}
+              className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}\n              onClick={onNavigate}
             >
               <Icon size={17} style={{ color: isActive ? 'inherit' : color }} />
               <span>{label}</span>
@@ -115,7 +116,7 @@ export default function Sidebar({ open }: SidebarProps) {
             <p className="sa-wizard-modal-desc font-bold text-gray-800 dark:text-gray-200 mt-2">Are you sure you want to logout?</p>
             <div className="flex gap-3 mt-6">
               <button className="sa-btn-ghost sa-btn-ghost--sm flex-1 font-bold" onClick={() => setShowLogout(false)}>Cancel</button>
-              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => router.push('/auth/login')}>Logout</button>
+              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => clearAuthState(); router.replace('/auth/login')}>Logout</button>
             </div>
           </div>
         </div>
