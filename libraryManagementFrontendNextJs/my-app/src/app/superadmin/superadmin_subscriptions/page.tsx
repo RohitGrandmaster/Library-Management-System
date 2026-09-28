@@ -25,78 +25,149 @@ const mockPlans = [
   { id: '4', name: 'Lifetime Legacy', price: '$4999.00', cycle: 'One-Time', status: 'Expired', activeTenants: 2, maxLibs: 3, trial: 'None' },
 ];
 
+const mockOtherData: Record<string, any[]> = {
+  "Usage & Limits": [
+    { id: 'USG-1', name: 'Global API Hits', price: '95,000 / 100K', cycle: 'Usage', status: 'Warning', activeTenants: 12, maxLibs: 'API', trial: 'Limit' },
+    { id: 'USG-2', name: 'Storage Servers', price: '420 GB / 500 GB', cycle: 'Storage', status: 'Active', activeTenants: 17, maxLibs: 'Disk', trial: 'Limit' }
+  ],
+  "Invoices": [
+    { id: 'INV-1001', name: 'StudyNest Patna', price: '$199.00', cycle: 'Invoice', status: 'Paid', activeTenants: 1, maxLibs: 'INV', trial: 'Jan 2024' },
+    { id: 'INV-1002', name: 'LibroHub Mumbai', price: '$1990.00', cycle: 'Invoice', status: 'Pending', activeTenants: 1, maxLibs: 'INV', trial: 'Feb 2024' }
+  ],
+  "Payments": [
+    { id: 'PAY-8812', name: 'Stripe Credit Card', price: '$199.00', cycle: 'Payment', status: 'Success', activeTenants: 1, maxLibs: 'TXN', trial: 'Today' },
+    { id: 'PAY-8813', name: 'PayPal Transfer', price: '$49.00', cycle: 'Payment', status: 'Failed', activeTenants: 1, maxLibs: 'TXN', trial: 'Yesterday' }
+  ],
+  "Refunds": [
+    { id: 'REF-091', name: 'BookHaven BLR', price: '$199.00', cycle: 'Refund', status: 'Processed', activeTenants: 1, maxLibs: 'RFD', trial: 'Last Week' }
+  ],
+  "Coupons / Discounts": [
+    { id: 'CUP-1', name: 'WELCOME50', price: '50% OFF', cycle: 'Discount', status: 'Active', activeTenants: 45, maxLibs: 'PROMO', trial: 'New Users' },
+    { id: 'CUP-2', name: 'BLACKFRIDAY', price: '30% OFF', cycle: 'Discount', status: 'Expired', activeTenants: 120, maxLibs: 'PROMO', trial: 'All' }
+  ],
+  "Subscription History": [
+    { id: 'LOG-01', name: 'Plan Price Update', price: 'System', cycle: 'Audit', status: 'Active', activeTenants: 0, maxLibs: 'LOG', trial: 'Jan 15' },
+    { id: 'LOG-02', name: 'New Plan Created', price: 'SuperAdmin', cycle: 'Audit', status: 'Active', activeTenants: 0, maxLibs: 'LOG', trial: 'Jan 10' }
+  ]
+};
+
 export default function SubscriptionsPage() {
   const [activeMenu, setActiveMenu] = useState("Plans");
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const gridRef = useRef<AgGridReact>(null);
 
-  const colDefs = useMemo<any[]>(() => [
-    {
-      headerName: 'Plan Details', field: 'name', flex: 2, minWidth: 240,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex items-center gap-3 h-full cursor-pointer group">
-          <div className="w-10 h-10 rounded-xl bg-pink-100 dark:bg-pink-900/40 flex items-center justify-center text-pink-600 dark:text-pink-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-sm">
-            {p.data?.name.substring(0,3).toUpperCase()}
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="font-bold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors leading-tight">{p.data?.name}</p>
-            <p className="text-[11px] text-gray-500 font-semibold">{p.data?.cycle} Billing</p>
-          </div>
-        </div>
-      ),
-    },
-    { 
-      headerName: 'Pricing & Trial', field: 'price', flex: 1.5, minWidth: 150,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex flex-col justify-center h-full">
-          <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data?.price}</p>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1"><Clock size={10} /> Trial: {p.data?.trial}</p>
-        </div>
-      )
-    },
-    { 
-      headerName: 'Platform Limits', field: 'maxLibs', flex: 1.5, minWidth: 160,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex items-center h-full text-sm font-semibold text-gray-700 dark:text-gray-300">
-          Max Libraries: {p.data?.maxLibs}
-        </div>
-      )
-    },
-    { 
-      headerName: 'Active Tenants', field: 'activeTenants', flex: 1.2, minWidth: 140,
-      cellRenderer: (p: ICellRendererParams) => (
-        <div className="flex items-center gap-2 h-full">
-          <Activity size={16} className="text-blue-500" />
-          <span className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data?.activeTenants} Orgs</span>
-        </div>
-      )
-    },
-    { 
-      headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
-      cellRenderer: (p: ICellRendererParams) => {
-        let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
-        if (p.data?.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
-        if (p.data?.status === 'Suspended') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
-        if (p.data?.status === 'Expired') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
-        
-        return (
-          <div className="flex items-center h-full">
-            <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>
-              {p.data?.status}
-            </span>
-          </div>
-        )
-      }
+  const isPlanView = ["Plans", "Active Subscriptions", "Expired Subscriptions", "Suspended Subscriptions", "Trials"].includes(activeMenu);
+
+  const colDefs = useMemo<any[]>(() => {
+    if (isPlanView) {
+      return [
+        {
+          headerName: 'Plan Details', field: 'name', flex: 2, minWidth: 240,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            return (
+              <div className="flex items-center gap-3 h-full cursor-pointer group">
+                <div className="w-10 h-10 rounded-xl bg-pink-100 dark:bg-pink-900/40 flex items-center justify-center text-pink-600 dark:text-pink-400 font-extrabold text-sm group-hover:scale-110 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-sm">
+                  {p.data.name.substring(0,3).toUpperCase()}
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="font-bold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors leading-tight">{p.data.name}</p>
+                  <p className="text-[11px] text-gray-500 font-semibold">{p.data.cycle} Billing</p>
+                </div>
+              </div>
+            );
+          },
+        },
+        { 
+          headerName: 'Pricing & Trial', field: 'price', flex: 1.5, minWidth: 150,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            return (
+              <div className="flex flex-col justify-center h-full">
+                <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data.price}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1"><Clock size={10} /> Trial: {p.data.trial}</p>
+              </div>
+            );
+          }
+        },
+        { 
+          headerName: 'Platform Limits', field: 'maxLibs', flex: 1.5, minWidth: 160,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            return (
+              <div className="flex items-center h-full text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Max Libraries: {p.data.maxLibs}
+              </div>
+            );
+          }
+        },
+        { 
+          headerName: 'Active Tenants', field: 'activeTenants', flex: 1.2, minWidth: 140,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            return (
+              <div className="flex items-center gap-2 h-full">
+                <Activity size={16} className="text-blue-500" />
+                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">{p.data.activeTenants} Orgs</span>
+              </div>
+            );
+          }
+        },
+        { 
+          headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            let colors = 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
+            if (p.data.status === 'Active') colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
+            if (p.data.status === 'Suspended') colors = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
+            if (p.data.status === 'Expired') colors = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
+            return (
+              <div className="flex items-center h-full">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${colors}`}>
+                  {p.data.status}
+                </span>
+              </div>
+            )
+          }
+        }
+      ];
+    } else {
+      // Generic Columns for Invoices, Usage, etc.
+      return [
+        { headerName: 'ID', field: 'id', flex: 1, minWidth: 100, cellClass: 'font-mono text-xs text-gray-500 flex items-center' },
+        { headerName: 'Description', field: 'name', flex: 2, minWidth: 200, cellClass: 'font-bold text-gray-900 dark:text-white flex items-center' },
+        { headerName: 'Value / Amount', field: 'price', flex: 1.5, minWidth: 150, cellClass: 'font-semibold text-gray-700 dark:text-gray-300 flex items-center' },
+        { headerName: 'Context', field: 'trial', flex: 1, minWidth: 120, cellClass: 'text-sm text-gray-500 flex items-center' },
+        { 
+          headerName: 'Status', field: 'status', flex: 1, minWidth: 120,
+          cellRenderer: (p: ICellRendererParams) => {
+            if (!p.data) return null;
+            let colors = 'bg-gray-100 text-gray-700';
+            if (['Paid','Success','Active','Processed'].includes(p.data.status)) colors = 'bg-emerald-100 text-emerald-700';
+            if (['Pending','Warning'].includes(p.data.status)) colors = 'bg-yellow-100 text-yellow-700';
+            if (['Failed','Critical','Expired'].includes(p.data.status)) colors = 'bg-red-100 text-red-700';
+            return (
+              <div className="flex items-center h-full">
+                <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${colors}`}>
+                  {p.data.status}
+                </span>
+              </div>
+            )
+          }
+        }
+      ];
     }
-  ], []);
+  }, [isPlanView]);
 
   const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
   const getFilteredPlans = () => {
-    // Basic mock filtering logic for demonstration
+    if (!isPlanView) return mockOtherData[activeMenu] || [];
+    
     if (activeMenu === "Expired Subscriptions") return mockPlans.filter(p => p.status === 'Expired');
     if (activeMenu === "Suspended Subscriptions") return mockPlans.filter(p => p.status === 'Suspended');
     if (activeMenu === "Active Subscriptions") return mockPlans.filter(p => p.status === 'Active');
+    if (activeMenu === "Trials") return mockPlans.filter(p => p.trial !== 'None');
     return mockPlans;
   };
 
@@ -166,6 +237,7 @@ export default function SubscriptionsPage() {
           
           <div className="flex-1 w-full min-h-0 relative">
             <AgGridReact
+              key={activeMenu}
               ref={gridRef}
               theme={gridTheme}
               rowData={getFilteredPlans()}
@@ -184,3 +256,4 @@ export default function SubscriptionsPage() {
     </div>
   );
 }
+
