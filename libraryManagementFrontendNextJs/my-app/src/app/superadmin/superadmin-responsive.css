@@ -1,0 +1,207 @@
+/* Super Admin shell + sidebar responsive hardening. Loaded after the legacy SA styles. */
+
+.superadmin-theme .sa-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 60;
+  width: 240px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px 12px;
+  overflow: hidden;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  color: var(--sb-text);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.superadmin-theme .sa-sidebar-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+.superadmin-theme .sa-sidebar-logo-name {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.superadmin-theme .sa-sidebar-logo-sub {
+  margin: 3px 0 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.2;
+}
+.superadmin-theme .sa-sidebar-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 2px 12px;
+  scrollbar-width: thin;
+}
+.superadmin-theme .sa-sidebar-nav .sa-nav-link {
+  width: 100%;
+  min-height: 40px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.superadmin-theme .sa-sidebar-nav button.sa-nav-link {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+.superadmin-theme .sa-sidebar-footer-avatar {
+  min-width: 0;
+  flex: 1;
+}
+.superadmin-theme .sa-sidebar-footer-name,
+.superadmin-theme .sa-sidebar-footer-role {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.superadmin-theme .sa-sidebar-footer-name {
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+.superadmin-theme .sa-sidebar-footer-role {
+  color: var(--text-secondary);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.superadmin-theme .sa-sidebar-mobile-overlay {
+  display: none;
+}
+
+.superadmin-theme .sa-shell-content {
+  width: calc(100% - 240px);
+  margin-left: 240px;
+}
+.superadmin-theme .sa-shell-main {
+  overflow: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.superadmin-theme .sa-header {
+  width: calc(100% - 240px);
+  left: 240px;
+}
+.superadmin-theme .sa-mobile-menu-btn {
+  display: none;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1023px) {
+  .superadmin-theme .sa-sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .superadmin-theme .sa-sidebar.sa-sidebar--open {
+    transform: translateX(0);
+    box-shadow: 16px 0 40px rgba(0,0,0,.45);
+  }
+  .superadmin-theme .sa-sidebar-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    background: rgba(0,0,0,.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .superadmin-theme .sa-sidebar-mobile-overlay--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .superadmin-theme .sa-shell-content {
+    width: 100%;
+    margin-left: 0;
+  }
+  .superadmin-theme .sa-header {
+    width: 100%;
+    left: 0;
+  }
+  .superadmin-theme .sa-mobile-menu-btn {
+    display: inline-flex;
+  }
+  .superadmin-theme .sa-shell-main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .superadmin-theme .sa-header {
+    padding: 0 12px;
+  }
+  .superadmin-theme .sa-header-search {
+    min-width: 0;
+    width: min(48vw, 260px);
+  }
+  .superadmin-theme .sa-shell-main {
+    padding: 76px 12px 20px;
+  }
+  .superadmin-theme .sa-page-title {
+    font-size: 20px;
+  }
+  .superadmin-theme .sa-page-header {
+    margin-bottom: 20px;
+  }
+  .superadmin-theme .sa-actions-bar {
+    flex-wrap: wrap;
+  }
+  .superadmin-theme .sa-panel-drawer {
+    max-width: 100%;
+    padding: 16px;
+  }
+  .superadmin-theme .sa-toast {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .superadmin-theme .sa-sidebar {
+    width: min(88vw, 320px);
+  }
+  .superadmin-theme .sa-header-search {
+    display: none;
+  }
+  .superadmin-theme .sa-header-right {
+    margin-left: auto;
+  }
+}
+
+/* Prevent common wide data views from breaking the page on small screens. */
+.superadmin-theme table,
+.superadmin-theme .ag-root-wrapper,
+.superadmin-theme .ag-root {
+  max-width: 100%;
+}
+.superadmin-theme .ag-root-wrapper {
+  min-width: 0;
+}
