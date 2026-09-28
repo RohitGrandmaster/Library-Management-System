@@ -38,6 +38,7 @@ export default function SecurityCenterPage() {
   const [activeMenu, setActiveMenu] = useState("Security Dashboard");
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [revokedDevices, setRevokedDevices] = useState<string[]>([]);
   const gridRef = useRef<AgGridReact>(null);
 
   const handleSave = (e: React.FormEvent) => {
@@ -100,8 +101,8 @@ export default function SecurityCenterPage() {
       headerName: 'Action', field: 'action', flex: 1, minWidth: 120,
       cellRenderer: (p: ICellRendererParams) => (
         <div className="flex items-center justify-center h-full">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-red-200 dark:border-red-900/30 hover:bg-red-50 hover:text-red-600 text-gray-600 dark:bg-[#1E293B] dark:text-gray-300 rounded-lg text-xs font-bold transition-all shadow-sm">
-            <Ban size={12} /> Revoke
+          <button onClick={() => setRevokedDevices(ids => ids.includes(p.data.id) ? ids : [...ids, p.data.id])} disabled={revokedDevices.includes(p.data.id)} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-red-200 dark:border-red-900/30 hover:bg-red-50 hover:text-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600 dark:bg-[#1E293B] dark:text-gray-300 rounded-lg text-xs font-bold transition-all shadow-sm">
+            <Ban size={12} /> {revokedDevices.includes(p.data.id) ? "Revoked" : "Revoke"}
           </button>
         </div>
       )
