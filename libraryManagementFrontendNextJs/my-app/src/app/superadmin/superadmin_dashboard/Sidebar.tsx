@@ -37,6 +37,7 @@ const NAV_ITEMS = [
 
 interface SidebarProps {
   open?: boolean;
+  onNavigate?: () => void;
 }
 
 export default function Sidebar({ open, onNavigate }: SidebarProps) {
@@ -81,7 +82,8 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
             <Link
               key={href}
               href={href}
-              className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}\n              onClick={onNavigate}
+              className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}
+              onClick={onNavigate}
             >
               <Icon size={17} style={{ color: isActive ? 'inherit' : color }} />
               <span>{label}</span>
