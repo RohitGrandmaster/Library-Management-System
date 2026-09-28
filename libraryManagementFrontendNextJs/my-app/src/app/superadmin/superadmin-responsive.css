@@ -121,6 +121,13 @@
   .superadmin-theme .sa-sidebar {
     width: 276px;
     padding: 20px 12px 12px;
+    transform: translateX(0);
+  }
+  .superadmin-theme .sa-sidebar-mobile-overlay {
+    display: none;
+  }
+  .superadmin-theme .sa-mobile-menu-btn {
+    display: none;
   }
   .superadmin-theme .sa-sidebar-logo-area > div:not(.sa-sidebar-logo-box) {
     display: block;
