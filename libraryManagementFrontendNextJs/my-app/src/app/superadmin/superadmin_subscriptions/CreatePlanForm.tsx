@@ -19,7 +19,7 @@ export default function CreatePlanForm({ onCancel }: { onCancel: () => void }) {
   };
 
   return (
-    <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl p-8 max-w-5xl mx-auto w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl p-6 sm:p-8 w-full max-w-none mx-0 min-w-0 animate-in fade-in zoom-in-95 duration-300">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
