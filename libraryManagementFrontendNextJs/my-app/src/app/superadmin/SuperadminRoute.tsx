@@ -5,6 +5,7 @@ import Sidebar from '@/app/superadmin/superadmin_dashboard/Sidebar';
 import Header from '@/app/superadmin/superadmin_dashboard/Header';
 import '@/app/superadmin/superadmin.css';
 import '@/app/superadmin/sa-components.css';
+import '@/app/superadmin/superadmin-responsive.css';
 import { getCurrentUser, clearAuthState } from '@/lib/auth';
 
 const SUPERADMIN_ROUTES = ['/superadmin'];
@@ -54,7 +55,7 @@ export function SuperadminRoute({ children }: { children: React.ReactNode }) {
           className={`sa-sidebar-mobile-overlay ${sidebarOpen ? 'sa-sidebar-mobile-overlay--visible' : ''}`}
           onClick={() => setSidebarOpen(false)}
         />
-        <Sidebar open={sidebarOpen} />
+        <Sidebar open={sidebarOpen} onNavigate={() => setSidebarOpen(false)} />
         <div className="sa-shell-content">
           <Header onMenuClick={() => setSidebarOpen(o => !o)} />
           <main className="sa-shell-main">
