@@ -8,283 +8,324 @@ import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 import { 
   LineChart, Activity, Cpu, HardDrive, ShieldAlert, 
   Database, Network, Cloud, Lock, ServerCrash, 
-  CheckCircle, Clock, Users, ArrowUpRight, BellRing, BellOff, XCircle, Search
+  CheckCircle, Clock, Users, ArrowUpRight, BellRing, BellOff, XCircle, Search,
+  Radio, ShieldCheck, Zap
 } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const SUB_MENUS = [
-  "Monitoring Dashboard", "Application Monitoring", "Server Monitoring", "Database Monitoring", 
-  "API Monitoring", "Error Monitoring", "Performance Monitoring", "Uptime Monitoring", 
-  "Storage Monitoring", "Security Monitoring", "Alert Rules", "Alert History"
+  { id: "Active Alerts Feed", icon: BellRing, color: "rose", tabClass: "bg-rose-50 border-rose-200 text-rose-700 dark:bg-rose-900/20 dark:border-rose-800/50 dark:text-rose-400", iconClass: "text-rose-600 dark:text-rose-400" },
+  { id: "Infrastructure Health", icon: ServerCrash, color: "indigo", tabClass: "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-900/20 dark:border-indigo-800/50 dark:text-indigo-400", iconClass: "text-indigo-600 dark:text-indigo-400" },
+  { id: "API & Performance", icon: Zap, color: "sky", tabClass: "bg-sky-50 border-sky-200 text-sky-700 dark:bg-sky-900/20 dark:border-sky-800/50 dark:text-sky-400", iconClass: "text-sky-600 dark:text-sky-400" },
+  { id: "Security Monitoring", icon: ShieldCheck, color: "emerald", tabClass: "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-900/20 dark:border-emerald-800/50 dark:text-emerald-400", iconClass: "text-emerald-600 dark:text-emerald-400" },
+  { id: "Alert Rules & Logic", icon: Activity, color: "amber", tabClass: "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-900/20 dark:border-amber-800/50 dark:text-amber-400", iconClass: "text-amber-600 dark:text-amber-400" }
 ];
 
 // Mock Data matching the user's specific alert requirements
 const activeAlerts = [
-  { id: 'ALT-991', title: 'Server CPU High', desc: 'Worker node 3 CPU utilization is at 95% for 15+ mins.', severity: 'High', source: 'Server Monitoring', time: '5 mins ago', status: 'New', icon: <Cpu size={20} /> },
-  { id: 'ALT-992', title: 'RAM High', desc: 'API Gateway cluster memory usage exceeding 88%.', severity: 'Medium', source: 'Server Monitoring', time: '12 mins ago', status: 'Acknowledged', assignee: 'Priya S.', icon: <Activity size={20} /> },
-  { id: 'ALT-993', title: 'Disk Almost Full', desc: 'Volume /data on DB-Replica-2 has less than 10% space remaining.', severity: 'Critical', source: 'Storage Monitoring', time: '30 mins ago', status: 'New', icon: <HardDrive size={20} /> },
-  { id: 'ALT-994', title: 'Database Unavailable', desc: 'Connection timeouts on tenant isolated cluster #B.', severity: 'Critical', source: 'Database Monitoring', time: '1 hour ago', status: 'Escalated', assignee: 'Rohit S.', icon: <Database size={20} /> },
-  { id: 'ALT-995', title: 'API Errors High', desc: 'Spike in 5xx errors on external webhook endpoints.', severity: 'High', source: 'API Monitoring', time: '2 hours ago', status: 'Acknowledged', assignee: 'System', icon: <Network size={20} /> },
-  { id: 'ALT-996', title: 'Backup Failed', desc: 'Daily automated S3 snapshot failed for StudyNest library.', severity: 'High', source: 'Application Monitoring', time: 'Yesterday', status: 'New', icon: <Cloud size={20} /> },
-  { id: 'ALT-997', title: 'Queue Stuck', desc: 'Email sending worker queue has not processed items for 1 hour.', severity: 'Medium', source: 'Performance Monitoring', time: 'Yesterday', status: 'New', icon: <Clock size={20} /> },
-  { id: 'ALT-998', title: 'SSL Expiry', desc: 'Custom domain ssl cert for opac.readersden.org expires in 3 days.', severity: 'Medium', source: 'Security Monitoring', time: 'Yesterday', status: 'Snoozed', icon: <Lock size={20} /> },
-  { id: 'ALT-999', title: 'Storage Limit Reached', desc: 'Tenant LibroHub exceeded their 50GB file storage limit.', severity: 'Low', source: 'Storage Monitoring', time: '2 days ago', status: 'New', icon: <HardDrive size={20} /> },
-  { id: 'ALT-1000', title: 'Suspicious Login', desc: 'Admin login from unrecognized IP address outside operational region.', severity: 'High', source: 'Security Monitoring', time: '3 days ago', status: 'Resolved', icon: <ShieldAlert size={20} /> },
+  { id: 'ALT-991', title: 'Server CPU High', desc: 'Worker node 3 CPU utilization is at 95% for 15+ mins.', severity: 'Critical', source: 'Infrastructure', time: '5 mins ago', status: 'New', icon: Cpu },
+  { id: 'ALT-992', title: 'RAM High', desc: 'API Gateway cluster memory usage exceeding 88%.', severity: 'High', source: 'Infrastructure', time: '12 mins ago', status: 'Acknowledged', assignee: 'Priya S.', icon: Activity },
+  { id: 'ALT-993', title: 'Disk Almost Full', desc: 'Volume /data on DB-Replica-2 has less than 10% space remaining.', severity: 'Critical', source: 'Infrastructure', time: '30 mins ago', status: 'New', icon: HardDrive },
+  { id: 'ALT-994', title: 'Database Unavailable', desc: 'Connection timeouts on tenant isolated cluster #B.', severity: 'Critical', source: 'Infrastructure', time: '1 hour ago', status: 'Escalated', assignee: 'Rohit S.', icon: Database },
+  { id: 'ALT-995', title: 'API Errors High', desc: 'Spike in 5xx errors on external webhook endpoints.', severity: 'High', source: 'API & Performance', time: '2 hours ago', status: 'Acknowledged', assignee: 'System', icon: Network },
+  { id: 'ALT-996', title: 'Backup Failed', desc: 'Daily automated S3 snapshot failed for StudyNest library.', severity: 'High', source: 'Infrastructure', time: 'Yesterday', status: 'New', icon: Cloud },
+  { id: 'ALT-997', title: 'Queue Stuck', desc: 'Email sending worker queue has not processed items for 1 hour.', severity: 'Medium', source: 'API & Performance', time: 'Yesterday', status: 'New', icon: Clock },
+  { id: 'ALT-998', title: 'SSL Expiry', desc: 'Custom domain ssl cert for opac.readersden.org expires in 3 days.', severity: 'Medium', source: 'Security Monitoring', time: 'Yesterday', status: 'Snoozed', icon: Lock },
+  { id: 'ALT-999', title: 'Storage Limit Reached', desc: 'Tenant LibroHub exceeded their 50GB file storage limit.', severity: 'Low', source: 'Infrastructure', time: '2 days ago', status: 'New', icon: HardDrive },
+  { id: 'ALT-1000', title: 'Suspicious Login', desc: 'Admin login from unrecognized IP address outside operational region.', severity: 'High', source: 'Security Monitoring', time: '3 days ago', status: 'Resolved', icon: ShieldAlert },
 ];
 
 export default function MonitoringPage() {
-  const [activeMenu, setActiveMenu] = useState("Monitoring Dashboard");
+  const [activeMenu, setActiveMenu] = useState("Active Alerts Feed");
   const [expandedAlertId, setExpandedAlertId] = useState<string | null>(null);
   const [alerts, setAlerts] = useState(activeAlerts);
 
   const getSeverityColor = (sev: string) => {
     switch (sev) {
-      case 'Critical': return 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border-red-200 dark:border-red-800';
-      case 'High': return 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400 border-orange-200 dark:border-orange-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800';
-      default: return 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 border-blue-200 dark:border-blue-800';
+      case 'Critical': return 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800/40';
+      case 'High': return 'bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800/40';
+      case 'Medium': return 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800/40';
+      default: return 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800/40';
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'New': return <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-rose-500"><BellRing size={10} className="animate-pulse" /> New Alert</span>;
-      case 'Acknowledged': return <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-blue-500"><CheckCircle size={10} /> Acknowledged</span>;
-      case 'Escalated': return <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-orange-500"><ArrowUpRight size={10} /> Escalated</span>;
-      case 'Snoozed': return <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-gray-400"><BellOff size={10} /> Snoozed</span>;
-      case 'Resolved': return <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-500"><CheckCircle size={10} /> Resolved</span>;
+      case 'New': return <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-extrabold text-rose-600 dark:text-rose-400"><BellRing size={12} className="animate-pulse" /> New Alert</span>;
+      case 'Acknowledged': return <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-extrabold text-blue-600 dark:text-blue-400"><CheckCircle size={12} /> Acknowledged</span>;
+      case 'Escalated': return <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-extrabold text-orange-600 dark:text-orange-400"><ArrowUpRight size={12} /> Escalated</span>;
+      case 'Snoozed': return <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-extrabold text-gray-500 dark:text-gray-400"><BellOff size={12} /> Snoozed</span>;
+      case 'Resolved': return <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400"><CheckCircle size={12} /> Resolved</span>;
       default: return null;
     }
   };
 
   const renderContent = () => {
     switch (activeMenu) {
-      case "Monitoring Dashboard":
-      case "Application Monitoring":
-      case "Server Monitoring":
-      case "Database Monitoring":
-      case "API Monitoring":
-      default:
+      case "Infrastructure Health":
         return (
-          <div className="flex flex-col xl:flex-row gap-6 w-full animate-in fade-in zoom-in-95 duration-300">
+          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-300 p-8 flex flex-col min-h-[500px]">
+            <div className="flex justify-between items-center mb-8 border-b border-gray-100 dark:border-gray-800 pb-4">
+               <div>
+                 <h2 className="text-xl font-extrabold text-indigo-700 dark:text-indigo-400 flex items-center gap-2"><ServerCrash size={24}/> Server & Database Infrastructure</h2>
+                 <p className="text-sm text-gray-500 font-medium mt-1">Live metrics from Kubernetes clusters and RDS databases.</p>
+               </div>
+               <span className="flex items-center gap-2 text-xs font-bold bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full border border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50 dark:text-emerald-400"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping absolute"></span><span className="w-2 h-2 rounded-full bg-emerald-500 relative z-10"></span> Live Monitoring Active</span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+               <div className="bg-gray-50 dark:bg-[#1E293B] rounded-2xl p-6 border border-gray-200 dark:border-gray-700 relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl"></div>
+                 <div className="flex items-center gap-3 mb-4 text-sky-600 dark:text-sky-400">
+                   <Cpu size={24} /> <h3 className="font-extrabold uppercase tracking-wider text-xs">CPU Usage</h3>
+                 </div>
+                 <p className="text-4xl font-black text-gray-900 dark:text-white">62<span className="text-xl text-gray-500 font-bold">%</span></p>
+                 <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full mt-4 overflow-hidden"><div className="bg-sky-500 h-full w-[62%]"></div></div>
+               </div>
+
+               <div className="bg-gray-50 dark:bg-[#1E293B] rounded-2xl p-6 border border-gray-200 dark:border-gray-700 relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl"></div>
+                 <div className="flex items-center gap-3 mb-4 text-rose-600 dark:text-rose-400">
+                   <Activity size={24} /> <h3 className="font-extrabold uppercase tracking-wider text-xs">Memory (RAM)</h3>
+                 </div>
+                 <p className="text-4xl font-black text-gray-900 dark:text-white">88<span className="text-xl text-gray-500 font-bold">%</span></p>
+                 <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full mt-4 overflow-hidden"><div className="bg-rose-500 h-full w-[88%]"></div></div>
+               </div>
+
+               <div className="bg-gray-50 dark:bg-[#1E293B] rounded-2xl p-6 border border-gray-200 dark:border-gray-700 relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl"></div>
+                 <div className="flex items-center gap-3 mb-4 text-amber-600 dark:text-amber-400">
+                   <Database size={24} /> <h3 className="font-extrabold uppercase tracking-wider text-xs">DB Connections</h3>
+                 </div>
+                 <p className="text-4xl font-black text-gray-900 dark:text-white">4,210</p>
+                 <p className="text-xs font-bold text-gray-500 mt-2 text-right">Limit: 10,000</p>
+               </div>
+            </div>
+
+            <div className="flex-1 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1E293B]/50 flex items-center justify-center">
+              <p className="text-gray-400 font-bold flex flex-col items-center gap-3">
+                <LineChart size={40} className="text-indigo-300 dark:text-indigo-900" />
+                Live Telemetry Graph Area
+              </p>
+            </div>
+          </div>
+        );
+
+      case "API & Performance":
+        return (
+          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-300 p-8 flex flex-col items-center justify-center min-h-[500px]">
+             <div className="w-20 h-20 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 rounded-full flex items-center justify-center mb-6 shadow-sm border border-sky-200 dark:border-sky-800">
+               <Zap size={40} />
+             </div>
+             <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">API & App Performance</h2>
+             <p className="text-sm text-gray-500 max-w-md mx-auto mb-8 text-center font-medium">Trace requests, track latency bottlenecks, and monitor background queue delays.</p>
+             <div className="w-full flex-1 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1E293B]/50 flex items-center justify-center">
+              <span className="text-sm font-bold text-gray-400">APM Waterfall Visualization Area</span>
+             </div>
+          </div>
+        );
+
+      case "Security Monitoring":
+        return (
+          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-300 p-8 flex flex-col items-center justify-center min-h-[500px]">
+             <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-6 shadow-sm border border-emerald-200 dark:border-emerald-800">
+               <ShieldCheck size={40} />
+             </div>
+             <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">Security Perimeter Secure</h2>
+             <p className="text-sm text-gray-500 max-w-md mx-auto mb-8 text-center font-medium">Monitoring brute-force attempts, unauthorized geography access, and WAF rules.</p>
+             <div className="flex gap-4 w-full max-w-2xl">
+               <div className="flex-1 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1E293B]">
+                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Blocked IPs (24H)</span>
+                 <p className="text-2xl font-black text-gray-900 dark:text-white mt-1">1,204</p>
+               </div>
+               <div className="flex-1 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1E293B]">
+                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">WAF Violations</span>
+                 <p className="text-2xl font-black text-gray-900 dark:text-white mt-1">34</p>
+               </div>
+             </div>
+          </div>
+        );
+
+      case "Alert Rules & Logic":
+        return (
+          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-300 flex flex-col min-h-[500px]">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-800 bg-amber-50/50 dark:bg-amber-900/10 flex justify-between items-center">
+               <div>
+                 <h2 className="text-xl font-extrabold text-amber-700 dark:text-amber-400 flex items-center gap-2"><Activity size={24}/> Alert Evaluation Rules</h2>
+                 <p className="text-sm text-gray-500 font-medium mt-1">Configure thresholds that trigger PagerDuty or email notifications.</p>
+               </div>
+               <button className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2">
+                 + Add New Rule
+               </button>
+            </div>
+            <div className="flex-1 p-8 bg-gray-50 dark:bg-[#0D1F3C]/30 flex flex-col items-center justify-center border-dashed border-2 border-transparent">
+              <Database size={40} className="text-amber-300 dark:text-amber-900/50 mb-4" />
+              <p className="text-gray-400 font-bold">Rule Engine UI Area</p>
+            </div>
+          </div>
+        );
+
+      case "Active Alerts Feed":
+      default:
+        const filteredAlerts = alerts.filter(a => activeMenu === "Active Alerts Feed" || a.source === activeMenu);
+        return (
+          <div className="flex flex-col xl:flex-row gap-6 w-full animate-in fade-in zoom-in-95 duration-300 h-full">
             
             {/* Active Alerts Feed (PagerDuty Style) */}
-            <div className="flex-1 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col flex-1">
-              <div className="p-5 border-b border-gray-100 dark:border-gray-800 bg-violet-50/50 dark:bg-[#0D1F3C] flex justify-between items-center">
+            <div className="flex-1 bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col flex-1 h-full min-h-[500px]">
+              <div className="p-6 border-b border-gray-100 dark:border-gray-800 bg-rose-50/50 dark:bg-rose-900/10 flex justify-between items-center shrink-0">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <ShieldAlert size={20} className="text-violet-500" /> Active Platform Alerts
+                  <h3 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
+                    <Radio size={24} className="text-rose-500" /> Active Alert Stream
                   </h3>
-                  <p className="text-xs font-medium text-gray-500 mt-0.5">Real-time incident response feed.</p>
+                  <p className="text-sm font-medium text-gray-500 mt-1">Real-time infrastructure and security incidents.</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => setAlerts(items => items.map(a => a.status === "Resolved" ? a : { ...a, status: "Acknowledged", assignee: a.assignee || "Super Admin" }))} className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-[#1E293B] dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold shadow-sm hover:text-violet-600 transition-colors">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => setAlerts(items => items.map(a => a.status === "Resolved" ? a : { ...a, status: "Acknowledged", assignee: a.assignee || "Super Admin" }))} className="px-4 py-2 bg-white border border-gray-200 dark:bg-[#1E293B] dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-bold shadow-sm hover:text-rose-600 hover:border-rose-300 transition-colors">
                     Acknowledge All
                   </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto max-h-[700px] custom-scrollbar p-0">
-                {alerts.filter(a => activeMenu === "Monitoring Dashboard" || a.source === activeMenu || activeMenu.includes(a.source.split(' ')[0])).map((alert) => {
-                  const isExpanded = expandedAlertId === alert.id;
-                  
-                  return (
-                    <div 
-                      key={alert.id} 
-                      className={`border-b border-gray-100 dark:border-gray-800 transition-colors ${alert.status === 'Resolved' ? 'opacity-60 bg-gray-50 dark:bg-[#0F172A]/50' : 'hover:bg-gray-50 dark:hover:bg-[#1E293B] bg-white dark:bg-[#0F172A]'}`}
-                    >
+              <div className="flex-1 overflow-y-auto custom-scrollbar p-0">
+                {filteredAlerts.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-gray-400 p-8 text-center">
+                    <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full flex items-center justify-center mb-4">
+                      <CheckCircle size={40} />
+                    </div>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">All Clear!</p>
+                    <p className="text-sm mt-1">No active alerts matching the current view.</p>
+                  </div>
+                ) : (
+                  filteredAlerts.map((alert) => {
+                    const isExpanded = expandedAlertId === alert.id;
+                    const Icon = alert.icon;
+                    return (
                       <div 
-                        onClick={() => setExpandedAlertId(isExpanded ? null : alert.id)}
-                        className="p-5 cursor-pointer flex flex-col sm:flex-row sm:items-center gap-4"
+                        key={alert.id} 
+                        className={`border-b border-gray-100 dark:border-gray-800 transition-colors ${alert.status === 'Resolved' ? 'opacity-60 bg-gray-50 dark:bg-[#0F172A]/50' : 'hover:bg-gray-50 dark:hover:bg-[#1E293B] bg-white dark:bg-[#0F172A]'}`}
                       >
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className={`p-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 shrink-0 ${alert.status === 'New' && alert.severity === 'Critical' ? 'animate-pulse bg-red-100 text-red-600 dark:bg-red-900/30' : ''}`}>
-                            {alert.icon}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getSeverityColor(alert.severity)}`}>
-                                {alert.severity}
-                              </span>
-                              <h4 className="text-sm font-extrabold text-gray-900 dark:text-white leading-tight">{alert.title}</h4>
+                        <div 
+                          onClick={() => setExpandedAlertId(isExpanded ? null : alert.id)}
+                          className="p-5 cursor-pointer flex flex-col sm:flex-row sm:items-center gap-4"
+                        >
+                          {/* Alert Left Side: Icon & Status */}
+                          <div className="flex items-center gap-4 min-w-[200px]">
+                            <div className={`p-3 rounded-xl border shadow-sm ${getSeverityColor(alert.severity)}`}>
+                              <Icon size={20} />
                             </div>
-                            <p className="text-xs font-medium text-gray-600 dark:text-gray-400 line-clamp-1">{alert.desc}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between sm:justify-end gap-6 sm:w-64 shrink-0">
-                          <div className="flex flex-col gap-1 items-start sm:items-end">
-                            {getStatusBadge(alert.status)}
-                            <span className="text-[11px] font-semibold text-gray-500">{alert.time}</span>
+                            <div className="flex flex-col gap-1.5">
+                              {getStatusBadge(alert.status)}
+                              <span className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider">{alert.source}</span>
+                            </div>
                           </div>
                           
-                          {/* Incident Assignee Avatar */}
-                          {alert.assignee ? (
-                            <div className="flex items-center gap-1.5 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg" title={`Assigned to ${alert.assignee}`}>
-                              <Users size={12} className="text-gray-500" />
-                              <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300 truncate max-w-[60px]">{alert.assignee}</span>
-                            </div>
-                          ) : (
-                            <div className="w-[85px]"></div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Expandable Action Panel */}
-                      {isExpanded && (
-                        <div className="px-5 pb-5 pt-2 animate-in slide-in-from-top-2">
-                          <div className="p-4 bg-gray-50 dark:bg-[#0D1F3C] border border-gray-100 dark:border-gray-800 rounded-xl">
-                            <p className="text-xs text-gray-500 font-mono mb-4">Incident ID: <span className="font-bold text-violet-600 dark:text-violet-400">{alert.id}</span> • Source: {alert.source}</p>
-                            
-                            <div className="flex flex-wrap gap-2">
-                              <button disabled={alert.status === "Acknowledged" || alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Acknowledged", assignee: a.assignee || "Super Admin" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
-                                <CheckCircle size={14} /> Acknowledge
-                              </button>
-                              <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors">
-                                <Users size={14} /> Assign
-                              </button>
-                              <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors">
-                                <ArrowUpRight size={14} /> Escalate
-                              </button>
-                              <button disabled={alert.status === "Snoozed" || alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Snoozed" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors disabled:opacity-50">
-                                <BellOff size={14} /> Snooze
-                              </button>
-                              <div className="flex-1"></div>
-                              <button disabled={alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Resolved" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
-                                <CheckCircle size={14} /> Mark Resolved
-                              </button>
-                            </div>
+                          {/* Alert Middle: Content */}
+                          <div className="flex-1">
+                            <h4 className="text-sm font-extrabold text-gray-900 dark:text-white">{alert.title}</h4>
+                            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1 line-clamp-1">{alert.desc}</p>
+                          </div>
+                          
+                          {/* Alert Right: Meta */}
+                          <div className="flex flex-col sm:items-end gap-1.5 text-right">
+                            <span className="text-[11px] font-extrabold text-gray-400 flex items-center gap-1"><Clock size={12}/> {alert.time}</span>
+                            {alert.assignee && (
+                              <span className="text-[10px] font-extrabold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-full border border-indigo-200 dark:border-indigo-800/40">{alert.assignee}</span>
+                            )}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+
+                        {/* Expanded Area */}
+                        {isExpanded && (
+                          <div className="px-5 pb-5 pt-2 animate-in slide-in-from-top-2">
+                            <div className="ml-[68px] p-5 bg-gray-50 dark:bg-[#1E293B] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-inner">
+                              <h5 className="text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">Detailed Diagnostics</h5>
+                              <p className="text-sm font-mono text-gray-600 dark:text-gray-400 bg-white dark:bg-[#0F172A] p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                                {alert.desc}<br/>
+                                <span className="text-rose-500 mt-2 block">Trace ID: x-req-{Math.random().toString(36).substring(7)}</span>
+                              </p>
+                              
+                              <div className="flex flex-wrap items-center gap-3 mt-5">
+                                {alert.status !== 'Resolved' && (
+                                  <>
+                                    <button 
+                                      onClick={(e) => { e.stopPropagation(); setAlerts(items => items.map(a => a.id === alert.id ? {...a, status: 'Resolved'} : a))}} 
+                                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5"
+                                    >
+                                      <CheckCircle size={14} /> Resolve Incident
+                                    </button>
+                                    <button 
+                                      onClick={(e) => { e.stopPropagation(); setAlerts(items => items.map(a => a.id === alert.id ? {...a, status: 'Acknowledged', assignee: 'Super Admin'} : a))}} 
+                                      className="px-4 py-2.5 bg-white dark:bg-[#0F172A] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5"
+                                    >
+                                      Acknowledge
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })
+                )}
               </div>
             </div>
-
-            {/* Quick Metrics Right Panel */}
-            <div className="xl:w-80 flex flex-col gap-6 shrink-0">
-              <div className="bg-white dark:bg-[#0F172A] p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-gray-800 pb-2 flex items-center gap-2">
-                  <Activity size={16} className="text-violet-500" /> Platform Health
-                </h3>
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
-                      <span>API Availability</span>
-                      <span className="text-emerald-500">99.98%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-emerald-500 w-[99%]" />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
-                      <span>Avg Response Time</span>
-                      <span className="text-blue-500">142 ms</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-500 w-[40%]" />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
-                      <span>Error Rate (5xx)</span>
-                      <span className="text-red-500">0.05%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-red-500 w-[2%]" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 p-6 rounded-2xl shadow-inner border border-violet-100 dark:border-violet-800 flex flex-col justify-center text-center">
-                <ShieldAlert size={32} className="text-violet-600 dark:text-violet-400 mx-auto mb-3" />
-                <h3 className="text-lg font-extrabold text-violet-900 dark:text-violet-300">2 Critical Alerts</h3>
-                <p className="text-xs font-medium text-violet-700 dark:text-violet-400/80 mt-1 mb-4 leading-relaxed">
-                  Requires immediate attention. Escalation policies will trigger SMS to On-Call Engineer in 10 minutes.
-                </p>
-                <button className="w-full px-4 py-2 text-xs font-bold text-white bg-violet-600 hover:bg-violet-700 rounded-lg shadow-sm transition-colors">
-                  View On-Call Schedule
-                </button>
-              </div>
-            </div>
-
           </div>
         );
-
-      case "Alert Rules":
-        return (
-          <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden p-16 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
-             <div className="p-5 bg-violet-100 dark:bg-violet-900/40 rounded-full mb-6 shadow-inner">
-              <Settings size={48} className="text-violet-500 dark:text-violet-400" />
-            </div>
-            <h4 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-3">Configure Alert Rules</h4>
-            <p className="text-gray-500 font-medium max-w-lg mx-auto mb-8">
-              Define thresholds (e.g. CPU &gt; 90%, Error Rate &gt; 1%) and setup Escalation Policies (Email, SMS, PagerDuty, Slack Webhooks).
-            </p>
-            <button className="px-6 py-3 text-sm font-bold text-white bg-violet-600 hover:bg-violet-700 rounded-xl shadow-lg shadow-violet-500/20 hover:-translate-y-0.5 transition-all">
-              Create New Alert Rule
-            </button>
-          </div>
-        )
     }
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full h-full">
+    <div className="flex flex-col gap-6 w-full h-full min-h-0">
+      
       {/* Page Header */}
-      <div>
+      <div className="shrink-0">
         <div className="sa-breadcrumb mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-          <span>Nexus 360</span><span>/</span><span className="text-violet-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Monitoring</span>
+          <span>Nexus 360</span><span>/</span><span className="text-rose-600">Super Admin</span><span>/</span><span className="text-gray-900 dark:text-white">Monitoring</span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h1 className="sa-page-title text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
-              <div className="p-2 bg-violet-100 dark:bg-violet-900/30 rounded-xl shadow-sm border border-violet-200/50 dark:border-violet-800/50">
-                <LineChart size={28} className="text-violet-600 dark:text-violet-400" />
+            <h1 className="sa-page-title text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
+              <div className="p-2.5 bg-rose-100 dark:bg-rose-900/30 rounded-xl shadow-sm border border-rose-200/50 dark:border-rose-800/50">
+                <Radio size={28} className="text-rose-600 dark:text-rose-400" />
               </div>
-              Monitoring & Alerts
+              Platform Monitoring & Alerts
             </h1>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-medium max-w-3xl">Real-time observability into application health, infrastructure performance, and actionable incident alerts.</p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 font-medium max-w-3xl">Real-time observability of infrastructure health, API latency, active security threats, and database load.</p>
           </div>
         </div>
       </div>
 
-      {/* Sub-menu Tabs */}
-      <div className="flex gap-1.5 pb-2 pt-1 px-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {SUB_MENUS.map(menu => (
-          <button
-            key={menu}
-            onClick={() => { setActiveMenu(menu); setExpandedAlertId(null); }}
-            className={`px-3 py-1.5 text-[11px] font-bold rounded-lg whitespace-nowrap transition-all shadow-sm flex-1 ${
-              activeMenu === menu 
-                ? 'bg-violet-600 text-white shadow-violet-600/20 scale-105' 
-                : 'bg-white dark:bg-[#0F172A] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:bg-violet-50 dark:hover:bg-[#1E293B] hover:text-violet-600 hover:border-violet-200'
-            }`}
-          >
-            {menu}
-          </button>
-        ))}
+      {/* Sub-menu Grid */}
+      <div className="shrink-0 grid grid-cols-2 lg:grid-cols-5 gap-3 w-full">
+        {SUB_MENUS.map(menu => {
+          const Icon = menu.icon;
+          const isActive = activeMenu === menu.id;
+          
+          return (
+            <button
+              key={menu.id}
+              onClick={() => setActiveMenu(menu.id)}
+              className={`flex flex-col items-center justify-center p-4 gap-2 rounded-2xl border text-center transition-all ${
+                isActive 
+                  ? `${menu.tabClass} shadow-md scale-[1.02]`
+                  : 'bg-white dark:bg-[#0F172A] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#1E293B] hover:text-gray-900 dark:hover:text-white shadow-sm'
+              }`}
+            >
+              <Icon size={20} className={isActive ? menu.iconClass : 'opacity-70'} />
+              <span className="text-[11px] font-extrabold uppercase tracking-wider">{menu.id}</span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Dynamic Content */}
-      <div className="w-full mt-2">
+      <div className="w-full flex-1 min-h-0 overflow-y-auto pb-6 custom-scrollbar pr-2">
         {renderContent()}
       </div>
     </div>
-  );
-}
-
-// Inline Settings icon since we didn't import it top-level
-function Settings(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-      <circle cx="12" cy="12" r="3"></circle>
-    </svg>
   );
 }
