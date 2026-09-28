@@ -55,6 +55,7 @@ export default async function AdminDashboardPage() {
     ...a,
     icon: ADMIN_ACTION_ICONS[a.label] ?? AlertCircle,
     type: a.type as 'danger' | 'warning',
+    href: a.href || '#',
   }));
 
   return (
@@ -94,7 +95,7 @@ export default async function AdminDashboardPage() {
         {/* Row 2: Seat Matrix (60%) + Action Items (40%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-full">
-            <SeatMatrixGrid seats={data.seats as any} shifts={data.shifts} />
+            <SeatMatrixGrid seats={data.seats as any} shifts={data.shifts.map((s: any) => s.name)} />
           </div>
 
           <div className="lg:col-span-5 xl:col-span-4 flex flex-col h-full">

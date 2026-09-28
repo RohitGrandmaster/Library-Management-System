@@ -201,7 +201,6 @@ export default function BooksCatalogView() {
                                   </div>
                                 )}
                               </div>
-                            </div>
                             </td>
                           </tr>
                         ))}
