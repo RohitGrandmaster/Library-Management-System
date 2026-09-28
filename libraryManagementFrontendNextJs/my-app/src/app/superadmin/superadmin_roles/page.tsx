@@ -26,7 +26,7 @@ export default function RolesPage() {
       </div>
 
       {/* Sub-menu Tabs */}
-      <div className="flex overflow-x-auto custom-scrollbar gap-2 pb-2">
+      <div className="flex gap-1.5 pb-2 pt-1 px-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {SUB_MENUS.map(menu => (
           <button
             key={menu}

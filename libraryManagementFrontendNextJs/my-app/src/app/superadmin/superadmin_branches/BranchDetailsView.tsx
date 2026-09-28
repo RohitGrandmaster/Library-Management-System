@@ -97,7 +97,7 @@ export default function BranchDetailsView({ onBack }: { onBack: () => void }) {
 
       {/* Drilldown Navigation */}
       <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-lg overflow-hidden flex flex-col h-full">
-        <div className="flex overflow-x-auto custom-scrollbar border-b border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-[#0D1F3C]/30">
+        <div className="flex overflow-x-auto border-b [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-[#0D1F3C]/30">
           {DRILLDOWN_TABS.map(tab => (
             <button
               key={tab}

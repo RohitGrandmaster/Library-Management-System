@@ -297,12 +297,12 @@ export default function CompliancePage() {
       </div>
 
       {/* Sub-menu Tabs */}
-      <div className="flex overflow-x-auto custom-scrollbar gap-2 pb-2">
+      <div className="flex gap-1.5 pb-2 pt-1 px-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {SUB_MENUS.map(menu => (
           <button
             key={menu}
             onClick={() => setActiveMenu(menu)}
-            className={`px-5 py-2.5 text-sm font-bold rounded-xl whitespace-nowrap transition-all shadow-sm ${
+            className={`px-3 py-1.5 text-[11px] font-bold rounded-lg whitespace-nowrap transition-all shadow-sm flex-1 ${
               activeMenu === menu 
                 ? 'bg-indigo-600 text-white shadow-indigo-600/20 scale-105' 
                 : 'bg-white dark:bg-[#0F172A] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:bg-indigo-50 dark:hover:bg-[#1E293B] hover:text-indigo-600 hover:border-indigo-200'
