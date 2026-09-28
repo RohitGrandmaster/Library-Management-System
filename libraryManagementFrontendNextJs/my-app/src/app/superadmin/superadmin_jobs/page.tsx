@@ -35,6 +35,7 @@ const mockJobs = [
 export default function JobsPage() {
   const [activeMenu, setActiveMenu] = useState("Job Dashboard");
   const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [workerCount, setWorkerCount] = useState(12);
   const gridRef = useRef<AgGridReact>(null);
 
   const colDefs = useMemo<any[]>(() => [
@@ -157,9 +158,9 @@ export default function JobsPage() {
         <div className="flex items-center gap-3 bg-white dark:bg-[#0F172A] p-2 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
           <div className="px-3 border-r border-gray-100 dark:border-gray-800">
             <p className="text-[10px] font-bold text-gray-400 uppercase">Active Workers</p>
-            <p className="text-sm font-extrabold text-emerald-600">12 / 16</p>
+            <p className="text-sm font-extrabold text-emerald-600">{workerCount} / 16</p>
           </div>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-fuchsia-50 hover:bg-fuchsia-100 dark:bg-fuchsia-900/20 dark:hover:bg-fuchsia-900/40 text-fuchsia-700 dark:text-fuchsia-400 text-xs font-bold rounded-lg transition-colors">
+          <button onClick={() => setWorkerCount(n => Math.min(16, n + 1))} disabled={workerCount >= 16} className="flex items-center gap-1.5 px-3 py-1.5 bg-fuchsia-50 hover:bg-fuchsia-100 dark:bg-fuchsia-900/20 dark:hover:bg-fuchsia-900/40 text-fuchsia-700 dark:text-fuchsia-400 text-xs font-bold rounded-lg transition-colors disabled:opacity-50">
             <Play size={12} /> Spawn Worker
           </button>
         </div>
@@ -194,8 +195,8 @@ export default function JobsPage() {
               onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)}
             />
           </div>
-          <button className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
-            <Filter size={16} className="text-gray-500" /> Queue Filters
+          <button onClick={() => gridRef.current?.api.setFilterModel(null)} className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
+            <Filter size={16} className="text-gray-500" /> Reset Filters
           </button>
         </div>
         
