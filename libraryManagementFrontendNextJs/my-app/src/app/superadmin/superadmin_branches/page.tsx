@@ -205,10 +205,17 @@ export default function BranchesPage() {
       {['All Branches','Active Branches','Pending Branches','Suspended Branches','Archived Branches'].includes(activeMenu) && (
         <div className="bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden flex flex-col w-full min-w-0 min-h-[520px]">
           <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 dark:bg-[#0D1F3C]">
-            <div className="relative w-full sm:max-w-xl"><Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" /><input type="text" placeholder="Search branches by name, code, parent or location..." className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm outline-none" onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)} /></div>
-            <button onClick={() => { gridRef.current?.api.setFilterModel(null); gridRef.current?.api.setGridOption('quickFilterText', ''); }} className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200"><Filter size={16} /> Reset Filters</button>
+            <div className="relative w-full sm:max-w-xl">
+              <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="text" placeholder="Search branches by name, code, parent or location..." className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1E293B] border border-gray-200 dark:border-gray-700 rounded-xl text-sm outline-none" onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)} />
+            </div>
+            <button onClick={() => { gridRef.current?.api.setFilterModel(null); gridRef.current?.api.setGridOption('quickFilterText', ''); const input = document.querySelector('input[placeholder^="Search branches"]') as HTMLInputElement; if (input) input.value = ''; }} className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200">
+              <Filter size={16} /> Reset Filters
+            </button>
           </div>
-          <div className="flex-1 w-full min-h-[420px] relative"><AgGridReact ref={gridRef} theme={gridTheme} rowData={getFilteredBranches()} columnDefs={colDefs} rowHeight={72} headerHeight={52} onGridReady={onGridReady} onGridSizeChanged={e => e.api.sizeColumnsToFit()} onRowClicked={p => setSelectedBranchId(p.data!.id)} pagination paginationPageSize={15} rowClass="cursor-pointer" /></div>
+          <div className="flex-1 w-full min-h-[420px] relative">
+            <AgGridReact key={activeMenu} ref={gridRef} theme={gridTheme} rowData={getFilteredBranches()} columnDefs={colDefs} rowHeight={72} headerHeight={52} onGridSizeChanged={e => e.api.sizeColumnsToFit()} onRowClicked={p => setSelectedBranchId(p.data!.id)} pagination paginationPageSize={15} rowClass="cursor-pointer" />
+          </div>
         </div>
       )}
 
