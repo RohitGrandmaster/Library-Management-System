@@ -178,7 +178,7 @@ export default function GlobalConfigPage() {
           {SUB_MENUS.map(item => {
             const Icon = item.icon;
             const selected = activeMenu === item.id;
-            return <button type="button" key={item.id} onClick={() => setActiveMenu(item.id)} className={`group flex min-w-max items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-xs font-bold transition-all ${selected ? `${toneClasses[item.tone]} shadow-sm` : 'border-transparent bg-gray-50 text-gray-600 hover:border-gray-200 hover:bg-white dark:bg-[#0F172A] dark:text-gray-300 dark:hover:border-gray-700'}`}><Icon size={15} /><span>{item.id.replace('Default ', '')}</span></button>;
+            return <button type="button" key={item.id} onClick={() => setActiveMenu(item.id)} className={`group flex min-w-max items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-xs font-bold transition-all ${selected ? `${toneClasses[item.tone]} shadow-sm` : 'border-transparent bg-gray-50 text-gray-600 hover:border-gray-200 hover:bg-white dark:hover:bg-[#1E293B] dark:bg-[#0F172A] dark:text-gray-300 dark:hover:border-gray-700'}`}><Icon size={15} /><span>{item.id.replace('Default ', '')}</span></button>;
           })}
         </div>
       </section>

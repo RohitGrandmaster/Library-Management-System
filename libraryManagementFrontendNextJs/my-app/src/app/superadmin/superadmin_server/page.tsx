@@ -253,7 +253,7 @@ export default function ServerInfrastructurePage() {
                   onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)}
                 />
               </div>
-              <button className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
+              <button className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
                 <Filter size={16} className="text-gray-500" /> Domain Filters
               </button>
             </div>

@@ -157,10 +157,10 @@ export default function SecurityCenterPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg hover:bg-gray-50 hover:text-red-600 transition-colors shadow-sm">
+                    <button className="px-4 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-red-600 transition-colors shadow-sm">
                       Investigate
                     </button>
-                    <button className="px-4 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg hover:bg-gray-50 hover:text-emerald-600 transition-colors shadow-sm">
+                    <button className="px-4 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-emerald-600 transition-colors shadow-sm">
                       Resolve
                     </button>
                   </div>
@@ -192,7 +192,7 @@ export default function SecurityCenterPage() {
                     onChange={e => gridRef.current?.api.setGridOption('quickFilterText', e.target.value)}
                   />
                 </div>
-                <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
+                <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400">
                   <Filter size={14} className="text-gray-500" /> Filters
                 </button>
               </div>

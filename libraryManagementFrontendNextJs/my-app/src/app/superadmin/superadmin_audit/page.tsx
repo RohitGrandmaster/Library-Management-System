@@ -132,7 +132,7 @@ export default function GlobalAuditPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
+          <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
             <Download size={16} /> Export CSV/PDF
           </button>
           <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-red-600 bg-white border border-red-200 rounded-xl shadow-sm hover:bg-red-50 dark:bg-[#1E293B] dark:border-red-900/30 transition-all">

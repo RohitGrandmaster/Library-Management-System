@@ -133,7 +133,7 @@ export default function CompliancePage() {
                 </div>
                 
                 <div className="pt-6 mt-6 border-t border-red-200 dark:border-red-800/50 flex gap-3">
-                  <button className="flex-1 py-3 bg-white dark:bg-[#1E293B] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors">
+                  <button className="flex-1 py-3 bg-white dark:bg-[#1E293B] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     Reject Request
                   </button>
                   <button 

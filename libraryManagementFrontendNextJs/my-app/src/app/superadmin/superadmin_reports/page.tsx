@@ -165,13 +165,13 @@ export default function ReportsAnalyticsPage() {
               key={format}
               onClick={() => handleExport(format)}
               disabled={isExporting !== null}
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all disabled:opacity-50"
             >
               {isExporting === format ? <RefreshCw size={14} className="animate-spin text-sky-500" /> : (format === 'PDF' ? <FileText size={14} className="text-red-500" /> : <Download size={14} className="text-emerald-500" />)}
               {isExporting === format ? 'Exporting...' : `Export ${format}`}
             </button>
           ))}
-          <button onClick={() => window.print()} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
+          <button onClick={() => window.print()} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all">
             <Printer size={14} /> Print
           </button>
         </div>

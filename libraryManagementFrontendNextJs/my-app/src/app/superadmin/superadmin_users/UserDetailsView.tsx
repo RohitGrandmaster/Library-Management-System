@@ -32,7 +32,7 @@ export default function UserDetailsView({ user, onBack, role = 'Manager' }: { us
   const meta = getTabMeta(activeTab);
 
   const operations = [
-    { label: "Edit User Profile", icon: <Edit size={14} />, color: "text-gray-700 hover:bg-gray-50", action: () => notify('Edit profile opened.') },
+    { label: "Edit User Profile", icon: <Edit size={14} />, color: "text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800", action: () => notify('Edit profile opened.') },
     { label: "Activate User", icon: <Power size={14} />, color: "text-emerald-600 hover:bg-emerald-50", action: () => notify('User activated successfully.') },
     { label: "Suspend User", icon: <PauseCircle size={14} />, color: "text-yellow-600 hover:bg-yellow-50", action: () => notify('User suspended.') },
     { label: "Deactivate User", icon: <UserX size={14} />, color: "text-red-600 hover:bg-red-50", action: () => notify('User deactivated.') },
@@ -215,7 +215,7 @@ export default function UserDetailsView({ user, onBack, role = 'Manager' }: { us
           <div className="relative shrink-0">
             <button 
               onClick={() => setShowOpsMenu(!showOpsMenu)}
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400 w-full xl:w-auto"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-200 transition-all hover:border-gray-400 w-full xl:w-auto"
             >
               User Actions <MoreVertical size={16} className="text-gray-400" />
             </button>

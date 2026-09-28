@@ -61,7 +61,7 @@ export default function ApiKeysView() {
               <div className="flex items-center gap-2 md:border-l md:border-gray-100 dark:md:border-gray-800 pl-0 md:pl-6">
                 <button 
                   disabled={key.status === 'Revoked'}
-                  className="flex flex-1 md:flex-none items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-blue-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all disabled:opacity-50"
+                  className="flex flex-1 md:flex-none items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all disabled:opacity-50"
                 >
                   <RotateCw size={14} /> Rotate
                 </button>

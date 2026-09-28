@@ -183,7 +183,7 @@ export default function SupportOperationsPage() {
                     <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors flex items-center gap-1.5">
                       <Save size={14} /> Update Status
                     </button>
-                    <button onClick={() => setIncidentStage(Math.min(INCIDENT_STAGES.length-1, incidentStage + 1))} className="px-5 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg shadow-sm transition-colors flex items-center gap-1.5 hover:bg-gray-50">
+                    <button onClick={() => setIncidentStage(Math.min(INCIDENT_STAGES.length-1, incidentStage + 1))} className="px-5 py-2 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg shadow-sm transition-colors flex items-center gap-1.5 hover:bg-gray-50 dark:hover:bg-gray-800">
                       Advance Stage <ArrowRight size={14} />
                     </button>
                   </div>

@@ -165,7 +165,7 @@ export default function MyProfilePage() {
                       </div>
                     </div>
                   </div>
-                  <button type="button" className="w-full py-2 bg-white dark:bg-[#1E293B] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg shadow-sm hover:bg-gray-50 transition-colors">
+                  <button type="button" className="w-full py-2 bg-white dark:bg-[#1E293B] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     Reconfigure Authenticator
                   </button>
                 </div>

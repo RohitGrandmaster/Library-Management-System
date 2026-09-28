@@ -67,13 +67,13 @@ export default function JobDetailsView({ job, onBack }: { job: any, onBack: () =
 
           {/* Job Action Buttons - Placed directly as buttons for easier access */}
           <div className="flex flex-wrap items-center gap-2">
-            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-emerald-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
+            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-emerald-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
               <Play size={14} /> Resume
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-yellow-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
+            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-yellow-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
               <PauseCircle size={14} /> Pause
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-blue-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
+            <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 transition-all">
               <RefreshCw size={14} /> Retry
             </button>
             <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-red-600 bg-white border border-red-200 rounded-lg shadow-sm hover:bg-red-50 dark:bg-[#1E293B] dark:border-red-900/30 dark:hover:bg-red-900/20 transition-all">
