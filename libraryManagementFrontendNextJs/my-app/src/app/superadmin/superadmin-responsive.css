@@ -205,3 +205,37 @@
 .superadmin-theme .ag-root-wrapper {
   min-width: 0;
 }
+
+
+/* Page viewport scrolling hardening: keep the shell fixed while the right content
+   remains independently scrollable. min-height lets pages with h-full/flex layouts
+   grow beyond the viewport instead of clipping their lower sections. */
+.superadmin-theme .sa-shell-content {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+.superadmin-theme .sa-shell-main {
+  box-sizing: border-box;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 0;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-bottom: 48px;
+}
+.superadmin-theme .sa-shell-main > * {
+  min-height: max-content;
+}
+.superadmin-theme .sa-shell-main :where(.h-full) {
+  min-height: max-content;
+}
+@media (max-width: 1023px) {
+  .superadmin-theme .sa-shell-content,
+  .superadmin-theme .sa-shell-main {
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
