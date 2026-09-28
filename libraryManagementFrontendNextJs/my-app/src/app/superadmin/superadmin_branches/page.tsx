@@ -27,6 +27,18 @@ const initialBranches = [
   { id: '2', name: 'Boring Road Branch', code: 'SN-BOR', parent: 'StudyNest Patna', location: 'Patna, Bihar', manager: 'Neha Singh', status: 'Active', capacity: 200, occupied: 180 },
   { id: '3', name: 'Delhi South Extension', code: 'RD-DSE', parent: 'Readers Den Delhi', location: 'New Delhi', manager: 'Rajiv Sharma', status: 'Pending', capacity: 500, occupied: 0 },
   { id: '4', name: 'Mumbai Andheri West', code: 'LM-MAW', parent: 'LibroHub Mumbai', location: 'Mumbai, MH', manager: 'Priya Desai', status: 'Suspended', capacity: 400, occupied: 400 },
+  { id: '5', name: 'Bangalore Koramangala', code: 'BH-KRM', parent: 'BookHaven BLR', location: 'Bangalore, KA', manager: 'Rahul Iyer', status: 'Active', capacity: 600, occupied: 540 },
+  { id: '6', name: 'Pune Deccan', code: 'PR-DCN', parent: 'Pune Readers', location: 'Pune, MH', manager: 'Sneha Kulkarni', status: 'Active', capacity: 250, occupied: 150 },
+  { id: '7', name: 'Kolkata Salt Lake', code: 'KL-SLK', parent: 'Knowledge Lounge', location: 'Kolkata, WB', manager: 'Ayan Das', status: 'Archived', capacity: 350, occupied: 0 },
+  { id: '8', name: 'Chennai Anna Nagar', code: 'CN-AN', parent: 'Chennai Nexus', location: 'Chennai, TN', manager: 'Karthik N', status: 'Active', capacity: 450, occupied: 300 },
+  { id: '9', name: 'Hyderabad Gachibowli', code: 'HL-GAC', parent: 'Hyd Library', location: 'Hyderabad, TS', manager: 'Swathi Reddy', status: 'Active', capacity: 800, occupied: 780 },
+  { id: '10', name: 'Ahmedabad Navrangpura', code: 'AL-NVR', parent: 'Ahm Library', location: 'Ahmedabad, GJ', manager: 'Vikram Patel', status: 'Pending', capacity: 300, occupied: 0 },
+  { id: '11', name: 'Jaipur Malviya Nagar', code: 'JP-MLV', parent: 'Jaipur Readers', location: 'Jaipur, RJ', manager: 'Ritu Sharma', status: 'Active', capacity: 150, occupied: 100 },
+  { id: '12', name: 'Lucknow Gomti Nagar', code: 'LK-GOM', parent: 'Lucknow Library', location: 'Lucknow, UP', manager: 'Sandeep Singh', status: 'Active', capacity: 200, occupied: 120 },
+  { id: '13', name: 'Chandigarh Sector 17', code: 'CH-S17', parent: 'Chandigarh Central', location: 'Chandigarh', manager: 'Preeti Kaur', status: 'Suspended', capacity: 400, occupied: 100 },
+  { id: '14', name: 'Indore Vijay Nagar', code: 'IN-VJY', parent: 'Indore InfoHub', location: 'Indore, MP', manager: 'Manish Jain', status: 'Active', capacity: 320, occupied: 290 },
+  { id: '15', name: 'Bhopal MP Nagar', code: 'BP-MPN', parent: 'Bhopal Library', location: 'Bhopal, MP', manager: 'Anjali Verma', status: 'Active', capacity: 180, occupied: 150 },
+  { id: '16', name: 'Nagpur Dharampeth', code: 'NG-DHM', parent: 'Nagpur Nexus', location: 'Nagpur, MH', manager: 'Ramesh Rao', status: 'Active', capacity: 220, occupied: 110 }
 ];
 
 const inventory = [
@@ -50,6 +62,7 @@ export default function BranchesPage() {
   const [toast, setToast] = useState<string | null>(null);
   const [managerSearch, setManagerSearch] = useState('');
   const [inventorySearch, setInventorySearch] = useState('');
+  const [inventoryData, setInventoryData] = useState(inventory);
   const [auditFilter, setAuditFilter] = useState('All');
   const [settings, setSettings] = useState({
     autoAssignManager: true,
@@ -138,7 +151,7 @@ export default function BranchesPage() {
   };
 
   const managers = branches.filter(b => !managerSearch || [b.manager, b.name, b.location].join(' ').toLowerCase().includes(managerSearch.toLowerCase()));
-  const inventoryRows = inventory.filter(i => !inventorySearch || [i.code, i.title].join(' ').toLowerCase().includes(inventorySearch.toLowerCase()));
+  const inventoryRows = inventoryData.filter(i => !inventorySearch || [i.code, i.title].join(' ').toLowerCase().includes(inventorySearch.toLowerCase()));
   const filteredInventoryRows = inventoryRows;
   const filteredAudit = auditFilter === 'All' ? auditLogs : auditLogs.filter(x => x.severity === auditFilter.toLowerCase());
 
@@ -199,7 +212,7 @@ export default function BranchesPage() {
       )}
 
       {activeMenu === 'Branch Inventory' && (
-        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden"><div className="p-5 border-b flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"><div><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Inventory</h2><p className="text-xs text-gray-500 mt-1">Track stock, availability and exceptions.</p></div><div className="flex gap-2"><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} placeholder="Search inventory" className="w-full sm:w-64 px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]"/><button onClick={()=>{ const code=window.prompt('Inventory code to adjust', inventoryRows[0]?.code || ''); const delta=window.prompt('Quantity change (+/-)', '10'); const amount=Number(delta); if(code && Number.isFinite(amount)){ setInventoryRows(prev=>prev.map(x=>x.code===code?{...x,total:Math.max(0,x.total+amount),available:Math.max(0,x.available+amount)}:x)); notify('Inventory stock adjusted successfully.'); } }} className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm">Adjust Stock</button></div></div><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b"><th className="p-4">Code</th><th className="p-4">Category</th><th className="p-4">Total</th><th className="p-4">Available</th><th className="p-4">Issued</th><th className="p-4">Damaged</th><th className="p-4">Status</th></tr></thead><tbody>{filteredInventoryRows.map(row=><tr key={row.code} className="border-b last:border-0"><td className="p-4 font-mono text-xs">{row.code}</td><td className="p-4 font-bold">{row.title}</td><td className="p-4">{row.total}</td><td className="p-4">{row.available}</td><td className="p-4">{row.issued}</td><td className="p-4">{row.damaged}</td><td className="p-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold ${row.status==='Healthy'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}`}>{row.status}</span></td></tr>)}</tbody></table></div></section>
+        <section className="w-full bg-white dark:bg-[#0F172A] rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden"><div className="p-5 border-b flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"><div><h2 className="text-lg font-extrabold text-gray-900 dark:text-white">Branch Inventory</h2><p className="text-xs text-gray-500 mt-1">Track stock, availability and exceptions.</p></div><div className="flex gap-2"><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} placeholder="Search inventory" className="w-full sm:w-64 px-3 py-2.5 rounded-xl border bg-gray-50 dark:bg-[#1E293B]"/><button onClick={()=>{ const code=window.prompt('Inventory code to adjust', inventoryRows[0]?.code || ''); const delta=window.prompt('Quantity change (+/-)', '10'); const amount=Number(delta); if(code && Number.isFinite(amount)){ setInventoryData((prev: any[]) =>prev.map((x: any)=>x.code===code?{...x,total:Math.max(0,x.total+amount),available:Math.max(0,x.available+amount)}:x)); notify('Inventory stock adjusted successfully.'); } }} className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm">Adjust Stock</button></div></div><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b"><th className="p-4">Code</th><th className="p-4">Category</th><th className="p-4">Total</th><th className="p-4">Available</th><th className="p-4">Issued</th><th className="p-4">Damaged</th><th className="p-4">Status</th></tr></thead><tbody>{filteredInventoryRows.map(row=><tr key={row.code} className="border-b last:border-0"><td className="p-4 font-mono text-xs">{row.code}</td><td className="p-4 font-bold">{row.title}</td><td className="p-4">{row.total}</td><td className="p-4">{row.available}</td><td className="p-4">{row.issued}</td><td className="p-4">{row.damaged}</td><td className="p-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold ${row.status==='Healthy'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}`}>{row.status}</span></td></tr>)}</tbody></table></div></section>
       )}
 
       {activeMenu === 'Branch Audit' && (
