@@ -22,14 +22,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    const submitSearch = (event: React.FormEvent) => {
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const q = search.trim();
     if (q) router.push(`/superadmin/superadmin_search?q=${encodeURIComponent(q)}`);
   };
-
-  return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <header className="sa-header">
