@@ -98,6 +98,8 @@ export default function LibrariesPage() {
     if (activeMenu === "Active Libraries") return libraries.filter(l => l.status === 'Active');
     if (activeMenu === "Suspended Libraries") return libraries.filter(l => l.status === 'Suspended');
     if (activeMenu === "Archived Libraries") return libraries.filter(l => l.status === 'Archived');
+    if (activeMenu === "Expired Libraries") return libraries.filter(l => l.status === 'Expired');
+    if (activeMenu === "Library Verification") return libraries.filter(l => l.status === 'Unverified');
     return libraries;
   };
 

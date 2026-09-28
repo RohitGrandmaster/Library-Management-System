@@ -54,6 +54,90 @@ export default function LibraryDetailsView({ onBack }: { onBack: () => void }) {
 
   const meta = getTabMeta(activeTab);
 
+  const notify = (msg: string) => {
+    alert(msg); // Placeholder, wait, I will use a proper toast below
+  };
+
+  const renderTabContent = () => {
+    if (activeTab === "Overview") {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 animate-in fade-in duration-300">
+          {[
+            ['Total Branches', '3', <Building2 size={20} />],
+            ['Registered Users', '1,542', <Users size={20} />],
+            ['Books Catalog', '12,400', <BookOpen size={20} />],
+            ['Storage Used', '42 GB', <HardDrive size={20} />],
+          ].map(([label, value, icon]) => (
+            <div key={label as string} className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-5">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-blue-600 shadow-sm">{icon}</div>
+              <p className="text-xs font-bold text-gray-500 mt-4">{label as string}</p>
+              <p className="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">{value as string}</p>
+            </div>
+          ))}
+          <div className="sm:col-span-2 xl:col-span-4 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 mt-2 bg-gray-50 dark:bg-[#1E293B]">
+            <h4 className="font-extrabold text-gray-900 dark:text-white mb-4">Subscription Plan</h4>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-[#0F172A] border shadow-sm">
+              <div>
+                <p className="font-bold text-blue-600 flex items-center gap-2"><CreditCard size={16}/> Enterprise Annual</p>
+                <p className="text-xs font-bold text-gray-500 mt-1">Renews on 15 Jan 2025</p>
+              </div>
+              <button onClick={() => window.alert('Redirecting to billing...')} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">Manage Billing</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const datasets: Record<string, Array<string[]>> = {
+      Branches: [['BR-01','Kankarbagh','Active','Amit Kumar'],['BR-02','Boring Road','Active','Neha Singh'],['BR-03','Patliputra','Pending','Unassigned']],
+      Admins: [['AD-01','Rahul Sharma','Active'],['AD-02','Priya Desai','Active']],
+      Managers: [['MG-01','Amit Kumar','Kankarbagh'],['MG-02','Neha Singh','Boring Road']],
+      Books: [['BK-001','Clean Code','Tech','12'],['BK-002','Atomic Habits','Self Help','45'],['BK-003','The Alchemist','Fiction','30']],
+      Members: [['MB-01','Ravi Kumar','Active'],['MB-02','Sita Devi','Active'],['MB-03','Ramesh Singh','Expired']],
+      Circulation: [['CR-01','BK-001','MB-01','Due 29 Sep'],['CR-02','BK-002','MB-02','Overdue']],
+      Inventory: [['INV-1','Books','12,400'],['INV-2','Magazines','1,200'],['INV-3','Journals','450']],
+      Reservations: [['RS-01','BK-003','MB-03','Queued'],['RS-02','BK-001','MB-02','Ready']],
+      Fines: [['FN-01','MB-02','₹150','Unpaid'],['FN-02','MB-03','₹50','Paid']],
+      Subscription: [['SUB-01','Enterprise Annual','Active','Jan 2024'],['SUB-02','Pro Annual','Expired','Jan 2023']],
+      Usage: [['USG-1','API Calls','45,000/100,000'],['USG-2','Emails Sent','12,000/50,000']],
+      Storage: [['STG-1','Database','12 GB'],['STG-2','Assets','30 GB']],
+      Database: [['DB-01','Main Replica','Healthy'],['DB-02','Backup Node','Syncing']],
+      Integrations: [['INT-1','Payment Gateway','Stripe','Active'],['INT-2','SMS Gateway','Twilio','Active']],
+      Notifications: [['NOT-1','System Update','Read'],['NOT-2','Backup Failed','Unread']],
+      Security: [['SEC-1','2FA Enabled','Yes'],['SEC-2','IP Whitelist','No']],
+      Audit: [['AUD-1','Admin Login','Success'],['AUD-2','Branch Created','Success']],
+      Backup: [['BCK-1','Daily Snapshot','Completed'],['BCK-2','Weekly Full','Completed']],
+      Settings: [['SET-1','Theme','Dark'],['SET-2','Timezone','IST']],
+    };
+
+    const rows = datasets[activeTab] || [];
+    
+    return (
+      <div className="space-y-5 animate-in fade-in duration-300">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Total Records</p><p className="text-2xl font-extrabold mt-1">{rows.length}</p></div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">Recent Updates</p><p className="text-2xl font-extrabold mt-1">{Math.max(1, rows.length - 1)}</p></div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] p-4"><p className="text-xs text-gray-500">System Status</p><p className="text-2xl font-extrabold mt-1 text-emerald-500">Healthy</p></div>
+        </div>
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-[#0F172A]">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B] flex items-center justify-between"><h4 className="font-extrabold">{activeTab} Directory</h4><button onClick={()=>window.alert(`${activeTab} refresh requested.`)} className="text-xs font-bold text-blue-600">Refresh Data</button></div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-sm">
+              <thead><tr className="text-left text-xs uppercase text-gray-500 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1E293B]"><th className="p-4">ID</th><th className="p-4">Primary Detail</th><th className="p-4">Secondary Detail</th><th className="p-4">Status / Ext</th></tr></thead>
+              <tbody>
+                {rows.length > 0 ? rows.map(row=><tr key={row[0]} className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50"><td className="p-4 font-mono text-xs text-gray-500">{row[0]}</td><td className="p-4 font-bold text-gray-900 dark:text-gray-100">{row[1]}</td><td className="p-4 text-gray-600 dark:text-gray-400">{row[2] || '-'}</td><td className="p-4"><span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-bold">{row[3] || 'N/A'}</span></td></tr>) : <tr><td colSpan={4} className="p-8 text-center text-gray-500 font-bold">No {activeTab} Records Found for StudyNest Patna.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={()=>window.alert(`Create ${activeTab} action opened.`)} className="px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-sm hover:bg-blue-700 transition-colors">Add New {activeTab}</button>
+          <button onClick={()=>window.alert(`${activeTab} report downloading...`)} className="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Export CSV</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full h-full flex-1 animate-in fade-in zoom-in-95 duration-300">
       {/* Header & Support Access */}
@@ -158,18 +242,7 @@ export default function LibraryDetailsView({ onBack }: { onBack: () => void }) {
             </div>
           </div>
           
-          <div className="flex-1 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl p-10 flex flex-col items-center justify-center text-center bg-gray-50/50 dark:bg-[#0F172A]/50 animate-in zoom-in-95 duration-500">
-            <div className={`p-4 rounded-full ${meta.bg} dark:bg-opacity-10 mb-4`}>
-              {React.cloneElement(meta.icon, { size: 40, className: meta.color })}
-            </div>
-            <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">No {activeTab} Configuration Found</h4>
-            <p className="text-gray-500 font-medium max-w-md mx-auto leading-relaxed">
-              This space is dedicated to the isolated <span className={`font-bold ${meta.color}`}>{activeTab}</span> analytics and settings for StudyNest Patna. Use the tools above to configure or import data.
-            </p>
-            <button className={`mt-6 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-0.5`}>
-              Configure {activeTab}
-            </button>
-          </div>
+          {renderTabContent()}
         </div>
       </div>
     </div>
