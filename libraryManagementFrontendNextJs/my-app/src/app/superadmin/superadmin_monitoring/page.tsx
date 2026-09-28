@@ -36,6 +36,7 @@ const activeAlerts = [
 export default function MonitoringPage() {
   const [activeMenu, setActiveMenu] = useState("Monitoring Dashboard");
   const [expandedAlertId, setExpandedAlertId] = useState<string | null>(null);
+  const [alerts, setAlerts] = useState(activeAlerts);
 
   const getSeverityColor = (sev: string) => {
     switch (sev) {
@@ -78,14 +79,14 @@ export default function MonitoringPage() {
                   <p className="text-xs font-medium text-gray-500 mt-0.5">Real-time incident response feed.</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-[#1E293B] dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold shadow-sm hover:text-violet-600 transition-colors">
+                  <button onClick={() => setAlerts(items => items.map(a => a.status === "Resolved" ? a : { ...a, status: "Acknowledged", assignee: a.assignee || "Super Admin" }))} className="px-3 py-1.5 bg-white border border-gray-300 dark:bg-[#1E293B] dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold shadow-sm hover:text-violet-600 transition-colors">
                     Acknowledge All
                   </button>
                 </div>
               </div>
 
               <div className="flex-1 overflow-y-auto max-h-[700px] custom-scrollbar p-0">
-                {activeAlerts.filter(a => activeMenu === "Monitoring Dashboard" || a.source === activeMenu || activeMenu.includes(a.source.split(' ')[0])).map((alert) => {
+                {alerts.filter(a => activeMenu === "Monitoring Dashboard" || a.source === activeMenu || activeMenu.includes(a.source.split(' ')[0])).map((alert) => {
                   const isExpanded = expandedAlertId === alert.id;
                   
                   return (
@@ -137,7 +138,7 @@ export default function MonitoringPage() {
                             <p className="text-xs text-gray-500 font-mono mb-4">Incident ID: <span className="font-bold text-violet-600 dark:text-violet-400">{alert.id}</span> • Source: {alert.source}</p>
                             
                             <div className="flex flex-wrap gap-2">
-                              <button disabled={alert.status === 'Acknowledged' || alert.status === 'Resolved'} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
+                              <button disabled={alert.status === "Acknowledged" || alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Acknowledged", assignee: a.assignee || "Super Admin" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
                                 <CheckCircle size={14} /> Acknowledge
                               </button>
                               <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors">
@@ -146,11 +147,11 @@ export default function MonitoringPage() {
                               <button className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors">
                                 <ArrowUpRight size={14} /> Escalate
                               </button>
-                              <button disabled={alert.status === 'Snoozed'} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors disabled:opacity-50">
+                              <button disabled={alert.status === "Snoozed" || alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Snoozed" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-[#1E293B] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg shadow-sm transition-colors disabled:opacity-50">
                                 <BellOff size={14} /> Snooze
                               </button>
                               <div className="flex-1"></div>
-                              <button disabled={alert.status === 'Resolved'} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
+                              <button disabled={alert.status === "Resolved"} onClick={() => setAlerts(items => items.map(a => a.id === alert.id ? { ...a, status: "Resolved" } : a))} className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-colors disabled:opacity-50">
                                 <CheckCircle size={14} /> Mark Resolved
                               </button>
                             </div>
