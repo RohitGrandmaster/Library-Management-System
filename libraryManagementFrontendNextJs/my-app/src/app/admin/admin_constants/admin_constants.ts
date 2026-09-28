@@ -1,32 +1,43 @@
 import {
-  LayoutDashboard, BarChart2, History,
-  FileText, User, Building2, Key, Tag,
-  Ban, LucideIcon, IndianRupee, Users,
-  RotateCcw, Phone, MessageSquare, Handshake, AlertCircle
+  LayoutDashboard, Activity, Building2, Users, BookOpen, UserCheck,
+  ArrowRightLeft, Bookmark, ShoppingCart, Truck, Boxes, IndianRupee,
+  Bell, BarChart2, History, ShieldAlert, Settings, LifeBuoy, User
 } from 'lucide-react';
 import { AdminNavItem } from '../admin_types/admin_types';
 import { ADMIN_ROUTES } from '../admin_url_config';
 
 /**
- * Sidebar Navigation Configuration
+ * Sidebar Navigation Configuration for Library OS Admin
  */
 export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
-  { href: ADMIN_ROUTES.DASHBOARD, icon: LayoutDashboard, label: 'Dashboard' },
-  { href: ADMIN_ROUTES.REPORTS,   icon: BarChart2,       label: 'Reports'   },
-  { group: 'Admin' },
-  { href: ADMIN_ROUTES.BRANCHES,    icon: Building2, label: 'Branches'      },
-  { href: ADMIN_ROUTES.STAFF_USERS, icon: User,      label: 'Staff & Users' },
-  { href: ADMIN_ROUTES.PERMISSIONS, icon: Key,       label: 'Permissions'   },
-  { href: ADMIN_ROUTES.PLANS,       icon: FileText,  label: 'Plans'         },
-  { href: ADMIN_ROUTES.COUPONS,     icon: Tag,       label: 'Coupons'       },
-  { href: ADMIN_ROUTES.BLACKLIST,   icon: Ban,       label: 'Blacklist'     },
-  { href: ADMIN_ROUTES.AUDIT_LOGS,  icon: History,   label: 'Audit Logs'    },
-  { group: 'Operations (All Branches)' },
-  { href: ADMIN_ROUTES.EXPENSES,    icon: IndianRupee, label: 'Expenses'    },
-  { href: ADMIN_ROUTES.STUDENTS,    icon: Users,       label: 'Students'    },
-  { group: 'Configuration' },
-  { href: ADMIN_ROUTES.EXPENSE_CATEGORIES, icon: Tag, label: 'Expense Types' },
-  { href: ADMIN_ROUTES.SETTINGS,    icon: Key,       label: 'Settings'      },
+  { group: 'Overview' },
+  { href: ADMIN_ROUTES.DASHBOARD,    icon: LayoutDashboard, label: 'Dashboard' },
+  { href: ADMIN_ROUTES.OVERVIEW,     icon: Activity,        label: 'Library Overview' },
+  
+  { group: 'Management' },
+  { href: ADMIN_ROUTES.BRANCHES,     icon: Building2,       label: 'Branches' },
+  { href: ADMIN_ROUTES.STAFF,        icon: UserCheck,       label: 'Staff & Managers' },
+  { href: ADMIN_ROUTES.BOOKS,        icon: BookOpen,        label: 'Books & Catalog' },
+  { href: ADMIN_ROUTES.MEMBERS,      icon: Users,           label: 'Members' },
+  
+  { group: 'Operations' },
+  { href: ADMIN_ROUTES.CIRCULATION,  icon: ArrowRightLeft,  label: 'Circulation' },
+  { href: ADMIN_ROUTES.RESERVATIONS, icon: Bookmark,        label: 'Reservations' },
+  { href: ADMIN_ROUTES.ACQUISITION,  icon: ShoppingCart,    label: 'Acquisition' },
+  { href: ADMIN_ROUTES.VENDORS,      icon: Truck,           label: 'Vendors' },
+  { href: ADMIN_ROUTES.INVENTORY,    icon: Boxes,           label: 'Inventory' },
+  { href: ADMIN_ROUTES.FINES,        icon: IndianRupee,     label: 'Fines & Payments' },
+  
+  { group: 'Engagement & Analytics' },
+  { href: ADMIN_ROUTES.COMMUNICATION,icon: Bell,            label: 'Communications' },
+  { href: ADMIN_ROUTES.REPORTS,      icon: BarChart2,       label: 'Reports' },
+  
+  { group: 'System & Security' },
+  { href: ADMIN_ROUTES.AUDIT,        icon: History,         label: 'Library Audit' },
+  { href: ADMIN_ROUTES.SECURITY,     icon: ShieldAlert,     label: 'Security' },
+  { href: ADMIN_ROUTES.SETTINGS,     icon: Settings,        label: 'Settings' },
+  { href: ADMIN_ROUTES.SUPPORT,      icon: LifeBuoy,        label: 'Support' },
+  { href: ADMIN_ROUTES.PROFILE,      icon: User,            label: 'My Profile' },
 ];
 
 /**
@@ -36,20 +47,16 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
 export const ADMIN_KPI_META = [
   { icon: Users,       iconColor: 'var(--primary)', iconBg: 'var(--icon-bg-primary)' },
   { icon: IndianRupee, iconColor: 'var(--success)', iconBg: 'var(--icon-bg-success)' },
-  { icon: Armchair,    iconColor: 'var(--warning)', iconBg: 'var(--icon-bg-warning)' },
-  { icon: AlertCircle, iconColor: 'var(--danger)',  iconBg: 'var(--icon-bg-danger)'  },
+  { icon: BookOpen,    iconColor: 'var(--warning)', iconBg: 'var(--icon-bg-warning)' },
+  { icon: ShieldAlert, iconColor: 'var(--danger)',  iconBg: 'var(--icon-bg-danger)'  },
 ] as const;
-
-// Importing Armchair to use in KPI_META
-import { Armchair } from 'lucide-react';
-
 
 /**
  * Action Icons mapped to label
  */
-export const ADMIN_ACTION_ICONS: Record<string, LucideIcon> = {
-  'Fee Renewals Due': RotateCcw,
-  'New Enquiries':    Phone,
-  'Complaint Open':   MessageSquare,
-  'PTP Dates Today':  Handshake,
+export const ADMIN_ACTION_ICONS: Record<string, any> = {
+  'Total Members': Users,
+  'Pending Fines': IndianRupee,
+  'Books Issued': BookOpen,
+  'Security Alerts': ShieldAlert,
 };

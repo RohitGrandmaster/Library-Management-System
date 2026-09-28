@@ -1,26 +1,31 @@
 /**
  * URL Configuration for the Admin Module
- * Contains all internal routes and external API endpoints.
+ * Contains all internal routes and external API endpoints for Library OS.
  */
 
 export const ADMIN_ROUTES = {
   PREFIX: '/admin',
   DASHBOARD: '/admin/admin_dashboard',
-  REPORTS: '/admin/admin_reports',
+  OVERVIEW: '/admin/admin_overview',
   BRANCHES: '/admin/admin_branches',
-  STAFF_USERS: '/admin/admin_staff-users',
-  PERMISSIONS: '/admin/admin_permissions',
-  PLANS: '/admin/admin_plans',
-  COUPONS: '/admin/admin_coupons',
-  BLACKLIST: '/admin/admin_blacklist',
-  AUDIT_LOGS: '/admin/admin_audit-logs',
-  EXPENSES: '/admin/admin_expenses',
-  STUDENTS: '/admin/admin_students',
-  EXPENSE_CATEGORIES: '/admin/admin_expense-categories',
+  STAFF: '/admin/admin_staff',
+  BOOKS: '/admin/admin_books',
+  MEMBERS: '/admin/admin_members',
+  CIRCULATION: '/admin/admin_circulation',
+  RESERVATIONS: '/admin/admin_reservations',
+  ACQUISITION: '/admin/admin_acquisition',
+  VENDORS: '/admin/admin_vendors',
+  INVENTORY: '/admin/admin_inventory',
+  FINES: '/admin/admin_fines',
+  COMMUNICATION: '/admin/admin_communication',
+  REPORTS: '/admin/admin_reports',
+  AUDIT: '/admin/admin_audit',
+  SECURITY: '/admin/admin_security',
   SETTINGS: '/admin/admin_settings',
+  SUPPORT: '/admin/admin_support',
+  PROFILE: '/admin/admin_profile',
 } as const;
 
 export const ADMIN_API_ROUTES = {
   DASHBOARD: '/admin/dashboard',
-  STUDENTS: '/admin/admin_students',
 } as const;
