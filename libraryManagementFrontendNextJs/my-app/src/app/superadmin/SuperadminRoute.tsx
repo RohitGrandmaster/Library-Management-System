@@ -6,7 +6,7 @@ import Header from '@/app/superadmin/superadmin_dashboard/Header';
 import '@/app/superadmin/superadmin.css';
 import '@/app/superadmin/sa-components.css';
 import '@/app/superadmin/superadmin-responsive.css';
-import { getCurrentUser, clearAuthState } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 const SUPERADMIN_ROUTES = ['/superadmin'];
 
