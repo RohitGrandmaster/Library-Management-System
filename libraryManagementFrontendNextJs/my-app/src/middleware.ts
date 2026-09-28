@@ -32,13 +32,6 @@ const ROUTE_ROLE_MAP: Record<string, string[]> = {
   '/superadmin': ['superadmin'],
   '/admin': ['admin', 'superadmin'],
   '/manager': ['manager', 'admin', 'superadmin'],
-  '/system': ['admin', 'superadmin'],
-  '/finance': ['admin', 'superadmin'],
-  '/accounting': ['admin', 'superadmin'],
-  '/crm': ['manager', 'admin', 'superadmin'],
-  '/communication': ['manager', 'admin', 'superadmin'],
-  '/engagement': ['manager', 'admin', 'superadmin'],
-  '/seats_shifts_lockers': ['manager', 'admin', 'superadmin'],
 };
 
 const PUBLIC_ROUTES = [

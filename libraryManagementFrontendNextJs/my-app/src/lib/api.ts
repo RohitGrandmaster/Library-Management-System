@@ -62,18 +62,18 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
         });
       } catch {
         clearAuthState();
-        return;
+        throw new Error('Session expired. Please log in again.');
       }
       if (retryResponse.status === 401) {
         // Refresh also failed — force logout
         clearAuthState();
-        return;
+        throw new Error('Session expired. Please log in again.');
       }
       return handleResponse(retryResponse);
     } else {
       // No refresh token — force logout
       clearAuthState();
-      return;
+      throw new Error('Session expired. Please log in again.');
     }
   }
 
@@ -91,7 +91,14 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
 async function handleResponse(response: Response) {
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorBody?.message || `API Error: ${response.status}`);
+    let errorMsg = errorBody?.message;
+    if (typeof errorMsg === 'object' && errorMsg !== null) {
+      errorMsg = errorMsg.message || JSON.stringify(errorMsg);
+    }
+    if (Array.isArray(errorMsg)) {
+      errorMsg = errorMsg.join(', ');
+    }
+    throw new Error(errorMsg || `API Error: ${response.status}`);
   }
 
   // Handle empty responses (204 No Content)
