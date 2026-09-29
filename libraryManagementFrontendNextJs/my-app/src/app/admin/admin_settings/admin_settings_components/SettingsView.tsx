@@ -160,7 +160,26 @@ export default function SettingsView() {
                            <tr><th className="px-4 py-3">Date</th><th className="px-4 py-3">Holiday Name</th><th className="px-4 py-3 text-center">Recurring?</th><th className="px-4 py-3 text-right">Actions</th></tr>
                          </thead>
                          <tbody>
-                           {holidays.map((holiday,index)=><tr key={index} className="border-b border-border last:border-0"><td className="px-4 py-3 font-medium">{holiday.date}</td><td className="px-4 py-3">{holiday.name}</td><td className="px-4 py-3 text-center"><CheckCircle size={16} className="text-emerald-500 mx-auto"/></td><td className="px-4 py-3 text-right"><button onClick={()=>{setHolidays(items=>items.filter((_,i)=>i!==index));notify('Holiday deleted.');}} className="text-red-500 hover:underline">Delete</button></td></tr>)
+                            {holidays.map((holiday, index) => (
+                              <tr key={index} className="border-b border-border last:border-0">
+                                <td className="px-4 py-3 font-medium">{holiday.date}</td>
+                                <td className="px-4 py-3">{holiday.name}</td>
+                                <td className="px-4 py-3 text-center">
+                                  <CheckCircle size={16} className="text-emerald-500 mx-auto" />
+                                </td>
+                                <td className="px-4 py-3 text-right">
+                                  <button
+                                    onClick={() => {
+                                      setHolidays(items => items.filter((_, i) => i !== index));
+                                      notify('Holiday deleted.');
+                                    }}
+                                    className="text-red-500 hover:underline"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
                          </tbody>
                        </table>
                      </div>
