@@ -317,15 +317,25 @@ export default function AcquisitionView() {
                 </div>
               )}
 
-              {/* --- ACQUISITION DASHBOARD --- */}
               {activeMenu === 'dashboard' && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     <BarChart3 size={48} className="opacity-30 text-emerald-500" />
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2">Acquisition Dashboard</h3>
-                   <p className="text-center max-w-md mb-6">Review acquisition volume, order status, receiving activity and expenditure from the controls above.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6 h-full overflow-y-auto">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div><h2 className="text-2xl font-bold flex items-center gap-2"><BarChart3 className="text-emerald-500"/> Acquisition Dashboard</h2><p className="text-sm text-muted-foreground mt-1">Purchase requests, open orders and receiving overview.</p></div>
+                    <button onClick={()=>setActiveMenu('receive_flow')} className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-bold inline-flex items-center justify-center gap-2"><PackagePlus size={15}/> Receive Books</button>
+                  </div>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase font-bold text-muted-foreground">Requests</p><p className="text-2xl font-extrabold mt-1">{MOCK_REQUESTS.length}</p></div>
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase font-bold text-muted-foreground">Open Orders</p><p className="text-2xl font-extrabold mt-1">{MOCK_ORDERS.filter(o=>o.status.includes('Pending')).length}</p></div>
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase font-bold text-muted-foreground">Ordered Copies</p><p className="text-2xl font-extrabold mt-1">{MOCK_ORDERS.reduce((sum,o)=>sum+o.qty,0)}</p></div>
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase font-bold text-muted-foreground">Order Value</p><p className="text-2xl font-extrabold mt-1">₹{MOCK_ORDERS.reduce((sum,o)=>sum+o.total,0).toLocaleString()}</p></div>
+                  </div>
+                  <div className="overflow-x-auto border border-border rounded-xl bg-card">
+                    <table className="w-full min-w-[720px] text-sm">
+                      <thead className="bg-muted/40 text-left"><tr><th className="p-3">PO</th><th className="p-3">Vendor</th><th className="p-3">Expected</th><th className="p-3">Copies</th><th className="p-3">Amount</th><th className="p-3">Status</th></tr></thead>
+                      <tbody>{MOCK_ORDERS.map(o=><tr key={o.id} className="border-t border-border"><td className="p-3 font-semibold">{o.id}</td><td className="p-3">{o.vendor}</td><td className="p-3">{o.expected}</td><td className="p-3">{o.qty}</td><td className="p-3 font-bold">₹{o.total.toLocaleString()}</td><td className="p-3">{o.status}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                </div>
               )}
             </motion.div>
           </AnimatePresence>
