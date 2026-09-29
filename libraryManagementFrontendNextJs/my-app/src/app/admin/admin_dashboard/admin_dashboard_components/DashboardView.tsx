@@ -7,7 +7,7 @@ import {
   AlertTriangle, CheckCircle, PlusCircle, UserPlus,
   RefreshCw, UploadCloud, DownloadCloud, Activity,
   CreditCard, Map, FileText, ChevronRight, Book,
-  BookX, CalendarDays, Wallet, UserCheck, UserMinus
+  BookX, CalendarDays, Wallet, UserCheck, UserMinus, Bell, Settings
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -55,24 +55,19 @@ const KPI_DATA = {
 };
 
 const QUICK_ACTIONS = [
-  { label: 'Add Book', icon: PlusCircle, href: '/admin/admin_books', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
   { label: 'Add Member', icon: UserPlus, href: '/admin/admin_members', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
-  { label: 'Issue Book', icon: UploadCloud, href: '/admin/admin_circulation', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
-  { label: 'Return Book', icon: DownloadCloud, href: '/admin/admin_circulation', color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' },
-  { label: 'Renew Book', icon: RefreshCw, href: '/admin/admin_circulation', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
   { label: 'Add Manager', icon: Users, href: '/admin/admin_staff-users', color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' },
   { label: 'Add Branch', icon: Map, href: '/admin/admin_branches', color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' },
-  { label: 'Receive Stock', icon: Activity, href: '/admin/admin_inventory', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  { label: 'Collect Fine', icon: CreditCard, href: '/admin/admin_fines', color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' },
+  { label: 'Send Notice', icon: Bell, href: '/admin/admin_communication', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
   { label: 'Report', icon: FileText, href: '/admin/admin_reports', color: 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400' },
 ];
 
 const RECENT_ACTIVITY = [
-  { id: 1, type: 'Issue', text: 'Book "The Alchemist" issued to John Doe', time: '10 mins ago', icon: ArrowRightLeft, color: 'text-blue-500' },
-  { id: 2, type: 'Return', text: 'Book "Sapiens" returned by Jane Smith', time: '15 mins ago', icon: CheckCircle, color: 'text-emerald-500' },
-  { id: 3, type: 'Member', text: 'New member Alex joined Branch A', time: '1 hour ago', icon: UserPlus, color: 'text-purple-500' },
-  { id: 4, type: 'Payment', text: 'Late fine ₹50 collected from Raj', time: '2 hours ago', icon: CreditCard, color: 'text-green-500' },
-  { id: 5, type: 'Book', text: '50 copies of "Dune" added to inventory', time: '3 hours ago', icon: PlusCircle, color: 'text-indigo-500' },
+  { id: 1, type: 'Member', text: 'New member Alex joined Branch A', time: '10 mins ago', icon: UserPlus, color: 'text-emerald-500' },
+  { id: 2, type: 'Staff', text: 'Manager Priya logged into system', time: '15 mins ago', icon: Users, color: 'text-blue-500' },
+  { id: 3, type: 'Branch', text: 'Settings updated for Northside Hub', time: '1 hour ago', icon: Settings, color: 'text-purple-500' },
+  { id: 4, type: 'Report', text: 'Monthly revenue report generated', time: '2 hours ago', icon: FileText, color: 'text-slate-500' },
+  { id: 5, type: 'Notice', text: 'Holiday announcement sent to all', time: '3 hours ago', icon: Bell, color: 'text-amber-500' },
 ];
 
 const CIRCULATION_CHART_DATA = [

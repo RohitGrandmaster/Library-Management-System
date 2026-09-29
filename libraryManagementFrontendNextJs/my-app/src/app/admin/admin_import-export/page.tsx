@@ -11,11 +11,6 @@ const DATASETS: Record<string, Row[]> = {
     { memberId: 'MBR-1002', name: 'Neha Singh', phone: '+91 9876500002', status: 'Active' },
     { memberId: 'MBR-1003', name: 'Rahul Verma', phone: '+91 9876500003', status: 'Suspended' },
   ],
-  Books: [
-    { isbn: '978000000001', title: 'Clean Code', author: 'Robert C. Martin', status: 'Available' },
-    { isbn: '978000000002', title: 'Atomic Habits', author: 'James Clear', status: 'Issued' },
-    { isbn: '978000000003', title: 'The Alchemist', author: 'Paulo Coelho', status: 'Available' },
-  ],
   Staff: [
     { staffId: 'ST-101', name: 'Sunita Patil', role: 'Manager', status: 'Active' },
     { staffId: 'ST-102', name: 'Priya Joshi', role: 'Staff', status: 'Active' },

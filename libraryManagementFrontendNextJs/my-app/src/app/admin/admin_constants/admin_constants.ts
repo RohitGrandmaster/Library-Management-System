@@ -18,16 +18,7 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   { group: 'Management' },
   { href: ADMIN_ROUTES.BRANCHES,     icon: Building2,       label: 'Branches' },
   { href: ADMIN_ROUTES.STAFF,        icon: UserCheck,       label: 'Staff & Managers' },
-  { href: ADMIN_ROUTES.BOOKS,        icon: BookOpen,        label: 'Books & Catalog' },
   { href: ADMIN_ROUTES.MEMBERS,      icon: Users,           label: 'Members' },
-  
-  { group: 'Operations' },
-  { href: ADMIN_ROUTES.CIRCULATION,  icon: ArrowRightLeft,  label: 'Circulation' },
-  { href: ADMIN_ROUTES.RESERVATIONS, icon: Bookmark,        label: 'Reservations' },
-  { href: ADMIN_ROUTES.ACQUISITION,  icon: ShoppingCart,    label: 'Acquisition' },
-  { href: ADMIN_ROUTES.VENDORS,      icon: Truck,           label: 'Vendors' },
-  { href: ADMIN_ROUTES.INVENTORY,    icon: Boxes,           label: 'Inventory' },
-  { href: ADMIN_ROUTES.FINES,        icon: IndianRupee,     label: 'Fines & Payments' },
   
   { group: 'Engagement & Analytics' },
   { href: ADMIN_ROUTES.COMMUNICATION,icon: Bell,            label: 'Communications' },
