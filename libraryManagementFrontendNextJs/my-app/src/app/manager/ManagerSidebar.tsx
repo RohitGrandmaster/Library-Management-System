@@ -127,7 +127,7 @@ export default function ManagerSidebar({ collapsed, onToggle, mobileOpen, onMobi
       )}
 
       <aside
-        className={\`mgr-sidebar\${collapsed ? ' mgr-sidebar-collapsed' : ''}\${mobileOpen ? ' mgr-sidebar-mobile-open' : ''}\`}
+        className={`mgr-sidebar${collapsed ? ' mgr-sidebar-collapsed' : ''}${mobileOpen ? ' mgr-sidebar-mobile-open' : ''}`}
         style={{ width: collapsed ? 60 : 240 }}
       >
         <div className="mgr-sidebar-logo">
@@ -155,7 +155,7 @@ export default function ManagerSidebar({ collapsed, onToggle, mobileOpen, onMobi
                 {(!collapsed || mobileOpen) && (
                   <button
                     type="button"
-                    className={\`mgr-nav-group-label\${groupHasActive ? ' active' : ''}\`}
+                    className={`mgr-nav-group-label${groupHasActive ? ' active' : ''}`}
                     onClick={() =>
                       setOpenGroups(current =>
                         current[group.group] ? {} : { [group.group]: true }
@@ -165,7 +165,7 @@ export default function ManagerSidebar({ collapsed, onToggle, mobileOpen, onMobi
                   >
                     <span>{group.group}</span>
                     <span
-                      className={\`mgr-nav-group-chevron\${groupOpen ? ' open' : ''}\`}
+                      className={`mgr-nav-group-chevron${groupOpen ? ' open' : ''}`}
                       aria-hidden="true"
                     >
                       ⌄
@@ -184,7 +184,7 @@ export default function ManagerSidebar({ collapsed, onToggle, mobileOpen, onMobi
                         <Link
                           key={item.href}
                           href={item.href}
-                          className={\`mgr-nav-item\${active ? ' active' : ''}\`}
+                          className={`mgr-nav-item${active ? ' active' : ''}`}
                           title={collapsed && !mobileOpen ? item.label : undefined}
                           onClick={mobileOpen ? onMobileClose : undefined}
                         >
