@@ -35,6 +35,7 @@ export default function AuditView() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
+  const PAGE_SIZE = 4;
 
   const getResultColor = (result: string) => {
     if (result.includes('Success')) return 'text-emerald-600 bg-emerald-50 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400';
@@ -51,6 +52,25 @@ export default function AuditView() {
       default: return <Activity size={16} className="text-slate-500"/>;
     }
   };
+
+  const filteredLogs = MOCK_AUDIT_LOGS.filter(log => {
+    const menuMatch = activeMenu === 'all' ||
+      (activeMenu === 'user' && log.role === 'Admin') ||
+      (activeMenu === 'manager' && log.role === 'Manager') ||
+      (activeMenu === 'book' && log.module === 'Books') ||
+      (activeMenu === 'member' && log.module === 'Members') ||
+      (activeMenu === 'circulation' && log.module === 'Circulation') ||
+      (activeMenu === 'inventory' && log.module === 'Inventory') ||
+      (activeMenu === 'payment' && log.module === 'Payments') ||
+      (activeMenu === 'settings' && log.module === 'Settings') ||
+      (activeMenu === 'permissions' && log.module === 'Permissions') ||
+      (activeMenu === 'support' && log.module === 'Support');
+    const q = search.trim().toLowerCase();
+    const searchMatch = !q || [log.user,log.action,log.module,log.record,log.ip,log.branch].some(v=>v.toLowerCase().includes(q));
+    return menuMatch && searchMatch;
+  });
+  const totalPages = Math.max(1, Math.ceil(filteredLogs.length / PAGE_SIZE));
+  const visibleLogs = filteredLogs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="w-full max-w-full space-y-6 pb-12">
@@ -81,7 +101,7 @@ export default function AuditView() {
              return (
               <button
                 key={menu.id}
-                onClick={() => { setActiveMenu(menu.id); setSelectedRecord(null); }}
+                onClick={() => { setActiveMenu(menu.id); setSelectedRecord(null); setPage(1); }}
                 className={`flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-200 ${
                   isActive 
                   ? 'bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 shadow-md scale-[1.02]' 
@@ -112,14 +132,14 @@ export default function AuditView() {
               {/* --- AUDIT LIST VIEW --- */}
               {!selectedRecord && (
                 <div className="p-6 h-full flex flex-col bg-background">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                        <ClipboardList className="text-slate-500" /> {activeMenu.replace('_', ' ')}
                      </h2>
-                     <div className="flex gap-2">
-                       <div className="relative">
+                     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                       <div className="relative w-full sm:w-auto">
                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                         <input type="text" placeholder="Search logs, IPs, Users..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 w-64" />
+                         <input type="text" placeholder="Search logs, IPs, Users..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 w-full sm:w-64" />
                        </div>
                        <button onClick={()=>setSearch("")} title="Clear filter" className="p-2 border border-border bg-muted/50 rounded-lg hover:bg-muted text-muted-foreground"><Filter size={18}/></button>
                      </div>
@@ -137,7 +157,7 @@ export default function AuditView() {
                         </tr>
                       </thead>
                       <tbody>
-                        {MOCK_AUDIT_LOGS.filter(log => !search.trim() || [log.user,log.action,log.module,log.record,log.ip].some(v=>v.toLowerCase().includes(search.toLowerCase()))).map(log => (
+                        {visibleLogs.map(log => (
                           <tr key={log.id} className={`border-b border-border bg-background hover:bg-muted/30 ${log.status === 'critical' ? 'border-l-4 border-l-purple-500' : ''} ${log.status === 'warning' ? 'border-l-4 border-l-red-500' : ''}`}>
                             <td className="px-4 py-3 whitespace-nowrap">
                               <p className="font-bold text-foreground">{log.date}</p>
@@ -172,7 +192,7 @@ export default function AuditView() {
                     </table>
                   </div>
                   <div className="mt-4 flex justify-between items-center text-sm text-muted-foreground">
-                    <p>Showing 4 of 1,245 records.</p>
+                    <p>Showing {filteredLogs.length === 0 ? 0 : ((page - 1) * PAGE_SIZE) + 1}–{Math.min(page * PAGE_SIZE, filteredLogs.length)} of {filteredLogs.length} matching records.</p>
                     <div className="flex gap-1">
                       <button onClick={()=>setPage(v=>Math.max(1,v-1))} className="px-2 py-1 border rounded hover:bg-muted">Prev</button>
                       <button onClick={()=>setPage(1)} className={`px-2 py-1 border rounded ${page===1?"bg-slate-800 text-white":""}`}>1</button>
