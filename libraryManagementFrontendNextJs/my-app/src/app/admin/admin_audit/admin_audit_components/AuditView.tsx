@@ -139,7 +139,7 @@ export default function AuditView() {
                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                        <div className="relative w-full sm:w-auto">
                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                         <input type="text" placeholder="Search logs, IPs, Users..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 w-full sm:w-64" />
+                         <input type="text" WORKSPACE="Search logs, IPs, Users..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 w-full sm:w-64" />
                        </div>
                        <button onClick={()=>setSearch("")} title="Clear filter" className="p-2 border border-border bg-muted/50 rounded-lg hover:bg-muted text-muted-foreground"><Filter size={18}/></button>
                      </div>
