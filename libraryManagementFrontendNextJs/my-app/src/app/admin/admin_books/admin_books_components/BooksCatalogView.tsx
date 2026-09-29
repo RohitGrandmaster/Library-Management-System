@@ -53,6 +53,10 @@ export default function BooksCatalogView() {
   const [notice, setNotice] = useState('');
   const [activeFormTab, setActiveFormTab] = useState('basic');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
+  const [workspaceItems, setWorkspaceItems] = useState<Record<string, string[]>>({
+    copies: ['BK-1001-C01','BK-1001-C02','BK-1002-C01'], categories: ['Programming','Software Engineering','Computer Science'], authors: ['Robert C. Martin','Fred Brooks','Eric Matthes'], publishers: ['Prentice Hall','Addison-Wesley','No Starch Press'], subjects: ['Programming','Software Engineering','Algorithms'], languages: ['English','Hindi'], editions: ['1st','2nd','3rd'], types: ['Reference','General','Textbook'], collections: ['Computer Science','New Arrivals','Exam Prep'], locations: ['Shelf A1','Shelf A2','Shelf B1','Shelf C3'], barcode: ['BC-10001','BC-10002','BC-10003'], isbn: ['978-0-13-235088-4','978-0-201-83595-3'], import: [], export: []
+  });
+  const [workspaceDraft, setWorkspaceDraft] = useState('');
 
   const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
@@ -65,7 +69,47 @@ export default function BooksCatalogView() {
 
   const handleAction = (action: string, book: any) => {
     setActionMenuOpen(null);
+    if (action === 'add_copy') {
+      setBooks(items => items.map(b => b.id === book.id ? { ...b, copies: b.copies + 1, available: b.available + 1, status: 'Available' } : b));
+      notify('Copy added to ' + book.title + '.');
+      return;
+    }
+    if (action === 'archive') {
+      setBooks(items => items.map(b => b.id === book.id ? { ...b, status: 'Archived' } : b));
+      notify(book.title + ' archived.');
+      return;
+    }
+    if (action === 'print_barcode' || action === 'print_label') {
+      window.print();
+      notify('Print dialog opened for ' + book.title + '.');
+      return;
+    }
     notify(action.replace('_',' ') + ' completed for ' + book.title + '.');
+  };
+
+  const displayBooks = books.filter(book => {
+    if (activeMenu === 'archived') return book.status === 'Archived';
+    if (book.status === 'Archived') return false;
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return [book.title, book.isbn, book.author, book.category, book.publisher, book.location].some(v => String(v).toLowerCase().includes(q));
+  });
+
+  const addWorkspaceItem = () => {
+    const value = workspaceDraft.trim();
+    if (!value || !workspaceItems[activeMenu]) return;
+    setWorkspaceItems(items => ({ ...items, [activeMenu]: [...items[activeMenu], value] }));
+    setWorkspaceDraft('');
+    notify(value + ' added to ' + activeMenu.replace('_',' ') + '.');
+  };
+
+  const exportWorkspace = () => {
+    const rows = workspaceItems[activeMenu] || [];
+    const blob = new Blob(['Item\n' + rows.map(v => `"${String(v).replace(/"/g,'""')}"`).join('\n')], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = activeMenu + '-export.csv'; a.click(); URL.revokeObjectURL(url);
+    notify(activeMenu.replace('_',' ') + ' exported.');
   };
 
   return (
@@ -129,7 +173,7 @@ export default function BooksCatalogView() {
                     </h2>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                      <input type="text" placeholder="Search by Title, ISBN, Author..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full md:w-72 transition-all" />
+                      <input type="text" placeholder="Search by Title, ISBN, Author..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full md:w-72 transition-all" />
                     </div>
                   </div>
 
@@ -147,7 +191,7 @@ export default function BooksCatalogView() {
                         </tr>
                       </thead>
                       <tbody>
-                        {MOCK_BOOKS.map((book) => (
+                        {displayBooks.map((book) => (
                           <tr key={book.id} className="border-b border-border hover:bg-muted/20 transition-colors group">
                             <td className="px-4 py-3">
                               <div className="flex items-start gap-3">
@@ -405,16 +449,39 @@ export default function BooksCatalogView() {
 
               {/* --- CATALOG SUB-WORKSPACES --- */}
               {!['all', 'add'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground bg-card p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     <BookOpen size={48} className="opacity-20 text-teal-500" />
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{activeMenu.replace('_', ' ')} Management</h3>
-                   <p className="text-center max-w-md mb-6">This section handles the configuration and records for {activeMenu.replace('_', ' ')}.</p>
-                   <button onClick={()=>notify(activeMenu.replace("_"," ") + " workspace opened.")} className="px-6 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 shadow-md">
-                     Open {activeMenu.replace('_', ' ')}
-                   </button>
-                 </div>
+                <div className="space-y-5 p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                      <h2 className="text-2xl font-bold capitalize">{activeMenu.replace(/_/g,' ')} Management</h2>
+                      <p className="text-sm text-muted-foreground mt-1">Manage this catalog dataset using frontend mock storage.</p>
+                    </div>
+                    {['export','barcode','isbn'].includes(activeMenu) && (
+                      <button onClick={exportWorkspace} className="admin-btn admin-btn-ghost inline-flex items-center justify-center gap-2"><Download size={15}/> Export CSV</button>
+                    )}
+                  </div>
+                  {activeMenu === 'import' && (
+                    <label className="flex flex-col sm:flex-row items-center justify-center gap-3 p-5 border-2 border-dashed border-border rounded-2xl bg-muted/20 cursor-pointer hover:bg-muted/40">
+                      <Upload size={22} className="text-teal-600"/>
+                      <span className="text-sm font-medium">Select CSV file to import</span>
+                      <input type="file" accept=".csv,text/csv" className="sr-only" onChange={e => e.target.files?.[0] && notify(`Import prepared: ${e.target.files[0].name}`)} />
+                    </label>
+                  )}
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input value={workspaceDraft} onChange={e=>setWorkspaceDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter') addWorkspaceItem();}} placeholder={`Add ${activeMenu.replace(/_/g,' ')}`} className="admin-input flex-1" />
+                    <button onClick={addWorkspaceItem} className="admin-btn admin-btn-primary inline-flex items-center justify-center gap-2"><PlusCircle size={15}/> Add</button>
+                  </div>
+                  <div className="border border-border rounded-xl overflow-hidden">
+                    <div className="px-4 py-3 bg-muted/30 text-xs font-bold uppercase tracking-wider text-muted-foreground">Records ({workspaceItems[activeMenu]?.length || 0})</div>
+                    <div className="divide-y divide-border">
+                      {(workspaceItems[activeMenu] || []).map((item, i) => (
+                        <div key={item + i} className="flex items-center justify-between gap-3 px-4 py-3">
+                          <span className="text-sm font-medium break-all">{item}</span>
+                          <button onClick={()=>{setWorkspaceItems(items=>({...items,[activeMenu]:items[activeMenu].filter((_,idx)=>idx!==i)}));notify('Record removed.');}} className="text-xs font-semibold text-red-600 hover:underline shrink-0">Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               )}
 
             </motion.div>
