@@ -1309,7 +1309,20 @@
     font-size: 14px;
   }
 
-  .admin-nav-group-label { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 14px 4px; }
+  .admin-nav-group { margin-bottom: 6px; }
+  .admin-nav-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 12px 6px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .admin-nav-group-label:hover { color: var(--text-primary); background: rgba(99,102,241,0.06); }
 
 
   /* ═══════════════ EMPTY STATE ═══════════════ */
