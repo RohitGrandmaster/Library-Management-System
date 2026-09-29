@@ -389,11 +389,17 @@ export default function BranchManagementView() {
                    )}
 
                    {activeBranchTab !== 'overview' && (
-                     <div className="h-[400px] flex flex-col items-center justify-center text-muted-foreground border-2 border-dashed border-border rounded-2xl bg-muted/20">
-                       <Activity size={48} className="mb-4 opacity-30 text-teal-500" />
-                       <h3 className="text-xl font-bold text-foreground mb-1">Branch {BRANCH_DETAIL_TABS.find(t=>t.id===activeBranchTab)?.label}</h3>
-                       <p className="text-sm">Manage data specific to {selectedBranch.name} here.</p>
-                       <button className="mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700">Add New Record</button>
+                     <div className="space-y-5">
+                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                         <div><h3 className="text-xl font-bold">{BRANCH_DETAIL_TABS.find(t=>t.id===activeBranchTab)?.label}</h3><p className="text-sm text-muted-foreground">Branch-specific records for {selectedBranch.name}.</p></div>
+                         <div className="flex gap-2"><button onClick={()=>notify('New record workflow opened.')} className="admin-btn admin-btn-primary"><PlusCircle size={15} className="inline mr-1"/> Add Record</button><button onClick={()=>notify('Branch section refreshed.')} className="admin-btn admin-btn-ghost">Refresh</button></div>
+                       </div>
+                       <div className="admin-table-wrapper overflow-x-auto">
+                         <table className="admin-table min-w-[680px] w-full"><thead><tr><th>Record</th><th>Owner / Item</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead>
+                         <tbody>
+                           {[1,2,3].map(i=><tr key={i}><td>{activeBranchTab.toUpperCase()}-{i.toString().padStart(3,'0')}</td><td>{selectedBranch.manager}</td><td><span className="admin-badge admin-badge-success">{i===3?'Review':'Active'}</span></td><td>2026-09-29 12:{10+i}</td><td><button onClick={()=>notify(`Record ${i} opened.`)} className="text-primary font-semibold hover:underline">View</button></td></tr>)}
+                         </tbody></table>
+                       </div>
                      </div>
                    )}
                 </div>
@@ -403,6 +409,7 @@ export default function BranchManagementView() {
           </AnimatePresence>
         </div>
       </div>
+    {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
