@@ -114,38 +114,27 @@ export default function StaffManagersView() {
         )}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 items-start">
-        
-        {/* SIDEBAR SUB-MENU */}
-        <div className="w-full lg:w-64 flex flex-col gap-2 shrink-0 bg-card border border-border p-3 rounded-2xl shadow-sm">
-          {SIDEBAR_MENU.map((menu) => {
-             const isActive = !selectedManager && activeMenu === menu.id;
-             return (
-              <button
-                key={menu.id}
-                onClick={() => { setActiveMenu(menu.id); closeDetail(); }}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${
-                  isActive 
-                  ? 'bg-primary text-primary-foreground shadow-md scale-[1.02]' 
-                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <menu.icon size={18} className={isActive ? 'text-primary-foreground' : 'text-primary/70'} />
-                  <span className="font-medium text-sm">{menu.label}</span>
-                </div>
-                {['all', 'active', 'suspended', 'deactivated'].includes(menu.id) && (
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-muted-foreground/10 text-muted-foreground'}`}>
-                    {menu.id === 'all' ? MOCK_MANAGERS.length : MOCK_MANAGERS.filter(m => m.status.toLowerCase() === menu.id).length}
-                  </span>
-                )}
-              </button>
-             )
-          })}
+      <div className="w-full bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+        <div className="border-b border-border bg-muted/20 p-2 sm:p-3 overflow-x-auto">
+          <div className="flex min-w-max sm:min-w-0 gap-2 flex-wrap">
+            {SIDEBAR_MENU.map((menu) => {
+              const isActive = activeMenu === menu.id;
+              return (
+                <button
+                  key={menu.id}
+                  onClick={() => setActiveMenu(menu.id)}
+                  className={"group flex items-center justify-center gap-2 min-w-[130px] px-4 py-3 rounded-xl text-sm font-semibold transition-all " +
+                                (isActive ? "bg-primary text-primary-foreground shadow-sm" : "bg-transparent text-muted-foreground hover:bg-background hover:text-foreground")}
+                >
+                  <menu.icon size={16} className={isActive ? "text-primary-foreground" : "text-primary/70 group-hover:text-primary"} />
+                  <span className="whitespace-nowrap">{menu.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* MAIN CONTENT AREA */}
-        <div className="flex-1 w-full bg-card border border-border rounded-2xl shadow-sm overflow-visible min-h-[500px]">
+        <div className="min-h-[500px] overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={viewMode === 'list' ? activeMenu : `${viewMode}-${selectedManager?.id}`}
