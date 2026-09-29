@@ -89,7 +89,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
   }, [pathname]);
 
   return (
-    <aside className={\`sa-sidebar \${open ? 'sa-sidebar--open' : ''}\`}>
+    <aside className={`sa-sidebar ${open ? 'sa-sidebar--open' : ''}`}>
       <div className="sa-sidebar-logo-area">
         <div className="sa-sidebar-logo-box">
           <span className="text-white text-xs font-bold">N</span>
@@ -113,7 +113,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
             <div key={group.group} className="sa-nav-group">
               <button
                 type="button"
-                className={\`sa-nav-group-button\${groupHasActive ? ' sa-nav-group-button--active' : ''}\`}
+                className={`sa-nav-group-button${groupHasActive ? ' sa-nav-group-button--active' : ''}`}
                 onClick={() =>
                   setOpenGroups(current =>
                     current[group.group] ? {} : { [group.group]: true }
@@ -123,7 +123,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
               >
                 <span>{group.group}</span>
                 <span
-                  className={\`sa-nav-group-chevron\${groupOpen ? ' sa-nav-group-chevron--open' : ''}\`}
+                  className={`sa-nav-group-chevron${groupOpen ? ' sa-nav-group-chevron--open' : ''}`}
                   aria-hidden="true"
                 >
                   ⌄
@@ -139,7 +139,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
                       <Link
                         key={href}
                         href={href}
-                        className={\`sa-nav-link \${isActive ? 'sa-nav-link--active' : ''}\`}
+                        className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}
                         onClick={onNavigate}
                         title={label}
                       >
