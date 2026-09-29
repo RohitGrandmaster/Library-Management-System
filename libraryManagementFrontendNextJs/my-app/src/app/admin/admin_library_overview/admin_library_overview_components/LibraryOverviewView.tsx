@@ -269,7 +269,7 @@ export default function LibraryOverviewView() {
                             <p className="text-xs text-muted-foreground mt-0.5">{doc.type} • {doc.size} • Uploaded: {doc.date}</p>
                           </div>
                         </div>
-                        <button className="p-2 text-muted-foreground hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-full transition-colors">
+                        <button onClick={()=>downloadDocument(doc)} aria-label={"Download "+doc.title} className="p-2 text-muted-foreground hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-full transition-colors">
                           <Download size={18} />
                         </button>
                       </div>
