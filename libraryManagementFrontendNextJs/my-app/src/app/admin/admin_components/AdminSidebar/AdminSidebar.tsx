@@ -5,8 +5,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { LogOut, Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ChevronDown, LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,6 +19,22 @@ import {
 import { ADMIN_SIDEBAR_NAV } from '@/app/admin/admin_constants/admin_constants';
 import { logout } from '@/lib/auth';
 
+type AdminLink = Extract<(typeof ADMIN_SIDEBAR_NAV)[number], { href: string }>;
+
+const ADMIN_NAV_GROUPS: { group: string; items: AdminLink[] }[] = (() => {
+  const groups: { group: string; items: AdminLink[] }[] = [];
+  let current: { group: string; items: AdminLink[] } | null = null;
+  for (const item of ADMIN_SIDEBAR_NAV) {
+    if ('group' in item) {
+      current = { group: item.group, items: [] };
+      groups.push(current);
+    } else if (current) {
+      current.items.push(item);
+    }
+  }
+  return groups;
+})();
+
 interface Props {
   collapsed: boolean;
   onToggle: () => void;
@@ -29,6 +45,12 @@ interface Props {
 export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Props) {
   const pathname = usePathname();
   const [showLogout, setShowLogout] = useState(false);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => Object.fromEntries(ADMIN_NAV_GROUPS.map(group => [group.group, true])));
+
+  useEffect(() => {
+    const activeGroup = ADMIN_NAV_GROUPS.find(group => group.items.some(item => pathname === item.href || pathname.startsWith(item.href + '/')))?.group;
+    if (activeGroup) setOpenGroups(current => current[activeGroup] ? current : { ...current, [activeGroup]: true });
+  }, [pathname]);
 
   return (
     <>
@@ -61,31 +83,48 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
         </div>
 
         <nav className="admin-sidebar-nav">
-          {ADMIN_SIDEBAR_NAV.map((item, i) => {
-            if ('group' in item) {
-              if (collapsed && !mobileOpen) return null;
-              return <div key={i} className="admin-nav-group-label">{item.group}</div>;
-            }
-            const Icon = item.icon;
-            const isExactMatch = pathname === item.href;
-            const isSubRouteMatch = pathname.startsWith(item.href + '/');
-            const isActive = isExactMatch || (isSubRouteMatch && !ADMIN_SIDEBAR_NAV.some(
-              nav => 'href' in nav && nav.href !== item.href && (pathname === nav.href || pathname.startsWith(nav.href + '/'))
-            ));
+          {ADMIN_NAV_GROUPS.map((group) => {
+            const groupOpen = openGroups[group.group];
+            const groupHasActive = group.items.some(item => pathname === item.href || pathname.startsWith(item.href + '/'));
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`admin-nav-item${isActive ? ' active' : ''}`}
-                title={(collapsed && !mobileOpen) ? item.label : undefined}
-                onClick={mobileOpen ? onMobileClose : undefined}
-              >
-                <Icon size={15} className="shrink-0 admin-nav-icon" />
-                {(!collapsed || mobileOpen) && (
-                  <span className="admin-nav-label">{item.label}</span>
+              <div key={group.group} className="admin-nav-group">
+                {(!collapsed || mobileOpen) ? (
+                  <button
+                    type="button"
+                    className={`admin-nav-group-label flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left ${groupHasActive ? 'text-foreground' : ''}`}
+                    onClick={() => setOpenGroups(current => ({ ...current, [group.group]: !current[group.group] }))}
+                    aria-expanded={groupOpen}
+                  >
+                    <span>{group.group}</span>
+                    <ChevronDown size={14} className={`shrink-0 transition-transform ${groupOpen ? 'rotate-0' : '-rotate-90'}`} />
+                  </button>
+                ) : null}
+
+                {(collapsed && !mobileOpen || groupOpen) && (
+                  <div className="space-y-1">
+                    {group.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`admin-nav-item${isActive ? ' active' : ''}`}
+                          title={(collapsed && !mobileOpen) ? item.label : undefined}
+                          onClick={mobileOpen ? onMobileClose : undefined}
+                        >
+                          <Icon size={15} className="shrink-0 admin-nav-icon" />
+                          {(!collapsed || mobileOpen) && (
+                            <span className="admin-nav-label">{item.label}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 )}
-              </Link>
+              </div>
             );
           })}
         </nav>
