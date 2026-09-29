@@ -25,6 +25,9 @@ const SIDEBAR_MENU = [
 export default function CirculationView() {
   const [activeMenu, setActiveMenu] = useState('issue');
   const [notice, setNotice] = useState('');
+  const [renewBookId, setRenewBookId] = useState('');
+  const [renewResult, setRenewResult] = useState('');
+  const [exceptionId, setExceptionId] = useState('');
   const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   
   // States for Issue Book Flow
@@ -280,12 +283,13 @@ export default function CirculationView() {
                    <h2 className="text-2xl font-bold mb-2">Renew Book</h2>
                    <p className="text-center text-muted-foreground max-w-sm mb-8">Scan a currently issued book to extend its due date based on circulation rules.</p>
                    
-                   <form className="flex gap-2 w-full max-w-md">
-                      <div className="relative flex-1">
+                   <form onSubmit={e=>{e.preventDefault(); if(!renewBookId.trim()) { notify('Enter a book barcode or ID.'); return; } setRenewResult('Renewed until 13 Oct 2026'); notify('Renewal completed for '+renewBookId+'.'); }} className="w-full max-w-md space-y-3">
+                      <div className="relative">
                         <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
-                        <input type="text" placeholder="Scan Barcode to Renew..." className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-base focus:outline-none focus:border-purple-500 transition-colors" />
+                        <input value={renewBookId} onChange={e=>setRenewBookId(e.target.value)} placeholder="Scan Barcode to Renew..." className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-base focus:outline-none focus:border-purple-500 transition-colors" />
                       </div>
-                      <button type="button" onClick={()=>notify("Renewal lookup completed.")} className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-md">Search</button>
+                      <button type="submit" className="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-md">Renew Book</button>
+                      {renewResult && <div className="p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 text-sm font-semibold text-center">{renewResult}</div>}
                    </form>
                 </div>
               )}
@@ -332,16 +336,42 @@ export default function CirculationView() {
                 </div>
               )}
 
-              {/* --- HISTORY / SETTINGS SECTIONS --- */}
-              {!['issue', 'return', 'renew', 'transfer'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Review the selected circulation history or update its operating configuration.</p>
-                   <button onClick={()=>notify("Circulation settings opened.")} className="px-6 py-2 bg-foreground text-background rounded-lg text-sm font-bold shadow-md hover:opacity-90">Open Settings</button>
-                 </div>
+              {/* --- LOST / DAMAGED / HISTORY / RULES --- */}
+              {['lost','damaged'].includes(activeMenu) && (
+                <div className="p-6 bg-background space-y-6">
+                  <div>
+                    <h2 className="text-2xl font-bold flex items-center gap-2"><AlertCircle className="text-red-500"/> {SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Record an exception and prepare the book for the next inventory action.</p>
+                  </div>
+                  <form onSubmit={e=>{e.preventDefault(); if(!exceptionId.trim()){notify('Enter a barcode or book ID.');return;} notify((activeMenu==='lost'?'Lost':'Damaged')+' entry recorded for '+exceptionId+'.');setExceptionId('');}} className="max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input value={exceptionId} onChange={e=>setExceptionId(e.target.value)} required placeholder="Barcode / Book ID *" className="admin-input w-full"/>
+                    <input placeholder="Member / responsible person" className="admin-input w-full"/>
+                    <select className="admin-input w-full"><option>Central Main Library</option><option>Northside Hub</option><option>East Wing Branch</option></select>
+                    <select className="admin-input w-full"><option>{activeMenu==='lost'?'Replacement Required':'Needs Repair Review'}</option><option>Hold for Manager Review</option></select>
+                    <textarea rows={3} placeholder="Notes / condition details" className="admin-input w-full md:col-span-2"/>
+                    <div className="md:col-span-2 flex justify-end"><button type="submit" className="admin-btn admin-btn-primary inline-flex items-center gap-2"><CheckCircle size={16}/> Save Entry</button></div>
+                  </form>
+                </div>
+              )}
+              {['issue_history','return_history','renewal_history'].includes(activeMenu) && (
+                <div className="p-6 bg-background space-y-6">
+                  <h2 className="text-2xl font-bold">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2>
+                  <div className="overflow-x-auto border border-border rounded-xl">
+                    <table className="w-full min-w-[720px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Ref</th><th className="p-3">Member</th><th className="p-3">Book</th><th className="p-3">Date</th><th className="p-3">Status</th><th className="p-3">Action</th></tr></thead><tbody>{[['TX-1001','Alice Walker','Clean Code','29 Sep 2026','Completed'],['TX-1002','Bob Smith','Sapiens','28 Sep 2026','Completed'],['TX-1003','Charlie Davis','Python Crash Course','27 Sep 2026','Review']].map(r=><tr key={r[0]} className="border-t border-border"><td className="p-3 font-semibold">{r[0]}</td><td className="p-3">{r[1]}</td><td className="p-3">{r[2]}</td><td className="p-3">{r[3]}</td><td className="p-3">{r[4]}</td><td className="p-3"><button onClick={()=>notify('Opened '+r[0]+'.')} className="text-primary font-semibold hover:underline">View</button></td></tr>)}</tbody></table>
+                  </div>
+                </div>
+              )}
+              {activeMenu === 'rules' && (
+                <div className="p-6 bg-background space-y-6">
+                  <div><h2 className="text-2xl font-bold">Circulation Rules</h2><p className="text-sm text-muted-foreground mt-1">Configure the frontend demo policy used by the circulation desk.</p></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl">
+                    <label className="space-y-2 text-sm font-medium">Issue period (days)<input type="number" defaultValue={14} min={1} className="admin-input w-full"/></label>
+                    <label className="space-y-2 text-sm font-medium">Maximum renewals<input type="number" defaultValue={2} min={0} className="admin-input w-full"/></label>
+                    <label className="space-y-2 text-sm font-medium">Grace period (days)<input type="number" defaultValue={2} min={0} className="admin-input w-full"/></label>
+                    <label className="space-y-2 text-sm font-medium">Fine per overdue day (₹)<input type="number" defaultValue={10} min={0} className="admin-input w-full"/></label>
+                  </div>
+                  <button onClick={()=>notify('Circulation rules saved.')} className="admin-btn admin-btn-primary">Save Rules</button>
+                </div>
               )}
 
             </motion.div>
