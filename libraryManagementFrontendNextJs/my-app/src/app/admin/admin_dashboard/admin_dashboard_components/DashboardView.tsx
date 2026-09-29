@@ -133,11 +133,9 @@ export default function DashboardView() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/admin_reports">
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-all shadow-sm">
-              <Activity size={16} />
-              Full Analytics
-            </button>
+          <Link href="/admin/admin_reports" className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-all shadow-sm">
+            <Activity size={16} />
+            Full Analytics
           </Link>
         </div>
       </div>
