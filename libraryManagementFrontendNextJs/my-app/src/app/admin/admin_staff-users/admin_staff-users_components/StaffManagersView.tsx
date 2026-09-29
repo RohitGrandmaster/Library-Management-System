@@ -295,10 +295,8 @@ export default function StaffManagersView() {
                       </div>
 
                       <div className="pt-6 border-t border-border flex justify-end gap-3">
-                        <button className="px-6 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
-                        <button className="px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium flex items-center gap-2 shadow-md">
-                          <CheckCircle size={18} /> Create Manager
-                        </button>
+                        <button type="button" onClick={()=>{setActiveMenu('all');notify('Create manager form closed.')}} className="px-6 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
+                        <button type="button" onClick={()=>{ const id="m-"+Date.now(); const name="New Manager "+(managers.length+1); setManagers(items=>[...items,{id,name,username:name.toLowerCase().replace(/ /g,""),email:"newmanager@library.com",phone:"+91 9000000000",branch:"Central Main Library",status:"Active",photo:"https://i.pravatar.cc/150?u="+id}]); notify("Manager created successfully."); setActiveMenu("all"); }} className="px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium flex items-center gap-2 shadow-md"><CheckCircle size={18}/> Create Manager</button>
                       </div>
                     </div>
                   )}
@@ -365,7 +363,7 @@ export default function StaffManagersView() {
                            <div className="flex justify-between border-b border-border pb-2"><span className="text-muted-foreground">IP Address</span><span className="font-medium">192.168.1.45</span></div>
                            <div className="flex justify-between pb-2"><span className="text-muted-foreground">Password Last Changed</span><span className="font-medium">45 Days Ago</span></div>
                          </div>
-                         <button className="mt-4 w-full py-2 bg-muted hover:bg-muted/80 text-foreground font-medium rounded-lg text-sm transition-colors border border-border">Reset Password</button>
+                         <button onClick={()=>notify("Password reset initiated for "+selectedManager.name+".")} className="mt-4 w-full py-2 bg-muted hover:bg-muted/80 text-foreground font-medium rounded-lg text-sm transition-colors border border-border">Reset Password</button>
                       </div>
                       
                       <div className="p-6 border border-border rounded-xl bg-background">
@@ -381,7 +379,7 @@ export default function StaffManagersView() {
                              </div>
                            ))}
                          </div>
-                         <button className="mt-4 w-full py-2 text-primary font-medium text-sm hover:underline">View Full Activity Log</button>
+                         <button onClick={()=>{setActiveMenu("activity");closeDetail();}} className="mt-4 w-full py-2 text-primary font-medium text-sm hover:underline">View Full Activity Log</button>
                       </div>
                    </div>
                 </div>
@@ -426,9 +424,7 @@ export default function StaffManagersView() {
                    
                    <div className="pt-6 border-t border-border flex justify-end gap-3">
                       <button onClick={closeDetail} className="px-6 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
-                      <button className="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium flex items-center gap-2 shadow-md">
-                        <CheckCircle size={18} /> Save Permissions
-                      </button>
+                      <button onClick={()=>notify("Permissions saved for "+selectedManager.name+".")} className="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium flex items-center gap-2 shadow-md"><CheckCircle size={18}/> Save Permissions</button>
                    </div>
                 </div>
               )}
@@ -437,6 +433,7 @@ export default function StaffManagersView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
