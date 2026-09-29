@@ -276,7 +276,7 @@ export default function VendorsView() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                           <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 hover:opacity-90"><PlusCircle size={16}/> New Order</button>
+                           <button onClick={()=>notify("New purchase order workflow opened for "+selectedVendor.company+".")} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 hover:opacity-90"><PlusCircle size={16}/> New Order</button>
                         </div>
                       </div>
                    </div>
