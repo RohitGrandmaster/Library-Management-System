@@ -165,7 +165,7 @@ export default function SecurityView() {
               {/* --- ACTIVE SESSIONS & FORCE LOGOUT --- */}
               {['sessions', 'active'].includes(activeMenu) && (
                 <div className="p-6 h-full flex flex-col bg-background">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2">
                        <MonitorSmartphone className="text-blue-500" /> Manager Sessions
                      </h2>
@@ -310,15 +310,18 @@ export default function SecurityView() {
               )}
 
 
-              {/* --- PLACEHOLDERS --- */}
               {!['dashboard', 'active', 'sessions', 'blocked', 'password'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-red-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Review and update the selected security control using the action below.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6 h-full overflow-y-auto">
+                  <div><h2 className="text-2xl font-bold flex items-center gap-2"><ShieldAlert className="text-red-500"/> {SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Review security events and apply Admin-side controls.</p></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(activeMenu==='login' ? [
+                      ['Login Attempts','5 per account','Policy'],['Lockout Window','30 minutes','Policy'],['Captcha','After 3 failures','Enabled'],['IP Protection','Auto block','Enabled']
+                    ] : activeMenu==='failed' ? MOCK_FAILED_LOGINS.map(x=>[x.user,x.ip,x.reason]) : activeMenu==='devices' ? MOCK_ACTIVE_SESSIONS.map(x=>[x.user,x.device,x.ip]) : [
+                      ['Event Monitoring','Enabled','Live'],['Security Alerts','2 critical','Attention'],['Audit Retention','365 days','Policy'],['Last Review','29 Sep 2026','Admin']
+                    ]).map(([a,b,c],i)=><div key={i} className="p-5 rounded-xl border border-border bg-card"><p className="font-bold">{a}</p><p className="text-sm text-muted-foreground mt-1">{b}</p><p className="text-xs mt-3 font-semibold text-red-500">{c}</p></div>)}
+                  </div>
+                  <button onClick={()=>handleAction(activeMenu.replace('_',' ')+' configuration update','Library Security')} className="px-6 py-2.5 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-bold shadow-sm">Save Security Settings</button>
+                </div>
               )}
 
             </motion.div>
