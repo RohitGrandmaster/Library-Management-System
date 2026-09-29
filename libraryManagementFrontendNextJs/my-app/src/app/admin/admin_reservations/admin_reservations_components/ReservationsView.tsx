@@ -193,13 +193,15 @@ export default function ReservationsView() {
 
               {/* --- RESERVATION RULES --- */}
               {activeMenu === 'rules' && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     <ShieldCheck size={48} className="opacity-30 text-pink-500" />
+                 <div className="p-6 bg-background space-y-6">
+                   <div><h2 className="text-2xl font-bold flex items-center gap-2"><ShieldCheck className="text-pink-500"/> Reservation Rules</h2><p className="text-sm text-muted-foreground mt-1">Configure reservation limits and pickup timing for the frontend demo.</p></div>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl">
+                     <label className="space-y-2 text-sm font-medium">Maximum reservations<input type="number" defaultValue={2} min={1} className="w-full px-4 py-3 bg-card border border-border rounded-xl"/></label>
+                     <label className="space-y-2 text-sm font-medium">Hold duration (days)<input type="number" defaultValue={7} min={1} className="w-full px-4 py-3 bg-card border border-border rounded-xl"/></label>
+                     <label className="space-y-2 text-sm font-medium">Pickup window (hours)<input type="number" defaultValue={48} min={1} className="w-full px-4 py-3 bg-card border border-border rounded-xl"/></label>
+                     <label className="space-y-2 text-sm font-medium">Queue limit<input type="number" defaultValue={5} min={1} className="w-full px-4 py-3 bg-card border border-border rounded-xl"/></label>
                    </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2">Reservation Rules</h3>
-                   <p className="text-center max-w-md mb-6">Configure maximum allowed reservations, hold period limits, and automatic expiration behaviors.</p>
-                   <button onClick={()=>notify("Reservation rules saved.")} className="px-6 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-pink-700">Configure Rules</button>
+                   <button onClick={()=>notify('Reservation rules saved.')} className="px-6 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-pink-700">Save Rules</button>
                  </div>
               )}
 
