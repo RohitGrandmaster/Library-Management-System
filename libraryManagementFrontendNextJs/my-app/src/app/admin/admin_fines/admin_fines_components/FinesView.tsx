@@ -178,7 +178,7 @@ export default function FinesView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Member or Fine ID..." onChange={()=>{}} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-64" />
+                       <input type="text" placeholder="Search Member or Fine ID..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-64" />
                      </div>
                   </div>
 
