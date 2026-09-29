@@ -152,7 +152,7 @@ export default function ProfileView() {
                          <div>
                             <h3 className="font-bold text-lg">Profile Photo</h3>
                             <p className="text-xs text-muted-foreground mt-1">Recommended size 400x400px. JPG or PNG.</p>
-                            <button className="mt-2 text-sm font-bold text-teal-600 hover:underline">Upload New Photo</button>
+                            <label className="mt-2 text-sm font-bold text-teal-600 hover:underline cursor-pointer">Upload New Photo<input type="file" accept="image/*" className="hidden" onChange={e=>e.target.files?.[0] && handleAction("Profile photo")}/></label>
                          </div>
                       </div>
 
@@ -250,7 +250,7 @@ export default function ProfileView() {
                            <p className="text-xs text-muted-foreground">Scan this code using your authenticator app and enter the generated 6-digit pin below to verify.</p>
                            <div className="flex gap-2 w-full max-w-xs">
                              <input type="text" placeholder="123456" maxLength={6} className="flex-1 px-4 py-2 border border-border rounded-lg text-center font-mono text-xl tracking-widest focus:ring-2 focus:ring-purple-500 outline-none" />
-                             <button className="px-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700">Verify</button>
+                             <button onClick={()=>handleAction("Email verification")} className="px-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700">Verify</button>
                            </div>
                         </motion.div>
                       )}
