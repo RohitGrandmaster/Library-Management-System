@@ -204,13 +204,13 @@ export default function SupportView() {
               {/* --- MY TICKETS LIST --- */}
               {!selectedTicket && activeMenu === 'my_tickets' && (
                 <div className="p-6 h-full flex flex-col bg-background">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2">
                        <LayoutList className="text-sky-500" /> My Support Tickets
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Ticket ID or Subject..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 w-64" />
+                       <input type="text" placeholder="Search Ticket ID or Subject..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 w-full sm:w-64" />
                      </div>
                   </div>
 
@@ -339,15 +339,13 @@ export default function SupportView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS --- */}
               {!selectedTicket && !['center', 'create_ticket', 'my_tickets', 'status'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10 bg-background flex-1">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-sky-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Open the selected support resource and continue the workflow from this Admin workspace.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6 h-full overflow-y-auto">
+                  <div><h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Support resources and service records for the Admin workspace.</p></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {['Documentation','Release Notes','Known Issues','Contact Support'].map((item,i)=><div key={item} className="p-5 border border-border rounded-xl bg-card"><h3 className="font-bold">{item}</h3><p className="text-sm text-muted-foreground mt-2">{i===0?'Read platform usage documentation.':i===1?'Review the latest platform changes.':i===2?'Review known issues and workarounds.':'Create or update a support request.'}</p><button onClick={()=>{if(item==='Contact Support') setActiveMenu('create_ticket'); else notify(item+' opened.');}} className="mt-4 text-sky-600 font-semibold hover:underline">{item==='Contact Support'?'Create Ticket':'Open Resource'}</button></div>)}
+                  </div>
+                </div>
               )}
 
             </motion.div>
