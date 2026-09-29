@@ -324,7 +324,7 @@ export default function CirculationView() {
                       </div>
 
                       <div className="col-span-1 md:col-span-2 pt-4 flex justify-end">
-                         <button className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2">
+                         <button onClick={()=>notify("Book transfer request created.")} className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2">
                            <ArrowLeftRight size={18} /> Initiate Transfer
                          </button>
                       </div>
@@ -332,15 +332,15 @@ export default function CirculationView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDER FOR OTHERS --- */}
+              {/* --- HISTORY / SETTINGS SECTIONS --- */}
               {!['issue', 'return', 'renew', 'transfer'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Manage settings, logs, and configurations related to this module here.</p>
-                   <button className="px-6 py-2 bg-foreground text-background rounded-lg text-sm font-bold shadow-md hover:opacity-90">Open Settings</button>
+                   <p className="text-center max-w-md mb-6">Review the selected circulation history or update its operating configuration.</p>
+                   <button onClick={()=>notify("Circulation settings opened.")} className="px-6 py-2 bg-foreground text-background rounded-lg text-sm font-bold shadow-md hover:opacity-90">Open Settings</button>
                  </div>
               )}
 
@@ -348,6 +348,7 @@ export default function CirculationView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
