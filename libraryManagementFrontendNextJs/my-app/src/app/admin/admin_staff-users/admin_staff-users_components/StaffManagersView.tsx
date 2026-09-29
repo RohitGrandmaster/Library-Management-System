@@ -162,13 +162,13 @@ export default function StaffManagersView() {
                   {/* LISTING CARDS */}
                   {['all', 'active', 'suspended', 'deactivated'].includes(activeMenu) && (
                     <div className="space-y-6">
-                      <div className="flex justify-between items-center mb-6">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                          <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                            <Users className="text-blue-500" /> {activeMenu} Managers
                          </h2>
-                         <div className="relative">
+                         <div className="relative w-full sm:w-auto">
                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                           <input type="text" placeholder="Search managers..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-64" />
+                           <input type="text" placeholder="Search managers..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
                          </div>
                       </div>
 
@@ -286,11 +286,12 @@ export default function StaffManagersView() {
                         {/* Photo Upload Area */}
                         <div className="space-y-2">
                            <label className="text-sm font-medium">Profile Photo</label>
-                           <div className="w-full h-48 border-2 border-dashed border-border rounded-2xl bg-muted/30 flex flex-col items-center justify-center text-muted-foreground hover:bg-muted/50 hover:border-primary/50 transition-colors cursor-pointer">
+                           <label className="w-full h-48 border-2 border-dashed border-border rounded-2xl bg-muted/30 flex flex-col items-center justify-center text-muted-foreground hover:bg-muted/50 hover:border-primary/50 transition-colors cursor-pointer">
                              <UploadCloud size={40} className="mb-2 text-primary/50" />
                              <span className="text-sm font-medium text-foreground">Click to upload</span>
                              <span className="text-xs mt-1">JPG, PNG (Max 2MB)</span>
-                           </div>
+                             <input type="file" accept="image/jpeg,image/png" className="sr-only" onChange={e => e.target.files?.[0] && notify(`Photo selected: ${e.target.files[0].name}`)} />
+                           </label>
                         </div>
                       </div>
 
