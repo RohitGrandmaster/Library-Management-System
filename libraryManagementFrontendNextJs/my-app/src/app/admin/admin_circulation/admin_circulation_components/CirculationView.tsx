@@ -24,6 +24,8 @@ const SIDEBAR_MENU = [
 
 export default function CirculationView() {
   const [activeMenu, setActiveMenu] = useState('issue');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   
   // States for Issue Book Flow
   const [memberId, setMemberId] = useState('');
@@ -256,10 +258,10 @@ export default function CirculationView() {
                          </div>
 
                          <div className="p-4 bg-muted/50 border-t border-border flex gap-3">
-                           <button className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md flex items-center justify-center gap-2">
+                           <button onClick={()=>{setIsReturnScanned(false);notify("Book return confirmed.");}} className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md flex items-center justify-center gap-2">
                              <CheckCircle size={18} /> Confirm Return
                            </button>
-                           <button className="flex-1 py-3 border border-border bg-background hover:bg-muted text-foreground rounded-xl font-bold flex items-center justify-center gap-2">
+                           <button onClick={()=>{setIsReturnScanned(false);notify("Fine collection and return completed.");}} className="flex-1 py-3 border border-border bg-background hover:bg-muted text-foreground rounded-xl font-bold flex items-center justify-center gap-2">
                              <DollarSign size={18} /> Collect Fine & Return
                            </button>
                          </div>
