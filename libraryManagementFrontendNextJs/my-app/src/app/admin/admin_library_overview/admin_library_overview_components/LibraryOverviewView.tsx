@@ -119,30 +119,32 @@ export default function LibraryOverviewView() {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 items-start">
-        {/* SIDEBAR TABS */}
-        <div className="w-full lg:w-64 flex flex-col gap-2 shrink-0 bg-card border border-border p-3 rounded-2xl shadow-sm">
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ${
-                  isActive 
-                  ? 'bg-primary text-primary-foreground shadow-md scale-[1.02]' 
-                  : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <tab.icon size={18} className={isActive ? 'text-primary-foreground' : 'text-primary/70'} />
-                <span className="font-medium text-sm">{tab.label}</span>
-              </button>
-            );
-          })}
+      <div className="w-full bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+        {/* TOP FEATURE NAVIGATION */}
+        <div className="border-b border-border bg-muted/20 p-2 sm:p-3 overflow-x-auto">
+          <div className="flex min-w-max sm:min-w-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-2">
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`group flex items-center justify-center gap-2 min-w-[145px] sm:min-w-0 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    isActive
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'bg-transparent text-muted-foreground hover:bg-background hover:text-foreground'
+                  }`}
+                >
+                  <tab.icon size={17} className={isActive ? 'text-primary-foreground' : 'text-primary/70 group-hover:text-primary'} />
+                  <span className="whitespace-nowrap">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* TAB CONTENT */}
-        <div className="flex-1 w-full bg-card border border-border rounded-2xl shadow-sm overflow-hidden min-h-[500px]">
+        <div className="min-h-[500px] overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -150,13 +152,13 @@ export default function LibraryOverviewView() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="h-full p-6 sm:p-8"
+              className="h-full p-5 sm:p-7 lg:p-8"
             >
               
               {/* 1. INFORMATION TAB */}
               {activeTab === 'info' && (
                 <div className="space-y-8">
-                  <div className="flex justify-between items-start">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <Building2 className="text-blue-500" /> Library Information
                     </h2>
@@ -221,7 +223,7 @@ export default function LibraryOverviewView() {
               {/* 3. RULES TAB */}
               {activeTab === 'rules' && (
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <ShieldCheck className="text-emerald-500" /> Library Rules & Limits
                     </h2>
