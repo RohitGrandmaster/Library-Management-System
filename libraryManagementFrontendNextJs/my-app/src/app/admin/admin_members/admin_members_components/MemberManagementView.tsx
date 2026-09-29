@@ -43,19 +43,25 @@ const DETAIL_TABS = [
 ];
 
 export default function MemberManagementView() {
+  const [members, setMembers] = useState(MOCK_MEMBERS);
   const [activeMenu, setActiveMenu] = useState('all');
+  const [search, setSearch] = useState('');
+  const [notice, setNotice] = useState('');
   const [selectedMember, setSelectedMember] = useState<any | null>(null);
   const [activeDetailTab, setActiveDetailTab] = useState('profile');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
 
-  const displayMembers = MOCK_MEMBERS.filter(m => {
+  const displayMembers = members.filter(m => {
     if (activeMenu === 'all') return true;
     if (activeMenu === 'active') return m.status === 'Active';
     if (activeMenu === 'expired') return m.status === 'Expired';
     if (activeMenu === 'suspended') return m.status === 'Suspended';
     if (activeMenu === 'blocked') return m.status === 'Blocked';
-    return true;
+    const q = search.trim().toLowerCase();
+    return !q || [m.id,m.name,m.phone,m.email,m.type].some(v=>v.toLowerCase().includes(q));
   });
+
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const getStatusColor = (status: string) => {
     if (status === 'Active') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200';
@@ -71,7 +77,10 @@ export default function MemberManagementView() {
       setSelectedMember(member);
       setActiveDetailTab('profile');
     } else {
-      alert(`${action.replace('_', ' ').toUpperCase()} action triggered for ${member.name}`);
+      const statusMap: Record<string,string> = { suspend:'Suspended', reactivate:'Active', block:'Blocked' };
+      if (statusMap[action]) setMembers(items=>items.map(m=>m.id===member.id?{...m,status:statusMap[action]}:m));
+      if (action === 'renew') setMembers(items=>items.map(m=>m.id===member.id?{...m,status:'Active',expires:'12 months from today'}:m));
+      notify(action.replace('_',' ') + ' completed for ' + member.name + '.');
     }
   };
 
@@ -143,7 +152,7 @@ export default function MemberManagementView() {
                     </h2>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                      <input type="text" placeholder="Search members by ID, Name, Phone..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-72" />
+                      <input type="text" placeholder="Search members by ID, Name, Phone..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-72" />
                     </div>
                   </div>
 
@@ -282,10 +291,8 @@ export default function MemberManagementView() {
                        </div>
 
                        <div className="md:col-span-2 pt-6 flex justify-end gap-3">
-                         <button className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Reset</button>
-                         <button className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-medium flex items-center gap-2 shadow-md">
-                           <CheckCircle size={18} /> Register Member
-                         </button>
+                         <button type="button" onClick={()=>notify("Member form reset.")} className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Reset</button>
+                         <button type="button" onClick={()=>{const id="MEM-"+String(members.length+1).padStart(3,"0"); setMembers(items=>[...items,{id,name:"New Member "+(members.length+1),phone:"+91 9000000000",email:"newmember@library.com",type:"Standard",status:"Active",plan:"Monthly Access",joined:"29 Sep 2026",expires:"29 Oct 2026",issuedBooks:0,fine:0,photo:"https://i.pravatar.cc/150?u="+id}]); notify("Member registered successfully."); setActiveMenu("all");}} className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-medium flex items-center gap-2 shadow-md"><CheckCircle size={18}/> Register Member</button>
                        </div>
                      </div>
                   </div>
@@ -300,7 +307,7 @@ export default function MemberManagementView() {
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{activeMenu.replace('_', ' ')}</h3>
                    <p className="text-center max-w-md mb-6">Manage settings and configurations related to {activeMenu.replace('_', ' ')} here.</p>
-                   <button className="px-6 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 shadow-md">Configure Space</button>
+                   <button onClick={()=>notify(activeMenu.replace("_"," ")+" workspace opened.")} className="px-6 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 shadow-md">Open Workspace</button>
                  </div>
               )}
 
@@ -319,7 +326,7 @@ export default function MemberManagementView() {
                        </div>
                      </div>
                      <div className="flex gap-2">
-                       <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium shadow-sm flex items-center gap-2"><ArrowRightLeft size={16}/> Quick Issue</button>
+                       <button onClick={()=>notify("Quick Issue workflow opened for "+selectedMember.name+".")} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium shadow-sm flex items-center gap-2"><ArrowRightLeft size={16}/> Quick Issue</button>
                      </div>
                    </div>
 
@@ -378,6 +385,7 @@ export default function MemberManagementView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
