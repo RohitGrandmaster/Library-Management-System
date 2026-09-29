@@ -34,6 +34,8 @@ export default function ProfileView() {
   const [notice, setNotice] = useState('');
   const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [sessions, setSessions] = useState(MOCK_SESSIONS);
 
   const handleAction = (action: string) => { notify(action + ' updated successfully.'); };
 
@@ -249,8 +251,8 @@ export default function ProfileView() {
                            <div className="w-40 h-40 bg-white border border-gray-300 p-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=example_2fa_secret" alt="QR" className="w-full h-full opacity-80" /></div>
                            <p className="text-xs text-muted-foreground">Scan this code using your authenticator app and enter the generated 6-digit pin below to verify.</p>
                            <div className="flex gap-2 w-full max-w-xs">
-                             <input type="text" placeholder="123456" maxLength={6} className="flex-1 px-4 py-2 border border-border rounded-lg text-center font-mono text-xl tracking-widest focus:ring-2 focus:ring-purple-500 outline-none" />
-                             <button onClick={()=>handleAction("Email verification")} className="px-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700">Verify</button>
+                             <input type="text" value={verificationCode} onChange={e=>setVerificationCode(e.target.value.replace(/\D/g,"").slice(0,6))} placeholder="123456" maxLength={6} className="flex-1 px-4 py-2 border border-border rounded-lg text-center font-mono text-xl tracking-widest focus:ring-2 focus:ring-purple-500 outline-none" />
+                             <button onClick={()=>{ if(verificationCode.length !== 6){ notify('Enter the 6-digit verification code.'); return; } handleAction('Two-factor verification'); }} className="px-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700">Verify</button>
                            </div>
                         </motion.div>
                       )}
@@ -271,7 +273,7 @@ export default function ProfileView() {
                   <p className="text-sm text-muted-foreground mb-4">View and manage devices that are currently logged into your account.</p>
 
                   <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar">
-                    {MOCK_SESSIONS.map(session => (
+                    {sessions.map(session => (
                       <div key={session.id} className={`p-5 border rounded-2xl bg-card transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm ${session.isCurrent ? 'border-orange-400 bg-orange-50/20' : 'border-border hover:border-orange-500/30'}`}>
                          
                          <div className="flex items-start gap-4">
@@ -292,7 +294,7 @@ export default function ProfileView() {
 
                          {!session.isCurrent && (
                            <div className="flex flex-col items-end gap-3">
-                              <button onClick={() => notify('Selected session logged out.')} className="px-4 py-2 border border-red-200 bg-red-50 text-red-600 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+                              <button onClick={() => { setSessions(items => items.filter(item => item.id !== session.id)); notify('Selected session revoked.'); }} className="px-4 py-2 border border-red-200 bg-red-50 text-red-600 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
                                 <LogOut size={16}/> Revoke Session
                               </button>
                            </div>
