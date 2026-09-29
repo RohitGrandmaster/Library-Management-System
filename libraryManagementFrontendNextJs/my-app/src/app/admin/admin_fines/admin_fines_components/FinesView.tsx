@@ -34,6 +34,9 @@ const MOCK_FINES = [
 
 export default function FinesView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [fines, setFines] = useState(MOCK_FINES);
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [selectedFine, setSelectedFine] = useState<any | null>(null);
   const [actionType, setActionType] = useState<'pay' | 'waive' | null>(null);
 
@@ -50,7 +53,8 @@ export default function FinesView() {
   };
 
   const handleProcessAction = () => {
-    alert(`${actionType === 'pay' ? 'Payment' : 'Waiver'} processed successfully!`);
+    if (selectedFine) setFines(items => items.map(f => f.id === selectedFine.id ? { ...f, status: actionType === 'pay' ? 'Paid' : 'Waived', paidAmount: actionType === 'pay' ? f.amount : f.paidAmount } : f));
+    notify(actionType === 'pay' ? 'Payment processed and receipt prepared.' : 'Fine waiver approved.');
     setSelectedFine(null);
     setActionType(null);
     setPayAmount('');
