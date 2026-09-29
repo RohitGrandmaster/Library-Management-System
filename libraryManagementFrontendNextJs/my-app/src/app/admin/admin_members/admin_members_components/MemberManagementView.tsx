@@ -152,7 +152,7 @@ export default function MemberManagementView() {
                     </h2>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                      <input type="text" placeholder="Search members by ID, Name, Phone..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-72" />
+                      <input type="text" WORKSPACE="Search members by ID, Name, Phone..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-72" />
                     </div>
                   </div>
 
@@ -234,11 +234,11 @@ export default function MemberManagementView() {
                      <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5">
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Member ID <span className="text-red-500">*</span></label>
-                         <input type="text" placeholder="e.g. MEM-005" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="text" WORKSPACE="e.g. MEM-005" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Full Name <span className="text-red-500">*</span></label>
-                         <input type="text" placeholder="Enter full name" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="text" WORKSPACE="Enter full name" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Date of Birth</label>
@@ -250,15 +250,15 @@ export default function MemberManagementView() {
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Phone <span className="text-red-500">*</span></label>
-                         <input type="tel" placeholder="+1..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="tel" WORKSPACE="+1..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Email</label>
-                         <input type="email" placeholder="example@domain.com" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="email" WORKSPACE="example@domain.com" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5 md:col-span-2">
                          <label className="text-sm font-medium">Address</label>
-                         <textarea rows={2} placeholder="Full address..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <textarea rows={2} WORKSPACE="Full address..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        
                        <div className="col-span-1 md:col-span-2 mt-4 pt-4 border-t border-border">
@@ -271,7 +271,7 @@ export default function MemberManagementView() {
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Course / Class</label>
-                         <input type="text" placeholder="e.g. BCA 2nd Year" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="text" WORKSPACE="e.g. BCA 2nd Year" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Membership Type <span className="text-red-500">*</span></label>
@@ -283,7 +283,7 @@ export default function MemberManagementView() {
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Emergency Contact</label>
-                         <input type="text" placeholder="Name & Phone" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
+                         <input type="text" WORKSPACE="Name & Phone" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-purple-500 outline-none" />
                        </div>
                        <div className="space-y-1.5">
                          <label className="text-sm font-medium">Status</label>
