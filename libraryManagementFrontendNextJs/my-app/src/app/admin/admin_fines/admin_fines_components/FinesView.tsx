@@ -35,6 +35,7 @@ const MOCK_FINES = [
 export default function FinesView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
   const [fines, setFines] = useState(MOCK_FINES);
+  const [search, setSearch] = useState('');
   const [notice, setNotice] = useState('');
   const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [selectedFine, setSelectedFine] = useState<any | null>(null);

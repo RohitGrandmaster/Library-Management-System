@@ -148,7 +148,7 @@ export default function LibraryOverviewView() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              variants={tabContentVariants}
+              variants={tabContentVariants as any}
               initial="hidden"
               animate="visible"
               exit="exit"
