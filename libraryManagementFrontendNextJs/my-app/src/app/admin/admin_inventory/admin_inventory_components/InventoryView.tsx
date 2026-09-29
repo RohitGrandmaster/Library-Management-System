@@ -27,6 +27,8 @@ const SIDEBAR_MENU = [
 
 export default function InventoryView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   
   // States for Physical Verification Flow
   const [verificationStep, setVerificationStep] = useState(1);
@@ -188,7 +190,7 @@ export default function InventoryView() {
                       
                       <div className="pt-4 border-t border-border flex justify-end gap-3">
                          <button className="px-6 py-3 border border-border bg-muted hover:bg-muted/80 rounded-xl font-medium">Cancel</button>
-                         <button className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2"><ArrowRightLeft size={18}/> Confirm Transfer</button>
+                         <button onClick={()=>{setActiveMenu("dashboard");notify("Stock transfer recorded successfully.");}} className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2"><ArrowRightLeft size={18}/> Confirm Transfer</button>
                       </div>
                    </div>
                 </div>
@@ -327,7 +329,7 @@ export default function InventoryView() {
                       </div>
 
                       <div className="pt-4 border-t border-border flex justify-end">
-                         <button className="px-8 py-3 bg-slate-800 hover:bg-slate-900 dark:bg-slate-200 dark:hover:bg-white text-white dark:text-black rounded-xl font-bold shadow-md flex items-center gap-2">
+                         <button onClick={()=>{notify("Stock adjustment recorded successfully.");setActiveMenu("dashboard");}} className="px-8 py-3 bg-slate-800 hover:bg-slate-900 dark:bg-slate-200 dark:hover:bg-white text-white dark:text-black rounded-xl font-bold shadow-md flex items-center gap-2">
                            <FileSignature size={18} /> Record Adjustment
                          </button>
                       </div>
@@ -335,14 +337,14 @@ export default function InventoryView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS --- */}
+              {/* --- INVENTORY WORKSPACES --- */}
               {!['dashboard', 'transfer', 'verification', 'adjustment'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-violet-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Manage tracking and lists for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()}.</p>
+                   <p className="text-center max-w-md mb-6">Review, reconcile and manage {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} from this Admin workspace.</p>
                  </div>
               )}
 
@@ -350,6 +352,7 @@ export default function InventoryView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
