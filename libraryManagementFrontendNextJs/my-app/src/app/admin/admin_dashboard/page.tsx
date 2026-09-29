@@ -55,7 +55,7 @@ export default async function AdminDashboardPage() {
     ...a,
     icon: ADMIN_ACTION_ICONS[a.label] ?? AlertCircle,
     type: a.type as 'danger' | 'warning',
-    href: a.href || '#',
+    href: a.href || '/admin/admin_members',
   }));
 
   return (
