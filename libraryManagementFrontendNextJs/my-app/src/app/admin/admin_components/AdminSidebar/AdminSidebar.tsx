@@ -45,11 +45,11 @@ interface Props {
 export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Props) {
   const pathname = usePathname();
   const [showLogout, setShowLogout] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => Object.fromEntries(ADMIN_NAV_GROUPS.map(group => [group.group, true])));
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => Object.fromEntries(ADMIN_NAV_GROUPS.map((group, index) => [group.group, index === 0])));
 
   useEffect(() => {
     const activeGroup = ADMIN_NAV_GROUPS.find(group => group.items.some(item => pathname === item.href || pathname.startsWith(item.href + '/')))?.group;
-    if (activeGroup) setOpenGroups(current => current[activeGroup] ? current : { ...current, [activeGroup]: true });
+    if (activeGroup) setOpenGroups(current => current[activeGroup] ? current : { [activeGroup]: true });
   }, [pathname]);
 
   return (
@@ -64,7 +64,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
       )}
 
       <aside
-        className={`admin-sidebar${mobileOpen ? ' admin-sidebar-mobile-open' : ''}`}
+        className={`admin-sidebar${collapsed ? ' admin-sidebar-collapsed' : ''}${mobileOpen ? ' admin-sidebar-mobile-open' : ''}`}
         style={{ width: collapsed ? 60 : 240 }}
       >
         <div className="admin-sidebar-logo">
@@ -93,7 +93,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
                   <button
                     type="button"
                     className={`admin-nav-group-label flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left ${groupHasActive ? 'text-foreground' : ''}`}
-                    onClick={() => setOpenGroups(current => ({ ...current, [group.group]: !current[group.group] }))}
+                    onClick={() => setOpenGroups(current => current[group.group] ? {} : { [group.group]: true })}
                     aria-expanded={groupOpen}
                   >
                     <span>{group.group}</span>
