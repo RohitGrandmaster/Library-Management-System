@@ -36,6 +36,8 @@ const MOCK_BLOCKED_USERS = [
 
 export default function SecurityView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   
   // Password Policy States
   const [minLen, setMinLen] = useState('8');
@@ -44,7 +46,7 @@ export default function SecurityView() {
   const [req2FA, setReq2FA] = useState(true);
 
   const handleAction = (action: string, target: string) => {
-    alert(`${action} successfully executed for ${target}`);
+    notify(action + ' successfully executed for ' + target + '.');
   };
 
   return (
@@ -323,6 +325,7 @@ export default function SecurityView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
