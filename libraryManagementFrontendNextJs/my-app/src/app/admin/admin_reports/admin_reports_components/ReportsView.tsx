@@ -332,7 +332,7 @@ export default function ReportsView() {
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-blue-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Detailed data visualizations and tables for this report category will be loaded here. Use the Export button at the top to download the raw data.</p>
+                   <p className="text-center max-w-md mb-6">Generate the selected report from the local dataset, review its summary, and export the result in the selected format.</p>
                    <button onClick={() => handleExport('pdf')} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:opacity-90 flex items-center gap-2"><Download size={16}/> Generate Report</button>
                  </div>
               )}
