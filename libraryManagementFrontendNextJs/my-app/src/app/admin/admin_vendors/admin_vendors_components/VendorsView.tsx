@@ -44,7 +44,7 @@ export default function VendorsView() {
     if(action === 'View Profile') {
       setSelectedVendor(vendor);
     } else {
-      alert(`${action} triggered for ${vendor.company}`); // UI mock
+      setActiveMenu('all');
     }
   };
 
@@ -123,7 +123,7 @@ export default function VendorsView() {
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    {MOCK_VENDORS.map(vendor => (
+                    {MOCK_VENDORS.filter(vendor => true).map(vendor => (
                       <div key={vendor.id} className="relative p-5 border border-border rounded-2xl bg-background hover:shadow-lg transition-all hover:border-amber-500/40">
                          <div className="flex justify-between items-start mb-4">
                            <div className="flex items-center gap-4">
