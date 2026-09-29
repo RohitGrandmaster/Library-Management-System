@@ -37,9 +37,14 @@ export default function ReservationsView() {
 
   // Filter reservations based on menu
   const displayReservations = reservations.filter(res => {
-    if (activeMenu === 'all') return true;
-    if (activeMenu === 'ready') return res.status === 'Ready for Pickup';
-    return res.status.toLowerCase() === activeMenu;
+    const menuMatch = activeMenu === 'all'
+      ? true
+      : activeMenu === 'ready'
+        ? res.status === 'Ready for Pickup'
+        : res.status.toLowerCase() === activeMenu;
+    const q = search.trim().toLowerCase();
+    const searchMatch = !q || [res.id, res.member, res.book, res.branch, res.status].some(v => v.toLowerCase().includes(q));
+    return menuMatch && searchMatch;
   });
 
   const getStatusStyle = (status: string) => {
@@ -59,7 +64,7 @@ export default function ReservationsView() {
   const handleAction = (action: string, res: any) => {
     setActionMenuOpen(null);
     if (action === 'Cancel Reservation') setReservations(items=>items.map(r=>r.id===res.id?{...r,status:'Cancelled'}:r));
-    if (action === 'Fulfill Reservation') setReservations(items=>items.map(r=>r.id===res.id?{...r,status:'Fulfilled'}:r));
+    if (action === 'Fulfill Reservation') setReservations(items=>items.map(r=>r.id===res.id?{...r,status:'Completed'}:r));
     notify(action + ' completed for ' + res.id + '.');
   };
 
@@ -100,7 +105,7 @@ export default function ReservationsView() {
                 </div>
                 {['all', 'pending', 'queued', 'ready', 'completed', 'expired', 'cancelled'].includes(menu.id) && (
                   <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-pink-500 text-white' : 'bg-muted-foreground/10 text-muted-foreground'}`}>
-                    {menu.id === 'all' ? MOCK_RESERVATIONS.length : MOCK_RESERVATIONS.filter(r => (menu.id === 'ready' ? r.status === 'Ready for Pickup' : r.status.toLowerCase() === menu.id)).length}
+                    {menu.id === 'all' ? MOCK_RESERVATIONS.length : reservations.filter(r => (menu.id === 'ready' ? r.status === 'Ready for Pickup' : r.status.toLowerCase() === menu.id)).length}
                   </span>
                 )}
               </button>
@@ -123,13 +128,13 @@ export default function ReservationsView() {
               {/* --- LISTING LAYOUT --- */}
               {['all', 'pending', 'queued', 'ready', 'completed', 'expired', 'cancelled'].includes(activeMenu) && (
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                        <Bookmark className="text-pink-500" /> {activeMenu === 'ready' ? 'Ready for Pickup' : activeMenu} Reservations
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Member or Book..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 w-64" />
+                       <input type="text" placeholder="Search Member or Book..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 w-full sm:w-64" />
                      </div>
                   </div>
 
