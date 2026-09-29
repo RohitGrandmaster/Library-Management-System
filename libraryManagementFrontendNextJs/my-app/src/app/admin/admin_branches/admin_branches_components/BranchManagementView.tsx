@@ -211,7 +211,7 @@ export default function BranchManagementView() {
                         </h2>
                         <div className="relative w-full sm:w-auto">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                          <input type="text" WORKSPACE="Search branches..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
+                          <input type="text" placeholder="Search branches..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
                         </div>
                       </div>
                       
@@ -285,12 +285,12 @@ export default function BranchManagementView() {
                     <form onSubmit={saveBranch} className="space-y-6 w-full">
                       <h2 className="text-2xl font-bold flex items-center gap-2"><PlusCircle className="text-emerald-500"/> Create / Edit Branch</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input value={form.name} onChange={e=>setForm(x=>({...x,name:e.target.value}))} required WORKSPACE="Branch Name *" className="admin-input w-full"/>
-                        <input value={form.code} onChange={e=>setForm(x=>({...x,code:e.target.value}))} required WORKSPACE="Branch Code *" className="admin-input w-full"/>
-                        <textarea value={form.address} onChange={e=>setForm(x=>({...x,address:e.target.value}))} required WORKSPACE="Full Address *" rows={2} className="admin-input w-full md:col-span-2"/>
-                        <input value={form.phone} onChange={e=>setForm(x=>({...x,phone:e.target.value}))} WORKSPACE="Phone" className="admin-input w-full"/>
-                        <input value={form.email} onChange={e=>setForm(x=>({...x,email:e.target.value}))} type="email" WORKSPACE="Email" className="admin-input w-full"/>
-                        <input value={form.hours} onChange={e=>setForm(x=>({...x,hours:e.target.value}))} WORKSPACE="Working Hours" className="admin-input w-full"/>
+                        <input value={form.name} onChange={e=>setForm(x=>({...x,name:e.target.value}))} required placeholder="Branch Name *" className="admin-input w-full"/>
+                        <input value={form.code} onChange={e=>setForm(x=>({...x,code:e.target.value}))} required placeholder="Branch Code *" className="admin-input w-full"/>
+                        <textarea value={form.address} onChange={e=>setForm(x=>({...x,address:e.target.value}))} required placeholder="Full Address *" rows={2} className="admin-input w-full md:col-span-2"/>
+                        <input value={form.phone} onChange={e=>setForm(x=>({...x,phone:e.target.value}))} placeholder="Phone" className="admin-input w-full"/>
+                        <input value={form.email} onChange={e=>setForm(x=>({...x,email:e.target.value}))} type="email" placeholder="Email" className="admin-input w-full"/>
+                        <input value={form.hours} onChange={e=>setForm(x=>({...x,hours:e.target.value}))} placeholder="Working Hours" className="admin-input w-full"/>
                         <select value={form.manager} onChange={e=>setForm(x=>({...x,manager:e.target.value}))} className="admin-input w-full"><option value="">Select Manager</option>{['John Doe','Sarah Smith','Mike Johnson','Emma Davis','Priya Joshi'].map(m=><option key={m}>{m}</option>)}</select>
                       </div>
                       <div className="flex flex-wrap justify-end gap-3 pt-4 border-t border-border">
@@ -329,7 +329,7 @@ export default function BranchManagementView() {
                   {activeMenu === 'managers' && (
                     <div className="space-y-5">
                       <h2 className="text-2xl font-bold">Branch Managers</h2>
-                      <input value={managerSearch} onChange={e=>setManagerSearch(e.target.value)} WORKSPACE="Search branch or manager..." className="admin-input w-full sm:max-w-md" />
+                      <input value={managerSearch} onChange={e=>setManagerSearch(e.target.value)} placeholder="Search branch or manager..." className="admin-input w-full sm:max-w-md" />
                       <div className="space-y-3">
                         {branches.filter(b=>!managerSearch || [b.name,b.code,b.manager].some(v=>v.toLowerCase().includes(managerSearch.toLowerCase()))).map(b=>(
                           <div key={b.id} className="admin-card p-4 flex flex-col md:flex-row gap-3 md:items-center">

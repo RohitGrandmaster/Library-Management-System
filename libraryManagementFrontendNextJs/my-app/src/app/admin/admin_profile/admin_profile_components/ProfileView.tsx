@@ -191,18 +191,18 @@ export default function ProfileView() {
                       
                       <div className="space-y-1.5">
                         <label className="text-sm font-bold text-muted-foreground uppercase">Current Password</label>
-                        <input type="password" WORKSPACE="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                        <input type="password" placeholder="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
                       </div>
                       
                       <div className="space-y-1.5">
                         <label className="text-sm font-bold text-muted-foreground uppercase">New Password</label>
-                        <input type="password" WORKSPACE="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                        <input type="password" placeholder="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
                         <p className="text-xs text-muted-foreground mt-1">Must be at least 8 characters long.</p>
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="text-sm font-bold text-muted-foreground uppercase">Confirm New Password</label>
-                        <input type="password" WORKSPACE="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                        <input type="password" placeholder="••••••••" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
                       </div>
                       
                       <div className="pt-4 flex justify-end">
@@ -251,7 +251,7 @@ export default function ProfileView() {
                            <div className="w-40 h-40 bg-white border border-gray-300 p-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=example_2fa_secret" alt="QR" className="w-full h-full opacity-80" /></div>
                            <p className="text-xs text-muted-foreground">Scan this code using your authenticator app and enter the generated 6-digit pin below to verify.</p>
                            <div className="flex gap-2 w-full max-w-xs">
-                             <input type="text" value={verificationCode} onChange={e=>setVerificationCode(e.target.value.replace(/\D/g,"").slice(0,6))} WORKSPACE="123456" maxLength={6} className="flex-1 px-4 py-2 border border-border rounded-lg text-center font-mono text-xl tracking-widest focus:ring-2 focus:ring-purple-500 outline-none" />
+                             <input type="text" value={verificationCode} onChange={e=>setVerificationCode(e.target.value.replace(/\D/g,"").slice(0,6))} placeholder="123456" maxLength={6} className="flex-1 px-4 py-2 border border-border rounded-lg text-center font-mono text-xl tracking-widest focus:ring-2 focus:ring-purple-500 outline-none" />
                              <button onClick={()=>{ if(verificationCode.length !== 6){ notify('Enter the 6-digit verification code.'); return; } handleAction('Two-factor verification'); }} className="px-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700">Verify</button>
                            </div>
                         </motion.div>

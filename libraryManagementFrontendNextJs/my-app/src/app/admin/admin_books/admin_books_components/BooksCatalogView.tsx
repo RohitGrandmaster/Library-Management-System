@@ -173,7 +173,7 @@ export default function BooksCatalogView() {
                     </h2>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                      <input type="text" WORKSPACE="Search by Title, ISBN, Author..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full md:w-72 transition-all" />
+                      <input type="text" placeholder="Search by Title, ISBN, Author..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full md:w-72 transition-all" />
                     </div>
                   </div>
 
@@ -291,23 +291,23 @@ export default function BooksCatalogView() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
                          <div className="space-y-2 md:col-span-2">
                            <label className="text-sm font-medium">Book Title <span className="text-red-500">*</span></label>
-                           <input type="text" WORKSPACE="Enter main title" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="Enter main title" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Subtitle</label>
-                           <input type="text" WORKSPACE="Enter subtitle if any" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="Enter subtitle if any" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">ISBN-10 / ISBN-13 <span className="text-red-500">*</span></label>
-                           <input type="text" WORKSPACE="e.g. 978-..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="e.g. 978-..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Author <span className="text-red-500">*</span></label>
-                           <input type="text" WORKSPACE="Primary Author" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="Primary Author" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Co-Author(s)</label>
-                           <input type="text" WORKSPACE="Secondary Authors" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="Secondary Authors" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Publisher</label>
@@ -319,7 +319,7 @@ export default function BooksCatalogView() {
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Subject</label>
-                           <input type="text" WORKSPACE="e.g. Computer Science" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="e.g. Computer Science" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Language</label>
@@ -327,11 +327,11 @@ export default function BooksCatalogView() {
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Edition</label>
-                           <input type="text" WORKSPACE="e.g. 1st Edition" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="e.g. 1st Edition" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Publication Year</label>
-                           <input type="number" WORKSPACE="YYYY" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="number" placeholder="YYYY" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2 md:col-span-2">
                            <label className="text-sm font-medium">Book Type</label>
@@ -344,7 +344,7 @@ export default function BooksCatalogView() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Number of Pages</label>
-                           <input type="number" WORKSPACE="e.g. 350" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="number" placeholder="e.g. 350" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Cover Type</label>
@@ -352,11 +352,11 @@ export default function BooksCatalogView() {
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Size / Dimensions</label>
-                           <input type="text" WORKSPACE="e.g. 6x9 inches" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="text" placeholder="e.g. 6x9 inches" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2">
                            <label className="text-sm font-medium">Weight (grams)</label>
-                           <input type="number" WORKSPACE="e.g. 500" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input type="number" placeholder="e.g. 500" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                          </div>
                          <div className="space-y-2 md:col-span-2">
                            <label className="text-sm font-medium">Initial Condition</label>
@@ -369,11 +369,11 @@ export default function BooksCatalogView() {
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Purchase Price (₹)</label>
-                            <input type="number" WORKSPACE="0.00" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input type="number" placeholder="0.00" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Selling/Replacement Value (₹)</label>
-                            <input type="number" WORKSPACE="0.00" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input type="number" placeholder="0.00" className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Purchase Date</label>
@@ -385,7 +385,7 @@ export default function BooksCatalogView() {
                           </div>
                           <div className="space-y-2 md:col-span-2">
                             <label className="text-sm font-medium">Invoice Number</label>
-                            <input type="text" WORKSPACE="INV-..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input type="text" placeholder="INV-..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                           </div>
                        </div>
                     )}
@@ -423,11 +423,11 @@ export default function BooksCatalogView() {
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Description</label>
-                            <textarea rows={4} WORKSPACE="Summary of the book..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <textarea rows={4} placeholder="Summary of the book..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Internal Notes</label>
-                            <textarea rows={2} WORKSPACE="Any notes for staff (not visible to members)..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <textarea rows={2} placeholder="Any notes for staff (not visible to members)..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-teal-500 outline-none" />
                           </div>
                        </div>
                     )}
@@ -467,7 +467,7 @@ export default function BooksCatalogView() {
                     </label>
                   )}
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <input value={workspaceDraft} onChange={e=>setWorkspaceDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter') addWorkspaceItem();}} WORKSPACE={`Add ${activeMenu.replace(/_/g,' ')}`} className="admin-input flex-1" />
+                    <input value={workspaceDraft} onChange={e=>setWorkspaceDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter') addWorkspaceItem();}} placeholder={`Add ${activeMenu.replace(/_/g,' ')}`} className="admin-input flex-1" />
                     <button onClick={addWorkspaceItem} className="admin-btn admin-btn-primary inline-flex items-center justify-center gap-2"><PlusCircle size={15}/> Add</button>
                   </div>
                   <div className="border border-border rounded-xl overflow-hidden">

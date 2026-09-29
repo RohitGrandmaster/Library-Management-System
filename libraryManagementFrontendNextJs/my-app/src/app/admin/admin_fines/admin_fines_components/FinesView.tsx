@@ -189,7 +189,7 @@ export default function FinesView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" WORKSPACE="Search Member or Fine ID..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-full sm:w-64" />
+                       <input type="text" placeholder="Search Member or Fine ID..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-full sm:w-64" />
                      </div>
                   </div>
 
@@ -277,7 +277,7 @@ export default function FinesView() {
                        <div className="space-y-5">
                           <div className="space-y-2">
                              <label className="text-sm font-bold uppercase text-muted-foreground">Paying Amount (₹)</label>
-                             <input type="number" value={payAmount} onChange={(e)=>setPayAmount(e.target.value)} WORKSPACE={`Max ₹${selectedFine.amount - (selectedFine.paidAmount || 0)}`} className="w-full px-4 py-3 bg-card border-2 border-emerald-200 dark:border-emerald-800/50 rounded-xl focus:border-emerald-500 outline-none font-bold text-lg" />
+                             <input type="number" value={payAmount} onChange={(e)=>setPayAmount(e.target.value)} placeholder={`Max ₹${selectedFine.amount - (selectedFine.paidAmount || 0)}`} className="w-full px-4 py-3 bg-card border-2 border-emerald-200 dark:border-emerald-800/50 rounded-xl focus:border-emerald-500 outline-none font-bold text-lg" />
                           </div>
                           
                           <div className="space-y-2">
@@ -298,7 +298,7 @@ export default function FinesView() {
                           {payMode !== 'Cash' && (
                             <div className="space-y-2">
                               <label className="text-sm font-bold uppercase text-muted-foreground">Transaction ID / Reference</label>
-                              <input type="text" WORKSPACE="Enter Ref ID..." className="w-full px-4 py-3 bg-card border border-border rounded-xl focus:border-emerald-500 outline-none" />
+                              <input type="text" placeholder="Enter Ref ID..." className="w-full px-4 py-3 bg-card border border-border rounded-xl focus:border-emerald-500 outline-none" />
                             </div>
                           )}
                           
@@ -322,7 +322,7 @@ export default function FinesView() {
 
                           <div className="space-y-2">
                              <label className="text-sm font-bold uppercase text-muted-foreground">Waive Amount (₹)</label>
-                             <input type="number" value={waiveAmount} onChange={(e)=>setWaiveAmount(e.target.value)} WORKSPACE={`Max ₹${selectedFine.amount - (selectedFine.paidAmount || 0)}`} className="w-full px-4 py-3 bg-card border-2 border-blue-200 dark:border-blue-800/50 rounded-xl focus:border-blue-500 outline-none font-bold text-lg" />
+                             <input type="number" value={waiveAmount} onChange={(e)=>setWaiveAmount(e.target.value)} placeholder={`Max ₹${selectedFine.amount - (selectedFine.paidAmount || 0)}`} className="w-full px-4 py-3 bg-card border-2 border-blue-200 dark:border-blue-800/50 rounded-xl focus:border-blue-500 outline-none font-bold text-lg" />
                              {waiveAmount && (
                                <p className="text-xs font-bold text-emerald-600 mt-1">Remaining Fine will be: ₹{(selectedFine.amount - (selectedFine.paidAmount || 0)) - Number(waiveAmount)}</p>
                              )}
@@ -330,7 +330,7 @@ export default function FinesView() {
                           
                           <div className="space-y-2">
                              <label className="text-sm font-bold uppercase text-muted-foreground">Reason for Waiver <span className="text-red-500">*</span></label>
-                             <textarea rows={3} value={waiveReason} onChange={(e)=>setWaiveReason(e.target.value)} WORKSPACE="Mandatory explanation..." className="w-full px-4 py-3 bg-card border border-border rounded-xl focus:border-blue-500 outline-none" />
+                             <textarea rows={3} value={waiveReason} onChange={(e)=>setWaiveReason(e.target.value)} placeholder="Mandatory explanation..." className="w-full px-4 py-3 bg-card border border-border rounded-xl focus:border-blue-500 outline-none" />
                           </div>
 
                           <button onClick={handleProcessAction} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md text-lg flex items-center justify-center gap-2 mt-4">

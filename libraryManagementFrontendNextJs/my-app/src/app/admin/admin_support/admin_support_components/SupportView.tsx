@@ -176,12 +176,12 @@ export default function SupportView() {
 
                       <div className="space-y-1.5">
                         <label className="text-sm font-bold text-muted-foreground uppercase">Subject <span className="text-red-500">*</span></label>
-                        <input type="text" WORKSPACE="Brief summary of the issue" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-bold" />
+                        <input type="text" placeholder="Brief summary of the issue" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 font-bold" />
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="text-sm font-bold text-muted-foreground uppercase">Detailed Description <span className="text-red-500">*</span></label>
-                        <textarea rows={6} WORKSPACE="Please provide as much detail as possible to help our support team..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                        <textarea rows={6} placeholder="Please provide as much detail as possible to help our support team..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
                       </div>
 
                       <div className="space-y-1.5">
@@ -210,7 +210,7 @@ export default function SupportView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" WORKSPACE="Search Ticket ID or Subject..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 w-full sm:w-64" />
+                       <input type="text" placeholder="Search Ticket ID or Subject..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 w-full sm:w-64" />
                      </div>
                   </div>
 
@@ -293,7 +293,7 @@ export default function SupportView() {
                    <div className="p-4 border-t border-border bg-card">
                       <div className="flex gap-3 max-w-4xl mx-auto">
                         <button onClick={()=>notify("Attachment picker opened.")} className="p-3 bg-muted hover:bg-muted/80 rounded-xl text-muted-foreground"><Paperclip size={20}/></button>
-                        <input type="text" WORKSPACE="Type your reply to Support..." className="flex-1 px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                        <input type="text" placeholder="Type your reply to Support..." className="flex-1 px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
                         <button onClick={()=>notify("Reply sent to Support.")} className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold flex items-center gap-2"><Send size={18}/> Send</button>
                       </div>
                    </div>

@@ -170,7 +170,7 @@ export default function InventoryView() {
                            <label className="text-xs font-bold text-muted-foreground uppercase">Book / Copy Details</label>
                            <div className="relative">
                              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                             <input type="text" WORKSPACE="Scan Barcode or Search Book Title..." className="w-full pl-9 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500" />
+                             <input type="text" placeholder="Scan Barcode or Search Book Title..." className="w-full pl-9 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500" />
                            </div>
                          </div>
 
@@ -191,7 +191,7 @@ export default function InventoryView() {
 
                          <div className="space-y-2 md:col-span-2">
                            <label className="text-xs font-bold text-muted-foreground uppercase">Transfer Reason</label>
-                           <textarea rows={2} WORKSPACE="Why is this book being transferred?" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-violet-500" />
+                           <textarea rows={2} placeholder="Why is this book being transferred?" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-violet-500" />
                          </div>
                       </div>
                       
@@ -238,7 +238,7 @@ export default function InventoryView() {
                               <div className="bg-indigo-600 text-white p-6 rounded-2xl shadow-md text-center">
                                  <h4 className="font-bold mb-4">Scan Barcodes</h4>
                                  <form onSubmit={handleScan} className="flex gap-2 max-w-md mx-auto">
-                                   <input type="text" value={scanInput} onChange={(e)=>setScanInput(e.target.value)} autoFocus WORKSPACE="Ready to scan..." className="flex-1 px-4 py-3 rounded-xl text-foreground bg-background border-none focus:ring-2 focus:ring-white outline-none font-mono" />
+                                   <input type="text" value={scanInput} onChange={(e)=>setScanInput(e.target.value)} autoFocus placeholder="Ready to scan..." className="flex-1 px-4 py-3 rounded-xl text-foreground bg-background border-none focus:ring-2 focus:ring-white outline-none font-mono" />
                                    <button type="submit" className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-gray-100">Enter</button>
                                  </form>
                                  <p className="text-xs text-white/70 mt-3">Scanning automatically verifies against expected stock.</p>
@@ -307,7 +307,7 @@ export default function InventoryView() {
                            <label className="text-xs font-bold text-muted-foreground uppercase">Book Details</label>
                            <div className="relative">
                              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                             <input type="text" WORKSPACE="Search Book Title or ID..." className="w-full pl-9 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
+                             <input type="text" placeholder="Search Book Title or ID..." className="w-full pl-9 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
                            </div>
                          </div>
 
@@ -324,14 +324,14 @@ export default function InventoryView() {
                          <div className="space-y-2">
                            <label className="text-xs font-bold text-muted-foreground uppercase">Quantity Change</label>
                            <div className="flex items-center gap-3">
-                             <input type="number" WORKSPACE="e.g. -1, +2" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
+                             <input type="number" placeholder="e.g. -1, +2" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
                              <span className="text-sm font-bold text-slate-400 whitespace-nowrap">Current: 10</span>
                            </div>
                          </div>
 
                          <div className="space-y-2 md:col-span-2">
                            <label className="text-xs font-bold text-muted-foreground uppercase">Audit Notes / Approval Reference</label>
-                           <textarea rows={2} WORKSPACE="Mandatory notes for this manual adjustment..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
+                           <textarea rows={2} placeholder="Mandatory notes for this manual adjustment..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500" />
                          </div>
                       </div>
 
@@ -349,7 +349,7 @@ export default function InventoryView() {
                 <div className="p-6 bg-background space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div><h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Inventory records and reconciliation tools for the Admin workspace.</p></div>
-                    <div className="relative w-full sm:w-72"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16}/><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} WORKSPACE="Search stock..." className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-card"/></div>
+                    <div className="relative w-full sm:w-72"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16}/><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} placeholder="Search stock..." className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-card"/></div>
                   </div>
                   {activeMenu==='valuation' ? (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

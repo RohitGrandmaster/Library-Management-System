@@ -168,7 +168,7 @@ export default function StaffManagersView() {
                          </h2>
                          <div className="relative w-full sm:w-auto">
                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                           <input type="text" WORKSPACE="Search managers..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
+                           <input type="text" placeholder="Search managers..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
                          </div>
                       </div>
 
@@ -245,25 +245,25 @@ export default function StaffManagersView() {
                         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Full Name <span className="text-red-500">*</span></label>
-                            <input type="text" WORKSPACE="John Doe" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
+                            <input type="text" placeholder="John Doe" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Username <span className="text-red-500">*</span></label>
-                            <input type="text" WORKSPACE="johndoe123" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
+                            <input type="text" placeholder="johndoe123" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
-                            <input type="email" WORKSPACE="john@example.com" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
+                            <input type="email" placeholder="john@example.com" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Phone</label>
-                            <input type="tel" WORKSPACE="+1..." className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
+                            <input type="tel" placeholder="+1..." className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Password / Reset Setup <span className="text-red-500">*</span></label>
                             <div className="relative">
                               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                              <input type="password" WORKSPACE="Auto-generate or type" className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
+                              <input type="password" placeholder="Auto-generate or type" className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none" />
                             </div>
                             <p className="text-xs text-muted-foreground">User will be forced to change password on first login.</p>
                           </div>

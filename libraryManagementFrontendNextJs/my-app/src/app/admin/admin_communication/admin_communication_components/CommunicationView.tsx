@@ -247,8 +247,8 @@ export default function CommunicationView() {
                       <div className="space-y-4">
                          <h3 className="font-bold flex items-center gap-2 border-b border-border pb-2"><LayoutTemplate size={18} className="text-pink-500"/> 3. Message Content</h3>
                          <div className="space-y-3">
-                           <input type="text" value={announcementSubject} onChange={e=>setAnnouncementSubject(e.target.value)} WORKSPACE="Announcement Subject / Title" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold" />
-                           <textarea rows={5} value={announcementBody} onChange={e=>setAnnouncementBody(e.target.value)} WORKSPACE="Write your message here... Use {name} for member name." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                           <input type="text" value={announcementSubject} onChange={e=>setAnnouncementSubject(e.target.value)} placeholder="Announcement Subject / Title" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold" />
+                           <textarea rows={5} value={announcementBody} onChange={e=>setAnnouncementBody(e.target.value)} placeholder="Write your message here... Use {name} for member name." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                          </div>
                       </div>
 

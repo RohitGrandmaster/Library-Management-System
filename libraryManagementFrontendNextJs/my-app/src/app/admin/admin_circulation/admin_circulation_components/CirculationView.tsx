@@ -131,7 +131,7 @@ export default function CirculationView() {
                            <form onSubmit={handleMemberScan} className="flex gap-2">
                              <div className="relative flex-1">
                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                               <input type="text" value={memberId} onChange={(e)=>setMemberId(e.target.value)} disabled={isMemberScanned} WORKSPACE="Scan Member Card or Enter ID..." className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50" />
+                               <input type="text" value={memberId} onChange={(e)=>setMemberId(e.target.value)} disabled={isMemberScanned} placeholder="Scan Member Card or Enter ID..." className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50" />
                              </div>
                              <button type="submit" disabled={isMemberScanned} className="px-4 py-2 bg-cyan-600 text-white rounded-lg font-medium disabled:opacity-50">Search</button>
                            </form>
@@ -170,7 +170,7 @@ export default function CirculationView() {
                            <form onSubmit={handleBookScan} className="flex gap-2">
                              <div className="relative flex-1">
                                <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                               <input type="text" value={bookId} onChange={(e)=>setBookId(e.target.value)} disabled={isBookScanned} WORKSPACE="Scan Barcode or Enter Book ID..." className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50" />
+                               <input type="text" value={bookId} onChange={(e)=>setBookId(e.target.value)} disabled={isBookScanned} placeholder="Scan Barcode or Enter Book ID..." className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50" />
                              </div>
                              <button type="submit" disabled={isBookScanned} className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium disabled:opacity-50">Search</button>
                            </form>
@@ -221,7 +221,7 @@ export default function CirculationView() {
                         <form onSubmit={handleReturnScan} className="flex gap-2">
                           <div className="relative flex-1">
                             <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500/50" size={20} />
-                            <input type="text" value={returnBookId} onChange={(e)=>setReturnBookId(e.target.value)} disabled={isReturnScanned} WORKSPACE="Scan Barcode..." className="w-full pl-12 pr-4 py-3 bg-background border-2 border-emerald-200 dark:border-emerald-800 rounded-xl text-base focus:outline-none focus:border-emerald-500 transition-colors disabled:opacity-50" />
+                            <input type="text" value={returnBookId} onChange={(e)=>setReturnBookId(e.target.value)} disabled={isReturnScanned} placeholder="Scan Barcode..." className="w-full pl-12 pr-4 py-3 bg-background border-2 border-emerald-200 dark:border-emerald-800 rounded-xl text-base focus:outline-none focus:border-emerald-500 transition-colors disabled:opacity-50" />
                           </div>
                           <button type="submit" disabled={isReturnScanned} className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold disabled:opacity-50 hover:bg-emerald-700">Enter</button>
                         </form>
@@ -286,7 +286,7 @@ export default function CirculationView() {
                    <form onSubmit={e=>{e.preventDefault(); if(!renewBookId.trim()) { notify('Enter a book barcode or ID.'); return; } setRenewResult('Renewed until 13 Oct 2026'); notify('Renewal completed for '+renewBookId+'.'); }} className="w-full max-w-md space-y-3">
                       <div className="relative">
                         <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
-                        <input value={renewBookId} onChange={e=>setRenewBookId(e.target.value)} WORKSPACE="Scan Barcode to Renew..." className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-base focus:outline-none focus:border-purple-500 transition-colors" />
+                        <input value={renewBookId} onChange={e=>setRenewBookId(e.target.value)} placeholder="Scan Barcode to Renew..." className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-base focus:outline-none focus:border-purple-500 transition-colors" />
                       </div>
                       <button type="submit" className="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-md">Renew Book</button>
                       {renewResult && <div className="p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 text-sm font-semibold text-center">{renewResult}</div>}
@@ -304,7 +304,7 @@ export default function CirculationView() {
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl bg-card border border-border p-6 rounded-2xl shadow-sm">
                       <div className="space-y-4 col-span-1 md:col-span-2">
                         <h3 className="font-bold flex items-center gap-2 text-lg"><BookOpen size={18} className="text-indigo-500"/> Select Book Copy</h3>
-                        <input type="text" WORKSPACE="Scan Barcode or Search Copy ID..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-indigo-500" />
+                        <input type="text" placeholder="Scan Barcode or Search Copy ID..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-indigo-500" />
                       </div>
                       
                       <div className="space-y-2">
@@ -324,7 +324,7 @@ export default function CirculationView() {
 
                       <div className="space-y-2 col-span-1 md:col-span-2">
                         <label className="text-sm font-bold text-muted-foreground uppercase">Reason for Transfer</label>
-                        <input type="text" WORKSPACE="e.g. Stock Rebalancing, User Request..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-indigo-500" />
+                        <input type="text" placeholder="e.g. Stock Rebalancing, User Request..." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-indigo-500" />
                       </div>
 
                       <div className="col-span-1 md:col-span-2 pt-4 flex justify-end">
@@ -344,11 +344,11 @@ export default function CirculationView() {
                     <p className="text-sm text-muted-foreground mt-1">Record an exception and prepare the book for the next inventory action.</p>
                   </div>
                   <form onSubmit={e=>{e.preventDefault(); if(!exceptionId.trim()){notify('Enter a barcode or book ID.');return;} notify((activeMenu==='lost'?'Lost':'Damaged')+' entry recorded for '+exceptionId+'.');setExceptionId('');}} className="max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input value={exceptionId} onChange={e=>setExceptionId(e.target.value)} required WORKSPACE="Barcode / Book ID *" className="admin-input w-full"/>
-                    <input WORKSPACE="Member / responsible person" className="admin-input w-full"/>
+                    <input value={exceptionId} onChange={e=>setExceptionId(e.target.value)} required placeholder="Barcode / Book ID *" className="admin-input w-full"/>
+                    <input placeholder="Member / responsible person" className="admin-input w-full"/>
                     <select className="admin-input w-full"><option>Central Main Library</option><option>Northside Hub</option><option>East Wing Branch</option></select>
                     <select className="admin-input w-full"><option>{activeMenu==='lost'?'Replacement Required':'Needs Repair Review'}</option><option>Hold for Manager Review</option></select>
-                    <textarea rows={3} WORKSPACE="Notes / condition details" className="admin-input w-full md:col-span-2"/>
+                    <textarea rows={3} placeholder="Notes / condition details" className="admin-input w-full md:col-span-2"/>
                     <div className="md:col-span-2 flex justify-end"><button type="submit" className="admin-btn admin-btn-primary inline-flex items-center gap-2"><CheckCircle size={16}/> Save Entry</button></div>
                   </form>
                 </div>

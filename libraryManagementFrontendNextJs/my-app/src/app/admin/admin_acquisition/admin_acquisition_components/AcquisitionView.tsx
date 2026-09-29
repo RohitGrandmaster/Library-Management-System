@@ -294,7 +294,7 @@ export default function AcquisitionView() {
                                </div>
                                <div className="space-y-1">
                                  <label className="text-xs font-bold text-muted-foreground uppercase">Section/Rack</label>
-                                 <input type="text" WORKSPACE="e.g. Rack A1" className="w-full px-4 py-2 border border-border rounded-lg bg-background" />
+                                 <input type="text" placeholder="e.g. Rack A1" className="w-full px-4 py-2 border border-border rounded-lg bg-background" />
                                </div>
                              </div>
 
