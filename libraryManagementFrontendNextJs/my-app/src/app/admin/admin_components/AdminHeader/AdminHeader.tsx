@@ -4,6 +4,7 @@
 // DATA FLOW: AdminRoute -> AdminHeader
 
 import { Building2, Bell, Menu } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useAdmin } from '@/app/admin/admin_context/AdminContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -16,6 +17,7 @@ interface HeaderProps {
 
 export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps) {
   const { selectedBranch, setSelectedBranch } = useAdmin();
+  const router = useRouter();
 
   return (
     <header className="admin-header" style={{ left: sidebarWidth }}>
@@ -49,7 +51,7 @@ export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps)
 
       <div className="flex items-center gap-3">
         <ThemeToggle />
-        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="Notifications">
+        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="Notifications" onClick={()=>router.push("/admin/admin_communication")}>
           <Bell size={17} />
           <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
         </Button>
