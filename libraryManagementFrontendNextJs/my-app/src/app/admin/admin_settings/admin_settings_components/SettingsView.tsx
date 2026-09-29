@@ -110,7 +110,7 @@ export default function SettingsView() {
                      </div>
                      <div className="space-y-1.5 md:col-span-2">
                        <label className="text-sm font-medium">Library Logo URL</label>
-                       <input type="url" placeholder="https://..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-blue-500 outline-none" />
+                       <input type="url" WORKSPACE="https://..." className="w-full px-4 py-2 rounded-lg border border-border bg-card focus:ring-2 focus:ring-blue-500 outline-none" />
                      </div>
                      <div className="space-y-1.5 md:col-span-2">
                        <label className="text-sm font-medium">Complete Address</label>
@@ -239,9 +239,9 @@ export default function SettingsView() {
                          <div className="space-y-1.5"><label className="text-sm font-bold text-muted-foreground uppercase">Barcode Format Type</label><select className="w-full px-4 py-3 rounded-xl border border-border bg-card font-bold"><option>CODE128</option><option>EAN13</option><option>QR Code</option></select></div>
                          <div className="space-y-1.5 md:col-span-2"><label className="text-sm font-bold text-muted-foreground uppercase">Print Label Size (mm)</label>
                             <div className="flex gap-4">
-                              <input type="number" placeholder="Width" defaultValue="50" className="w-full px-4 py-3 rounded-xl border border-border bg-card font-mono" />
+                              <input type="number" WORKSPACE="Width" defaultValue="50" className="w-full px-4 py-3 rounded-xl border border-border bg-card font-mono" />
                               <span className="self-center">x</span>
-                              <input type="number" placeholder="Height" defaultValue="25" className="w-full px-4 py-3 rounded-xl border border-border bg-card font-mono" />
+                              <input type="number" WORKSPACE="Height" defaultValue="25" className="w-full px-4 py-3 rounded-xl border border-border bg-card font-mono" />
                             </div>
                          </div>
                        </>
