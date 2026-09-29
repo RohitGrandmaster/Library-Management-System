@@ -299,16 +299,29 @@ export default function MemberManagementView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDER FOR OTHER MENUS --- */}
+              {/* --- MEMBER SUB-WORKSPACES --- */}
               {!selectedMember && !['all', 'active', 'expired', 'suspended', 'blocked', 'add'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     <Grid size={48} className="opacity-20 text-purple-500" />
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{activeMenu.replace('_', ' ')}</h3>
-                   <p className="text-center max-w-md mb-6">Manage settings and configurations related to {activeMenu.replace('_', ' ')} here.</p>
-                   <button onClick={()=>notify(activeMenu.replace("_"," ")+" workspace opened.")} className="px-6 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 shadow-md">Open Workspace</button>
-                 </div>
+                <div className="p-6 h-full bg-background space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                      <h2 className="text-2xl font-bold capitalize">{activeMenu.replace('_',' ')}</h2>
+                      <p className="text-sm text-muted-foreground">Admin workspace for {activeMenu.replace('_',' ')}.</p>
+                    </div>
+                    {(activeMenu === 'import' || activeMenu === 'export') && <div className="flex gap-2">
+                      {activeMenu === 'import' && <label className="admin-btn admin-btn-primary cursor-pointer">Import CSV<input type="file" accept=".csv,text/csv" className="hidden" onChange={e=>e.target.files?.[0] && notify('Imported '+e.target.files[0].name+'.')} /></label>}
+                      {activeMenu === 'export' && <button onClick={()=>{const csv=members.map(m=>Object.values(m).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='members.csv';a.click();URL.revokeObjectURL(url);notify('Member CSV exported.');}} className="admin-btn admin-btn-primary">Export CSV</button>}
+                    </div>}
+                  </div>
+                  {activeMenu === 'renewal' && <div className="space-y-3">{members.filter(m=>m.status!=='Blocked').map(member=><div key={member.id} className="admin-card p-4 flex flex-col md:flex-row md:items-center gap-3"><div className="flex-1"><b>{member.name}</b><div className="text-xs text-muted-foreground">{member.id} • Expires: {member.expires}</div></div><button onClick={()=>{setMembers(items=>items.map(m=>m.id===member.id?{...m,status:'Active',expires:'29 Sep 2027'}:m));notify('Membership renewed for '+member.name+'.');}} className="admin-btn admin-btn-primary">Renew</button></div>)}</div>}
+                  {activeMenu !== 'renewal' && activeMenu !== 'import' && activeMenu !== 'export' && <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {[
+                      ['Member Categories',['Premium','Student','Standard','Faculty']],
+                      ['Departments',['Computer Science','Commerce','Humanities','Science']],
+                      ['Membership Plans',['Monthly Access','Semester Plan','Yearly Access','Lifetime Access']],
+                      ['Member Documents',['Identity Proof','Address Proof','Membership Card','Consent Form']]
+                    ].find(x=>x[0].toLowerCase().replace(/ /g,'_').includes(activeMenu.replace('_','_')))?.[1]?.map((item:string)=><div key={item} className="admin-card p-4"><b>{item}</b><p className="text-xs text-muted-foreground mt-1">Configured in Admin workspace.</p></div>)}
+                  </div>}
+                </div>
               )}
 
               {/* --- MEMBER DETAILED PROFILE VIEW --- */}
