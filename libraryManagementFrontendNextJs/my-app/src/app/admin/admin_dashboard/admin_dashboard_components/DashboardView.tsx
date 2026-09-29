@@ -55,15 +55,15 @@ const KPI_DATA = {
 };
 
 const QUICK_ACTIONS = [
-  { label: 'Add Book', icon: PlusCircle, href: '/admin/admin_books/add', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-  { label: 'Add Member', icon: UserPlus, href: '/admin/admin_members/add', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
-  { label: 'Issue Book', icon: UploadCloud, href: '/admin/admin_circulation/issue', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
-  { label: 'Return Book', icon: DownloadCloud, href: '/admin/admin_circulation/return', color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' },
-  { label: 'Renew Book', icon: RefreshCw, href: '/admin/admin_circulation/renew', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
-  { label: 'Add Manager', icon: Users, href: '/admin/admin_staff-users/add', color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' },
-  { label: 'Add Branch', icon: Map, href: '/admin/admin_branches/add', color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' },
-  { label: 'Receive Stock', icon: Activity, href: '/admin/admin_inventory/receive', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  { label: 'Collect Fine', icon: CreditCard, href: '/admin/admin_finance/fines', color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' },
+  { label: 'Add Book', icon: PlusCircle, href: '/admin/admin_books', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+  { label: 'Add Member', icon: UserPlus, href: '/admin/admin_members', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
+  { label: 'Issue Book', icon: UploadCloud, href: '/admin/admin_circulation', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
+  { label: 'Return Book', icon: DownloadCloud, href: '/admin/admin_circulation', color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' },
+  { label: 'Renew Book', icon: RefreshCw, href: '/admin/admin_circulation', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+  { label: 'Add Manager', icon: Users, href: '/admin/admin_staff-users', color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' },
+  { label: 'Add Branch', icon: Map, href: '/admin/admin_branches', color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' },
+  { label: 'Receive Stock', icon: Activity, href: '/admin/admin_inventory', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  { label: 'Collect Fine', icon: CreditCard, href: '/admin/admin_fines', color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' },
   { label: 'Report', icon: FileText, href: '/admin/admin_reports', color: 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400' },
 ];
 
@@ -147,13 +147,13 @@ export default function DashboardView() {
         <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
           <Activity className="text-blue-500" size={20} /> Quick Actions
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-10 gap-3">
           {QUICK_ACTIONS.map((action, i) => (
             <Link key={i} href={action.href}>
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex flex-col items-center justify-center p-3 rounded-xl border border-border shadow-sm bg-card hover:border-primary/50 cursor-pointer transition-colors`}
+                className="min-h-[92px] flex flex-col items-center justify-center p-3 rounded-xl border border-border shadow-sm bg-card hover:border-primary/50 cursor-pointer transition-colors"
               >
                 <div className={`p-2 rounded-full mb-2 ${action.color}`}>
                   <action.icon size={20} />
@@ -204,7 +204,7 @@ export default function DashboardView() {
         
         {/* Circulation Chart */}
         <div className="lg:col-span-2 bg-card border border-border rounded-2xl shadow-sm p-5 flex flex-col">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
             <h3 className="font-semibold text-lg flex items-center gap-2">
               <ArrowRightLeft className="text-cyan-500" size={20} />
               Circulation Analytics (7 Days)
