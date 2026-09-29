@@ -133,8 +133,8 @@ export default function AcquisitionView() {
                            <div><p className="text-xs text-muted-foreground">Est. Total</p><p className="font-medium">₹{req.estPrice}</p></div>
                          </div>
                          <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-                            <button className="flex-1 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:hover:bg-emerald-900/50 rounded-lg font-bold text-sm transition-colors">Create Order (PO)</button>
-                            <button className="px-4 py-2 bg-muted text-foreground hover:bg-muted/80 rounded-lg font-medium text-sm transition-colors"><Edit3 size={16}/></button>
+                            <button onClick={()=>setActiveMenu("orders")} className="flex-1 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:hover:bg-emerald-900/50 rounded-lg font-bold text-sm transition-colors">Create Order (PO)</button>
+                            <button onClick={()=>setActiveMenu("orders")} aria-label="Edit purchase order" className="px-4 py-2 bg-muted text-foreground hover:bg-muted/80 rounded-lg font-medium text-sm transition-colors"><Edit3 size={16}/></button>
                          </div>
                       </div>
                     ))}
