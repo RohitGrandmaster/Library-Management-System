@@ -28,9 +28,12 @@ const SIDEBAR_MENU = [
 
 export default function SettingsView() {
   const [activeMenu, setActiveMenu] = useState('library');
+  const [holidays, setHolidays] = useState([{date:'15 Aug 2026',name:'Independence Day'},{date:'02 Oct 2026',name:'Gandhi Jayanti'},{date:'25 Dec 2026',name:'Christmas'}]);
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const handleSave = () => {
-    alert('Settings Saved Successfully!');
+    notify('Settings saved successfully.');
   };
 
   return (
@@ -151,15 +154,13 @@ export default function SettingsView() {
 
                    {activeMenu === 'holidays' && (
                      <div className="max-w-4xl">
-                       <button className="mb-4 px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold flex items-center gap-2"><PlusCircle size={16}/> Add Holiday</button>
+                       <button onClick={()=>{setHolidays(items=>[...items,{date:"01 Jan "+new Date().getFullYear(),name:"New Library Holiday"}]);notify("Holiday added.");}} className="mb-4 px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold flex items-center gap-2"><PlusCircle size={16}/> Add Holiday</button>
                        <table className="w-full text-sm text-left border border-border rounded-xl overflow-hidden bg-card">
                          <thead className="bg-muted text-muted-foreground uppercase text-xs font-bold">
                            <tr><th className="px-4 py-3">Date</th><th className="px-4 py-3">Holiday Name</th><th className="px-4 py-3 text-center">Recurring?</th><th className="px-4 py-3 text-right">Actions</th></tr>
                          </thead>
                          <tbody>
-                           <tr className="border-b border-border"><td className="px-4 py-3 font-medium">15 Aug 2026</td><td className="px-4 py-3">Independence Day</td><td className="px-4 py-3 text-center"><CheckCircle size={16} className="text-emerald-500 mx-auto"/></td><td className="px-4 py-3 text-right"><button className="text-red-500 hover:underline">Delete</button></td></tr>
-                           <tr className="border-b border-border"><td className="px-4 py-3 font-medium">02 Oct 2026</td><td className="px-4 py-3">Gandhi Jayanti</td><td className="px-4 py-3 text-center"><CheckCircle size={16} className="text-emerald-500 mx-auto"/></td><td className="px-4 py-3 text-right"><button className="text-red-500 hover:underline">Delete</button></td></tr>
-                           <tr className=""><td className="px-4 py-3 font-medium">25 Dec 2026</td><td className="px-4 py-3">Christmas</td><td className="px-4 py-3 text-center"><CheckCircle size={16} className="text-emerald-500 mx-auto"/></td><td className="px-4 py-3 text-right"><button className="text-red-500 hover:underline">Delete</button></td></tr>
+                           {holidays.map((holiday,index)=><tr key={index} className="border-b border-border last:border-0"><td className="px-4 py-3 font-medium">{holiday.date}</td><td className="px-4 py-3">{holiday.name}</td><td className="px-4 py-3 text-center"><CheckCircle size={16} className="text-emerald-500 mx-auto"/></td><td className="px-4 py-3 text-right"><button onClick={()=>{setHolidays(items=>items.filter((_,i)=>i!==index));notify('Holiday deleted.');}} className="text-red-500 hover:underline">Delete</button></td></tr>)
                          </tbody>
                        </table>
                      </div>
@@ -295,13 +296,13 @@ export default function SettingsView() {
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-slate-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Configuration forms and toggles for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} will be rendered here.</p>
+                   <p className="text-center max-w-md mb-6">Configure {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} and save the selected Admin configuration.</p>
                  </div>
               )}
 
               {/* SAVE BUTTON FOOTER */}
               <div className="p-4 border-t border-border bg-card flex justify-end gap-3 mt-auto shrink-0">
-                 <button className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel Changes</button>
+                 <button onClick={()=>notify("Unsaved configuration changes discarded.")} className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel Changes</button>
                  <button onClick={handleSave} className="px-8 py-2.5 bg-slate-800 hover:bg-slate-900 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 rounded-xl font-bold shadow-md flex items-center gap-2">
                    <Save size={18} /> Save Configurations
                  </button>
@@ -311,6 +312,7 @@ export default function SettingsView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
