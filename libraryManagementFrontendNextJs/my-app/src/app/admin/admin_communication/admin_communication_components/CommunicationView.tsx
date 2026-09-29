@@ -44,6 +44,9 @@ export default function CommunicationView() {
   // Form states for Announcement
   const [targetAudience, setTargetAudience] = useState('entire_library');
   const [selectedChannels, setSelectedChannels] = useState(['email']);
+  const [announcementSubject, setAnnouncementSubject] = useState('');
+  const [announcementBody, setAnnouncementBody] = useState('');
+  const [automationStatus, setAutomationStatus] = useState<Record<string, boolean>>(() => Object.fromEntries(AUTOMATION_TRIGGERS.map(t => [t.id, t.status])));
 
   const toggleChannel = (channel: string) => {
     if(selectedChannels.includes(channel)) {
@@ -244,14 +247,14 @@ export default function CommunicationView() {
                       <div className="space-y-4">
                          <h3 className="font-bold flex items-center gap-2 border-b border-border pb-2"><LayoutTemplate size={18} className="text-pink-500"/> 3. Message Content</h3>
                          <div className="space-y-3">
-                           <input type="text" placeholder="Announcement Subject / Title" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold" />
-                           <textarea rows={5} placeholder="Write your message here... Use {name} for member name." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                           <input type="text" value={announcementSubject} onChange={e=>setAnnouncementSubject(e.target.value)} placeholder="Announcement Subject / Title" className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold" />
+                           <textarea rows={5} value={announcementBody} onChange={e=>setAnnouncementBody(e.target.value)} placeholder="Write your message here... Use {name} for member name." className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                          </div>
                       </div>
 
                       <div className="pt-4 flex justify-between items-center border-t border-border">
                          <div className="text-sm font-medium text-muted-foreground">Estimated Audience: <span className="font-bold text-foreground">1,240 Members</span></div>
-                         <button className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2">
+                         <button onClick={()=>{if(!announcementSubject.trim() || !announcementBody.trim()){notify('Subject and message are required.');return;} if(!selectedChannels.length){notify('Select at least one channel.');return;} notify('Announcement queued for '+targetAudience.replace('_',' ')+'.');}} className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2">
                            <Send size={18} /> Send Announcement
                          </button>
                       </div>
@@ -286,7 +289,7 @@ export default function CommunicationView() {
                             
                             {/* Toggle Switch */}
                             <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
-                              <input type="checkbox" className="sr-only peer" defaultChecked={trigger.status} />
+                              <input type="checkbox" className="sr-only peer" checked={automationStatus[trigger.id]} onChange={()=>setAutomationStatus(items=>({...items,[trigger.id]:!items[trigger.id]}))} />
                               <div className="w-11 h-6 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
                             </label>
                          </div>
