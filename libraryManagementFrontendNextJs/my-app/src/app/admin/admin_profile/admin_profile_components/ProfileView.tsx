@@ -349,7 +349,7 @@ export default function ProfileView() {
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-emerald-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Additional configurations for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} will appear here.</p>
+                   <p className="text-center max-w-md mb-6">Manage the selected Admin account control and save changes from this workspace.</p>
                  </div>
               )}
 
