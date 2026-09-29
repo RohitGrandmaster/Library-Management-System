@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function AdminStaffManagersPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground p-6">
+    <div className="w-full min-w-0">
       <StaffManagersView />
     </div>
   );
