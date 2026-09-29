@@ -33,6 +33,9 @@ export default function VendorsView() {
   const [search, setSearch] = useState('');
   const [selectedVendor, setSelectedVendor] = useState<any | null>(null);
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
+  const [vendors, setVendors] = useState(MOCK_VENDORS);
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const getStatusColor = (status: string) => {
     if (status === 'Active') return 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400';
@@ -44,10 +47,22 @@ export default function VendorsView() {
     setActionMenuOpen(null);
     if(action === 'View Profile') {
       setSelectedVendor(vendor);
-    } else {
-      setActiveMenu('all');
+      return;
     }
+    if(action === 'Deactivate') {
+      setVendors(items => items.map(v => v.id === vendor.id ? { ...v, status: 'Inactive' } : v));
+      notify(vendor.company + ' deactivated.');
+      return;
+    }
+    notify(action + ' completed for ' + vendor.company + '.');
   };
+
+  const displayVendors = vendors.filter(vendor => {
+    const menuMatch = activeMenu === 'archived' ? vendor.status === 'Inactive' : vendor.status !== 'Inactive';
+    const q = search.trim().toLowerCase();
+    const searchMatch = !q || [vendor.company,vendor.contact,vendor.email,vendor.tax,vendor.id].some(v => v.toLowerCase().includes(q));
+    return menuMatch && searchMatch;
+  });
 
   return (
     <div className="w-full max-w-full space-y-6 pb-12">
@@ -113,18 +128,18 @@ export default function VendorsView() {
               {/* --- VENDORS LIST --- */}
               {!selectedVendor && activeMenu === 'all' && (
                 <div className="p-6 h-full flex flex-col">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2">
                        <Building2 className="text-amber-500" /> All Vendors
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-64" value={search} onChange={e=>setSearch(e.target.value)} />
+                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-full sm:w-64" value={search} onChange={e=>setSearch(e.target.value)} />
                      </div>
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    {MOCK_VENDORS.filter(vendor => true).map(vendor => (
+                    {displayVendors.map(vendor => (
                       <div key={vendor.id} className="relative p-5 border border-border rounded-2xl bg-background hover:shadow-lg transition-all hover:border-amber-500/40">
                          <div className="flex justify-between items-start mb-4">
                            <div className="flex items-center gap-4">
@@ -308,19 +323,33 @@ export default function VendorsView() {
 
               {/* --- VENDOR WORKSPACES --- */}
               {!selectedVendor && !['all', 'add'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-amber-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Manage data and view specific reports for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()}.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div><h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Live mock records from the Admin vendor workspace.</p></div>
+                    <span className="text-sm font-bold px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">{displayVendors.length} records</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {displayVendors.map(vendor=>(
+                      <div key={vendor.id} className="p-4 border border-border rounded-xl bg-card space-y-3">
+                        <div className="flex items-start justify-between gap-2"><div><b>{vendor.company}</b><p className="text-xs text-muted-foreground">{vendor.contact}</p></div><span className="text-xs font-bold">{vendor.status}</span></div>
+                        {activeMenu==='contacts' && <div className="text-sm space-y-1"><p>{vendor.email}</p><p>{vendor.phone}</p><p>{vendor.address}</p></div>}
+                        {activeMenu==='history' && <div className="text-sm"><p className="font-semibold">Total purchases</p><p className="text-emerald-600 font-bold">{vendor.totalPurchases}</p></div>}
+                        {activeMenu==='invoices' && <div className="text-sm"><p className="font-semibold">Latest Invoice: INV-042</p><p className="text-muted-foreground">Terms: {vendor.terms}</p></div>}
+                        {activeMenu==='outstanding' && <div className="text-sm"><p className="font-semibold">Pending payment</p><p className="text-red-500 font-bold">{vendor.pendingPayments}</p></div>}
+                        {activeMenu==='performance' && <div><div className="flex justify-between text-sm mb-1"><span>Fulfilment score</span><b>{vendor.status==='Active'?'94':'68'}%</b></div><div className="h-2 bg-muted rounded-full overflow-hidden"><div className="h-full bg-amber-500" style={{width:vendor.status==='Active'?'94%':'68%'}}/></div></div>}
+                        {activeMenu==='reports' && <div className="text-sm space-y-1"><p>Purchase volume: <b>{vendor.totalPurchases}</b></p><p>Outstanding: <b>{vendor.pendingPayments}</b></p><button onClick={()=>notify('Vendor report prepared for '+vendor.company+'.')} className="text-amber-600 font-semibold hover:underline">Generate Report</button></div>}
+                        {activeMenu==='archived' && <button onClick={()=>{setVendors(items=>items.map(v=>v.id===vendor.id?{...v,status:'Active'}:v));notify(vendor.company+' restored.');}} className="admin-btn admin-btn-primary w-full">Restore Vendor</button>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
 
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
