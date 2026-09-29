@@ -298,15 +298,36 @@ export default function CommunicationView() {
                 </div>
               )}
 
-              {/* --- COMMUNICATIONS --- */}
+              {/* --- COMMUNICATION WORKSPACES --- */}
               {!['dashboard', 'announcements', 'triggers'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-indigo-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Configure settings, view logs, and manage {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} from here.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6 h-full overflow-y-auto">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                      <h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2>
+                      <p className="text-sm text-muted-foreground mt-1">Communication records and delivery controls for this Admin workspace.</p>
+                    </div>
+                    <button onClick={()=>setActiveMenu('announcements')} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-sm inline-flex items-center justify-center gap-2"><Send size={15}/> New Message</button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase text-muted-foreground font-bold">Queued</p><p className="text-2xl font-extrabold mt-1">45</p></div>
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase text-muted-foreground font-bold">Delivered</p><p className="text-2xl font-extrabold mt-1">12,312</p></div>
+                    <div className="p-5 rounded-2xl border border-border bg-card"><p className="text-xs uppercase text-muted-foreground font-bold">Failed</p><p className="text-2xl font-extrabold mt-1 text-red-500">143</p></div>
+                  </div>
+                  <div className="overflow-x-auto border border-border rounded-xl">
+                    <table className="w-full min-w-[680px] text-sm">
+                      <thead className="bg-muted/40 text-left"><tr><th className="p-3">Message</th><th className="p-3">Channel</th><th className="p-3">Audience</th><th className="p-3">Status</th><th className="p-3">Action</th></tr></thead>
+                      <tbody>
+                        {['Membership Expiry Reminder','Overdue Book Alert','Holiday Announcement'].map((msg,i)=>(
+                          <tr key={msg} className="border-t border-border">
+                            <td className="p-3 font-semibold">{msg}</td><td className="p-3">{['Email','WhatsApp','SMS'][i]}</td><td className="p-3">Active Members</td>
+                            <td className="p-3">{activeMenu==='failed'?'Failed':activeMenu==='scheduled'?'Scheduled':'Delivered'}</td>
+                            <td className="p-3"><button onClick={()=>notify(msg+' opened.')} className="text-indigo-600 font-semibold hover:underline">View</button></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               )}
 
             </motion.div>
