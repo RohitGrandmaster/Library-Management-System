@@ -28,12 +28,11 @@ const SIDEBAR_MENU = [
 
 export default function ReportsView() {
   const [activeMenu, setActiveMenu] = useState('books');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [exportOpen, setExportOpen] = useState(false);
 
-  const handleExport = (type: string) => {
-    alert(`${type.toUpperCase()} Export Started!`);
-    setExportOpen(false);
-  };
+  const handleExport = (type: string) => { if (type === 'print') window.print(); else { const blob = new Blob(['Library OS report: ' + activeMenu], {type:'text/plain'}); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href=url; link.download='admin-'+activeMenu+'-report.'+(type==='excel'?'xls':type); document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url); } notify(type.toUpperCase() + ' report generated.'); setExportOpen(false); };
 
   return (
     <div className="w-full max-w-full space-y-6 pb-12">
@@ -342,6 +341,7 @@ export default function ReportsView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
