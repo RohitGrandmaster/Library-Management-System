@@ -44,19 +44,24 @@ const MOCK_ACTIVITY = [
 ];
 
 export default function StaffManagersView() {
+  const [managers, setManagers] = useState(MOCK_MANAGERS);
   const [activeMenu, setActiveMenu] = useState('all');
+  const [search, setSearch] = useState('');
+  const [notice, setNotice] = useState('');
   const [selectedManager, setSelectedManager] = useState<any | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'detail' | 'permissions'>('list');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
 
   // Filter managers
-  const displayManagers = MOCK_MANAGERS.filter(m => {
+  const displayManagers = managers.filter(m => {
     if (activeMenu === 'all') return true;
     if (activeMenu === 'active') return m.status === 'Active';
     if (activeMenu === 'suspended') return m.status === 'Suspended';
     if (activeMenu === 'deactivated') return m.status === 'Deactivated';
     return true;
   });
+
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const getStatusStyle = (status: string) => {
     if (status === 'Active') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800';
@@ -73,7 +78,7 @@ export default function StaffManagersView() {
       setSelectedManager(manager);
       setViewMode('permissions');
     } else {
-      alert(`${action} triggered for ${manager.name}`); // UI dummy logic
+      if (['activate','suspend','deactivate'].includes(action)) { const status = action === 'activate' ? 'Active' : action === 'suspend' ? 'Suspended' : 'Deactivated'; setManagers(items => items.map(m => m.id === manager.id ? { ...m, status } : m)); notify(manager.name + ' marked ' + status + '.'); return; } notify(action.replace('_',' ') + ' action completed for ' + manager.name + '.');
     }
   };
 
@@ -163,7 +168,7 @@ export default function StaffManagersView() {
                          </h2>
                          <div className="relative">
                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                           <input type="text" placeholder="Search managers..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-64" />
+                           <input type="text" placeholder="Search managers..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-64" />
                          </div>
                       </div>
 
