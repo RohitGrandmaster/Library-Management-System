@@ -282,51 +282,22 @@ export default function BranchManagementView() {
 
                   {/* CREATE BRANCH FORM */}
                   {activeMenu === 'create' && (
-                    <div className="space-y-6 max-w-3xl">
-                      <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
-                        <PlusCircle className="text-emerald-500" /> Create New Branch
-                      </h2>
+                    <form onSubmit={saveBranch} className="space-y-6 w-full">
+                      <h2 className="text-2xl font-bold flex items-center gap-2"><PlusCircle className="text-emerald-500"/> Create / Edit Branch</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Branch Name <span className="text-red-500">*</span></label>
-                          <input type="text" placeholder="e.g., Downtown Library" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Branch Code <span className="text-red-500">*</span></label>
-                          <input type="text" placeholder="e.g., DTL-01" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                          <label className="text-sm font-medium">Address <span className="text-red-500">*</span></label>
-                          <textarea rows={2} placeholder="Full address" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Phone Number</label>
-                          <input type="tel" placeholder="+1..." className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Email Address</label>
-                          <input type="email" placeholder="branch@library.com" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Working Hours</label>
-                          <input type="text" placeholder="e.g., 09:00 AM - 08:00 PM" className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Assign Manager</label>
-                          <select className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <option>Select Manager</option>
-                            <option>John Doe</option>
-                            <option>Sarah Smith</option>
-                          </select>
-                        </div>
+                        <input value={form.name} onChange={e=>setForm(x=>({...x,name:e.target.value}))} required placeholder="Branch Name *" className="admin-input w-full"/>
+                        <input value={form.code} onChange={e=>setForm(x=>({...x,code:e.target.value}))} required placeholder="Branch Code *" className="admin-input w-full"/>
+                        <textarea value={form.address} onChange={e=>setForm(x=>({...x,address:e.target.value}))} required placeholder="Full Address *" rows={2} className="admin-input w-full md:col-span-2"/>
+                        <input value={form.phone} onChange={e=>setForm(x=>({...x,phone:e.target.value}))} placeholder="Phone" className="admin-input w-full"/>
+                        <input value={form.email} onChange={e=>setForm(x=>({...x,email:e.target.value}))} type="email" placeholder="Email" className="admin-input w-full"/>
+                        <input value={form.hours} onChange={e=>setForm(x=>({...x,hours:e.target.value}))} placeholder="Working Hours" className="admin-input w-full"/>
+                        <select value={form.manager} onChange={e=>setForm(x=>({...x,manager:e.target.value}))} className="admin-input w-full"><option value="">Select Manager</option>{['John Doe','Sarah Smith','Mike Johnson','Emma Davis','Priya Joshi'].map(m=><option key={m}>{m}</option>)}</select>
                       </div>
-                      <div className="pt-4 border-t border-border flex justify-end gap-3">
-                        <button className="px-5 py-2 rounded-lg border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
-                        <button className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium flex items-center gap-2">
-                          <CheckCircle size={18} /> Create Branch
-                        </button>
+                      <div className="flex flex-wrap justify-end gap-3 pt-4 border-t border-border">
+                        <button type="button" onClick={()=>setForm({name:'',code:'',address:'',phone:'',email:'',hours:'',manager:''})} className="admin-btn admin-btn-ghost">Clear</button>
+                        <button type="submit" className="admin-btn admin-btn-primary inline-flex items-center gap-2"><CheckCircle size={16}/> Save Branch</button>
                       </div>
-                    </div>
+                    </form>
                   )}
 
                   {/* USAGE AND REPORTS (Preview) */}
