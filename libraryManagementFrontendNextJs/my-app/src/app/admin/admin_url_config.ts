@@ -6,9 +6,9 @@
 export const ADMIN_ROUTES = {
   PREFIX: '/admin',
   DASHBOARD: '/admin/admin_dashboard',
-  OVERVIEW: '/admin/admin_overview',
+  OVERVIEW: '/admin/admin_library_overview',
   BRANCHES: '/admin/admin_branches',
-  STAFF: '/admin/admin_staff',
+  STAFF: '/admin/admin_staff-users',
   BOOKS: '/admin/admin_books',
   MEMBERS: '/admin/admin_members',
   CIRCULATION: '/admin/admin_circulation',

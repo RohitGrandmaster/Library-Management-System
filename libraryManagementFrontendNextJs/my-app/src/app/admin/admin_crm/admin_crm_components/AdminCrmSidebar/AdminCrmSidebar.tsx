@@ -110,7 +110,7 @@ const NAV: NavGroup[] = [
     group: 'Admin',
     items: [
       { href: '/admin/admin_branches',     Icon: Building2,      label: 'Branches'           },
-      { href: '/admin/admin_staff',        Icon: Users2,         label: 'Staff & Users'      },
+      { href: '/admin/admin_staff-users',  Icon: Users2,         label: 'Staff & Users'      },
       { href: '/admin/admin_permissions',  Icon: KeyRound,       label: 'Permissions'        },
       { href: '/admin/admin_plans',        Icon: IndianRupee,    label: 'Plans'              },
       { href: '/admin/admin_coupons',      Icon: Tag,            label: 'Coupons'            },
