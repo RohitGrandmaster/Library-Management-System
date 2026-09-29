@@ -358,7 +358,7 @@ export default function BranchManagementView() {
                   {['managers', 'settings'].includes(activeMenu) && (
                      <div className="h-[300px] flex flex-col items-center justify-center text-muted-foreground border-2 border-dashed border-border rounded-2xl">
                        <Settings size={48} className="mb-4 opacity-50" />
-                       <p>Detailed view for {activeMenu} is coming soon.</p>
+                       <p>Use the controls below to manage this branch section.</p>
                      </div>
                   )}
                 </>
