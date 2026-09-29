@@ -205,11 +205,11 @@ export default function BranchManagementView() {
                   {/* BRANCH LISTING (All, Active, Suspended, Archived) */}
                   {['all', 'active', 'suspended', 'archived'].includes(activeMenu) && (
                     <div className="space-y-6">
-                      <div className="flex justify-between items-center">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                         <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                           <Building2 className="text-blue-500" /> {activeMenu} Branches
                         </h2>
-                        <div className="relative">
+                        <div className="relative w-full sm:w-auto">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
                           <input type="text" placeholder="Search branches..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64" />
                         </div>
@@ -300,7 +300,7 @@ export default function BranchManagementView() {
                     </form>
                   )}
 
-                  {/* USAGE AND REPORTS (Preview) */}
+                  {/* USAGE AND REPORTS */}
                   {(activeMenu === 'usage' || activeMenu === 'reports') && (
                     <div className="space-y-6">
                       <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
@@ -325,7 +325,7 @@ export default function BranchManagementView() {
                     </div>
                   )}
                   
-                  {/* OTHER TABS PLACEHOLDER */}
+                  {/* BRANCH MANAGERS & SETTINGS */}
                   {activeMenu === 'managers' && (
                     <div className="space-y-5">
                       <h2 className="text-2xl font-bold">Branch Managers</h2>
