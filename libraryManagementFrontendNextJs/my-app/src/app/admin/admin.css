@@ -1667,3 +1667,24 @@
     padding-top: 74px;
   }
 }
+
+
+/* Collapsed desktop sidebar: keep icons centered and easy to tap. */
+.admin-sidebar.admin-sidebar-collapsed .admin-nav-item {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  gap: 0;
+}
+.admin-sidebar.admin-sidebar-collapsed .admin-nav-item.active {
+  border-right-width: 0;
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+@media (max-width: 767px) {
+  .admin-sidebar.admin-sidebar-mobile-open .admin-nav-item {
+    justify-content: flex-start;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 12px;
+  }
+}
