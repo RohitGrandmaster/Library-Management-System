@@ -47,9 +47,14 @@ const FORM_TABS = [
 ];
 
 export default function BooksCatalogView() {
+  const [books, setBooks] = useState(MOCK_BOOKS);
   const [activeMenu, setActiveMenu] = useState('all');
+  const [search, setSearch] = useState('');
+  const [notice, setNotice] = useState('');
   const [activeFormTab, setActiveFormTab] = useState('basic');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
+
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const getStatusStyle = (status: string) => {
     if (status === 'Available') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800';
@@ -391,10 +396,8 @@ export default function BooksCatalogView() {
                         Step <span className="font-bold text-foreground">{FORM_TABS.findIndex(t => t.id === activeFormTab) + 1}</span> of {FORM_TABS.length}
                      </div>
                      <div className="flex gap-3">
-                        <button className="px-6 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
-                        <button className="px-6 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-medium flex items-center gap-2 shadow-md">
-                          <CheckCircle size={18} /> Save Book Entry
-                        </button>
+                        <button type="button" onClick={()=>setActiveMenu("all")} className="px-6 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
+                        <button type="button" onClick={()=>{ const n="New Book "+(books.length+1); setBooks(items=>[...items,{id:"BK-"+String(books.length+1005),isbn:"Pending",title:n,author:"New Author",category:"General",publisher:"Library",edition:"1st",copies:1,available:1,issued:0,reserved:0,lost:0,damaged:0,location:"Unassigned",status:"Available"}]); notify("Book entry saved successfully."); setActiveMenu("all"); }} className="px-6 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-medium flex items-center gap-2 shadow-md"><CheckCircle size={18}/> Save Book Entry</button>
                      </div>
                   </div>
                 </div>
@@ -409,7 +412,7 @@ export default function BooksCatalogView() {
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{activeMenu.replace('_', ' ')} Management</h3>
                    <p className="text-center max-w-md mb-6">This section handles the configuration and records for {activeMenu.replace('_', ' ')}.</p>
                    <button className="px-6 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 shadow-md">
-                     Setup {activeMenu.replace('_', ' ')}
+                     Open {activeMenu.replace('_', ' ')}
                    </button>
                  </div>
               )}
@@ -418,6 +421,7 @@ export default function BooksCatalogView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
