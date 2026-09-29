@@ -289,15 +289,28 @@ export default function SettingsView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS FOR OTHERS --- */}
               {!['library', 'hours', 'holidays', 'circulation', 'fines', 'reservation', 'inventory', 'barcode', 'receipt'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10 bg-background flex-1">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-slate-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Use the configuration workspace below, then save your Admin settings from the footer.</p>
-                 </div>
+                <div className="p-6 md:p-8 flex-1 overflow-y-auto bg-background">
+                  <div className="max-w-4xl space-y-6">
+                    <div><h2 className="text-2xl font-bold flex items-center gap-2"><Settings className="text-slate-500"/> {SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Configure the selected Admin setting and save it from the footer.</p></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        ['general','Default dashboard','Admin'],
+                        ['membership','Default membership duration','12 months'],
+                        ['notifications','Email notifications','Enabled'],
+                        ['branches','Default branch','Central State Library'],
+                        ['printing','Default printer','Front Desk Printer'],
+                        ['localization','Language','English (India)']
+                      ].filter(x=>x[0]===activeMenu).map(([_,label,value])=>(
+                        <div key={label} className="p-5 border border-border rounded-xl bg-card space-y-3">
+                          <label className="text-sm font-bold">{label}</label>
+                          <input defaultValue={value} className="w-full px-4 py-3 rounded-xl border border-border bg-background"/>
+                          <p className="text-xs text-muted-foreground">Frontend demo configuration. Changes are reflected through the save notification.</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               )}
 
               {/* SAVE BUTTON FOOTER */}
