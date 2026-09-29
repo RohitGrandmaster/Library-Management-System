@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Map, Building2, CheckCircle, AlertTriangle, Archive, Users, Settings, 
@@ -54,19 +54,56 @@ const USAGE_DATA = [
 ];
 
 export default function BranchManagementView() {
+  const [branches, setBranches] = useState(MOCK_BRANCHES);
   const [activeMenu, setActiveMenu] = useState('all');
   const [selectedBranch, setSelectedBranch] = useState<any | null>(null);
   const [activeBranchTab, setActiveBranchTab] = useState('overview');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [managerSearch, setManagerSearch] = useState('');
+  const [managerAssignments, setManagerAssignments] = useState<Record<string,string>>({});
+  const [form, setForm] = useState({name:'',code:'',address:'',phone:'',email:'',hours:'',manager:''});
+  const [hours, setHours] = useState('08:00 AM - 08:00 PM');
+  const [autoRenew, setAutoRenew] = useState(true);
+  const [notifications, setNotifications] = useState(true);
+  const [notice, setNotice] = useState('');
 
   // Filter branches based on menu
-  const displayBranches = MOCK_BRANCHES.filter(b => {
-    if (activeMenu === 'all') return true;
-    if (activeMenu === 'active') return b.status === 'Active';
-    if (activeMenu === 'suspended') return b.status === 'Suspended';
-    if (activeMenu === 'archived') return b.status === 'Archived';
-    return true;
-  });
+  const displayBranches = useMemo(() => branches.filter(b => {
+    const statusMatch = activeMenu === 'all' ? true : activeMenu === 'active' ? b.status === 'Active' : activeMenu === 'suspended' ? b.status === 'Suspended' : activeMenu === 'archived' ? b.status === 'Archived' : true;
+    const q = search.trim().toLowerCase();
+    const searchMatch = !q || [b.name,b.code,b.manager,b.address].some(v => v.toLowerCase().includes(q));
+    return statusMatch && searchMatch;
+  }), [branches, activeMenu, search]);
+
+  const notify = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => setNotice(current => current === message ? '' : current), 2200);
+  };
+
+  const updateBranch = (id: string, patch: Record<string, any>) => setBranches(items => items.map(item => item.id === id ? { ...item, ...patch } : item));
+
+  const saveBranch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.code.trim() || !form.address.trim()) { notify('Branch Name, Branch Code and Address are required.'); return; }
+    const existing = branches.find(b => b.code.toLowerCase() === form.code.trim().toLowerCase());
+    if (existing) {
+      updateBranch(existing.id,{name:form.name.trim(),address:form.address.trim(),phone:form.phone.trim(),email:form.email.trim(),hours:form.hours.trim() || existing.hours,manager:form.manager || existing.manager});
+      notify('Branch updated successfully.');
+    } else {
+      setBranches(items => [...items,{id:`b-${Date.now()}`,name:form.name.trim(),code:form.code.trim().toUpperCase(),manager:form.manager || 'Unassigned',status:'Active',address:form.address.trim(),phone:form.phone.trim() || '—',email:form.email.trim() || '—',hours:form.hours.trim() || '09:00 AM - 06:00 PM',users:0,books:0,members:0,circ:0,fine:0}]);
+      notify('Branch created successfully.');
+    }
+    setForm({name:'',code:'',address:'',phone:'',email:'',hours:'',manager:''});
+    setActiveMenu('all');
+  };
+
+  const saveManager = (branch: any) => {
+    const manager = managerAssignments[branch.id];
+    if (!manager) { notify('Please select a manager.'); return; }
+    updateBranch(branch.id,{manager});
+    notify('Manager assignment saved.');
+  };
 
   const getStatusColor = (status: string) => {
     if (status === 'Active') return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800';
@@ -76,12 +113,12 @@ export default function BranchManagementView() {
 
   const handleBranchAction = (action: string, branch: any) => {
     setActionMenuOpen(null);
-    if (action === 'view') {
-      setSelectedBranch(branch);
-      setActiveBranchTab('overview');
-    } else {
-      alert(`${action} triggered for ${branch.name}`); // Dummy action
-    }
+    if (action === 'view') { setSelectedBranch(branch); setActiveBranchTab('overview'); return; }
+    if (action === 'edit') { setForm({name:branch.name,code:branch.code,address:branch.address,phone:branch.phone,email:branch.email,hours:branch.hours,manager:branch.manager}); setActiveMenu('create'); notify('Branch loaded for editing.'); return; }
+    if (action === 'activate') { updateBranch(branch.id,{status:'Active'}); notify('Branch activated.'); return; }
+    if (action === 'suspend') { updateBranch(branch.id,{status:'Suspended'}); notify('Branch suspended.'); return; }
+    if (action === 'archive') { updateBranch(branch.id,{status:'Archived'}); notify('Branch archived.'); return; }
+    if (action === 'change_manager') { setManagerAssignments(current => ({...current,[branch.id]:branch.manager})); setActiveMenu('managers'); notify('Manager assignment opened.'); }
   };
 
   return (
