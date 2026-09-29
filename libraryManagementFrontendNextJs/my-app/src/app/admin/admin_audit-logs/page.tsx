@@ -38,10 +38,10 @@ const LOGS: AuditLog[] = [
 ];
 
 const SEV_BADGE_CLASS: Record<string, string> = {
-  danger:  'admin-badge admin-badge-danger',
-  warning: 'admin-badge admin-badge-warning',
-  info:    'admin-badge admin-badge-info',
-  success: 'admin-badge admin-badge-success',
+  danger:  'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800 flex items-center gap-1.5 w-fit',
+  warning: 'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800 flex items-center gap-1.5 w-fit',
+  info:    'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800 flex items-center gap-1.5 w-fit',
+  success: 'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1.5 w-fit',
 };
 
 const SEV_ICON: Record<string, React.ReactNode> = {
@@ -60,14 +60,14 @@ function SeverityCell({ data }: { data: AuditLog }) {
 }
 
 function ActionCell({ value }: { value: string }) {
-  return <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{value}</span>;
+  return <span className="font-bold text-foreground">{value}</span>;
 }
 
 function UserCell({ data }: { data: AuditLog }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-      <span style={{ fontWeight: 500, fontSize: 13, lineHeight: 1.3, color: 'var(--text-primary)' }}>{data.performedBy}</span>
-      <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{data.role}</span>
+    <div className="flex flex-col justify-center h-full">
+      <span className="font-semibold text-sm text-foreground leading-tight">{data.performedBy}</span>
+      <span className="text-xs text-muted-foreground">{data.role}</span>
     </div>
   );
 }
@@ -113,33 +113,35 @@ export default function AdminAuditLogsPage() {
   ], []);
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', paddingBottom: 40 }}>
-      {/* Page Header */}
-      <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
+    <div className="w-full max-w-full space-y-6 pb-12 flex flex-col h-full min-h-[calc(100vh-6rem)]">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-4 shrink-0">
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Audit Logs</p>
-          <h1 className="admin-page-title">Audit Logs</h1>
-          <p className="admin-page-subtitle">Track all sensitive actions performed in the system.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-teal-600 to-green-500 bg-clip-text text-transparent flex items-center gap-2">
+            <ShieldAlert size={28} className="text-teal-600" /> Audit Logs
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Track all sensitive actions performed in the system.
+          </p>
         </div>
       </div>
 
       {/* Filters */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <div style={{ position: 'relative', maxWidth: 300, width: '100%' }}>
-          <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+      <div className="flex flex-wrap items-center gap-4 shrink-0">
+        <div className="relative w-full max-w-[300px]">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
-            className="admin-input"
-            style={{ paddingLeft: 38 }}
+            className="w-full pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
             placeholder="Search action or user…"
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-        <div className="admin-tab-bar">
+        <div className="flex bg-muted/30 p-1 rounded-xl border border-border overflow-x-auto">
           {TABS.map(s => (
             <button
               key={s}
-              className={`admin-tab${filter === s ? ' active' : ''}`}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${filter === s ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               onClick={() => setFilter(s)}
             >
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -149,13 +151,13 @@ export default function AdminAuditLogsPage() {
       </div>
 
       {/* AG Grid */}
-      <div className="admin-table-wrapper" style={{ flex: 1, minHeight: 400 }}>
+      <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden flex-1 min-h-[400px]">
         <AgGridReact
           theme={gridTheme}
           rowData={filtered}
           columnDefs={colDefs as any}
           rowHeight={52}
-          headerHeight={38}
+          headerHeight={44}
           suppressMovableColumns
           suppressCellFocus
           defaultColDef={{ resizable: false, sortable: true }}
@@ -163,19 +165,9 @@ export default function AdminAuditLogsPage() {
       </div>
 
       {/* Info Tip */}
-      <div style={{
-        marginTop: 20,
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: 12,
-        padding: '14px 16px',
-        borderRadius: 10,
-        background: 'var(--info-bg)',
-        border: '1px solid color-mix(in srgb, var(--info) 30%, transparent)',
-        color: 'var(--info)',
-      }}>
-        <Shield size={18} style={{ flexShrink: 0, marginTop: 1 }} />
-        <p style={{ fontSize: 13, lineHeight: 1.5, margin: 0, color: 'var(--text-secondary)' }}>
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/50 text-blue-800 dark:text-blue-300 shrink-0">
+        <Shield size={20} className="shrink-0 mt-0.5 text-blue-600 dark:text-blue-400" />
+        <p className="text-sm font-medium leading-relaxed m-0">
           Audit logs are retained for 90 days. Use the severity filter to quickly identify suspicious activity like deleted receipts or unauthorized access attempts.
         </p>
       </div>
