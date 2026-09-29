@@ -308,3 +308,49 @@
     max-height: 100vh;
   }
 }
+
+
+/* Grouped Super Admin sidebar */
+.superadmin-theme .sa-nav-group { margin-bottom: 6px; }
+.superadmin-theme .sa-nav-group-button {
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+}
+.superadmin-theme .sa-nav-group-button:hover {
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+  color: var(--text-primary);
+}
+.superadmin-theme .sa-nav-group-button--active { color: var(--text-primary); }
+.superadmin-theme .sa-nav-group-chevron {
+  font-size: 14px;
+  line-height: 1;
+  transform: rotate(-90deg);
+  transition: transform .18s ease;
+}
+.superadmin-theme .sa-nav-group-chevron--open { transform: rotate(0deg); }
+.superadmin-theme .sa-nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.superadmin-theme .sa-nav-group-items .sa-nav-link { margin: 0; }
+
+@media (max-width: 420px) {
+  .superadmin-theme .sa-nav-group-button { padding-left: 8px; padding-right: 8px; }
+}
