@@ -30,6 +30,7 @@ const SIDEBAR_MENU = [
 
 export default function VendorsView() {
   const [activeMenu, setActiveMenu] = useState('all');
+  const [search, setSearch] = useState('');
   const [selectedVendor, setSelectedVendor] = useState<any | null>(null);
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
 
@@ -118,7 +119,7 @@ export default function VendorsView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-64" onChange={()=>{}} />
+                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-64" value={search} onChange={e=>setSearch(e.target.value)} />
                      </div>
                   </div>
 
