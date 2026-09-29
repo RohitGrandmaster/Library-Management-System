@@ -1,40 +1,68 @@
 'use client';
+
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { clearAuthState } from '@/lib/auth';
 import {
   LayoutDashboard, Wand2, Building2, CreditCard, Users, ShieldCheck,
-  SlidersHorizontal, Server, Database, ListChecks, Plug, MessageCircle,
+  Server, Database, ListChecks, Plug, MessageCircle,
   Shield, DatabaseBackup, Activity, BarChart2, LifeBuoy, FileCheck,
   Settings, UserCircle, LogOut, ScrollText,
 } from 'lucide-react';
 
-const NAV_ITEMS = [
-  { href: '/superadmin/superadmin_dashboard',             icon: LayoutDashboard, label: '01. Dashboard' },
-  { href: '/superadmin/superadmin_libraries',             icon: Building2,       label: '02. Libraries / Organizations' },
-  { href: '/superadmin/superadmin_branches',              icon: Building2,       label: '03. Branch Management' },
-  { href: '/superadmin/superadmin_users',                 icon: Users,            label: '04. Platform Users' },
-  { href: '/superadmin/superadmin_roles',                 icon: ShieldCheck,     label: '05. Roles & Permissions' },
-  { href: '/superadmin/superadmin_subscriptions',         icon: CreditCard,      label: '06. Plans & Subscriptions' },
-  { href: '/superadmin/superadmin_features',              icon: Wand2,           label: '07. Feature Management' },
-  { href: '/superadmin/superadmin_global-config',         icon: Settings,        label: '08. Global Library Configuration' },
-  { href: '/superadmin/superadmin_server',                icon: Server,          label: '09. Server & Infrastructure' },
-  { href: '/superadmin/superadmin_database',              icon: Database,        label: '10. Database & Data' },
-  { href: '/superadmin/superadmin_jobs',                  icon: ListChecks,      label: '11. Jobs & Scheduler' },
-  { href: '/superadmin/superadmin_api',                   icon: Plug,            label: '12. API & Integrations' },
-  { href: '/superadmin/superadmin_communication',         icon: MessageCircle,  label: '13. Notifications & Communication' },
-  { href: '/superadmin/superadmin_security',              icon: Shield,          label: '14. Security Center' },
-  { href: '/superadmin/superadmin_audit-logs',            icon: ScrollText,      label: '15. Global Audit Center' },
-  { href: '/superadmin/superadmin_backup',                icon: DatabaseBackup, label: '16. Backup & Disaster Recovery' },
-  { href: '/superadmin/superadmin_monitoring',            icon: Activity,        label: '17. Monitoring & Alerts' },
-  { href: '/superadmin/superadmin_reports',               icon: BarChart2,       label: '18. Reports & Analytics' },
-  { href: '/superadmin/superadmin_support',               icon: LifeBuoy,        label: '19. Support & Operations' },
-  { href: '/superadmin/superadmin_support-tickets',       icon: LifeBuoy,        label: '19.5 Support Escalations' },
-  { href: '/superadmin/superadmin_compliance',            icon: FileCheck,       label: '20. Data Governance & Compliance' },
-  { href: '/superadmin/superadmin_settings',              icon: Settings,        label: '21. System Settings' },
-  { href: '/superadmin/superadmin_profile',               icon: UserCircle,      label: '22. My Profile' },
+type NavItem = { href: string; icon: typeof LayoutDashboard; label: string };
+type NavGroup = { group: string; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    group: 'Overview',
+    items: [
+      { href: '/superadmin/superadmin_dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { href: '/superadmin/superadmin_reports', icon: BarChart2, label: 'Reports & Analytics' },
+    ],
+  },
+  {
+    group: 'Organization & Access',
+    items: [
+      { href: '/superadmin/superadmin_libraries', icon: Building2, label: 'Libraries / Organizations' },
+      { href: '/superadmin/superadmin_branches', icon: Building2, label: 'Branch Management' },
+      { href: '/superadmin/superadmin_users', icon: Users, label: 'Platform Users' },
+      { href: '/superadmin/superadmin_roles', icon: ShieldCheck, label: 'Roles & Permissions' },
+      { href: '/superadmin/superadmin_subscriptions', icon: CreditCard, label: 'Plans & Subscriptions' },
+      { href: '/superadmin/superadmin_features', icon: Wand2, label: 'Feature Management' },
+    ],
+  },
+  {
+    group: 'Platform',
+    items: [
+      { href: '/superadmin/superadmin_global-config', icon: Settings, label: 'Global Library Configuration' },
+      { href: '/superadmin/superadmin_server', icon: Server, label: 'Server & Infrastructure' },
+      { href: '/superadmin/superadmin_database', icon: Database, label: 'Database & Data' },
+      { href: '/superadmin/superadmin_jobs', icon: ListChecks, label: 'Jobs & Scheduler' },
+      { href: '/superadmin/superadmin_api', icon: Plug, label: 'API & Integrations' },
+      { href: '/superadmin/superadmin_communication', icon: MessageCircle, label: 'Notifications & Communication' },
+    ],
+  },
+  {
+    group: 'Security & Governance',
+    items: [
+      { href: '/superadmin/superadmin_security', icon: Shield, label: 'Security Center' },
+      { href: '/superadmin/superadmin_audit-logs', icon: ScrollText, label: 'Global Audit Center' },
+      { href: '/superadmin/superadmin_backup', icon: DatabaseBackup, label: 'Backup & Disaster Recovery' },
+      { href: '/superadmin/superadmin_monitoring', icon: Activity, label: 'Monitoring & Alerts' },
+      { href: '/superadmin/superadmin_compliance', icon: FileCheck, label: 'Data Governance & Compliance' },
+    ],
+  },
+  {
+    group: 'Support & System',
+    items: [
+      { href: '/superadmin/superadmin_support', icon: LifeBuoy, label: 'Support & Operations' },
+      { href: '/superadmin/superadmin_support-tickets', icon: LifeBuoy, label: 'Support Escalations' },
+      { href: '/superadmin/superadmin_settings', icon: Settings, label: 'System Settings' },
+      { href: '/superadmin/superadmin_profile', icon: UserCircle, label: 'My Profile' },
+    ],
+  },
 ];
 
 interface SidebarProps {
@@ -46,9 +74,22 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(NAV_GROUPS.map((group, index) => [group.group, index === 0]))
+  );
+
+  useEffect(() => {
+    const activeGroup = NAV_GROUPS.find(group =>
+      group.items.some(item => pathname === item.href || pathname.startsWith(item.href + '/'))
+    )?.group;
+
+    if (activeGroup) {
+      setOpenGroups(current => current[activeGroup] ? current : { [activeGroup]: true });
+    }
+  }, [pathname]);
 
   return (
-    <aside className={`sa-sidebar ${open ? 'sa-sidebar--open' : ''}`}>
+    <aside className={\`sa-sidebar \${open ? 'sa-sidebar--open' : ''}\`}>
       <div className="sa-sidebar-logo-area">
         <div className="sa-sidebar-logo-box">
           <span className="text-white text-xs font-bold">N</span>
@@ -62,22 +103,54 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
       <div className="sa-sidebar-divider" />
 
       <nav className="sa-sidebar-nav">
-        {NAV_ITEMS.map(({ href, icon: Icon, label }, i) => {
-          const isActive = pathname === href || pathname.startsWith(href + '/');
-          const iconColors = ['#4F46E5', '#059669', '#D97706', '#2563EB', '#7C3AED', '#E11D48', '#0D9488'];
-          const color = iconColors[i % iconColors.length];
-          
+        {NAV_GROUPS.map(group => {
+          const groupOpen = !!openGroups[group.group];
+          const groupHasActive = group.items.some(item =>
+            pathname === item.href || pathname.startsWith(item.href + '/')
+          );
 
           return (
-            <Link
-              key={href}
-              href={href}
-              className={`sa-nav-link ${isActive ? 'sa-nav-link--active' : ''}`}
-              onClick={onNavigate}
-            >
-              <Icon size={17} style={{ color: isActive ? 'inherit' : color }} />
-              <span>{label}</span>
-            </Link>
+            <div key={group.group} className="sa-nav-group">
+              <button
+                type="button"
+                className={\`sa-nav-group-button\${groupHasActive ? ' sa-nav-group-button--active' : ''}\`}
+                onClick={() =>
+                  setOpenGroups(current =>
+                    current[group.group] ? {} : { [group.group]: true }
+                  )
+                }
+                aria-expanded={groupOpen}
+              >
+                <span>{group.group}</span>
+                <span
+                  className={\`sa-nav-group-chevron\${groupOpen ? ' sa-nav-group-chevron--open' : ''}\`}
+                  aria-hidden="true"
+                >
+                  ⌄
+                </span>
+              </button>
+
+              {groupOpen && (
+                <div className="sa-nav-group-items">
+                  {group.items.map(({ href, icon: Icon, label }) => {
+                    const isActive = pathname === href || pathname.startsWith(href + '/');
+
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        className={\`sa-nav-link \${isActive ? 'sa-nav-link--active' : ''}\`}
+                        onClick={onNavigate}
+                        title={label}
+                      >
+                        <Icon size={17} />
+                        <span>{label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           );
         })}
       </nav>
@@ -90,6 +163,7 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
         </div>
         <button
           className="sa-btn-icon sa-btn-icon--danger"
+          type="button"
           onClick={() => setShowLogout(true)}
           title="Logout"
           aria-label="Logout"
@@ -100,15 +174,36 @@ export default function Sidebar({ open, onNavigate }: SidebarProps) {
 
       {showLogout && (
         <div className="sa-wizard-modal-overlay" onClick={() => setShowLogout(false)}>
-          <div className="sa-wizard-modal" style={{ maxWidth: 360 }} onClick={e => e.stopPropagation()}>
+          <div
+            className="sa-wizard-modal"
+            style={{ maxWidth: 360 }}
+            onClick={e => e.stopPropagation()}
+          >
             <div className="sa-wizard-modal-icon">
               <LogOut size={20} className="sa-metric--warning" />
             </div>
             <p className="sa-wizard-modal-title">Logout</p>
-            <p className="sa-wizard-modal-desc font-bold text-gray-800 dark:text-gray-200 mt-2">Are you sure you want to logout?</p>
+            <p className="sa-wizard-modal-desc font-bold text-gray-800 dark:text-gray-200 mt-2">
+              Are you sure you want to logout?
+            </p>
             <div className="flex gap-3 mt-6">
-              <button className="sa-btn-ghost sa-btn-ghost--sm flex-1 font-bold" onClick={() => setShowLogout(false)}>Cancel</button>
-              <button className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors" onClick={() => { clearAuthState(); router.replace('/auth/login'); }}>Logout</button>
+              <button
+                className="sa-btn-ghost sa-btn-ghost--sm flex-1 font-bold"
+                type="button"
+                onClick={() => setShowLogout(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
+                type="button"
+                onClick={() => {
+                  clearAuthState();
+                  router.replace('/auth/login');
+                }}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
