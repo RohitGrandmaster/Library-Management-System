@@ -355,11 +355,29 @@ export default function BranchManagementView() {
                   )}
                   
                   {/* OTHER TABS PLACEHOLDER */}
-                  {['managers', 'settings'].includes(activeMenu) && (
-                     <div className="h-[300px] flex flex-col items-center justify-center text-muted-foreground border-2 border-dashed border-border rounded-2xl">
-                       <Settings size={48} className="mb-4 opacity-50" />
-                       <p>Use the controls below to manage this branch section.</p>
-                     </div>
+                  {activeMenu === 'managers' && (
+                    <div className="space-y-5">
+                      <h2 className="text-2xl font-bold">Branch Managers</h2>
+                      <input value={managerSearch} onChange={e=>setManagerSearch(e.target.value)} placeholder="Search branch or manager..." className="admin-input w-full sm:max-w-md" />
+                      <div className="space-y-3">
+                        {branches.filter(b=>!managerSearch || [b.name,b.code,b.manager].some(v=>v.toLowerCase().includes(managerSearch.toLowerCase()))).map(b=>(
+                          <div key={b.id} className="admin-card p-4 flex flex-col md:flex-row gap-3 md:items-center">
+                            <div className="flex-1"><b>{b.name}</b><div className="text-xs text-muted-foreground">{b.code} • Current: {b.manager}</div></div>
+                            <select value={managerAssignments[b.id]??b.manager} onChange={e=>setManagerAssignments(x=>({...x,[b.id]:e.target.value}))} className="admin-input md:w-56">{['John Doe','Sarah Smith','Mike Johnson','Emma Davis','Priya Joshi'].map(m=><option key={m}>{m}</option>)}</select>
+                            <button onClick={()=>saveManager(b)} className="admin-btn admin-btn-primary inline-flex items-center justify-center gap-2"><UserCog size={15}/> Save</button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {activeMenu === 'settings' && (
+                    <div className="space-y-5 max-w-3xl">
+                      <h2 className="text-2xl font-bold">Branch Settings</h2>
+                      <label className="block text-sm font-medium">Default Working Hours<input value={hours} onChange={e=>setHours(e.target.value)} className="admin-input mt-2 w-full"/></label>
+                      <label className="flex items-center justify-between p-4 border border-border rounded-xl"><span><b>Auto Renewal</b><small className="block text-muted-foreground">Enable by default.</small></span><input type="checkbox" checked={autoRenew} onChange={e=>setAutoRenew(e.target.checked)}/></label>
+                      <label className="flex items-center justify-between p-4 border border-border rounded-xl"><span><b>Operational Notifications</b><small className="block text-muted-foreground">Enable alerts.</small></span><input type="checkbox" checked={notifications} onChange={e=>setNotifications(e.target.checked)}/></label>
+                      <button onClick={()=>notify('Branch settings saved.')} className="admin-btn admin-btn-primary">Save Settings</button>
+                    </div>
                   )}
                 </>
               )}
