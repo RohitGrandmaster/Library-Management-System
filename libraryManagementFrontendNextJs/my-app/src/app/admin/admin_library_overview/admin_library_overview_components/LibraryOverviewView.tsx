@@ -81,6 +81,22 @@ const TABS = [
 
 export default function LibraryOverviewView() {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const [editMode, setEditMode] = useState(false);
+  const [info, setInfo] = useState(LIBRARY_INFO);
+  const [notice, setNotice] = useState('');
+
+  const notify = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => setNotice(current => current === message ? '' : current), 2200);
+  };
+  const downloadDocument = (doc: typeof LIBRARY_DOCUMENTS[number]) => {
+    const blob = new Blob([`Document: ${doc.title}\nType: ${doc.type}\nSize: ${doc.size}\nUploaded: ${doc.date}`], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = doc.title.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt';
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    notify(`${doc.title} download prepared.`);
+  };
 
   // Animation variants
   const tabContentVariants = {
@@ -144,25 +160,37 @@ export default function LibraryOverviewView() {
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <Building2 className="text-blue-500" /> Library Information
                     </h2>
-                    <button className="flex items-center gap-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
-                      <Edit3 size={16} /> Edit Info
+                    <button onClick={() => setEditMode(v => !v)} className="flex items-center gap-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
+                      <Edit3 size={16} /> {editMode ? 'Close Editor' : 'Edit Info'}
                     </button>
                   </div>
                   
+                  {editMode && (
+                    <form onSubmit={(e)=>{e.preventDefault(); setEditMode(false); notify('Library information saved.');}} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 mb-6 rounded-2xl border border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/20">
+                      {(['name','code','contact','email','website','regDetails','address','description'] as Array<keyof typeof info>).map(key => (
+                        <label key={key} className={`text-sm font-medium ${key==='address'||key==='description' ? 'md:col-span-2' : ''}`}>
+                          {key.replace(/([A-Z])/g,' $1')}
+                          {key==='description' ? <textarea value={info[key]} rows={3} onChange={e=>setInfo({...info,[key]:e.target.value})} className="admin-input w-full mt-2"/> : <input value={info[key]} onChange={e=>setInfo({...info,[key]:e.target.value})} className="admin-input w-full mt-2"/>}
+                        </label>
+                      ))}
+                      <div className="md:col-span-2 flex justify-end gap-2"><button type="button" onClick={()=>setEditMode(false)} className="admin-btn admin-btn-ghost">Cancel</button><button type="submit" className="admin-btn admin-btn-primary">Save Changes</button></div>
+                    </form>
+                  )}
+
                   <div className="flex flex-col md:flex-row gap-8">
                     <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-950 dark:to-purple-950 flex flex-col items-center justify-center border border-indigo-200 dark:border-indigo-800 shrink-0 shadow-inner">
                       <ImageIcon size={40} className="text-indigo-500/50 mb-2" />
                       <span className="text-[10px] font-semibold text-indigo-700 dark:text-indigo-400">UPLOAD LOGO</span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Library Name</p><p className="font-medium text-lg">{LIBRARY_INFO.name}</p></div>
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Library Code</p><p className="font-medium">{LIBRARY_INFO.code}</p></div>
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><MapPin size={12}/> Address</p><p className="font-medium">{LIBRARY_INFO.address}</p></div>
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Phone size={12}/> Contact Number</p><p className="font-medium">{LIBRARY_INFO.contact}</p></div>
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Mail size={12}/> Email</p><p className="font-medium text-blue-500">{LIBRARY_INFO.email}</p></div>
-                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Globe size={12}/> Website</p><p className="font-medium text-blue-500">{LIBRARY_INFO.website}</p></div>
-                      <div className="md:col-span-2"><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><ShieldCheck size={12}/> Registration Details</p><p className="font-medium">{LIBRARY_INFO.regDetails}</p></div>
-                      <div className="md:col-span-2"><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><FileText size={12}/> Description</p><p className="text-sm leading-relaxed text-muted-foreground bg-muted/50 p-4 rounded-xl border border-border">{LIBRARY_INFO.description}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Library Name</p><p className="font-medium text-lg">{info.name}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Library Code</p><p className="font-medium">{info.code}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><MapPin size={12}/> Address</p><p className="font-medium">{info.address}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Phone size={12}/> Contact Number</p><p className="font-medium">{info.contact}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Mail size={12}/> Email</p><p className="font-medium text-blue-500">{info.email}</p></div>
+                      <div><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Globe size={12}/> Website</p><p className="font-medium text-blue-500">{info.website}</p></div>
+                      <div className="md:col-span-2"><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><ShieldCheck size={12}/> Registration Details</p><p className="font-medium">{info.regDetails}</p></div>
+                      <div className="md:col-span-2"><p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><FileText size={12}/> Description</p><p className="text-sm leading-relaxed text-muted-foreground bg-muted/50 p-4 rounded-xl border border-border">{info.description}</p></div>
                     </div>
                   </div>
                 </div>
@@ -197,7 +225,7 @@ export default function LibraryOverviewView() {
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <ShieldCheck className="text-emerald-500" /> Library Rules & Limits
                     </h2>
-                    <button className="flex items-center gap-2 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-200 transition-colors">
+                    <button onClick={()=>notify('Library rule editor opened.')} className="flex items-center gap-2 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-200 transition-colors">
                       <Edit3 size={16} /> Configure Rules
                     </button>
                   </div>
@@ -224,9 +252,10 @@ export default function LibraryOverviewView() {
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <FileText className="text-orange-500" /> Library Documents
                     </h2>
-                    <button className="flex items-center gap-2 bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-200 transition-colors">
+                    <label className="flex items-center gap-2 bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-200 transition-colors cursor-pointer">
                       <Download size={16} /> Upload New
-                    </button>
+                      <input type="file" className="hidden" accept=".pdf,.doc,.docx,.txt" onChange={e=>e.target.files?.[0] && notify(`Selected ${e.target.files[0].name} for upload.`)} />
+                    </label>
                   </div>
                   <div className="space-y-3">
                     {LIBRARY_DOCUMENTS.map((doc, i) => (
@@ -369,6 +398,7 @@ export default function LibraryOverviewView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
