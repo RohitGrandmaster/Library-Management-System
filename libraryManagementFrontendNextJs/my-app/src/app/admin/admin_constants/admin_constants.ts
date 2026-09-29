@@ -1,7 +1,8 @@
 import {
   LayoutDashboard, Activity, Building2, Users, BookOpen, UserCheck,
   ArrowRightLeft, Bookmark, ShoppingCart, Truck, Boxes, IndianRupee,
-  Bell, BarChart2, History, ShieldAlert, Settings, LifeBuoy, User
+  Bell, BarChart2, History, ShieldAlert, Settings, LifeBuoy, User,
+  Database, ScrollText
 } from 'lucide-react';
 import { AdminNavItem } from '../admin_types/admin_types';
 import { ADMIN_ROUTES } from '../admin_url_config';
@@ -34,7 +35,9 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   
   { group: 'System & Security' },
   { href: ADMIN_ROUTES.AUDIT,        icon: History,         label: 'Library Audit' },
+  { href: ADMIN_ROUTES.ACTIVITY_LOGS,icon: ScrollText,      label: 'Activity Logs' },
   { href: ADMIN_ROUTES.SECURITY,     icon: ShieldAlert,     label: 'Security' },
+  { href: ADMIN_ROUTES.IMPORT_EXPORT,icon: Database,        label: 'Import/Export Data' },
   { href: ADMIN_ROUTES.SETTINGS,     icon: Settings,        label: 'Settings' },
   { href: ADMIN_ROUTES.SUPPORT,      icon: LifeBuoy,        label: 'Support' },
   { href: ADMIN_ROUTES.PROFILE,      icon: User,            label: 'My Profile' },

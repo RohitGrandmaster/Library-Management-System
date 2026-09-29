@@ -24,6 +24,8 @@ export const ADMIN_ROUTES = {
   SETTINGS: '/admin/admin_settings',
   SUPPORT: '/admin/admin_support',
   PROFILE: '/admin/admin_profile',
+  IMPORT_EXPORT: '/admin/admin_import-export',
+  ACTIVITY_LOGS: '/admin/admin_activity-logs',
 } as const;
 
 export const ADMIN_API_ROUTES = {
