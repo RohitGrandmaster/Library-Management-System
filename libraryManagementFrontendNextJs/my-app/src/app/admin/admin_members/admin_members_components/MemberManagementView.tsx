@@ -146,13 +146,13 @@ export default function MemberManagementView() {
               {/* --- LISTING MODES --- */}
               {!selectedMember && ['all', 'active', 'expired', 'suspended', 'blocked'].includes(activeMenu) && (
                 <div className="flex flex-col h-full p-6">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                     <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                       <Users className="text-purple-500" /> {activeMenu} Members
                     </h2>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                      <input type="text" placeholder="Search members by ID, Name, Phone..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-72" />
+                      <input type="text" placeholder="Search members by ID, Name, Phone..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-72" />
                     </div>
                   </div>
 
@@ -384,10 +384,24 @@ export default function MemberManagementView() {
                        </div>
                      )}
 
-                     {activeDetailTab !== 'profile' && (
-                       <div className="h-64 flex flex-col items-center justify-center text-muted-foreground border-2 border-dashed border-border rounded-xl">
-                         <Activity size={40} className="mb-4 text-purple-500/50" />
-                         <p className="font-medium">{DETAIL_TABS.find(t=>t.id===activeDetailTab)?.label} details will appear here.</p>
+                     {activeDetailTab === 'membership' && (
+                       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                         {[['Plan',selectedMember.plan],['Joined',selectedMember.joined],['Expiry',selectedMember.expires],['Status',selectedMember.status],['Issued Books',String(selectedMember.issuedBooks)],['Fine Due','₹'+selectedMember.fine]].map(([label,value])=><div key={label} className="p-5 border border-border rounded-xl bg-card"><p className="text-xs uppercase tracking-wider text-muted-foreground">{label}</p><p className="text-lg font-bold mt-1">{value}</p></div>)}
+                       </div>
+                     )}
+                     {activeDetailTab === 'current_books' && (
+                       <div className="overflow-x-auto border border-border rounded-xl">
+                         <table className="w-full min-w-[620px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Book</th><th className="p-3">Issued On</th><th className="p-3">Due Date</th><th className="p-3">Status</th></tr></thead>
+                         <tbody>{[['Clean Code','24 Sep 2026','08 Oct 2026','Issued'],['Python Crash Course','20 Sep 2026','04 Oct 2026','Due Soon']].map(r=><tr key={r[0]} className="border-t border-border"><td className="p-3 font-semibold">{r[0]}</td><td className="p-3">{r[1]}</td><td className="p-3">{r[2]}</td><td className="p-3"><span className="px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">{r[3]}</span></td></tr>)}</tbody></table>
+                       </div>
+                     )}
+                     {activeDetailTab === 'issue_history' && (
+                       <div className="space-y-3">{[['The Alchemist','22 Sep 2026','Returned'],['Sapiens','10 Sep 2026','Returned'],['Clean Code','24 Sep 2026','Issued']].map(r=><div key={r[0]+r[1]} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 border border-border rounded-xl bg-card"><div><b>{r[0]}</b><p className="text-xs text-muted-foreground mt-1">Issue date: {r[1]}</p></div><span className="text-xs font-bold">{r[2]}</span></div>)}</div>
+                     )}
+                     {activeDetailTab === 'fine_history' && (
+                       <div className="overflow-x-auto border border-border rounded-xl">
+                         <table className="w-full min-w-[560px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Fine ID</th><th className="p-3">Reason</th><th className="p-3">Amount</th><th className="p-3">Status</th></tr></thead>
+                         <tbody>{[['F-102','Late return','₹50','Paid'],['F-118','Lost-book charge','₹200','Pending']].map(r=><tr key={r[0]} className="border-t border-border"><td className="p-3 font-semibold">{r[0]}</td><td className="p-3">{r[1]}</td><td className="p-3 font-bold">{r[2]}</td><td className="p-3">{r[3]}</td></tr>)}</tbody></table>
                        </div>
                      )}
                    </div>
