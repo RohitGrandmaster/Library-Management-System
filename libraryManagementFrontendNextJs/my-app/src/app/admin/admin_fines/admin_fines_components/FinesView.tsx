@@ -53,7 +53,18 @@ export default function FinesView() {
   };
 
   const handleProcessAction = () => {
-    if (selectedFine) setFines(items => items.map(f => f.id === selectedFine.id ? { ...f, status: actionType === 'pay' ? 'Paid' : 'Waived', paidAmount: actionType === 'pay' ? f.amount : f.paidAmount } : f));
+    if (!selectedFine || !actionType) return;
+    const outstanding = selectedFine.amount - (selectedFine.paidAmount || 0);
+    const amount = Number(actionType === 'pay' ? payAmount : waiveAmount);
+    if (!amount || amount < 0 || amount > outstanding) {
+      notify('Enter a valid amount up to the outstanding fine.');
+      return;
+    }
+    if (actionType === 'waive' && !waiveReason.trim()) {
+      notify('Waiver reason is required.');
+      return;
+    }
+    setFines(items => items.map(f => f.id === selectedFine.id ? { ...f, status: actionType === 'pay' && amount < outstanding ? 'Partially Paid' : actionType === 'pay' ? 'Paid' : 'Waived', paidAmount: actionType === 'pay' ? (f.paidAmount || 0) + amount : f.paidAmount } : f));
     notify(actionType === 'pay' ? 'Payment processed and receipt prepared.' : 'Fine waiver approved.');
     setSelectedFine(null);
     setActionType(null);
@@ -172,13 +183,13 @@ export default function FinesView() {
               {/* --- PENDING FINES LIST --- */}
               {!selectedFine && ['pending', 'partially_paid'].includes(activeMenu) && (
                 <div className="p-6 h-full flex flex-col">
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                      <h2 className="text-2xl font-bold flex items-center gap-2 capitalize">
                        <Clock className="text-orange-500" /> {activeMenu.replace('_', ' ')} Fines
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Member or Fine ID..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-64" />
+                       <input type="text" placeholder="Search Member or Fine ID..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-full sm:w-64" />
                      </div>
                   </div>
 
@@ -335,13 +346,27 @@ export default function FinesView() {
 
               {/* --- FINE WORKSPACES --- */}
               {!selectedFine && !['dashboard', 'pending', 'partially_paid'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-red-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Review {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} using the available fine records and actions.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div><h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Live mock finance records for this Admin workspace.</p></div>
+                    <span className="text-sm font-bold px-3 py-1.5 rounded-full bg-red-100 text-red-700">{fines.filter(f=>f.status.toLowerCase().replace(' ','_')===activeMenu || activeMenu==='payments' || activeMenu==='history' || activeMenu==='receipts' || activeMenu==='refunds' || activeMenu==='rules').length} records</span>
+                  </div>
+                  {activeMenu === 'rules' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl">
+                      <label className="space-y-2 text-sm font-medium">Grace period (days)<input type="number" defaultValue={2} min={0} className="w-full px-4 py-3 rounded-xl border border-border bg-card"/></label>
+                      <label className="space-y-2 text-sm font-medium">Fine per day (₹)<input type="number" defaultValue={10} min={0} className="w-full px-4 py-3 rounded-xl border border-border bg-card"/></label>
+                      <label className="space-y-2 text-sm font-medium">Maximum fine (₹)<input type="number" defaultValue={500} min={0} className="w-full px-4 py-3 rounded-xl border border-border bg-card"/></label>
+                      <label className="space-y-2 text-sm font-medium">Waiver approval required<select className="w-full px-4 py-3 rounded-xl border border-border bg-card"><option>Yes</option><option>No</option></select></label>
+                      <button onClick={()=>notify('Fine rules saved.')} className="admin-btn admin-btn-primary md:col-span-2">Save Rules</button>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto border border-border rounded-xl">
+                      <table className="w-full min-w-[760px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Fine ID</th><th className="p-3">Member</th><th className="p-3">Reason</th><th className="p-3">Amount</th><th className="p-3">Status</th><th className="p-3">Action</th></tr></thead><tbody>
+                        {fines.map(f=><tr key={f.id} className="border-t border-border"><td className="p-3 font-semibold">{f.id}</td><td className="p-3">{f.member}</td><td className="p-3">{f.reason}</td><td className="p-3 font-bold">₹{f.amount}</td><td className="p-3">{f.status}</td><td className="p-3"><button onClick={()=>{setSelectedFine(f);setActionType('pay')}} className="text-red-600 font-semibold hover:underline">Open</button></td></tr>)}
+                      </tbody></table>
+                    </div>
+                  )}
+                </div>
               )}
 
             </motion.div>
