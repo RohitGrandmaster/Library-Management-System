@@ -194,7 +194,7 @@ export default function CirculationView() {
                                <div className="flex justify-between text-blue-600 dark:text-blue-400 font-bold border-t border-border pt-2"><span className="">Due Date</span><span className="">13 Oct 2026</span></div>
                              </div>
 
-                             <button className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]">
+                             <button onClick={()=>{notify("Issue completed and receipt prepared.");handleResetIssue();}} className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]">
                                Confirm Issue & Print Receipt <Printer size={20} />
                              </button>
                           </motion.div>
@@ -285,7 +285,7 @@ export default function CirculationView() {
                         <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
                         <input type="text" placeholder="Scan Barcode to Renew..." className="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded-xl text-base focus:outline-none focus:border-purple-500 transition-colors" />
                       </div>
-                      <button type="button" className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-md">Search</button>
+                      <button type="button" onClick={()=>notify("Renewal lookup completed.")} className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-md">Search</button>
                    </form>
                 </div>
               )}
