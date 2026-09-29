@@ -344,15 +344,22 @@ export default function ProfileView() {
               )}
 
 
-              {/* --- PLACEHOLDERS --- */}
               {!['profile', 'edit', 'password', '2fa', 'sessions', 'history'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10 bg-background flex-1">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-emerald-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Manage the selected Admin account control and save changes from this workspace.</p>
-                 </div>
+                <div className="p-6 md:p-8 h-full bg-background overflow-y-auto">
+                  <div className="max-w-3xl space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold flex items-center gap-2"><Settings className="text-emerald-500"/> Security Settings</h2>
+                      <p className="text-sm text-muted-foreground mt-1">Review account protection controls for this Admin profile.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-5 border border-border rounded-xl bg-card"><div className="flex justify-between gap-3"><b>Login Alerts</b><span className="text-xs font-bold text-emerald-600">Enabled</span></div><p className="text-xs text-muted-foreground mt-2">Receive a notification after a new login.</p></div>
+                      <div className="p-5 border border-border rounded-xl bg-card"><div className="flex justify-between gap-3"><b>Device Trust</b><span className="text-xs font-bold text-emerald-600">Enabled</span></div><p className="text-xs text-muted-foreground mt-2">Trusted devices can skip repeated verification.</p></div>
+                      <div className="p-5 border border-border rounded-xl bg-card"><div className="flex justify-between gap-3"><b>Session Timeout</b><span className="text-xs font-bold text-emerald-600">30 min</span></div><p className="text-xs text-muted-foreground mt-2">Inactive sessions expire automatically.</p></div>
+                      <div className="p-5 border border-border rounded-xl bg-card"><div className="flex justify-between gap-3"><b>Recovery Email</b><span className="text-xs font-bold text-emerald-600">Configured</span></div><p className="text-xs text-muted-foreground mt-2">Password recovery contact is available.</p></div>
+                    </div>
+                    <button onClick={()=>handleAction('Security settings')} className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-sm">Save Security Settings</button>
+                  </div>
+                </div>
               )}
 
             </motion.div>
