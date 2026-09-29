@@ -31,11 +31,11 @@ const MOCK_HISTORY = [
 
 export default function ProfileView() {
   const [activeMenu, setActiveMenu] = useState('profile');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
-  const handleAction = (action: string) => {
-    alert(`${action} updated successfully!`);
-  };
+  const handleAction = (action: string) => { notify(action + ' updated successfully.'); };
 
   return (
     <div className="w-full max-w-full space-y-6 pb-12">
@@ -292,7 +292,7 @@ export default function ProfileView() {
 
                          {!session.isCurrent && (
                            <div className="flex flex-col items-end gap-3">
-                              <button onClick={() => alert('Logged out from device')} className="px-4 py-2 border border-red-200 bg-red-50 text-red-600 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+                              <button onClick={() => notify('Selected session logged out.')} className="px-4 py-2 border border-red-200 bg-red-50 text-red-600 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
                                 <LogOut size={16}/> Revoke Session
                               </button>
                            </div>
@@ -357,6 +357,7 @@ export default function ProfileView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
