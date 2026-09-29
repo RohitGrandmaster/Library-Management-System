@@ -346,7 +346,7 @@ export default function SupportView() {
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-sky-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Read manuals and check platform updates for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} here.</p>
+                   <p className="text-center max-w-md mb-6">Open the selected support resource and continue the workflow from this Admin workspace.</p>
                  </div>
               )}
 
