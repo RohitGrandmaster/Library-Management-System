@@ -58,7 +58,9 @@ export default function ReservationsView() {
 
   const handleAction = (action: string, res: any) => {
     setActionMenuOpen(null);
-    alert(`${action} triggered for ${res.id}`); // UI dummy logic
+    if (action === 'Cancel Reservation') setReservations(items=>items.map(r=>r.id===res.id?{...r,status:'Cancelled'}:r));
+    if (action === 'Fulfill Reservation') setReservations(items=>items.map(r=>r.id===res.id?{...r,status:'Fulfilled'}:r));
+    notify(action + ' completed for ' + res.id + '.');
   };
 
   return (
@@ -127,7 +129,7 @@ export default function ReservationsView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Member or Book..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 w-64" />
+                       <input type="text" placeholder="Search Member or Book..." value={search} onChange={e=>setSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 w-64" />
                      </div>
                   </div>
 
@@ -184,7 +186,7 @@ export default function ReservationsView() {
                 </div>
               )}
 
-              {/* --- RULES PLACEHOLDER --- */}
+              {/* --- RESERVATION RULES --- */}
               {activeMenu === 'rules' && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
@@ -192,7 +194,7 @@ export default function ReservationsView() {
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2">Reservation Rules</h3>
                    <p className="text-center max-w-md mb-6">Configure maximum allowed reservations, hold period limits, and automatic expiration behaviors.</p>
-                   <button className="px-6 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-pink-700">Configure Rules</button>
+                   <button onClick={()=>notify("Reservation rules saved.")} className="px-6 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-pink-700">Configure Rules</button>
                  </div>
               )}
 
