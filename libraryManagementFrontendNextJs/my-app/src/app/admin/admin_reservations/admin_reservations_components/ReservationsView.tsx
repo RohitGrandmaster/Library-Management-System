@@ -29,11 +29,14 @@ const SIDEBAR_MENU = [
 ];
 
 export default function ReservationsView() {
+  const [reservations, setReservations] = useState(MOCK_RESERVATIONS);
   const [activeMenu, setActiveMenu] = useState('all');
+  const [search, setSearch] = useState('');
+  const [notice, setNotice] = useState('');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
 
   // Filter reservations based on menu
-  const displayReservations = MOCK_RESERVATIONS.filter(res => {
+  const displayReservations = reservations.filter(res => {
     if (activeMenu === 'all') return true;
     if (activeMenu === 'ready') return res.status === 'Ready for Pickup';
     return res.status.toLowerCase() === activeMenu;
@@ -50,6 +53,8 @@ export default function ReservationsView() {
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   };
+
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   const handleAction = (action: string, res: any) => {
     setActionMenuOpen(null);
