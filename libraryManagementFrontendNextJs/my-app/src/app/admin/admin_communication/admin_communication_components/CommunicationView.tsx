@@ -38,6 +38,8 @@ const AUTOMATION_TRIGGERS = [
 
 export default function CommunicationView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   // Form states for Announcement
   const [targetAudience, setTargetAudience] = useState('entire_library');
@@ -276,9 +278,9 @@ export default function CommunicationView() {
                                </h3>
                                <p className="text-xs text-muted-foreground mt-1">{trigger.desc}</p>
                                <div className="mt-3 flex gap-2">
-                                 <button className="text-xs font-bold text-indigo-600 hover:underline">Edit Email Template</button>
+                                 <button onClick={()=>notify("Email template editor opened.")} className="text-xs font-bold text-indigo-600 hover:underline">Edit Email Template</button>
                                  <span className="text-muted-foreground text-xs">•</span>
-                                 <button className="text-xs font-bold text-emerald-600 hover:underline">Edit SMS Template</button>
+                                 <button onClick={()=>notify("SMS template editor opened.")} className="text-xs font-bold text-emerald-600 hover:underline">Edit SMS Template</button>
                                </div>
                             </div>
                             
@@ -293,7 +295,7 @@ export default function CommunicationView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS --- */}
+              {/* --- COMMUNICATIONS --- */}
               {!['dashboard', 'announcements', 'triggers'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
@@ -308,6 +310,7 @@ export default function CommunicationView() {
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
