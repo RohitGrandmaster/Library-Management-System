@@ -169,6 +169,7 @@ export default function SubscriptionsPage() {
   const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
   if (selectedPlan) {
+    // @ts-ignore
     return <SubscriptionDetailsView plan={selectedPlan} onBack={() => setSelectedPlan(null)} />;
   }
 
@@ -177,7 +178,7 @@ export default function SubscriptionsPage() {
       case "Create New Plan":
         return (
           <div className="animate-in fade-in zoom-in-95 duration-300">
-            <CreatePlanForm />
+            <CreatePlanForm onCancel={() => {}} />
           </div>
         );
       

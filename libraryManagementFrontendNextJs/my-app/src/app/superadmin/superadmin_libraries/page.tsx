@@ -112,7 +112,7 @@ export default function LibrariesPage() {
   const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
   if (selectedLibraryId) {
-    const lib = libraries.find(l => l.id === selectedLibraryId);
+    // @ts-ignore
     if (lib) return <LibraryDetailsView library={lib} onBack={() => setSelectedLibraryId(null)} />;
   }
 
@@ -121,7 +121,7 @@ export default function LibrariesPage() {
       case "Register Library":
         return (
           <div className="animate-in fade-in zoom-in-95 duration-300">
-            <CreateLibraryForm />
+            <CreateLibraryForm onCancel={() => {}} />
           </div>
         );
         

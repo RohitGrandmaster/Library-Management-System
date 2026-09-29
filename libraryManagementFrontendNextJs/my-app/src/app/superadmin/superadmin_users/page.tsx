@@ -144,7 +144,7 @@ export default function UsersPage() {
       case "Invite / Add User":
         return (
           <div className="animate-in fade-in zoom-in-95 duration-300">
-            <CreateUserForm />
+            <CreateUserForm onCancel={() => {}} />
           </div>
         );
         

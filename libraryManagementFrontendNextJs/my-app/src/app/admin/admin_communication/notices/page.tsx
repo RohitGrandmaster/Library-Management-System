@@ -37,7 +37,7 @@ export default function NoticesPage() {
         postedBy: 'Admin',
         postedDate: new Date(n.createdAt).toISOString().split('T')[0],
         validTill: new Date(n.validTill).toISOString().split('T')[0],
-        status: new Date(n.validTill) >= new Date() ? 'Active' : 'Expired',
+        status: (new Date(n.validTill) >= new Date() ? 'Active' : 'Expired') as 'Active' | 'Expired',
       }));
       setNotices(mapped);
     }).catch(console.error);

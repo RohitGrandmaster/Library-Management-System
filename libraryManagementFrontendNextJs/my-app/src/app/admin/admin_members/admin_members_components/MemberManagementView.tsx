@@ -312,11 +312,11 @@ export default function MemberManagementView() {
                   {activeMenu === 'renewal' && <div className="space-y-3">{members.filter(m=>m.status!=='Blocked').map(member=><div key={member.id} className="admin-card p-4 flex flex-col md:flex-row md:items-center gap-3"><div className="flex-1"><b>{member.name}</b><div className="text-xs text-muted-foreground">{member.id} • Expires: {member.expires}</div></div><button onClick={()=>{setMembers(items=>items.map(m=>m.id===member.id?{...m,status:'Active',expires:'29 Sep 2027'}:m));notify('Membership renewed for '+member.name+'.');}} className="admin-btn admin-btn-primary">Renew</button></div>)}</div>}
                   {activeMenu !== 'renewal' && activeMenu !== 'import' && activeMenu !== 'export' && <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {[
-                      ['Member Categories',['Premium','Student','Standard','Faculty']],
-                      ['Departments',['Computer Science','Commerce','Humanities','Science']],
-                      ['Membership Plans',['Monthly Access','Semester Plan','Yearly Access','Lifetime Access']],
-                      ['Member Documents',['Identity Proof','Address Proof','Membership Card','Consent Form']]
-                    ].find(x=>x[0].toLowerCase().replace(/ /g,'_').includes(activeMenu.replace('_','_')))?.[1]?.map((item:string)=><div key={item} className="admin-card p-4"><b>{item}</b><p className="text-xs text-muted-foreground mt-1">Configured in Admin workspace.</p></div>)}
+                      {title: 'Member Categories', items: ['Premium','Student','Standard','Faculty']},
+                      {title: 'Departments', items: ['Computer Science','Commerce','Humanities','Science']},
+                      {title: 'Membership Plans', items: ['Monthly Access','Semester Plan','Yearly Access','Lifetime Access']},
+                      {title: 'Member Documents', items: ['Identity Proof','Address Proof','Membership Card','Consent Form']}
+                    ].find(x=>x.title.toLowerCase().replace(/ /g,'_').includes(activeMenu.replace('_','_')))?.items.map((item:string)=><div key={item} className="admin-card p-4"><b>{item}</b><p className="text-xs text-muted-foreground mt-1">Configured in Admin workspace.</p></div>)}
                   </div>}
                 </div>
               )}

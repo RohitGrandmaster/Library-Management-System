@@ -89,7 +89,7 @@ export default function AdminAuditLogsPage() {
         performedBy: 'Staff User',
         role: 'Admin',
         details: l.details,
-        severity: 'info',
+        severity: 'info' as 'danger' | 'warning' | 'success' | 'info',
         timestamp: new Date(l.createdAt).toLocaleString(),
         ip: '192.168.1.1'
       }));

@@ -130,7 +130,7 @@ export default function BranchesPage() {
   const onGridReady = useCallback((e: GridReadyEvent) => { e.api.sizeColumnsToFit(); }, []);
 
   if (selectedBranch) {
-    return <BranchDetailsView branch={selectedBranch} onBack={() => setSelectedBranch(null)} />;
+    return <BranchDetailsView branch={selectedBranch} onBack={() => setSelectedBranch(null)} onStatusChange={(status: string) => {}} />;
   }
 
   const renderContent = () => {
@@ -138,7 +138,7 @@ export default function BranchesPage() {
       case "Register Branch":
         return (
           <div className="animate-in fade-in zoom-in-95 duration-300">
-            <CreateBranchForm />
+            <CreateBranchForm onCancel={() => {}} onCreated={(branch) => {}} />
           </div>
         );
         

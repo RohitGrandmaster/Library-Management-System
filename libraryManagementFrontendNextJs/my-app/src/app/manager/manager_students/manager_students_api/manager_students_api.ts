@@ -3,7 +3,7 @@ import type { Student } from '../manager_students_types';
 
 export async function fetchStudents(): Promise<Student[]> {
   try {
-    return await fetchApi('/students');
+    return await fetchApi('/students') as any;
   } catch (error) {
     console.warn("Backend not reachable, returning mock students");
     return [

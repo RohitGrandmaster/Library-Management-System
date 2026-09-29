@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LifeBuoy, Ticket, PlusCircle, LayoutList, Server, Bell,
   BookOpen, Send, Paperclip, AlertCircle, CheckCircle, Search,
-  MessageSquare, History, Clock, FileText, ChevronRight, X
+  MessageSquare, History, Clock, FileText, ChevronRight, X, Activity
 } from 'lucide-react';
 
 const SIDEBAR_MENU = [
@@ -29,6 +29,7 @@ export default function SupportView() {
   const [notice, setNotice] = useState('');
   const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [selectedTicket, setSelectedTicket] = useState<any | null>(null);
+  const [search, setSearch] = useState('');
 
   const getPriorityColor = (priority: string) => {
     if(priority === 'High') return 'text-red-600 bg-red-100 dark:bg-red-900/30';

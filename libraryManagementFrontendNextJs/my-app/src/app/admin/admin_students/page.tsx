@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
 import { useAdmin } from '@/app/admin/admin_context/AdminContext';
-import { fetchAdminStudents } from '@/app/admin/admin_api/admin_api';
+import { fetchApi } from '@/lib/api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -19,7 +19,7 @@ export default function AdminStudentsPage() {
   const { selectedBranch } = useAdmin();
 
   useEffect(() => {
-    fetchAdminStudents().then(data => {
+    fetchApi('/admin/admin_students').then(data => {
       const mapped = data.map((s: any) => ({
         id: 'STU-' + s.id.substring(0, 4).toUpperCase(),
         name: s.fullName,

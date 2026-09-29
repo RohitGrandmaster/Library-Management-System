@@ -6,7 +6,7 @@ import {
   Building2, Users, Receipt, History, Wallet, LineChart, 
   Archive, FileText, PlusCircle, Search, Edit3, MapPin, 
   Phone, Mail, CheckCircle, Ban, AlertTriangle, MoreVertical,
-  Briefcase, DollarSign, ExternalLink, ShieldCheck, CreditCard
+  Briefcase, DollarSign, ExternalLink, ShieldCheck, CreditCard, ShoppingCart
 } from 'lucide-react';
 
 // --- MOCK DATA ---

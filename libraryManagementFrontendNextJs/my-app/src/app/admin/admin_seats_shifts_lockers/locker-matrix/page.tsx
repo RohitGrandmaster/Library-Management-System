@@ -44,7 +44,7 @@ export default function LockerMatrixPage() {
       const mapped = data.map((l: any) => ({
         uuid: l.id,
         id: l.lockerNumber.replace('L-', ''),
-        status: l.isActive ? 'free' : 'maintenance',
+        status: (l.isActive ? 'free' : 'maintenance') as 'free' | 'occupied' | 'maintenance',
       }));
       setLockerData(mapped);
     }).catch(console.error);

@@ -8,9 +8,4 @@ export async function fetchAdminDashboard() {
   return fetchApi(ADMIN_API_ROUTES.DASHBOARD);
 }
 
-/**
- * Fetches the list of students.
- */
-export async function fetchAdminStudents() {
-  return fetchApi(ADMIN_API_ROUTES.STUDENTS);
-}
+

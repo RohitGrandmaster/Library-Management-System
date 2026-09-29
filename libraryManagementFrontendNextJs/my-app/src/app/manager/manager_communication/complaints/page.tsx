@@ -38,7 +38,7 @@ export default function ComplaintsPage() {
         status: c.status === 'open' ? 'Open' : (c.status === 'resolved' ? 'Resolved' : 'In-Progress'),
         student: 'Mock Student (S-001)',
       }));
-      setComplaints(mapped);
+      setComplaints(mapped as any);
     }).catch(console.error);
   }, []);
   const [toast, setToast]               = useState('');

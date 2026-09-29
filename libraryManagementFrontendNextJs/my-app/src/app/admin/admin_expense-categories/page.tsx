@@ -33,7 +33,7 @@ export default function ExpenseCategoriesPage() {
         id: c.id,
         name: c.name,
         description: c.description,
-        status: 'Active'
+        status: 'Active' as 'Active' | 'Inactive'
       }));
       setCategories(mapped);
     }).catch(console.error);

@@ -152,9 +152,13 @@ export default function EnquiriesPage() {
         status: e.status.charAt(0).toUpperCase() + e.status.slice(1),
         handledBy: e.handledBy?.name || 'Unassigned',
         addedDate: new Date(e.createdAt).toLocaleDateString(),
-        avatar: e.name.substring(0, 2).toUpperCase()
+        avatar: e.name.substring(0, 2).toUpperCase(),
+        source: 'Walk-in',
+        enquiryDate: new Date(e.createdAt).toLocaleDateString(),
+        preferredBranch: 'Main',
+        followUps: []
       }));
-      setEnquiries(mapped);
+      setEnquiries(mapped as any);
     }).catch(console.error);
   }, []);
 

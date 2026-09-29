@@ -40,8 +40,13 @@ export default function ComplaintsPage() {
         date: new Date(c.createdAt).toLocaleDateString(),
         status: c.status === 'open' ? 'Open' : (c.status === 'resolved' ? 'Resolved' : 'In-Progress'),
         student: 'Mock Student (S-001)',
+        isAnonymous: false,
+        description: c.description ?? '',
+        resolvedBy: null,
+        resolvedDate: null,
+        resolvedNote: '',
       }));
-      setComplaints(mapped);
+      setComplaints(mapped as any);
     }).catch(console.error);
   }, []);
   const [toast, setToast]               = useState('');

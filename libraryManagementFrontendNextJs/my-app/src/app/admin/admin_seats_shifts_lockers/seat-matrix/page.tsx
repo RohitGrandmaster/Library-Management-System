@@ -43,7 +43,7 @@ export default function SeatMatrixPage() {
       const mapped = data.map((s: any) => ({
         uuid: s.id,
         id: s.seatNumber.replace('S-', ''),
-        status: s.isActive ? 'free' : 'maintenance',
+        status: (s.isActive ? 'free' : 'maintenance') as 'occupied' | 'expiring' | 'free' | 'maintenance',
       }));
       setSeatsData(mapped);
     }).catch(console.error);

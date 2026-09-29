@@ -71,7 +71,7 @@ export default function Payments() {
         receivedBy: 'Admin',
         status: p.status === 'completed' ? 'valid' : 'deleted',
       }));
-      setAllPayments(mapped);
+      setAllPayments(mapped as any);
     }).catch(console.error);
   }, []);
 

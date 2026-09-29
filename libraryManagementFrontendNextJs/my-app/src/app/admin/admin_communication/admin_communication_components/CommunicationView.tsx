@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   BellRing, Megaphone, Mail, MessageSquare, Smartphone, Globe,
   LayoutTemplate, CalendarClock, ListOrdered, History, AlertTriangle,
-  Send, Users, MapPin, Building2, ShieldCheck, CheckCircle2, RefreshCw
+  Send, Users, MapPin, Building2, ShieldCheck, CheckCircle2, RefreshCw, Ban
 } from 'lucide-react';
 
 const SIDEBAR_MENU = [

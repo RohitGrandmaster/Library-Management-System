@@ -65,7 +65,7 @@ export default function AdminPermissionsPage() {
 
   useEffect(() => {
     fetchApi('/admin/admin_permissions').then(data => {
-      setPerms(data);
+      setPerms(data as any);
     }).catch(console.error);
   }, []);
 

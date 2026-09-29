@@ -61,7 +61,7 @@ export default function AdminPlansPage() {
         duration: p.durationInDays + ' Days',
         durationDays: p.durationInDays,
         features: ['Any single shift', 'Locker access', 'WiFi included'],
-        status: p.isActive ? 'Active' : 'Inactive',
+        status: (p.isActive ? 'Active' : 'Inactive') as 'Active' | 'Inactive',
         subscribers: 0
       }));
       setPlans(mapped);

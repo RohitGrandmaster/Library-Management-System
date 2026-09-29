@@ -206,7 +206,7 @@ export default function GlobalConfigPage() {
 
         {/* Dynamic Fields Area */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8 bg-gray-50/20 dark:bg-transparent">
-          {renderContent()}
+          {renderConfigContent()}
         </div>
 
         {/* Footer Notification */}

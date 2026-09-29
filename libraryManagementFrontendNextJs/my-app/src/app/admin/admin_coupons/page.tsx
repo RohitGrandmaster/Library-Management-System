@@ -69,11 +69,11 @@ export default function AdminCouponsPage() {
         id: c.id,
         code: c.code,
         discount: c.discountValue,
-        type: c.discountType === 'percentage' ? 'Percent' : 'Flat',
+        type: (c.discountType === 'percentage' ? 'Percent' : 'Flat') as 'Flat' | 'Percent',
         usedCount: 0,
         maxUses: 100,
         expiry: new Date(c.validUntil).toLocaleDateString(),
-        status: c.isActive ? 'Active' : 'Expired',
+        status: (c.isActive ? 'Active' : 'Expired') as 'Active' | 'Expired',
       }));
       setCoupons(mapped);
     }).catch(console.error);

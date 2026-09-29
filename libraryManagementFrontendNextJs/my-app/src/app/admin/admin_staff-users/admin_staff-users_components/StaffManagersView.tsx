@@ -7,7 +7,7 @@ import {
   Activity, MoreVertical, Edit3, Eye, Shield, CheckCircle,
   AlertTriangle, Power, UploadCloud, RefreshCw, LogOut,
   MapPin, Phone, Mail, Search, Lock, UserCheck, KeySquare,
-  FileText, History
+  FileText, History, ArrowRightLeft
 } from 'lucide-react';
 
 // --- MOCK DATA ---
