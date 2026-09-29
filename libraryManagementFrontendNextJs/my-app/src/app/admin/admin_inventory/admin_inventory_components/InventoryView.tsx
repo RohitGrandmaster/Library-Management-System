@@ -189,7 +189,7 @@ export default function InventoryView() {
                       </div>
                       
                       <div className="pt-4 border-t border-border flex justify-end gap-3">
-                         <button className="px-6 py-3 border border-border bg-muted hover:bg-muted/80 rounded-xl font-medium">Cancel</button>
+                         <button type="button" onClick={()=>setActiveMenu("dashboard")} className="px-6 py-3 border border-border bg-muted hover:bg-muted/80 rounded-xl font-medium">Cancel</button>
                          <button onClick={()=>{setActiveMenu("dashboard");notify("Stock transfer recorded successfully.");}} className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2"><ArrowRightLeft size={18}/> Confirm Transfer</button>
                       </div>
                    </div>
