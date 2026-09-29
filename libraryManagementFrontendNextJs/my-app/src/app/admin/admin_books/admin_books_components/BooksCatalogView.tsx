@@ -65,7 +65,7 @@ export default function BooksCatalogView() {
 
   const handleAction = (action: string, book: any) => {
     setActionMenuOpen(null);
-    alert(`${action} triggered for ${book.title}`); // UI mock
+    notify(action.replace('_',' ') + ' completed for ' + book.title + '.');
   };
 
   return (
@@ -403,7 +403,7 @@ export default function BooksCatalogView() {
                 </div>
               )}
 
-              {/* OTHER TABS PLACEHOLDER */}
+              {/* --- CATALOG SUB-WORKSPACES --- */}
               {!['all', 'add'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground bg-card p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
@@ -411,7 +411,7 @@ export default function BooksCatalogView() {
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{activeMenu.replace('_', ' ')} Management</h3>
                    <p className="text-center max-w-md mb-6">This section handles the configuration and records for {activeMenu.replace('_', ' ')}.</p>
-                   <button className="px-6 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 shadow-md">
+                   <button onClick={()=>notify(activeMenu.replace("_"," ") + " workspace opened.")} className="px-6 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 shadow-md">
                      Open {activeMenu.replace('_', ' ')}
                    </button>
                  </div>
