@@ -178,12 +178,12 @@ export default function FinesView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Member or Fine ID..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-64" />
+                       <input type="text" placeholder="Search Member or Fine ID..." onChange={()=>{}} className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-64" />
                      </div>
                   </div>
 
                   <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2">
-                    {MOCK_FINES.filter(f => f.status.toLowerCase().replace(' ', '_') === activeMenu).map(fine => (
+                    {fines.filter(f => f.status.toLowerCase().replace(' ', '_') === activeMenu).map(fine => (
                       <div key={fine.id} className="p-5 border border-border rounded-2xl bg-background hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                          
                          <div className="flex items-start gap-4">
@@ -333,14 +333,14 @@ export default function FinesView() {
               )}
 
 
-              {/* --- PLACEHOLDERS --- */}
+              {/* --- FINE WORKSPACES --- */}
               {!selectedFine && !['dashboard', 'pending', 'partially_paid'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
                      {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-red-500"})}
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Manage tracking and lists for {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()}.</p>
+                   <p className="text-center max-w-md mb-6">Review {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} using the available fine records and actions.</p>
                  </div>
               )}
 
