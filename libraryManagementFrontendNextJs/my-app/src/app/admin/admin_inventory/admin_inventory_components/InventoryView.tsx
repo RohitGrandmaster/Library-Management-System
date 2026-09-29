@@ -34,6 +34,13 @@ export default function InventoryView() {
   const [verificationStep, setVerificationStep] = useState(1);
   const [scanInput, setScanInput] = useState('');
   const [scannedItems, setScannedItems] = useState<string[]>([]);
+  const [inventoryItems, setInventoryItems] = useState([
+    {id:'BK-1001',title:'Clean Code',branch:'Central Main Library',qty:10,status:'Available',value:3500},
+    {id:'BK-1002',title:'The Mythical Man-Month',branch:'Northside Hub',qty:5,status:'Issued',value:2000},
+    {id:'BK-1003',title:'Python Crash Course',branch:'East Wing Branch',qty:15,status:'Available',value:7500},
+    {id:'BK-1004',title:'Intro to Algorithms',branch:'Central Main Library',qty:4,status:'Damaged',value:2600}
+  ]);
+  const [inventorySearch, setInventorySearch] = useState('');
   
   const handleScan = (e: React.FormEvent) => {
     e.preventDefault();
@@ -339,13 +346,27 @@ export default function InventoryView() {
 
               {/* --- INVENTORY WORKSPACES --- */}
               {!['dashboard', 'transfer', 'verification', 'adjustment'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-violet-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Review, reconcile and manage {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label.toLowerCase()} from this Admin workspace.</p>
-                 </div>
+                <div className="p-6 bg-background space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div><h2 className="text-2xl font-bold capitalize">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2><p className="text-sm text-muted-foreground mt-1">Inventory records and reconciliation tools for the Admin workspace.</p></div>
+                    <div className="relative w-full sm:w-72"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16}/><input value={inventorySearch} onChange={e=>setInventorySearch(e.target.value)} placeholder="Search stock..." className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-card"/></div>
+                  </div>
+                  {activeMenu==='valuation' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="admin-card p-5"><p className="text-xs uppercase text-muted-foreground">Book Value</p><p className="text-2xl font-bold mt-1">₹{inventoryItems.reduce((n,i)=>n+i.value,0).toLocaleString()}</p></div>
+                      <div className="admin-card p-5"><p className="text-xs uppercase text-muted-foreground">Units</p><p className="text-2xl font-bold mt-1">{inventoryItems.reduce((n,i)=>n+i.qty,0)}</p></div>
+                      <div className="admin-card p-5"><p className="text-xs uppercase text-muted-foreground">Catalog Items</p><p className="text-2xl font-bold mt-1">{inventoryItems.length}</p></div>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto border border-border rounded-xl">
+                      <table className="w-full min-w-[760px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Book ID</th><th className="p-3">Title</th><th className="p-3">Branch</th><th className="p-3">Qty</th><th className="p-3">Status</th><th className="p-3">Value</th><th className="p-3">Action</th></tr></thead><tbody>
+                        {inventoryItems.filter(i=>!inventorySearch.trim() || [i.id,i.title,i.branch,i.status].some(v=>v.toLowerCase().includes(inventorySearch.toLowerCase()))).filter(i=>activeMenu==='all_stock' || activeMenu==='history' || activeMenu==='stock_in' || activeMenu==='stock_out' || activeMenu==='missing' || activeMenu==='lost' || activeMenu==='damaged' || activeMenu==='repair' || activeMenu==='archived' ? true : true).map(i=>
+                          <tr key={i.id} className="border-t border-border"><td className="p-3 font-semibold">{i.id}</td><td className="p-3">{i.title}</td><td className="p-3">{i.branch}</td><td className="p-3">{i.qty}</td><td className="p-3">{i.status}</td><td className="p-3 font-bold">₹{i.value.toLocaleString()}</td><td className="p-3"><button onClick={()=>{setInventoryItems(items=>items.map(x=>x.id===i.id?{...x,status:activeMenu==='repair'?'Under Repair':activeMenu==='archived'?'Archived':x.status}:x));notify('Inventory record updated.');}} className="text-violet-600 font-semibold hover:underline">Update</button></td></tr>
+                        )}
+                      </tbody></table>
+                    </div>
+                  )}
+                </div>
               )}
 
             </motion.div>
