@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import SeatCell from './SeatCell';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,6 @@ const LEGEND = [
 ];
 
 export default function SeatMatrixGrid({ seats, shifts }: Props) {
-  const router = useRouter();
   const [activeShift, setActiveShift]   = useState('All');
   const [feeFilter, setFeeFilter]       = useState('All');
   const [appliedFee, setAppliedFee]     = useState('All');
@@ -54,11 +52,10 @@ export default function SeatMatrixGrid({ seats, shifts }: Props) {
   };
 
   function handleCellClick(seat: SeatData) {
-    if (seat.status === 'occupied' || seat.status === 'expiring') {
-      router.push(seat.studentId ? `/manager/manager_students/${seat.studentId}` : '/manager/manager_students');
-    } else if (seat.status === 'free') {
-      router.push('/manager/manager_students/new');
+    if (seat.status === 'maintenance') {
+      return;
     }
+    window.dispatchEvent(new CustomEvent('admin-seat-selected', { detail: seat }));
   }
 
   function handleApply() {
@@ -114,7 +111,7 @@ export default function SeatMatrixGrid({ seats, shifts }: Props) {
             </p>
           </div>
         ) : (
-          <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(64px, 1fr))' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-3">
             {filtered.map(seat => (
               <SeatCell
                 key={seat.id}
