@@ -118,7 +118,7 @@ export default function VendorsView() {
                      </h2>
                      <div className="relative">
                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-64" />
+                       <input type="text" placeholder="Search Company or Contact..." className="pl-9 pr-4 py-2 bg-muted/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-64" onChange={()=>{}} />
                      </div>
                   </div>
 
@@ -233,8 +233,8 @@ export default function VendorsView() {
                       </div>
 
                       <div className="col-span-1 md:col-span-2 pt-6 flex justify-end gap-3">
-                         <button className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
-                         <button className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium flex items-center gap-2 shadow-md">
+                         <button onClick={()=>setActiveMenu("all")} className="px-6 py-2.5 rounded-xl border border-border bg-muted hover:bg-muted/80 font-medium">Cancel</button>
+                         <button onClick={()=>setActiveMenu("all")} className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium flex items-center gap-2 shadow-md">
                            <CheckCircle size={18} /> Save Vendor
                          </button>
                       </div>
@@ -305,7 +305,7 @@ export default function VendorsView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS --- */}
+              {/* --- VENDOR WORKSPACES --- */}
               {!selectedVendor && !['all', 'add'].includes(activeMenu) && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
