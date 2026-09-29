@@ -73,7 +73,7 @@ export default function AdminActivityLogsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[minmax(260px,1fr)_180px_180px_auto] gap-3">
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <input className="admin-input w-full pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search action, user, module..." />
+          <input className="admin-input w-full pl-9" value={search} onChange={(e) => setSearch(e.target.value)} WORKSPACE="Search action, user, module..." />
         </div>
         <select className="admin-input" value={moduleFilter} onChange={(e) => setModuleFilter(e.target.value)}>
           <option value="All">All Modules</option>
