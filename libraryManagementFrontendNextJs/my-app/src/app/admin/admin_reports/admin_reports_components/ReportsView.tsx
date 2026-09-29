@@ -49,15 +49,15 @@ export default function ReportsView() {
         </div>
         
         {/* GLOBAL EXPORT BUTTON */}
-        <div className="relative">
+        <div className="relative w-full md:w-auto">
           <button 
             onClick={() => setExportOpen(!exportOpen)} 
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-colors"
+            className="flex w-full md:w-auto items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-colors"
           >
             <Download size={16} /> Export Current Report
           </button>
           {exportOpen && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 py-2">
+            <div className="absolute left-0 md:left-auto md:right-0 top-full mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 py-2">
               <button onClick={() => handleExport('pdf')} className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center gap-2"><FileText size={16} className="text-red-500"/> Export as PDF</button>
               <button onClick={() => handleExport('excel')} className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center gap-2"><TableProperties size={16} className="text-emerald-500"/> Export as Excel</button>
               <button onClick={() => handleExport('csv')} className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center gap-2"><FileDown size={16} className="text-slate-500"/> Export as CSV</button>
@@ -200,7 +200,7 @@ export default function ReportsView() {
 
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="border border-border bg-card rounded-xl p-5 shadow-sm">
-                         <h4 className="font-bold flex justify-between items-center mb-4">New Members (This Month)</h4>
+                         <h4 className="font-bold flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">New Members (This Month)</h4>
                          <div className="flex items-center gap-4">
                            <div className="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-2xl">+145</div>
                            <p className="text-sm text-muted-foreground flex-1">A 12% increase compared to last month. Bulk registrations from Computer Science dept.</p>
@@ -325,16 +325,24 @@ export default function ReportsView() {
                 </div>
               )}
 
-              {/* --- PLACEHOLDERS --- */}
               {!['books', 'members', 'circulation', 'fines'].includes(activeMenu) && (
-                 <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-10">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
-                     {SIDEBAR_MENU.find(m=>m.id === activeMenu)?.icon({size: 48, className: "opacity-30 text-blue-500"})}
-                   </div>
-                   <h3 className="text-2xl font-bold text-foreground mb-2 capitalize">{SIDEBAR_MENU.find(m=>m.id === activeMenu)?.label}</h3>
-                   <p className="text-center max-w-md mb-6">Generate the selected report from the local dataset, review its summary, and export the result in the selected format.</p>
-                   <button onClick={() => handleExport('pdf')} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:opacity-90 flex items-center gap-2"><Download size={16}/> Generate Report</button>
-                 </div>
+                <div className="p-6 h-full bg-background space-y-6 overflow-y-auto">
+                  <div>
+                    <h2 className="text-2xl font-bold flex items-center gap-2"><BarChart className="text-blue-500"/> {SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Review the selected report category and export the current mock dataset.</p>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {[
+                      ['Total Records','1,240'],['This Month','186'],['Active','1,102'],['Attention','38']
+                    ].map(([label,value])=><div key={label} className="p-4 rounded-xl border border-border bg-card"><p className="text-xs uppercase font-bold text-muted-foreground">{label}</p><p className="text-2xl font-extrabold mt-1">{value}</p></div>)}
+                  </div>
+                  <div className="border border-border rounded-xl overflow-x-auto bg-card">
+                    <table className="w-full min-w-[760px] text-sm"><thead className="bg-muted/40 text-left"><tr><th className="p-3">Reference</th><th className="p-3">Category</th><th className="p-3">Date</th><th className="p-3">Value</th><th className="p-3">Status</th><th className="p-3">Action</th></tr></thead><tbody>
+                      {[1,2,3,4].map(i=><tr key={i} className="border-t border-border"><td className="p-3 font-semibold">{activeMenu.toUpperCase()}-{String(i).padStart(3,'0')}</td><td className="p-3">{SIDEBAR_MENU.find(m=>m.id===activeMenu)?.label}</td><td className="p-3">29 Sep 2026</td><td className="p-3 font-bold">₹{(i*1250).toLocaleString()}</td><td className="p-3">{i===4?'Review':'Completed'}</td><td className="p-3"><button onClick={()=>notify('Report record opened.')} className="text-blue-600 font-semibold hover:underline">View</button></td></tr>)}
+                    </tbody></table>
+                  </div>
+                  <div className="flex flex-wrap justify-end gap-2"><button onClick={()=>handleExport('csv')} className="px-4 py-2 border border-border rounded-lg text-sm font-semibold">Export CSV</button><button onClick={()=>handleExport('pdf')} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold">Generate PDF</button></div>
+                </div>
               )}
 
             </motion.div>
