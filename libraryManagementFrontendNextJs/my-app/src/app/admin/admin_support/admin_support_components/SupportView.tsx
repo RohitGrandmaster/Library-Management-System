@@ -24,7 +24,10 @@ const MOCK_TICKETS = [
 ];
 
 export default function SupportView() {
+  const [tickets, setTickets] = useState(MOCK_TICKETS);
   const [activeMenu, setActiveMenu] = useState('center');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
   const [selectedTicket, setSelectedTicket] = useState<any | null>(null);
 
   const getPriorityColor = (priority: string) => {
@@ -192,7 +195,7 @@ export default function SupportView() {
                       
                       <div className="pt-4 border-t border-border flex justify-end gap-3">
                          <button onClick={()=>setActiveMenu('my_tickets')} className="px-6 py-3 border border-border bg-muted hover:bg-muted/80 rounded-xl font-medium">Cancel</button>
-                         <button onClick={()=>{alert('Ticket Created!'); setActiveMenu('my_tickets');}} className="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2"><Send size={18}/> Submit Ticket</button>
+                         <button onClick={()=>{setTickets(items=>[{id:'TCK-2026-'+(891+items.length),subject:'New Admin Support Request',category:'General',priority:'Medium',status:'Open',date:'29 Sep 2026'},...items]); notify('Ticket created successfully.'); setActiveMenu('my_tickets');}} className="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold shadow-md flex items-center gap-2"><Send size={18}/> Submit Ticket</button>
                       </div>
                    </div>
                 </div>
@@ -212,7 +215,7 @@ export default function SupportView() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar">
-                    {MOCK_TICKETS.map(ticket => (
+                    {tickets.map(ticket => (
                       <div key={ticket.id} onClick={() => setSelectedTicket(ticket)} className="p-5 border border-border rounded-2xl bg-card hover:border-sky-500/50 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
                          
                          <div className="flex items-start gap-4">
@@ -233,7 +236,7 @@ export default function SupportView() {
                               <span className={`px-2 py-0.5 text-xs font-bold rounded ${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
                               <span className={`px-2 py-0.5 text-xs font-bold rounded-full border bg-background ${getStatusColor(ticket.status)}`}>{ticket.status}</span>
                             </div>
-                            <button className="text-sm font-bold text-sky-600 hover:underline flex items-center gap-1 mt-2">View Thread <ChevronRight size={16}/></button>
+                            <button onClick={()=>setSelectedTicket(ticket)} className="text-sm font-bold text-sky-600 hover:underline flex items-center gap-1 mt-2">View Thread <ChevronRight size={16}/></button>
                          </div>
                       </div>
                     ))}
@@ -289,9 +292,9 @@ export default function SupportView() {
                    {/* Reply Box */}
                    <div className="p-4 border-t border-border bg-card">
                       <div className="flex gap-3 max-w-4xl mx-auto">
-                        <button className="p-3 bg-muted hover:bg-muted/80 rounded-xl text-muted-foreground"><Paperclip size={20}/></button>
+                        <button onClick={()=>notify("Attachment picker opened.")} className="p-3 bg-muted hover:bg-muted/80 rounded-xl text-muted-foreground"><Paperclip size={20}/></button>
                         <input type="text" placeholder="Type your reply to Support..." className="flex-1 px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500" />
-                        <button className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold flex items-center gap-2"><Send size={18}/> Send</button>
+                        <button onClick={()=>notify("Reply sent to Support.")} className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold flex items-center gap-2"><Send size={18}/> Send</button>
                       </div>
                    </div>
                 </div>
