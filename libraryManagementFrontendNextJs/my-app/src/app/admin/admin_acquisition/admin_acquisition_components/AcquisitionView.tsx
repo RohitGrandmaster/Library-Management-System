@@ -33,6 +33,8 @@ const MOCK_ORDERS = [
 
 export default function AcquisitionView() {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [notice, setNotice] = useState('');
+  const notify = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(v => v === message ? '' : v), 2200); };
 
   // Receive Book Flow States
   const [receiveStep, setReceiveStep] = useState(1);
@@ -306,7 +308,7 @@ export default function AcquisitionView() {
                              
                              <div className="mt-6 flex justify-between">
                                 <button onClick={() => setReceiveStep(3)} className="px-6 py-3 bg-muted hover:bg-muted/80 text-foreground rounded-xl font-bold">Back</button>
-                                <button onClick={() => {alert("Inventory Updated!"); setReceiveStep(1); setSelectedPO(''); setActiveMenu('dashboard')}} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold flex items-center gap-2">Add to Inventory <Check size={18}/></button>
+                                <button onClick={() => {notify("Inventory updated successfully."); setReceiveStep(1); setSelectedPO(""); setActiveMenu("dashboard")}} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold flex items-center gap-2">Add to Inventory <Check size={18}/></button>
                              </div>
                           </div>
                        </motion.div>
@@ -315,20 +317,21 @@ export default function AcquisitionView() {
                 </div>
               )}
 
-              {/* --- DASHBOARD PLACEHOLDER --- */}
+              {/* --- ACQUISITION DASHBOARD --- */}
               {activeMenu === 'dashboard' && (
                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 border border-border">
                      <BarChart3 size={48} className="opacity-30 text-emerald-500" />
                    </div>
                    <h3 className="text-2xl font-bold text-foreground mb-2">Acquisition Dashboard</h3>
-                   <p className="text-center max-w-md mb-6">Overview of library expenditure, pending orders, and vendor performance will be displayed here.</p>
+                   <p className="text-center max-w-md mb-6">Review acquisition volume, order status, receiving activity and expenditure from the controls above.</p>
                  </div>
               )}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
+      {notice && <div className="fixed right-5 bottom-5 z-50 rounded-xl border border-border bg-card shadow-xl px-4 py-3 text-sm font-semibold">{notice}</div>}
     </div>
   );
 }
