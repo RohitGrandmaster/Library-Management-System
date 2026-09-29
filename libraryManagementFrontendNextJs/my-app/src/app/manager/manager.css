@@ -1124,3 +1124,46 @@
   .mgr-idcard-actions-card,
   .mgr-idcard-student-list { display: none !important; }
 }
+
+
+/* Grouped Manager sidebar navigation */
+.mgr-nav-group { margin-bottom: 6px; }
+.mgr-nav-group-label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px 7px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+}
+.mgr-nav-group-label:hover { background: var(--primary-subtle); color: var(--text-primary); }
+.mgr-nav-group-label.active { color: var(--text-primary); }
+.mgr-nav-group-chevron {
+  font-size: 14px;
+  line-height: 1;
+  transform: rotate(-90deg);
+  transition: transform .18s ease;
+}
+.mgr-nav-group-chevron.open { transform: rotate(0deg); }
+.mgr-nav-group-items { display: flex; flex-direction: column; gap: 2px; }
+.mgr-sidebar.mgr-sidebar-collapsed .mgr-nav-item {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  gap: 0;
+}
+.mgr-sidebar.mgr-sidebar-collapsed .mgr-nav-item.active {
+  border-left-width: 0;
+  box-shadow: inset 3px 0 0 var(--primary);
+}
