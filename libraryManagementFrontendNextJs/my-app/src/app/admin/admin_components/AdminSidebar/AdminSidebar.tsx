@@ -4,7 +4,7 @@
 // DATA FLOW: AdminRoute -> AdminSidebar
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { ADMIN_SIDEBAR_NAV } from '@/app/admin/admin_constants/admin_constants';
+import { logout } from '@/lib/auth';
 
 interface Props {
   collapsed: boolean;
@@ -27,7 +28,6 @@ interface Props {
 
 export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
 
   return (
@@ -134,9 +134,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
             <Button 
               variant="destructive" 
               onClick={() => {
-                // Simulate session destruction
-                alert('Session successfully destroyed.');
-                router.push('/auth/login');
+                void logout();
               }}
               className="w-full rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold h-12 shadow-md shadow-red-500/20"
             >
