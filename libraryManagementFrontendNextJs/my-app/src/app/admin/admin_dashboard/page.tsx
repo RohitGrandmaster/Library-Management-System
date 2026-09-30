@@ -22,22 +22,23 @@ async function getDashboardData() {
       { label: 'Seats Available', value: '14 / 60', trend: { value: '-3', up: false }, sub: 'Morning shift' },
       { label: 'Overdue Returns', value: '7', trend: { value: '+2', up: false }, sub: '3 critical' },
     ],
-    seats: Array.from({ length: 60 }, (_, i) => ({
-      id: i + 1,
-      label: `SL-${String(i + 1).padStart(2, '0')}`,
-      status: i < 46 ? 'occupied' : 'available',
-      studentName: i < 46 ? `Student ${i + 1}` : null,
-    })),
-    shifts: [
-      { id: 'morning', name: 'Morning', time: '6AM–12PM', occupancy: 32, total: 60 },
-      { id: 'afternoon', name: 'Afternoon', time: '12PM–6PM', occupancy: 25, total: 60 },
-      { id: 'evening', name: 'Evening', time: '6PM–10PM', occupancy: 18, total: 60 },
-    ],
+    seats: Array.from({ length: 60 }, (_, i) => {
+      const shift = i < 20 ? 'Morning' : i < 40 ? 'Afternoon' : 'Evening';
+      const status = i % 5 === 0 ? 'free' : i % 7 === 0 ? 'expiring' : i === 13 ? 'maintenance' : 'occupied';
+      return {
+        id: `S${i + 1}`,
+        shift,
+        status,
+        fee: i % 3 === 0 ? 'Due' : 'Paid',
+        occupant: status === 'occupied' || status === 'expiring' ? `Student ${i + 1}` : undefined,
+      };
+    }),
+    shifts: ['Morning', 'Afternoon', 'Evening'],
     actionItems: [
-      { label: 'Fee Renewals Due', count: 14, type: 'warning', description: '14 members expiring this week' },
-      { label: 'New Enquiries', count: 6, type: 'danger', description: '6 unattended enquiries' },
-      { label: 'Complaint Open', count: 2, type: 'warning', description: '2 open complaints' },
-      { label: 'PTP Dates Today', count: 3, type: 'danger', description: '3 payment promises today' },
+      { label: 'Fee Renewals Due', count: 14, type: 'warning', description: '14 members expiring this week', href: '/admin/admin_finance/renewals' },
+      { label: 'New Enquiries', count: 6, type: 'danger', description: '6 unattended enquiries', href: '/admin/admin_crm/enquiries' },
+      { label: 'Complaint Open', count: 2, type: 'warning', description: '2 open complaints', href: '/admin/admin_support-tickets' },
+      { label: 'PTP Dates Today', count: 3, type: 'danger', description: '3 payment promises today', href: '/admin/admin_finance/payment-promises' },
     ],
     recentPayments: [
       { id: 'TXN-001', studentName: 'Ravi Kumar', amount: 1200, type: 'Membership', date: '2026-09-30', status: 'paid' },
@@ -97,7 +98,7 @@ export default async function AdminDashboardPage() {
       {/* Row 2: Seat Matrix (60%) + Action Items (40%) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-full">
-          <SeatMatrixGrid seats={data.seats as any} shifts={data.shifts} />
+          <SeatMatrixGrid seats={data.seats as any} shifts={data.shifts as any} />
         </div>
 
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col h-full">
