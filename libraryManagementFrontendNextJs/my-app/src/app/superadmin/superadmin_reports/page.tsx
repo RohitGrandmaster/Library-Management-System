@@ -1,230 +1,193 @@
 'use client';
 import { useState } from 'react';
 import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
+  AreaChart, Area, BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
-import { IndianRupee, TrendingUp, TrendingDown, Users, Download, FileSpreadsheet, CheckCircle } from 'lucide-react';
+import { IndianRupee, TrendingUp, TrendingDown, Users, Download, Building2, CreditCard, Activity } from 'lucide-react';
 
-// ── Chart data ────────────────────────────────────────────────────────────────
-const REVENUE_EXPENSE = [
-  { month: 'Nov', Revenue: 142000, Expenses: 45000 },
-  { month: 'Dec', Revenue: 158000, Expenses: 52000 },
-  { month: 'Jan', Revenue: 134000, Expenses: 41000 },
-  { month: 'Feb', Revenue: 172000, Expenses: 58000 },
-  { month: 'Mar', Revenue: 196000, Expenses: 61000 },
-  { month: 'Apr', Revenue: 214000, Expenses: 67000 },
+const REVENUE_DATA = [
+  { month: 'Nov', MRR: 120000, Target: 100000 },
+  { month: 'Dec', MRR: 145000, Target: 110000 },
+  { month: 'Jan', MRR: 135000, Target: 120000 },
+  { month: 'Feb', MRR: 175000, Target: 130000 },
+  { month: 'Mar', MRR: 210000, Target: 145000 },
+  { month: 'Apr', MRR: 245000, Target: 160000 },
 ];
 
-const REVENUE_TREND = [
-  { month: 'May', Revenue: 88000  }, { month: 'Jun', Revenue: 97000  },
-  { month: 'Jul', Revenue: 112000 }, { month: 'Aug', Revenue: 125000 },
-  { month: 'Sep', Revenue: 138000 }, { month: 'Oct', Revenue: 119000 },
-  { month: 'Nov', Revenue: 142000 }, { month: 'Dec', Revenue: 158000 },
-  { month: 'Jan', Revenue: 134000 }, { month: 'Feb', Revenue: 172000 },
-  { month: 'Mar', Revenue: 196000 }, { month: 'Apr', Revenue: 214000 },
+const TENANT_GROWTH = [
+  { month: 'Nov', Active: 12, Churned: 1 },
+  { month: 'Dec', Active: 15, Churned: 0 },
+  { month: 'Jan', Active: 14, Churned: 2 },
+  { month: 'Feb', Active: 22, Churned: 1 },
+  { month: 'Mar', Active: 28, Churned: 0 },
+  { month: 'Apr', Active: 35, Churned: 1 },
 ];
 
-const STUDENT_GROWTH = [
-  { month: 'Nov', Joined: 320, Exited: 85  },
-  { month: 'Dec', Joined: 410, Exited: 110 },
-  { month: 'Jan', Joined: 280, Exited: 70  },
-  { month: 'Feb', Joined: 490, Exited: 130 },
-  { month: 'Mar', Joined: 520, Exited: 95  },
-  { month: 'Apr', Joined: 380, Exited: 88  },
+const PLAN_DISTRIBUTION = [
+  { name: 'Basic Plan', value: 45, color: 'var(--info)' },
+  { name: 'Pro Plan', value: 35, color: 'var(--primary)' },
+  { name: 'Enterprise', value: 20, color: 'var(--warning)' },
 ];
 
-const OCCUPANCY = [
-  { name: 'Morning',     value: 42 },
-  { name: 'Afternoon',   value: 31 },
-  { name: 'Evening',     value: 18 },
-  { name: 'Unallocated', value: 9  },
-];
-
-// Dynamic data-driven colours — CSS var strings (Rule 3 allowed)
-const PIE_COLORS = ['var(--primary)', 'var(--success)', 'var(--warning)', 'var(--border)'];
-
-// ── KPI cards ─────────────────────────────────────────────────────────────────
-const KPI_CARDS = [
-  { label: 'Total Revenue This Month', value: '₹2,14,000', iconCls: 'sa-reports-kpi-icon--primary', Icon: IndianRupee,  trend: '+18% vs last month', trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-  { label: 'Total Expenses',           value: '₹67,000',   iconCls: 'sa-reports-kpi-icon--danger',  Icon: TrendingDown, trend: '+9% vs last month',  trendCls: 'sa-reports-kpi-trend--down', TrendIcon: TrendingDown },
-  { label: 'Net Profit',               value: '₹1,47,000', iconCls: 'sa-reports-kpi-icon--success', Icon: TrendingUp,   trend: '+22% vs last month', trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-  { label: 'Active Libraries',         value: '38',         iconCls: 'sa-reports-kpi-icon--warning', Icon: Users,        trend: '+4 this month',      trendCls: 'sa-reports-kpi-trend--up',   TrendIcon: TrendingUp   },
-];
-
-const DATE_RANGES = ['This Month', 'Last 3 Months', 'Last 6 Months', 'This Year'];
-
-// ── Shared chart style (CSS var strings — no hex) ─────────────────────────────
-const AXIS_TICK = { fill: 'var(--text-secondary)', fontSize: 11, fontFamily: 'Inter, sans-serif' } as const;
-const GRID_COLOR = 'var(--border)';
-const TOOLTIP_CONTENT_STYLE = {
-  background: 'var(--bg-sidebar)',
-  border: '1px solid var(--border)',
-  borderRadius: 8,
-  fontSize: 12,
-  color: 'var(--text-primary)',
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-[#1e1e2d] border border-white/10 p-3 rounded-lg shadow-xl">
+        <p className="text-white font-bold mb-2">{label}</p>
+        {payload.map((entry: any, index: number) => (
+          <p key={index} className="text-sm flex items-center gap-2" style={{ color: entry.color }}>
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></span>
+            {entry.name}: <span className="font-bold">{entry.name.includes('MRR') || entry.name.includes('Target') ? `₹${entry.value.toLocaleString()}` : entry.value}</span>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
 };
 
-// Type-safe recharts formatters (cast needed — recharts ValueType includes arrays)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rupeeFormatter = (value: any) => [`₹${Number(value ?? 0).toLocaleString()}`, ''] as [string, string];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const pctFormatter   = (value: any) => [`${value ?? 0}%`, ''] as [string, string];
+export default function ReportsAnalyticsPage() {
+  const [activeTab, setActiveTab] = useState('Financials');
 
-export default function ReportsPage() {
-  const [range,    setRange]    = useState('Last 6 Months');
-  const [exported, setExported] = useState(false);
-
-  const handleExport = () => {
-    setExported(true);
-    setTimeout(() => setExported(false), 2000);
-  };
+  const KPI_CARDS = [
+    { label: 'Monthly Recurring Revenue (MRR)', value: '₹2,45,000', icon: IndianRupee, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', trend: '+16.6% vs last month', up: true },
+    { label: 'Annual Run Rate (ARR)', value: '₹29,40,000', icon: TrendingUp, color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', trend: 'Projected', up: true },
+    { label: 'Active SaaS Tenants (Libraries)', value: '35', icon: Building2, color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/20', trend: '+7 new this month', up: true },
+    { label: 'Gross Churn Rate', value: '2.8%', icon: TrendingDown, color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20', trend: '-0.5% vs last month', up: true }, // Lower churn is good
+  ];
 
   return (
-    <>
+    <div className="sa-page-animate pb-12">
+      
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Reports</span>
+          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Reports & Analytics</span>
         </div>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <h1 className="sa-page-title">Platform Reports & Analytics</h1>
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1 bg-card border border-border rounded-lg p-1">
-              {DATE_RANGES.map((r: any) => (
-                <button key={r} onClick={() => setRange(r)}
-                  className={`sa-filter-tab ${range === r ? 'sa-filter-tab--active' : ''}`}>
-                  {r}
-                </button>
-              ))}
-            </div>
-            <button className="sa-btn-export" onClick={handleExport}>
-              {exported
-                ? <><CheckCircle size={13} className="sa-metric--success" /> Exported!</>
-                : <><Download size={13} /> Export PDF</>}
-            </button>
-            <button className="sa-btn-export" onClick={handleExport}>
-              <FileSpreadsheet size={13} /> Export Excel
-            </button>
-          </div>
+        <div className="flex items-center justify-between mt-2">
+          <h1 className="sa-page-title flex items-center gap-3">
+            <Activity className="text-primary" size={28} /> Global SaaS Analytics
+          </h1>
+          <button className="sa-btn-primary">
+            <Download size={16} /> Export Master PDF
+          </button>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        {KPI_CARDS.map((k: any) => (
-          <div key={k.label} className="sa-reports-kpi">
-            <div className={`sa-reports-kpi-icon ${k.iconCls}`}>
-              <k.Icon size={20} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="sa-reports-kpi-label">{k.label}</p>
-              <p className="sa-reports-kpi-value">{k.value}</p>
-              <span className={`sa-reports-kpi-trend ${k.trendCls}`}>
-                <k.TrendIcon size={12} /> {k.trend}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {KPI_CARDS.map((kpi, i) => (
+          <div key={i} className="sa-card p-5 border border-white/5 bg-white/[0.02]">
+            <div className="flex justify-between items-start mb-4">
+              <div className={`p-2 rounded-xl ${kpi.bg} ${kpi.border} border`}><kpi.icon size={24} className={kpi.color} /></div>
+              <span className={`text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 ${kpi.up ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                {kpi.up ? <TrendingUp size={10}/> : <TrendingDown size={10}/>} {kpi.trend}
               </span>
             </div>
+            <p className="text-xs text-white/50 font-medium uppercase tracking-wider mb-1">{kpi.label}</p>
+            <h3 className="text-3xl font-bold text-white">{kpi.value}</h3>
           </div>
         ))}
       </div>
 
-      {/* 2×2 Chart Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
-        {/* Revenue vs Expenses */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Revenue vs Expenses</p>
-              <p className="sa-chart-card-sub">Grouped comparison — last 6 months</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={REVENUE_EXPENSE} barCategoryGap="30%">
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false}
-                  tickFormatter={v => `₹${(Number(v) / 1000).toFixed(0)}k`} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={rupeeFormatter} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-                <Bar dataKey="Revenue"  fill="var(--primary)" radius={[4,4,0,0]} />
-                <Bar dataKey="Expenses" fill="var(--danger)"  radius={[4,4,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Shift Occupancy Donut */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Shift-wise Seat Occupancy</p>
-              <p className="sa-chart-card-sub">Percentage of occupied seats per shift</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={OCCUPANCY} dataKey="value" nameKey="name"
-                  cx="50%" cy="50%" innerRadius={70} outerRadius={110} paddingAngle={3}>
-                  {OCCUPANCY.map((_, i) => (
-                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={pctFormatter} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Revenue Trend Line */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Monthly Revenue Trend</p>
-              <p className="sa-chart-card-sub">Rolling 12-month platform revenue</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={REVENUE_TREND}>
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false}
-                  tickFormatter={v => `₹${(Number(v) / 1000).toFixed(0)}k`} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} formatter={rupeeFormatter} />
-                <Line type="monotone" dataKey="Revenue" stroke="var(--success)" strokeWidth={2}
-                  dot={{ fill: 'var(--success)', r: 4 }} activeDot={{ r: 7 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Student Growth */}
-        <div className="sa-chart-card">
-          <div className="sa-chart-card-header">
-            <div>
-              <p className="sa-chart-card-title">Student Growth</p>
-              <p className="sa-chart-card-sub">Joined vs Exited per month</p>
-            </div>
-          </div>
-          <div className="sa-chart-card-body--h280">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={STUDENT_GROWTH} barCategoryGap="30%">
-                <CartesianGrid vertical={false} stroke={GRID_COLOR} strokeOpacity={0.4} />
-                <XAxis dataKey="month" tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} />
-                <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-                <Bar dataKey="Joined" fill="var(--info)"   radius={[4,4,0,0]} />
-                <Bar dataKey="Exited" fill="var(--danger)" radius={[4,4,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
+      <div className="flex items-center gap-2 mb-6 border-b border-white/5 pb-2 overflow-x-auto hide-scrollbar">
+        {['Financials', 'Tenant Growth', 'Subscription Mix'].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
+              activeTab === tab 
+                ? 'bg-indigo-500/20 text-white border border-indigo-500/30' 
+                : 'text-white/50 hover:bg-white/5 hover:text-white'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
-    </>
+
+      <div className="sa-card p-6 h-[500px] border border-white/5 flex flex-col">
+        {activeTab === 'Financials' && (
+          <div className="flex-1 flex flex-col animate-fade-in">
+            <div className="mb-6">
+              <h2 className="text-lg font-bold text-white">MRR Growth (6 Months)</h2>
+              <p className="text-sm text-white/50">Actual Monthly Recurring Revenue vs Target Goal.</p>
+            </div>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={REVENUE_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorMRR" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <XAxis dataKey="month" stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <YAxis stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: 12, paddingTop: 10 }} />
+                  <Area type="monotone" dataKey="MRR" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorMRR)" />
+                  <Line type="monotone" dataKey="Target" stroke="rgba(255,255,255,0.2)" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'Tenant Growth' && (
+          <div className="flex-1 flex flex-col animate-fade-in">
+            <div className="mb-6">
+              <h2 className="text-lg font-bold text-white">Active Tenants vs Churn</h2>
+              <p className="text-sm text-white/50">Number of live libraries using the platform and those that cancelled.</p>
+            </div>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={TENANT_GROWTH} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <XAxis dataKey="month" stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <YAxis stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: 12, paddingTop: 10 }} />
+                  <Bar dataKey="Active" fill="var(--success)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  <Bar dataKey="Churned" fill="var(--danger)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'Subscription Mix' && (
+          <div className="flex-1 flex flex-col animate-fade-in items-center justify-center">
+            <div className="mb-2 w-full text-left">
+              <h2 className="text-lg font-bold text-white">Subscription Distribution</h2>
+              <p className="text-sm text-white/50">Breakdown of tenants by pricing tier.</p>
+            </div>
+            <div className="flex-1 w-full flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={PLAN_DISTRIBUTION}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={90}
+                    outerRadius={130}
+                    paddingAngle={5}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {PLAN_DISTRIBUTION.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: 13 }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+      </div>
+
+    </div>
   );
 }
