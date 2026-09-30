@@ -14,10 +14,12 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 interface Allocation {
   studentName: string;
   smartId: string;
+  phone: string;
   seatNo: string;
   shift: string;
   customSlots: string;
   lockerNo: string;
+  feeStatus: 'Paid' | 'Due';
   validFrom: string;
   validTill: string;
   daysLeft: number;
@@ -25,12 +27,12 @@ interface Allocation {
 }
 
 const ALLOCATIONS: Allocation[] = [
-  { studentName: 'Alex Rivera', smartId: 'LIB-001', seatNo: 'S-02', shift: 'Morning', customSlots: '8AM–10AM, 5PM–8PM', lockerNo: 'A01', validFrom: '01 Oct 2024', validTill: '31 Oct 2024', daysLeft: 7, status: 'Active' },
-  { studentName: 'Priya Sharma', smartId: 'LIB-002', seatNo: 'S-11', shift: 'Evening', customSlots: '—', lockerNo: '—', validFrom: '15 Sep 2024', validTill: '14 Oct 2024', daysLeft: 3, status: 'Active' },
-  { studentName: 'Rohan Mehta', smartId: 'LIB-003', seatNo: 'S-22', shift: 'Morning', customSlots: '—', lockerNo: 'B04', validFrom: '01 Sep 2024', validTill: '30 Sep 2024', daysLeft: -5, status: 'Expired' },
-  { studentName: 'Sneha Patel', smartId: 'LIB-004', seatNo: 'S-36', shift: 'Full Day', customSlots: '—', lockerNo: '—', validFrom: '10 Oct 2024', validTill: '09 Nov 2024', daysLeft: 20, status: 'Active' },
-  { studentName: 'Vikram Rao', smartId: 'LIB-005', seatNo: 'S-45', shift: 'Evening', customSlots: '6PM–9PM', lockerNo: 'C10', validFrom: '20 Oct 2024', validTill: '19 Nov 2024', daysLeft: 30, status: 'Active' },
-  { studentName: 'Ananya Gupta', smartId: 'LIB-006', seatNo: 'S-08', shift: 'Morning', customSlots: '—', lockerNo: '—', validFrom: '05 Oct 2024', validTill: '04 Oct 2024', daysLeft: 12, status: 'Suspended' },
+  { studentName: 'Alex Rivera', smartId: 'LIB-001', phone: '+91 9876543210', seatNo: 'S-02', shift: 'Morning', customSlots: '8AM–10AM, 5PM–8PM', lockerNo: 'A01', feeStatus: 'Paid', validFrom: '01 Oct 2024', validTill: '31 Oct 2024', daysLeft: 7, status: 'Active' },
+  { studentName: 'Priya Sharma', smartId: 'LIB-002', phone: '+91 9123456789', seatNo: 'S-11', shift: 'Evening', customSlots: '—', lockerNo: '—', feeStatus: 'Paid', validFrom: '15 Sep 2024', validTill: '14 Oct 2024', daysLeft: 3, status: 'Active' },
+  { studentName: 'Rohan Mehta', smartId: 'LIB-003', phone: '+91 9988776655', seatNo: 'S-22', shift: 'Morning', customSlots: '—', lockerNo: 'B04', feeStatus: 'Due', validFrom: '01 Sep 2024', validTill: '30 Sep 2024', daysLeft: -5, status: 'Expired' },
+  { studentName: 'Sneha Patel', smartId: 'LIB-004', phone: '+91 9001122334', seatNo: 'S-36', shift: 'Full Day', customSlots: '—', lockerNo: '—', feeStatus: 'Paid', validFrom: '10 Oct 2024', validTill: '09 Nov 2024', daysLeft: 20, status: 'Active' },
+  { studentName: 'Vikram Rao', smartId: 'LIB-005', phone: '+91 9888123456', seatNo: 'S-45', shift: 'Evening', customSlots: '6PM–9PM', lockerNo: 'C10', feeStatus: 'Paid', validFrom: '20 Oct 2024', validTill: '19 Nov 2024', daysLeft: 30, status: 'Active' },
+  { studentName: 'Ananya Gupta', smartId: 'LIB-006', phone: '+91 9777123456', seatNo: 'S-08', shift: 'Morning', customSlots: '—', lockerNo: '—', feeStatus: 'Due', validFrom: '05 Oct 2024', validTill: '04 Oct 2024', daysLeft: 12, status: 'Suspended' },
 ];
 
 const STATUS_CLASS: Record<string, string> = {
@@ -43,7 +45,7 @@ function StudentCell({ data }: { data: Allocation }) {
   return (
     <div className="ss-cell-stack">
       <p className="ss-cell-name">{data.studentName}</p>
-      <p className="ss-table__cell-sub">{data.smartId}</p>
+      <p className="ss-table__cell-sub">{data.smartId} • {data.phone}</p>
     </div>
   );
 }
@@ -57,6 +59,15 @@ function DaysLeftCell({ value }: { value: number }) {
 
 function StatusCell({ value }: { value: string }) {
   return <span className={STATUS_CLASS[value] ?? 'ss-badge ss-badge--inactive'}><span className="ss-badge__dot" />{value}</span>;
+}
+
+function FeeStatusCell({ value }: { value: string }) {
+  const isPaid = value === 'Paid';
+  return (
+    <span className={`ss-badge ${isPaid ? 'ss-badge--success' : 'ss-badge--danger'}`}>
+      {value}
+    </span>
+  );
 }
 
 function ActionsCell({ data }: { data: Allocation }) {
@@ -83,15 +94,16 @@ export default function AllocationsPage() {
     return matchShift && matchStatus && matchFrom && matchTo;
   });
   const colDefs = useMemo<any[]>(() => [
-    { field: 'studentName', headerName: 'STUDENT', flex: 2, cellRenderer: StudentCell },
+    { field: 'studentName', headerName: 'STUDENT', flex: 2, minWidth: 200, cellRenderer: StudentCell },
     { field: 'seatNo', headerName: 'SEAT #', flex: 0.8, cellClass: 'ss-table__seat-no' },
     { field: 'shift', headerName: 'SHIFT', flex: 1, cellClass: 'ss-cell-secondary' },
-    { field: 'customSlots', headerName: 'CUSTOM SLOTS', flex: 1.8, cellClass: 'ss-cell-secondary' },
+    { field: 'customSlots', headerName: 'CUSTOM SLOTS', flex: 1.5, cellClass: 'ss-cell-secondary' },
     { field: 'lockerNo', headerName: 'LOCKER #', flex: 0.8, cellClass: 'ss-cell-secondary' },
-    { field: 'validFrom', headerName: 'FROM', flex: 1.3, cellClass: 'ss-cell-secondary' },
-    { field: 'validTill', headerName: 'TILL', flex: 1.3, cellClass: 'ss-cell-secondary' },
+    { field: 'feeStatus', headerName: 'FEE', flex: 0.8, cellRenderer: FeeStatusCell },
+    { field: 'validFrom', headerName: 'FROM', flex: 1.2, cellClass: 'ss-cell-secondary' },
+    { field: 'validTill', headerName: 'TILL', flex: 1.2, cellClass: 'ss-cell-secondary' },
     { field: 'daysLeft', headerName: 'DAYS LEFT', flex: 1, cellRenderer: DaysLeftCell },
-    { field: 'status', headerName: 'STATUS', flex: 1.2, cellRenderer: StatusCell },
+    { field: 'status', headerName: 'STATUS', flex: 1, cellRenderer: StatusCell },
     { headerName: 'ACTIONS', flex: 0.8, sortable: false, cellRenderer: ActionsCell },
   ], []);
 

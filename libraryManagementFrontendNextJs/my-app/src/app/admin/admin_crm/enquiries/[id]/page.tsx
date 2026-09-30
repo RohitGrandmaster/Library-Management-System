@@ -456,85 +456,23 @@ export default function EnquiryDetailPage({
           ══════════════════════════════ */}
           <div className="crm-detail-right">
 
-            {/* ── Status Update Card ── */}
+            {/* ── Status Update Card (View-Only) ── */}
             <div className="crm-card">
               <h3 className="crm-section-label">Current Status</h3>
               <div className="crm-status-row">
                 <div className="crm-select-wrap">
-                  <select
-                    className="crm-select"
-                    value={currentStatus}
-                    onChange={(e) => setCurrentStatus(e.target.value as EnquiryStatus)}
-                  >
-                    {STATUS_OPTIONS.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
+                  <select className="crm-select" value={currentStatus} disabled>
+                    <option value={currentStatus}>{currentStatus}</option>
                   </select>
                 </div>
-                <button
-                  className="crm-btn-primary"
-                  onClick={handleStatusUpdate}
-                  disabled={statusUpdating || currentStatus === enquiry.status}
-                >
-                  {statusUpdating ? <span className="crm-spinner" /> : <CheckCircle size={14} />}
-                  {statusUpdating ? 'Saving…' : 'Update'}
-                </button>
               </div>
+              <p className="crm-text-sm crm-mt-8" style={{ color: 'var(--text-secondary)' }}>Status updates are disabled for Admin role.</p>
             </div>
 
-            {/* ── Add Follow-Up Card ── */}
+            {/* ── Add Follow-Up Card (View-Only) ── */}
             <div className="crm-card">
-              <h3 className="crm-section-label">Add Follow-Up</h3>
-              <form
-                id="followup-form"
-                onSubmit={handleSubmitFU(handleAddFollowUp)}
-                noValidate
-                className="crm-form-stack"
-              >
-                <div className="crm-field">
-                  <label htmlFor="fu-date" className="crm-label crm-label--required">
-                    Follow-up Date
-                  </label>
-                  <input
-                    id="fu-date"
-                    type="date"
-                    min={new Date().toISOString().split('T')[0]}
-                    className={`crm-input crm-input-date${fuErrors.date ? ' crm-input--error' : ''}`}
-                    {...registerFU('date')}
-                  />
-                  {fuErrors.date && <p className="crm-error">{fuErrors.date.message}</p>}
-                </div>
-
-                <div className="crm-field">
-                  <label htmlFor="fu-remark" className="crm-label crm-label--required">
-                    Remark
-                  </label>
-                  <textarea
-                    id="fu-remark"
-                    rows={3}
-                    className={`crm-textarea${fuErrors.remark ? ' crm-textarea--error' : ''}`}
-                    placeholder="What happened in this interaction?"
-                    {...registerFU('remark')}
-                  />
-                  {fuErrors.remark && <p className="crm-error">{fuErrors.remark.message}</p>}
-                </div>
-
-                <button
-                  type="submit"
-                  className="crm-btn-primary crm-btn-full"
-                  disabled={fuSubmitting}
-                >
-                  {fuSubmitting ? (
-                    <>
-                      <span className="crm-spinner" /> Adding…
-                    </>
-                  ) : (
-                    <>
-                      <Plus size={15} /> Add Follow-Up
-                    </>
-                  )}
-                </button>
-              </form>
+              <h3 className="crm-section-label">Follow-Up Actions</h3>
+              <p className="crm-text-sm" style={{ color: 'var(--text-secondary)' }}>Adding follow-ups is disabled for Admin role.</p>
 
               {/* Next follow-up display */}
               {(enquiry.isToday || enquiry.isUpcoming || enquiry.isOverdue) && (
@@ -560,42 +498,10 @@ export default function EnquiryDetailPage({
               )}
             </div>
 
-            {/* ── Actions Card ── */}
+            {/* ── Actions Card (View-Only) ── */}
             <div className="crm-card crm-form-stack">
               <h3 className="crm-section-label">Actions</h3>
-
-              {/* Convert to Admission */}
-              <button
-                className="crm-btn-success crm-btn-full"
-                onClick={handleConvert}
-                disabled={enquiry.status === 'Converted'}
-              >
-                <CheckCircle size={16} />
-                {enquiry.status === 'Converted'
-                  ? 'Already Converted'
-                  : 'Convert to Admission'}
-              </button>
-
-              {/* Mark as Lost */}
-              <button
-                className="crm-btn-danger crm-btn-full"
-                onClick={() => setShowLostModal(true)}
-                disabled={enquiry.status === 'Lost'}
-                style={{ marginBottom: '8px' }}
-              >
-                <XCircle size={15} />
-                {enquiry.status === 'Lost' ? 'Already Marked Lost' : 'Mark as Lost'}
-              </button>
-
-              {/* Delete */}
-              <button
-                className="crm-btn-danger crm-btn-full"
-                onClick={handleDelete}
-                style={{ backgroundColor: 'rgba(239,68,68,0.1)', borderColor: 'rgba(239,68,68,0.3)', color: '#EF4444' }}
-              >
-                <Trash2 size={15} />
-                Delete Enquiry
-              </button>
+              <p className="crm-text-sm" style={{ color: 'var(--text-secondary)' }}>Action operations are disabled for Admin role.</p>
             </div>
 
           </div>

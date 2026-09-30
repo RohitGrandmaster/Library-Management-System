@@ -169,11 +169,12 @@ export default function AttendancePage() {
                   <div className="eng-att-meta">{s.smartId} · {s.shift} shift</div>
                 </div>
 
-                {/* Status buttons */}
+                {/* Status badges (Admin is View-Only) */}
                 <div className="eng-seg-group">
                   {(['present', 'absent', 'late'] as AttStatus[]).map(st => (
-                    <button key={st} onClick={() => setStatus(s.id, st)}
-                      className={`eng-seg-btn${s.status === st ? ` eng-seg-btn--${st}` : ''}`}>
+                    <button key={st} disabled
+                      className={`eng-seg-btn${s.status === st ? ` eng-seg-btn--${st}` : ''}`}
+                      style={{ opacity: s.status === st ? 1 : 0.4, cursor: 'not-allowed' }}>
                       {st === 'present' ? <><CheckCircle size={12}/> Present</>
                        : st === 'absent' ? '✕ Absent'
                        : <><Clock size={12}/> Late</>}
@@ -181,33 +182,31 @@ export default function AttendancePage() {
                   ))}
                 </div>
 
-                {/* Time inputs */}
+                {/* Time inputs (View-Only) */}
                 {(s.status === 'present' || s.status === 'late') && (
                   <div className="eng-time-pair">
                     <div className="eng-time-field">
                       <span className="eng-label eng-label--no-margin">In</span>
-                      <input type="time" className="eng-time-input" value={s.inTime}
-                        onChange={e => setField(s.id, 'inTime', e.target.value)} />
+                      <input type="time" className="eng-time-input" value={s.inTime} disabled />
                     </div>
                     {s.status === 'present' && (
                       <div className="eng-time-field">
                         <span className="eng-label eng-label--no-margin">Out</span>
-                        <input type="time" className="eng-time-input" value={s.outTime}
-                          onChange={e => setField(s.id, 'outTime', e.target.value)} />
+                        <input type="time" className="eng-time-input" value={s.outTime} disabled />
                       </div>
                     )}
                   </div>
                 )}
 
-                {/* Absent alert */}
+                {/* Absent alert (Admin cannot manually trigger alerts) */}
                 {isAlert && (
                   <div className="eng-att-alert">
                     <span className="eng-badge eng-badge--warning">
                       ⚠️ {s.consecutiveAbsent} days consecutive
                     </span>
                     {!hasAlerted ? (
-                      <button onClick={() => handleAlert(s.id)} className="eng-btn eng-btn--ghost eng-btn--sm">
-                        <Bell size={12} /> Alert Parents
+                      <button disabled className="eng-btn eng-btn--ghost eng-btn--sm" style={{ cursor: 'not-allowed', opacity: 0.5 }}>
+                        <Bell size={12} /> Alert Parents (Disabled)
                       </button>
                     ) : (
                       <span className="eng-badge eng-badge--success">✅ Parents Alerted</span>
@@ -221,13 +220,13 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      {/* ── Sticky Save Bar ── */}
+      {/* ── Sticky Save Bar removed for Admin (View-Only) ── */}
       <div className="eng-save-bar">
         <p className="eng-save-bar-info">
           <strong>{marked}</strong> of <strong>{filtered.length}</strong> marked for <strong>{date}</strong>
         </p>
-        <button onClick={handleSave} className="eng-btn eng-btn--primary">
-          {saved ? <><CheckCircle size={15}/> Saved!</> : <><Save size={15}/> Save Attendance</>}
+        <button disabled className="eng-btn eng-btn--primary" style={{ cursor: 'not-allowed', opacity: 0.5 }}>
+          <Save size={15}/> View Only
         </button>
       </div>
     </div>

@@ -160,21 +160,7 @@ export default function EnquiriesPage() {
   const colEnquiries = (status: EnquiryStatus) =>
     filtered.filter((e) => e.status === status);
 
-  /* ── Quick actions (table view inline) ── */
-  const handleQuickConvert = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    const enq = enquiries.find((x) => x.id === id);
-    if (!enq) return;
-    router.push(
-      `/manager/manager_students/new?name=${encodeURIComponent(enq.name)}&phone=${encodeURIComponent(enq.phone)}`
-    );
-  };
-
-  const handleQuickLost = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    updateEnquiry(id, { status: 'Lost' as EnquiryStatus });
-    setEnquiries(getEnquiries());
-  };
+  /* ── Quick actions are removed for Admin (View-Only) ── */
 
   return (
     <div className="crm-page">
@@ -229,14 +215,7 @@ export default function EnquiriesPage() {
               <Mail size={14} /> Email
             </button>
 
-            {/* Add Enquiry CTA */}
-            <button
-              className="crm-btn-primary"
-              onClick={() => router.push('/admin/admin_crm/enquiries/add')}
-            >
-              <Plus size={16} />
-              Add Enquiry
-            </button>
+            {/* Admin is View-Only: No Add Enquiry Button */}
           </div>
         </div>
       </div>
@@ -279,14 +258,7 @@ export default function EnquiriesPage() {
             <div className="crm-empty-state crm-mt-48">
               <PhoneCall size={48} className="crm-empty-icon" />
               <p className="crm-empty-title">No enquiries yet</p>
-              <p className="crm-empty-sub">Add your first lead to start the pipeline</p>
-              <button
-                className="crm-btn-primary crm-mt-8"
-                onClick={() => router.push('/admin/admin_crm/enquiries/add')}
-              >
-                <Plus size={15} />
-                Add Enquiry
-              </button>
+              <p className="crm-empty-sub">No leads match your criteria</p>
             </div>
           ) : (
             <div className="crm-kanban-board">
@@ -345,13 +317,6 @@ export default function EnquiriesPage() {
               <PhoneCall size={40} className="crm-empty-icon" />
               <p className="crm-empty-title">No enquiries found</p>
               <p className="crm-empty-sub">Try a different search or status filter</p>
-              <button
-                className="crm-btn-primary crm-mt-8"
-                onClick={() => router.push('/admin/admin_crm/enquiries/add')}
-              >
-                <Plus size={15} />
-                Add Enquiry
-              </button>
             </div>
           ) : (
             <div className="crm-table-wrap">
@@ -412,22 +377,6 @@ export default function EnquiriesPage() {
                             }}
                           >
                             <Eye size={14} />
-                          </button>
-                          <button
-                            className="crm-btn-icon crm-btn-icon-success"
-                            title="Convert to Admission"
-                            aria-label="Convert to admission"
-                            onClick={(e) => handleQuickConvert(e, enq.id)}
-                          >
-                            <CheckCircle size={14} />
-                          </button>
-                          <button
-                            className="crm-btn-icon crm-btn-icon-danger"
-                            title="Mark as Lost"
-                            aria-label="Mark as lost"
-                            onClick={(e) => handleQuickLost(e, enq.id)}
-                          >
-                            <XCircle size={14} />
                           </button>
                         </div>
                       </td>

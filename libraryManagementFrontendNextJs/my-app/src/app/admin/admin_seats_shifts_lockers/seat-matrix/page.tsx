@@ -12,7 +12,11 @@ interface SeatData {
   status: 'free' | 'occupied' | 'expiring' | 'maintenance';
   student?: string;
   smartId?: string;
+  phone?: string;
   shift?: string;
+  plan?: string;
+  locker?: string;
+  validFrom?: string;
   expiry?: string;
 }
 
@@ -56,7 +60,13 @@ export default function SeatMatrixPage() {
         id: num,
         status,
         shift: status !== 'maintenance' ? shift : undefined,
-        student: status === 'occupied' || status === 'expiring' ? `Student ${num}` : undefined
+        student: status === 'occupied' || status === 'expiring' ? `Student ${num}` : undefined,
+        smartId: status === 'occupied' || status === 'expiring' ? `LIB-00${i + 1}` : undefined,
+        phone: status === 'occupied' || status === 'expiring' ? `+91 98765${String(Math.floor(10000 + Math.random() * 90000))}` : undefined,
+        plan: status === 'occupied' || status === 'expiring' ? (Math.random() > 0.5 ? 'Premium Plan' : 'Standard Plan') : undefined,
+        locker: status === 'occupied' || status === 'expiring' ? (Math.random() > 0.5 ? `L-${num}` : 'Not Assigned') : undefined,
+        validFrom: status === 'occupied' || status === 'expiring' ? '01 Sep 2024' : undefined,
+        expiry: status === 'occupied' || status === 'expiring' ? '30 Sep 2024' : undefined,
       };
     });
 
@@ -167,9 +177,7 @@ export default function SeatMatrixPage() {
                 <p className="ss-text-secondary ss-text-caption" style={{marginBottom: '1.5rem'}}>This seat is available for assignment.</p>
                 <div className="ss-modal-footer">
                   <button className="ss-btn-ghost" onClick={() => setSelectedSeat(null)}>Close</button>
-                  <button className="ss-btn-primary">
-                    <UserPlus size={15} /> Assign Student
-                  </button>
+                  {/* Admin is View-Only: Assign Student button removed */}
                 </div>
               </>
             ) : selectedSeat.status === 'maintenance' ? (
@@ -210,9 +218,33 @@ export default function SeatMatrixPage() {
                     </span>
                   </div>
                   <div className="ss-detail-cell">
+                    <p className="ss-kpi-card__label">Phone</p>
+                    <p className="ss-detail-cell__value" style={{ fontSize: '13px' }}>
+                      {selectedSeat.phone || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="ss-detail-cell">
+                    <p className="ss-kpi-card__label">Plan</p>
+                    <p className="ss-detail-cell__value" style={{ fontSize: '13px' }}>
+                      {selectedSeat.plan || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="ss-detail-cell">
+                    <p className="ss-kpi-card__label">Locker</p>
+                    <p className="ss-detail-cell__value" style={{ fontSize: '13px' }}>
+                      {selectedSeat.locker || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="ss-detail-cell">
+                    <p className="ss-kpi-card__label">Valid From</p>
+                    <p className="ss-detail-cell__value" style={{ fontSize: '13px' }}>
+                      {selectedSeat.validFrom || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="ss-detail-cell">
                     <p className="ss-kpi-card__label">Expires</p>
-                    <p className={`ss-detail-cell__value ${selectedSeat.status === 'expiring' ? 'ss-detail-cell__value--danger' : ''}`}>
-                      {selectedSeat.expiry}
+                    <p className={`ss-detail-cell__value ${selectedSeat.status === 'expiring' ? 'ss-detail-cell__value--danger' : ''}`} style={{ fontSize: '13px' }}>
+                      {selectedSeat.expiry || 'N/A'}
                     </p>
                   </div>
                 </div>

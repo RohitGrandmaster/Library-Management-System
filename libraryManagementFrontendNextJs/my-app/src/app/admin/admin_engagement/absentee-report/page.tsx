@@ -111,9 +111,7 @@ export default function AbsenteeReportPage() {
           {params.data.notified ? (
             <span className="eng-badge eng-badge--success">✅ Notified</span>
           ) : (
-            <button onClick={() => notify(params.data.id)} className="eng-btn eng-btn--ghost eng-btn--sm hover:bg-[var(--mgr-primary)] hover:text-white transition-colors duration-200">
-              <Send size={12} className="mr-1"/> Alert
-            </button>
+            <span className="eng-badge eng-badge--ghost" style={{ opacity: 0.7 }}>Not Notified</span>
           )}
         </div>
       )
@@ -162,9 +160,7 @@ export default function AbsenteeReportPage() {
             <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#6366F1' }} onClick={() => window.alert('Email...')}>
               <Mail size={14} /> Email
             </button>
-            <button onClick={notifyAll} className="eng-btn eng-btn--primary">
-              <Send size={14}/> Bulk Alert Parents
-            </button>
+            {/* Admin is View-Only: Bulk Alert Parents button removed */}
           </div>
         </div>
       </div>
