@@ -68,12 +68,12 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
               // Group heading — hide when collapsed
               if (collapsed && !mobileOpen) return null;
               return (
-                <p
+                <div
                   key={`group-${idx}`}
                   className="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 select-none"
                 >
                   {item.group}
-                </p>
+                </div>
               );
             }
 
@@ -83,7 +83,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
 
             return (
               <Link
-                key={item.href}
+                key={item.label}
                 href={item.href}
                 className={`admin-nav-item${isActive ? ' active' : ''}`}
                 title={(collapsed && !mobileOpen) ? item.label : undefined}

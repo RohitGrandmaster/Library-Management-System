@@ -47,6 +47,15 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ];
   }
 
+  if (url.includes('admin_students')) {
+    return [
+      { id: 'STU001', fullName: 'Rahul Verma', branch: 'Library A' },
+      { id: 'STU002', fullName: 'Priya Singh', branch: 'Library B' },
+      { id: 'STU003', fullName: 'Amit Sharma', branch: 'Library A' },
+      { id: 'STU004', fullName: 'Sneha Gupta', branch: 'Library C' },
+    ];
+  }
+
   // Default empty array/object fallback to prevent .map() or .filter() crashes in UI grids
   return [];
 
