@@ -2,13 +2,17 @@ export interface Library {
   id: string;
   name: string;
   location: string;
-  seats: number;
-  occupied: number;
+  branches: number;
+  students: number;
   status: string;
   plan: string;
   owner: string;
+  email: string;
   phone: string;
-  joined: string;
+  gstNumber: string;
+  revenue: number;
+  joinedAt: string;
+  nextRenewal: string;
 }
 
 export type LibraryPanelMode = 'view' | 'edit';

@@ -7,7 +7,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-import { Eye, Edit2, ShieldAlert, Plus, X, MapPin, Users, CheckCircle, AlertTriangle, Save, Loader } from 'lucide-react';
+import { Eye, Edit2, ShieldAlert, Plus, X, MapPin, Users, CheckCircle, AlertTriangle, Save, Loader, Download } from 'lucide-react';
 import { useLibraries } from '@/app/superadmin/superadmin_libraries/useLibraries';
 import LibraryPanel from '@/app/superadmin/superadmin_libraries/LibraryPanel';
 import type { Library, LibraryPanelMode } from '@/app/superadmin/superadmin_libraries/superadmin_libraries_types';
@@ -53,20 +53,17 @@ export default function LibrariesPage() {
     },
     { headerName: 'Location', field: 'location', flex: 1.5, minWidth: 160, cellClass: () => 'sa-cell-muted' },
     {
-      headerName: 'Seats', field: 'occupied', flex: 1, minWidth: 120,
-      cellRenderer: (p: ICellRendererParams<Library>) => {
-        const pct = Math.round(((p.data?.occupied ?? 0) / (p.data?.seats ?? 1)) * 100);
-        return (
-          <div className="flex flex-col gap-1.5 justify-center h-full">
-            <span className="text-sm font-medium text-primary">
-              {p.data?.occupied}<span className="text-secondary">/{p.data?.seats}</span>
-            </span>
-            <div className="sa-progress-track w-20">
-              <div className={pct > 90 ? 'sa-progress-fill--danger' : 'sa-progress-fill--success'} style={{ width: `${pct}%` }} />
-            </div>
-          </div>
-        );
-      },
+      headerName: 'Capacity (Branches & Users)', flex: 1.5, minWidth: 160,
+      cellRenderer: (p: ICellRendererParams<Library>) => (
+        <div className="flex flex-col gap-1 justify-center h-full">
+          <p className="text-sm font-bold text-white">{p.data?.branches} Branches</p>
+          <p className="text-xs text-secondary">{p.data?.students} Active Students</p>
+        </div>
+      ),
+    },
+    {
+      headerName: 'LTV Revenue', field: 'revenue', flex: 1, minWidth: 120,
+      cellRenderer: (p: ICellRendererParams<Library>) => <span className="font-bold text-emerald-400">₹{p.data?.revenue?.toLocaleString() || 0}</span>
     },
     {
       headerName: 'Status', field: 'status', flex: 1, minWidth: 120,

@@ -2154,16 +2154,47 @@
   align-items: center !important;
 }
 
-/* Mobile Responsiveness for Cards and Grids */
+/* ── Mobile Responsiveness for SuperAdmin ── */
+@media (max-width: 1024px) {
+  .sa-shell-content { margin-left: 0 !important; }
+  .sa-sidebar { transform: translateX(-100%); }
+  .sa-sidebar--open { transform: translateX(0); }
+  .sa-sidebar-mobile-overlay--visible { opacity: 1; pointer-events: auto; }
+}
+
 @media (max-width: 768px) {
-  .sa-kpi-card {
-    padding: 16px;
+  .sa-kpi-card { padding: 16px; }
+  .sa-kpi-value { font-size: 24px !important; }
+  
+  .sa-shell-main { padding: 90px 16px 20px; }
+  
+  .sa-header { left: 0; padding: 0 16px; }
+  
+  .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-12 {
+    grid-template-columns: 1fr !important;
   }
-  .sa-kpi-value {
-    font-size: 28px !important;
+  
+  .sa-card {
+    border-radius: 12px;
   }
+  
+  .sa-wizard-modal {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding: 20px !important;
+  }
+  
+  .sa-page-title {
+    font-size: 20px !important;
+  }
+
   .ag-root-wrapper {
-    /* Allow AG grid to overflow nicely on mobile if it has too many columns */
     overflow-x: auto;
+  }
+
+  .sa-recent-activity-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }

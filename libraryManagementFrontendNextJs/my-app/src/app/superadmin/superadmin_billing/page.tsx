@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import type { ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
-import { FileText, Tag, Plus, CheckCircle, Download, AlertCircle } from 'lucide-react';
+import { FileText, Tag, Plus, CheckCircle, Download, AlertCircle, X, CreditCard } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -22,24 +22,30 @@ const INITIAL_PROMOS = [
 
 export default function BillingPage() {
   const [activeTab, setActiveTab] = useState('Invoices & Transactions');
-  const [invoices, setInvoices] = useState(INITIAL_INVOICES);
+  const [invoices] = useState(INITIAL_INVOICES);
   const [promos, setPromos] = useState(INITIAL_PROMOS);
   const [toast, setToast] = useState('');
+  
+  // Promo Modal State
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({ code: '', discount: '', expiry: '', maxUses: 100 });
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
-  const handleGenerateCode = () => {
+  const handleSavePromo = () => {
+    if (!form.code) { showToast('Promo code name required'); return; }
     const newCode = {
       id: Math.random().toString(),
-      code: `SPECIAL${Math.floor(Math.random() * 99)}`,
-      discount: '30%',
-      expiry: '2027-01-01',
+      code: form.code.toUpperCase(),
+      discount: form.discount || '10%',
+      expiry: form.expiry || '2026-12-31',
       uses: 0,
-      maxUses: 100,
+      maxUses: form.maxUses,
       status: 'Active'
     };
     setPromos(prev => [newCode, ...prev]);
-    showToast(`New promo code ${newCode.code} generated!`);
+    setShowModal(false);
+    showToast(`Promo code ${newCode.code} activated!`);
   };
 
   const tabs = [
@@ -49,10 +55,10 @@ export default function BillingPage() {
 
   const colDefs = useMemo<any[]>(() => [
     { headerName: 'Invoice ID', field: 'id', flex: 1.2, cellClass: () => 'sa-cell-primary-bold' },
-    { headerName: 'Tenant', field: 'tenant', flex: 1.5, cellClass: () => 'sa-cell-muted' },
+    { headerName: 'Tenant (Library)', field: 'tenant', flex: 1.5, cellClass: () => 'sa-cell-muted' },
     { headerName: 'Date', field: 'date', flex: 1, cellClass: () => 'sa-cell-muted-sm' },
     { headerName: 'Amount', field: 'amount', flex: 1,
-      cellRenderer: (p: ICellRendererParams) => <span className="text-sm font-bold text-primary">₹{p.value.toLocaleString()}</span>
+      cellRenderer: (p: ICellRendererParams) => <span className="text-sm font-bold text-emerald-400">₹{p.value.toLocaleString()}</span>
     },
     { headerName: 'Status', field: 'status', flex: 1,
       cellRenderer: (p: ICellRendererParams) => (
@@ -64,8 +70,8 @@ export default function BillingPage() {
     { headerName: 'Method', field: 'method', flex: 1, cellClass: () => 'sa-cell-muted' },
     { headerName: 'Action', flex: 1,
       cellRenderer: () => (
-        <button className="sa-btn-ghost sa-btn-ghost--sm text-indigo-400 border-indigo-500/20 px-2 py-1 h-auto" onClick={() => showToast('Invoice downloaded successfully.')}>
-          <Download size={14} className="mr-1 inline" /> Download
+        <button className="sa-btn-ghost sa-btn-ghost--sm text-indigo-400 border-indigo-500/20 px-2 py-1 h-auto" onClick={() => showToast('Downloading Invoice PDF...')}>
+          <Download size={14} className="mr-1 inline" /> PDF
         </button>
       )
     },
@@ -85,11 +91,17 @@ export default function BillingPage() {
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">Billing & Revenue</h1>
-          {activeTab === 'Promo Codes & Offers' && (
-            <button className="sa-btn-primary bg-emerald-600 hover:bg-emerald-500 border-none" onClick={handleGenerateCode}>
-              <Plus size={16} /> Generate Code
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {activeTab === 'Invoices & Transactions' ? (
+              <button className="sa-btn-secondary" onClick={() => showToast('Exporting to CSV...')}>
+                <Download size={16} className="text-secondary" /> Export CSV
+              </button>
+            ) : (
+              <button className="sa-btn-primary bg-emerald-600 hover:bg-emerald-500 border-none" onClick={() => { setForm({ code: '', discount: '', expiry: '', maxUses: 100 }); setShowModal(true); }}>
+                <Plus size={16} /> Create Promo Code
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -109,18 +121,30 @@ export default function BillingPage() {
         ))}
       </div>
 
-      <div className="sa-card p-0 overflow-hidden h-[600px] flex flex-col">
+      {activeTab === 'Invoices & Transactions' && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="sa-kpi-card p-5">
+            <p className="sa-label mb-2">Total SaaS Revenue</p>
+            <p className="text-3xl font-black text-white">₹8,45,290</p>
+            <p className="text-xs text-emerald-400 mt-2 flex items-center gap-1"><CheckCircle size={12}/> Lifetime Collections</p>
+          </div>
+          <div className="sa-kpi-card p-5">
+            <p className="sa-label mb-2">Pending Invoices</p>
+            <p className="text-3xl font-black text-white">₹12,499</p>
+            <p className="text-xs text-rose-400 mt-2 flex items-center gap-1"><AlertCircle size={12}/> Overdue Payments</p>
+          </div>
+          <div className="sa-kpi-card p-5 border-indigo-500/30 bg-indigo-500/5">
+            <p className="sa-label mb-2">Next Payout</p>
+            <p className="text-3xl font-black text-indigo-400">₹45,000</p>
+            <p className="text-xs text-secondary mt-2 flex items-center gap-1"><CreditCard size={12}/> Disbursal on 1st Nov</p>
+          </div>
+        </div>
+      )}
+
+      <div className="sa-card p-0 overflow-hidden h-[500px] flex flex-col">
         {activeTab === 'Invoices & Transactions' && (
           <div className="flex-1 w-full animate-fade-in">
-            <AgGridReact
-              theme={gridTheme}
-              rowData={invoices}
-              columnDefs={colDefs}
-              headerHeight={48}
-              rowHeight={64}
-              suppressCellFocus
-              domLayout="normal"
-            />
+            <AgGridReact theme={gridTheme} rowData={invoices} columnDefs={colDefs} headerHeight={48} rowHeight={64} suppressCellFocus domLayout="normal" />
           </div>
         )}
 
@@ -131,9 +155,9 @@ export default function BillingPage() {
             
             <div className="grid gap-4">
               {promos.map(p => (
-                <div key={p.id} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+                <div key={p.id} className="flex flex-col md:flex-row md:items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
                       <Tag className="text-emerald-400" size={20} />
                     </div>
                     <div>
@@ -141,8 +165,8 @@ export default function BillingPage() {
                       <p className="text-xs text-secondary mt-1">Discount: <strong className="text-emerald-400">{p.discount}</strong> • Expires: {p.expiry}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-8">
-                    <div className="text-right">
+                  <div className="flex items-center justify-between md:justify-end gap-8 w-full md:w-auto">
+                    <div className="text-left md:text-right">
                       <p className="text-sm font-bold text-white">{p.uses} <span className="text-secondary font-normal">/ {p.maxUses} uses</span></p>
                       <div className="w-24 h-1.5 bg-black/40 rounded-full mt-2 overflow-hidden">
                         <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${(p.uses/p.maxUses)*100}%` }} />
@@ -158,6 +182,46 @@ export default function BillingPage() {
           </div>
         )}
       </div>
+
+      {/* Promo Code Modal */}
+      {showModal && (
+        <div className="sa-wizard-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="sa-wizard-modal" style={{ maxWidth: 400 }} onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Tag size={20} className="text-emerald-400" /> Create Promo Code
+              </h2>
+              <button onClick={() => setShowModal(false)} className="text-white/40 hover:text-white"><X size={20}/></button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="text-xs font-semibold text-white/70 block mb-1">Coupon Code</label>
+                <input type="text" placeholder="e.g. DIWALI50" className="sa-input uppercase" value={form.code} onChange={e => setForm(p => ({...p, code: e.target.value.toUpperCase()}))} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Discount (%, Flat)</label>
+                  <input type="text" placeholder="e.g. 20%" className="sa-input" value={form.discount} onChange={e => setForm(p => ({...p, discount: e.target.value}))} />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Max Uses</label>
+                  <input type="number" className="sa-input" value={form.maxUses} onChange={e => setForm(p => ({...p, maxUses: Number(e.target.value)}))} />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-white/70 block mb-1">Expiry Date</label>
+                <input type="date" className="sa-input text-white/80" value={form.expiry} onChange={e => setForm(p => ({...p, expiry: e.target.value}))} />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+              <button className="sa-btn-ghost" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="sa-btn-primary bg-emerald-600 hover:bg-emerald-500 border-none" onClick={handleSavePromo}>Generate</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

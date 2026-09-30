@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { MapPin, Edit2, X, Users, CheckCircle, AlertTriangle, Save, Loader, ShieldAlert } from 'lucide-react';
+import { MapPin, Edit2, X, Users, CheckCircle, AlertTriangle, Save, Loader, ShieldAlert, Mail, Phone, FileText, Calendar, IndianRupee } from 'lucide-react';
 import type { Library, LibraryPanelMode } from '@/app/superadmin/superadmin_libraries/superadmin_libraries_types';
 
 interface LibraryPanelProps {
@@ -13,10 +13,12 @@ interface LibraryPanelProps {
 
 export default function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: LibraryPanelProps) {
   const [editing, setEditing] = useState(mode === 'edit');
-  const [form, setForm] = useState({ name: lib.name, owner: lib.owner, phone: lib.phone, location: lib.location, plan: lib.plan });
+  const [form, setForm] = useState({ 
+    name: lib.name, owner: lib.owner, phone: lib.phone, email: lib.email, 
+    location: lib.location, plan: lib.plan, gstNumber: lib.gstNumber 
+  });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const pct = Math.round((lib.occupied / lib.seats) * 100);
 
   const handleSave = async () => {
     setSaving(true);
@@ -48,66 +50,120 @@ export default function LibraryPanel({ lib, mode, onClose, onSave, onSuspend }: 
 
         {editing ? (
           <div className="space-y-3">
-            {([['Library Name','name'],['Owner','owner'],['Phone','phone'],['Location','location']] as const).map(([label, key]) => (
-              <div key={key}>
-                <label className="sa-label">{label}</label>
-                <input className="sa-input" value={(form as Record<string, string>)[key]}
-                  onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="sa-label">Library Name</label>
+                <input className="sa-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
               </div>
-            ))}
+              <div>
+                <label className="sa-label">Owner Name</label>
+                <input className="sa-input" value={form.owner} onChange={e => setForm(f => ({ ...f, owner: e.target.value }))} />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="sa-label">Email</label>
+                <input className="sa-input" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+              </div>
+              <div>
+                <label className="sa-label">Phone</label>
+                <input className="sa-input" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
+              </div>
+            </div>
+
             <div>
-              <label className="sa-label">Plan</label>
-              <select className="sa-select w-full" value={form.plan}
-                onChange={e => setForm(f => ({ ...f, plan: e.target.value }))}>
-                {['Basic','Pro','Enterprise'].map((p: any) => <option key={p} value={p}>{p}</option>)}
-              </select>
+              <label className="sa-label">GST Number</label>
+              <input className="sa-input" value={form.gstNumber} onChange={e => setForm(f => ({ ...f, gstNumber: e.target.value }))} />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="sa-label">Location</label>
+                <input className="sa-input" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
+              </div>
+              <div>
+                <label className="sa-label">SaaS Plan</label>
+                <select className="sa-input appearance-none" value={form.plan} onChange={e => setForm(f => ({ ...f, plan: e.target.value }))}>
+                  <option>Starter</option>
+                  <option>Pro</option>
+                  <option>Enterprise</option>
+                </select>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
-            {([['Owner',lib.owner],['Phone',lib.phone],['Plan',lib.plan],['Joined',lib.joined]] as const).map(([label,val]) => (
-              <div key={label} className="sa-panel-info-cell">
-                <p className="sa-panel-info-label">{label}</p>
-                <p className="sa-panel-info-value">{val}</p>
+          <>
+            <div className="sa-card p-4 flex flex-col gap-4 border-emerald-500/20 bg-emerald-500/5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="sa-label mb-1">Lifetime Revenue</p>
+                  <p className="text-2xl font-black text-emerald-400">₹{lib.revenue.toLocaleString()}</p>
+                </div>
+                <div className="text-right">
+                  <p className="sa-label mb-1">Next Renewal</p>
+                  <p className="text-sm font-bold text-white">{lib.nextRenewal}</p>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="sa-panel-info-cell">
+                <p className="sa-panel-info-label">Active Branches</p>
+                <p className="sa-panel-info-value">{lib.branches}</p>
+              </div>
+              <div className="sa-panel-info-cell">
+                <p className="sa-panel-info-label">Active Students</p>
+                <p className="sa-panel-info-value">{lib.students}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="sa-panel-info-cell">
+                <p className="sa-panel-info-label">Plan Type</p>
+                <p className="sa-panel-info-value text-indigo-400">{lib.plan}</p>
+              </div>
+              <div className="sa-panel-info-cell">
+                <p className="sa-panel-info-label">GST Number</p>
+                <p className="sa-panel-info-value sa-panel-info-value--mono">{lib.gstNumber}</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 mt-2 border-t border-white/5 pt-4">
+              <h3 className="text-xs font-bold text-secondary uppercase tracking-widest">Contact Information</h3>
+              <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/5">
+                <Mail size={16} className="text-secondary" />
+                <div>
+                  <p className="text-xs text-secondary">Email Address</p>
+                  <p className="text-sm font-medium text-white">{lib.email}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/5">
+                <Phone size={16} className="text-secondary" />
+                <div>
+                  <p className="text-xs text-secondary">Phone Number</p>
+                  <p className="text-sm font-medium text-white">{lib.phone}</p>
+                </div>
+              </div>
+            </div>
+          </>
         )}
 
-        <div className="sa-card p-4">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-primary flex items-center gap-2"><Users size={14} /> Seat Occupancy</p>
-            <span className={pct > 90 ? 'sa-occupancy-pct--high' : 'sa-occupancy-pct--ok'}>{pct}%</span>
-          </div>
-          <div className="sa-progress-track">
-            <div className={pct > 90 ? 'sa-progress-fill--danger' : 'sa-progress-fill--success'} style={{ width: `${pct}%` }} />
-          </div>
-          <p className="text-xs text-secondary mt-2">{lib.occupied} occupied / {lib.seats} total seats</p>
-        </div>
-
-        <div>
-          {lib.status === 'Active'
-            ? <span className="sa-badge sa-badge--success"><CheckCircle size={11} /> Active</span>
-            : <span className="sa-badge sa-badge--warning"><AlertTriangle size={11} /> Maintenance</span>}
-        </div>
-
-        <div className="flex gap-3 pt-2">
-          {editing ? (
-            <>
-              <button className="sa-btn-primary sa-btn-primary--flex" onClick={handleSave} disabled={saving}>
-                {saving ? <><Loader size={14} className="animate-spin" /> Saving...</>
-                  : saved ? <><CheckCircle size={14} /> Saved!</>
-                  : <><Save size={14} /> Save Changes</>}
-              </button>
-              <button className="sa-btn-ghost sa-btn-primary--flex" onClick={() => setEditing(false)}>Cancel</button>
-            </>
+        <div className="mt-auto pt-6 flex flex-col gap-3">
+          {editing && (
+            <button className="sa-btn-primary w-full" onClick={handleSave} disabled={saving}>
+              {saving ? <Loader className="animate-spin" size={16} /> : saved ? <CheckCircle size={16} /> : <Save size={16} />}
+              {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Details'}
+            </button>
+          )}
+          {lib.status === 'Active' ? (
+            <button className="w-full flex items-center justify-center gap-2 p-3 text-sm font-bold text-rose-500 bg-rose-500/10 hover:bg-rose-500/20 rounded-xl transition-colors border border-rose-500/20" onClick={() => onSuspend(lib.id)}>
+              <ShieldAlert size={16} /> Suspend Library Account
+            </button>
           ) : (
-            <>
-              <button className="sa-btn-primary sa-btn-primary--flex" onClick={() => setEditing(true)}><Edit2 size={14} /> Edit Library</button>
-              <button className="sa-btn-ghost sa-btn-primary--flex sa-btn-ghost--danger" onClick={() => { onSuspend(lib.id); onClose(); }}>
-                <ShieldAlert size={14} /> {lib.status === 'Active' ? 'Suspend' : 'Reactivate'}
-              </button>
-            </>
+            <button className="w-full flex items-center justify-center gap-2 p-3 text-sm font-bold text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl transition-colors border border-emerald-500/20" onClick={() => onSuspend(lib.id)}>
+              <CheckCircle size={16} /> Restore Library Account
+            </button>
           )}
         </div>
       </div>
