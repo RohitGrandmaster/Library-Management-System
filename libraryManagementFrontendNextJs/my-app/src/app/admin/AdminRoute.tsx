@@ -45,7 +45,9 @@ export function AdminRoute({ children }: { children: React.ReactNode }) {
           onMobileOpen={() => setMobileOpen(true)}
         />
         <main className="admin-shell-content">
-          {children}
+          <div className="ad-page-animate">
+            {children}
+          </div>
         </main>
       </div>
     </div>

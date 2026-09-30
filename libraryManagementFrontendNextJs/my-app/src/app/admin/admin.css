@@ -121,22 +121,26 @@
   /* ═══════════════ BUTTONS ═══════════════ */
 
   .admin-btn-primary {
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-flex;
     align-items: center;
     gap: 6px;
     text-decoration: none;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
   }
-  .admin-btn-primary:hover { background-color: var(--primary-hover); }
+  .admin-btn-primary:hover { 
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.2); 
+  }
 
   .admin-btn-ghost {
     background: transparent;
@@ -216,7 +220,8 @@
   /* ═══════════════ FORM ELEMENTS ═══════════════ */
 
   .admin-input {
-    background-color: var(--bg-input);
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
@@ -228,7 +233,7 @@
     transition: border-color 0.15s, box-shadow 0.15s;
   }
   .admin-input:focus {
-    border-color: var(--border-focus);
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
   }
   .admin-input::placeholder { color: var(--text-disabled); }
@@ -295,9 +300,12 @@
   /* ═══════════════ CARDS & PANELS ═══════════════ */
 
   .admin-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    background: rgba(20, 20, 35, 0.6);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .admin-card-header {
@@ -1653,4 +1661,16 @@
     padding: 10px;
     padding-top: 74px;
   }
+}
+
+/* ─────────────────────────────────────────────
+   PAGE TRANSITIONS
+───────────────────────────────────────────── */
+@keyframes ad-fade-slide {
+  from { opacity: 0; transform: translateY(15px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.ad-page-animate {
+  animation: ad-fade-slide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
