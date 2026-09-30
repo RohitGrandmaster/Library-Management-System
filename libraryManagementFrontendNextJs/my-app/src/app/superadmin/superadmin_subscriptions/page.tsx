@@ -1,22 +1,21 @@
 'use client';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
+import type { ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
-import { Eye, ReceiptText, Users, TrendingDown, X, CheckCircle, Edit2, Package, Tag } from 'lucide-react';
+import { Users, Package, Plus, CheckCircle, X } from 'lucide-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const INITIAL_SUBS = [
-  { id: '1', tenant: 'The Alexandria Modern', plan: 'Enterprise (Annual)', cycle: 'Yearly',  nextInvoice: '12 Oct, 2026', status: 'Paid',     mrr: 15000, seats: 120, startDate: '12 Oct, 2025' },
-  { id: '2', tenant: 'City Reading Hub',       plan: 'Pro (Monthly)',      cycle: 'Monthly', nextInvoice: '15 Apr, 2026', status: 'Due Soon', mrr: 2999,  seats: 80,  startDate: '15 Mar, 2025' },
+  { id: '1', tenant: 'The Alexandria Modern', plan: 'Enterprise', cycle: 'Yearly',  mrr: 15000, status: 'Paid' },
+  { id: '2', tenant: 'City Reading Hub',       plan: 'Pro',        cycle: 'Monthly', mrr: 2999,  status: 'Due Soon' },
 ];
 
 const INITIAL_PLANS = [
   { id: 'P1', name: 'Starter', price: 999, branches: 1, members: 150, storage: '1GB', isPopular: false },
   { id: 'P2', name: 'Pro', price: 2999, branches: 5, members: 1000, storage: '10GB', isPopular: true },
-  { id: 'P3', name: 'Enterprise', price: 15000, branches: 'Unlimited', members: 'Unlimited', storage: '100GB', isPopular: false },
 ];
 
 export default function SubscriptionsPage() {
@@ -24,8 +23,47 @@ export default function SubscriptionsPage() {
   const [subs, setSubs] = useState(INITIAL_SUBS);
   const [plans, setPlans] = useState(INITIAL_PLANS);
   const [toast, setToast] = useState('');
+  
+  // Modal State
+  const [showModal, setShowModal] = useState(false);
+  const [editPlan, setEditPlan] = useState<any>(null);
+  const [formData, setFormData] = useState({ name: '', price: 0, branches: '', members: '', storage: '' });
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
+
+  const handleOpenAdd = () => {
+    setEditPlan(null);
+    setFormData({ name: '', price: 0, branches: '', members: '', storage: '' });
+    setShowModal(true);
+  };
+
+  const handleOpenEdit = (plan: any) => {
+    setEditPlan(plan);
+    setFormData({ ...plan });
+    setShowModal(true);
+  };
+
+  const handleSavePlan = () => {
+    if (editPlan) {
+      setPlans(p => p.map(x => x.id === editPlan.id ? { ...x, ...formData } : x));
+      showToast(`Plan ${formData.name} updated!`);
+    } else {
+      setPlans(p => [...p, { id: Math.random().toString(), ...formData, isPopular: false }]);
+      showToast(`New plan ${formData.name} created!`);
+    }
+    setShowModal(false);
+  };
+
+  const toggleStatus = (id: string) => {
+    setSubs(p => p.map(s => {
+      if (s.id === id) {
+        const nextStatus = s.status === 'Paid' ? 'Due Soon' : s.status === 'Due Soon' ? 'Overdue' : 'Paid';
+        return { ...s, status: nextStatus };
+      }
+      return s;
+    }));
+    showToast('Subscription status updated');
+  };
 
   const tabs = [
     { name: 'Active Subscribers', icon: Users },
@@ -51,9 +89,9 @@ export default function SubscriptionsPage() {
         }`}>{p.value}</span>
       ),
     },
-    { headerName: 'Actions', flex: 0.8,
-      cellRenderer: () => (
-        <button className="text-indigo-400 text-xs font-bold hover:text-indigo-300">Manage</button>
+    { headerName: 'Actions', flex: 1,
+      cellRenderer: (p: ICellRendererParams) => (
+        <button onClick={() => toggleStatus(p.data.id)} className="text-indigo-400 text-xs font-bold hover:text-indigo-300 border border-indigo-500/20 px-3 py-1.5 rounded bg-indigo-500/10">Cycle Status</button>
       )
     },
   ], []);
@@ -72,7 +110,9 @@ export default function SubscriptionsPage() {
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">SaaS Subscriptions</h1>
-          <button className="sa-btn-primary" onClick={() => showToast('New plan creation started')}><Plus size={16} /> Create Plan</button>
+          {activeTab === 'SaaS Pricing Plans' && (
+            <button className="sa-btn-primary" onClick={handleOpenAdd}><Plus size={16} /> Create Plan</button>
+          )}
         </div>
       </div>
 
@@ -95,21 +135,12 @@ export default function SubscriptionsPage() {
       <div className="sa-card p-0 overflow-hidden h-[600px] flex flex-col">
         {activeTab === 'Active Subscribers' && (
           <div className="flex-1 w-full animate-fade-in">
-            <AgGridReact
-              theme={gridTheme}
-              rowData={subs}
-              columnDefs={colDefs}
-              headerHeight={48}
-              rowHeight={64}
-              suppressCellFocus
-              domLayout="normal"
-            />
+            <AgGridReact theme={gridTheme} rowData={subs} columnDefs={colDefs} headerHeight={48} rowHeight={64} suppressCellFocus domLayout="normal" />
           </div>
         )}
 
         {activeTab === 'SaaS Pricing Plans' && (
           <div className="p-6 h-full overflow-y-auto animate-fade-in">
-            <h2 className="text-lg font-bold text-white mb-6">Manage Subscription Plans</h2>
             <div className="grid grid-cols-3 gap-6">
               {plans.map(p => (
                 <div key={p.id} className={`p-6 rounded-2xl border ${p.isPopular ? 'border-indigo-500 bg-indigo-500/10' : 'border-white/10 bg-white/5'} relative`}>
@@ -126,16 +157,59 @@ export default function SubscriptionsPage() {
                     <div className="flex justify-between text-sm"><span className="text-secondary">Storage</span><span className="text-white font-medium">{p.storage}</span></div>
                   </div>
 
-                  <button className="w-full sa-btn-secondary" onClick={() => showToast(`${p.name} plan updated`)}>Edit Limits & Pricing</button>
+                  <button className="w-full sa-btn-secondary" onClick={() => handleOpenEdit(p)}>Edit Limits & Pricing</button>
                 </div>
               ))}
             </div>
           </div>
         )}
       </div>
+
+      {/* Pricing Plan Modal */}
+      {showModal && (
+        <div className="sa-wizard-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="sa-wizard-modal" style={{ maxWidth: 500 }} onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Package size={20} className="text-primary" /> {editPlan ? 'Edit Pricing Plan' : 'Create New Plan'}
+              </h2>
+              <button onClick={() => setShowModal(false)} className="text-white/40 hover:text-white"><X size={20}/></button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Plan Name</label>
+                  <input type="text" className="sa-input" value={formData.name} onChange={e => setFormData(p => ({...p, name: e.target.value}))} />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Price (₹/mo)</label>
+                  <input type="number" className="sa-input" value={formData.price} onChange={e => setFormData(p => ({...p, price: Number(e.target.value)}))} />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Max Branches</label>
+                  <input type="text" className="sa-input" value={formData.branches} onChange={e => setFormData(p => ({...p, branches: e.target.value}))} />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Max Members</label>
+                  <input type="text" className="sa-input" value={formData.members} onChange={e => setFormData(p => ({...p, members: e.target.value}))} />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-white/70 block mb-1">Storage</label>
+                  <input type="text" className="sa-input" value={formData.storage} onChange={e => setFormData(p => ({...p, storage: e.target.value}))} />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+              <button className="sa-btn-ghost" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="sa-btn-primary" onClick={handleSavePlan}>{editPlan ? 'Save Changes' : 'Create Plan'}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-// Needed to avoid undefined Plus
-import { Plus } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useMemo } from 'react';
-import { Plus, Shield, ShieldCheck, Key, History, Activity, X, Trash2, Edit2, ShieldAlert } from 'lucide-react';
+import { Plus, Shield, ShieldCheck, Key, History, Activity, X, Trash2, Edit2, ShieldAlert, Download } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -153,9 +153,14 @@ export default function UsersAndAccessPage() {
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">Users & Access</h1>
-          <button onClick={handleOpenAdd} className="sa-btn-primary">
-            <Plus size={16} /> Add User
-          </button>
+          <div className="flex items-center gap-3">
+            <button className="sa-btn-secondary" onClick={() => alert('Exporting to CSV/Excel...')}>
+              <Download size={16} className="text-secondary" /> Export CSV
+            </button>
+            <button onClick={handleOpenAdd} className="sa-btn-primary">
+              <Plus size={16} /> Add User
+            </button>
+          </div>
         </div>
       </div>
 

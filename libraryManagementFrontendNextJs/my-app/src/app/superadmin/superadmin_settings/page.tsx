@@ -15,7 +15,7 @@ export default function PlatformSettingsPage() {
   });
   
   const [apiConfig, setApiConfig] = useState({
-    emailProvider: 'AWS SES', smsProvider: 'Twilio', whatsappKey: 'waba_live_99887766'
+    emailProvider: 'AWS SES', smsProvider: 'Twilio', whatsappKey: 'waba_live_99887766', telegramBotToken: 'bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'
   });
 
   const [maintenance, setMaintenance] = useState({ enabled: false, message: 'We are upgrading our servers. Back in 10 mins!' });
@@ -149,6 +149,15 @@ export default function PlatformSettingsPage() {
                   </div>
                   <label className="text-xs text-white/60 block mb-1">API Token / Key</label>
                   <input type="password" placeholder="••••••••••••" className="sa-input" value={apiConfig.whatsappKey} onChange={e => setApiConfig(p => ({...p, whatsappKey: e.target.value}))} />
+                </div>
+
+                <div className="p-5 border border-blue-500/20 rounded-xl bg-blue-500/5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <MessageSquare className="text-blue-400" size={20} />
+                    <h3 className="font-bold text-white">Telegram Bot API (OTP & Alerts)</h3>
+                  </div>
+                  <label className="text-xs text-white/60 block mb-1">Telegram Bot Token</label>
+                  <input type="password" placeholder="bot123456:ABC..." className="sa-input" value={apiConfig.telegramBotToken} onChange={e => setApiConfig(p => ({...p, telegramBotToken: e.target.value}))} />
                 </div>
               </div>
             </div>

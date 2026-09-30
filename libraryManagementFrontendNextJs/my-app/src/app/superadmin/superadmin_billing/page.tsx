@@ -22,11 +22,25 @@ const INITIAL_PROMOS = [
 
 export default function BillingPage() {
   const [activeTab, setActiveTab] = useState('Invoices & Transactions');
-  const [invoices] = useState(INITIAL_INVOICES);
-  const [promos] = useState(INITIAL_PROMOS);
+  const [invoices, setInvoices] = useState(INITIAL_INVOICES);
+  const [promos, setPromos] = useState(INITIAL_PROMOS);
   const [toast, setToast] = useState('');
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
+
+  const handleGenerateCode = () => {
+    const newCode = {
+      id: Math.random().toString(),
+      code: `SPECIAL${Math.floor(Math.random() * 99)}`,
+      discount: '30%',
+      expiry: '2027-01-01',
+      uses: 0,
+      maxUses: 100,
+      status: 'Active'
+    };
+    setPromos(prev => [newCode, ...prev]);
+    showToast(`New promo code ${newCode.code} generated!`);
+  };
 
   const tabs = [
     { name: 'Invoices & Transactions', icon: FileText },
@@ -72,7 +86,7 @@ export default function BillingPage() {
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">Billing & Revenue</h1>
           {activeTab === 'Promo Codes & Offers' && (
-            <button className="sa-btn-primary bg-emerald-600 hover:bg-emerald-500 border-none" onClick={() => showToast('New promo code created!')}>
+            <button className="sa-btn-primary bg-emerald-600 hover:bg-emerald-500 border-none" onClick={handleGenerateCode}>
               <Plus size={16} /> Generate Code
             </button>
           )}
