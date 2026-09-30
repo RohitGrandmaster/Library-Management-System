@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Wand2, Building2, CreditCard, Receipt,
   HeadphonesIcon, ScrollText, Activity, Settings, BarChart2, LogOut, Users, ShieldAlert, DatabaseBackup, User
 } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 const NAV_ITEMS = [
   { href: '/superadmin/superadmin_dashboard',       icon: LayoutDashboard, label: 'Dashboard'         },
@@ -84,8 +85,8 @@ export default function Sidebar({ open }: SidebarProps) {
         </button>
       </div>
 
-      {showLogout && (
-        <div className="sa-wizard-modal-overlay" onClick={() => setShowLogout(false)}>
+      {showLogout && typeof document !== 'undefined' && createPortal(
+        <div className="sa-wizard-modal-overlay" style={{ zIndex: 9999 }} onClick={() => setShowLogout(false)}>
           <div className="sa-wizard-modal" style={{ maxWidth: 360 }} onClick={e => e.stopPropagation()}>
             <div className="sa-wizard-modal-icon">
               <LogOut size={20} className="sa-metric--warning" />
@@ -97,7 +98,8 @@ export default function Sidebar({ open }: SidebarProps) {
               <button className="sa-btn-ghost sa-btn-ghost--danger flex-1" onClick={() => router.push('/auth/login')}>Log out</button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </aside>
   );
