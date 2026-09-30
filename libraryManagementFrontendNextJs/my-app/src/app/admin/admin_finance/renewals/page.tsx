@@ -10,7 +10,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../lib/format';
-import { RefreshCw, Send } from 'lucide-react';
+import { RefreshCw, Send, MessageSquare, Printer, Download, Upload, Mail } from 'lucide-react';
 import { gridTheme } from '@/app/admin/admin_finance/admin_finance_components/AdminFinancegridTheme/AdminFinancegridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -152,14 +152,31 @@ export default function Renewals() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="fin-page-title">Renewals</h1>
           <p className="fin-page-subtitle">Subscriptions needing renewal attention.</p>
         </div>
-        <button className="fin-badge fin-badge--neutral cursor-pointer" onClick={handleRemindAll}>
-          <Send size={14} className="mr-1" /> 📱 Remind All
-        </button>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Importing...')}>
+            <Upload size={14} /> Import
+          </button>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Exporting CSV...')}>
+            <Download size={14} /> CSV
+          </button>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Printing...')}>
+            <Printer size={14} /> Print
+          </button>
+          <button className="fin-btn fin-btn-secondary" style={{ color: '#10B981' }} onClick={() => toast.success('WhatsApp All...')}>
+            <MessageSquare size={14} /> WA All
+          </button>
+          <button className="fin-btn fin-btn-secondary" style={{ color: '#6366F1' }} onClick={() => toast.success('Email All...')}>
+            <Mail size={14} /> Email All
+          </button>
+          <button className="fin-badge fin-badge--neutral cursor-pointer" onClick={handleRemindAll} style={{ marginLeft: 8 }}>
+            <Send size={14} className="mr-1" /> 📱 Remind All
+          </button>
+        </div>
       </div>
 
       {/* Filter tabs */}

@@ -3,7 +3,7 @@
 // DATA FLOW: Next.js Router -> Page -> Components
 
 import { useMemo, useState } from 'react';
-import { ChevronDown, Download, Eye } from 'lucide-react';
+import { ChevronDown, Download, Eye, Printer, Upload, MessageSquare, Send, Mail } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry, type ColDef } from 'ag-grid-community';
 import { gridTheme } from '@/app/admin/admin_seats_shifts_lockers/admin_seats_shifts_lockers_components/AdminSeatsShiftsLockersgridTheme/AdminSeatsShiftsLockersgridTheme';
@@ -104,9 +104,26 @@ export default function AllocationsPage() {
             <h1 className="ss-page-title">Allocations</h1>
             <p className="ss-page-subtitle">All active and past seat allocations</p>
           </div>
-          <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Exporting...')}>
-            <Download size={15} />Export
-          </button>
+          <div className="ss-page-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Importing...')}>
+              <Upload size={14} /> Import
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Exporting CSV...')}>
+              <Download size={14} /> CSV
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Printing...')}>
+              <Printer size={14} /> Print
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" style={{ color: '#10B981' }} onClick={() => toast.success('WhatsApp...')}>
+              <MessageSquare size={14} /> WhatsApp
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" style={{ color: '#3B82F6' }} onClick={() => toast.success('Telegram...')}>
+              <Send size={14} /> Telegram
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" style={{ color: '#6366F1' }} onClick={() => toast.success('Email...')}>
+              <Mail size={14} /> Email
+            </button>
+          </div>>
         </div>
 
         <div className="ss-filter-bar">

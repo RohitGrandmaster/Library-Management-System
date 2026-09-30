@@ -19,6 +19,7 @@ import {
   Clock,
   CalendarDays,
   User,
+  Upload, Download, Printer, MessageSquare, Send, Mail
 } from 'lucide-react';
 import { useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
@@ -242,6 +243,25 @@ export default function EnquiriesPage() {
                 <List size={16} />
               </button>
             </div>
+
+            <button className="crm-btn-ghost" onClick={() => window.alert('Importing...')}>
+              <Upload size={14} /> Import
+            </button>
+            <button className="crm-btn-ghost" onClick={() => window.alert('Exporting CSV...')}>
+              <Download size={14} /> CSV
+            </button>
+            <button className="crm-btn-ghost" onClick={() => window.alert('Printing...')}>
+              <Printer size={14} /> Print
+            </button>
+            <button className="crm-btn-ghost" style={{ color: '#10B981' }} onClick={() => window.alert('WhatsApp All...')}>
+              <MessageSquare size={14} /> WA
+            </button>
+            <button className="crm-btn-ghost" style={{ color: '#3B82F6' }} onClick={() => window.alert('Telegram All...')}>
+              <Send size={14} /> TG
+            </button>
+            <button className="crm-btn-ghost" style={{ color: '#6366F1' }} onClick={() => window.alert('Email All...')}>
+              <Mail size={14} /> Email
+            </button>
 
             {/* Add Enquiry CTA */}
             <button

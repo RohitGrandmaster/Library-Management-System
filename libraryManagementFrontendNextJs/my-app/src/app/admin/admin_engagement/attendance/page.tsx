@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, Save, FileBarChart2, Bell, CheckCircle, Clock } from 'lucide-react';
+import { ChevronRight, Save, FileBarChart2, Bell, CheckCircle, Clock, Printer, Download, Upload, MessageSquare, Send, Mail } from 'lucide-react';
 
 type AttStatus = 'present' | 'absent' | 'late' | null;
 
@@ -69,8 +69,26 @@ export default function AttendancePage() {
             <h1 className="eng-page-title">📅 Daily Attendance</h1>
             <p className="eng-page-subtitle">Mark attendance for all enrolled students by shift.</p>
           </div>
-          <div className="eng-page-actions">
-            <Link href="/admin/admin_engagement/absentee-report" className="eng-btn eng-btn--ghost eng-btn--sm">
+          <div className="eng-page-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Importing...')}>
+              <Upload size={14} /> Import
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Exporting CSV...')}>
+              <Download size={14} /> CSV
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Printing...')}>
+              <Printer size={14} /> Print
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#10B981' }} onClick={() => window.alert('WhatsApp...')}>
+              <MessageSquare size={14} /> WhatsApp
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#3B82F6' }} onClick={() => window.alert('Telegram...')}>
+              <Send size={14} /> Telegram
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#6366F1' }} onClick={() => window.alert('Email...')}>
+              <Mail size={14} /> Email
+            </button>
+            <Link href="/admin/admin_engagement/absentee-report" className="eng-btn eng-btn--primary eng-btn--sm" style={{ marginLeft: '8px' }}>
               <FileBarChart2 size={14} /> Absentee Report
             </Link>
           </div>

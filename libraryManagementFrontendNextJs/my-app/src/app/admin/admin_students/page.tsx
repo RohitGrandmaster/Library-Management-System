@@ -4,7 +4,7 @@
 // DATA FLOW: fetchAdminStudents -> AdminStudentsPage -> AgGridReact
 
 import { useState, useMemo, useEffect } from 'react';
-import { Users, Download, Search } from 'lucide-react';
+import { Users, Download, Search, Printer, Upload, MessageSquare, Mail } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
@@ -89,9 +89,21 @@ export default function AdminStudentsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">{selectedBranch} - Students</h1>
           <p className="text-sm text-[var(--text-secondary)] mt-1">Overview of students enrolled in the currently selected branch.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--primary-subtle)] transition-colors">
-            <Download size={15} /> Export List
+        <div className="flex flex-wrap items-center gap-3">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--primary-subtle)] transition-colors">
+            <Upload size={14} /> Import
+          </button>
+          <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--primary-subtle)] transition-colors">
+            <Download size={14} /> CSV
+          </button>
+          <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--primary-subtle)] transition-colors">
+            <Printer size={14} /> Print
+          </button>
+          <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[#10B981] hover:bg-[rgba(16,185,129,0.1)] transition-colors">
+            <MessageSquare size={14} /> WhatsApp
+          </button>
+          <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-[var(--border)] text-[#6366F1] hover:bg-[rgba(99,102,241,0.1)] transition-colors">
+            <Mail size={14} /> Email
           </button>
         </div>
       </div>

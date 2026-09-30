@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { ChevronRight, Send, Mail, Phone } from 'lucide-react';
+import { ChevronRight, Send, Mail, Phone, Upload, Download, Printer, MessageSquare } from 'lucide-react';
 import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -143,7 +143,25 @@ export default function AbsenteeReportPage() {
             <h1 className="eng-page-title">📋 Absentee Report</h1>
             <p className="eng-page-subtitle">Students with consecutive absences requiring attention.</p>
           </div>
-          <div className="eng-page-actions">
+          <div className="eng-page-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Importing...')}>
+              <Upload size={14} /> Import
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Exporting CSV...')}>
+              <Download size={14} /> CSV
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Printing...')}>
+              <Printer size={14} /> Print
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#10B981' }} onClick={() => window.alert('WhatsApp...')}>
+              <MessageSquare size={14} /> WhatsApp
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#3B82F6' }} onClick={() => window.alert('Telegram...')}>
+              <Send size={14} /> Telegram
+            </button>
+            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#6366F1' }} onClick={() => window.alert('Email...')}>
+              <Mail size={14} /> Email
+            </button>
             <button onClick={notifyAll} className="eng-btn eng-btn--primary">
               <Send size={14}/> Bulk Alert Parents
             </button>

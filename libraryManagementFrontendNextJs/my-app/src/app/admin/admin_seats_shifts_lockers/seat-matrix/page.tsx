@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
-import { CalendarDays, UserPlus, User } from 'lucide-react';
+import { CalendarDays, UserPlus, User, Printer, Download, MessageSquare } from 'lucide-react';
 
 interface SeatData {
   uuid?: string;
@@ -82,6 +82,18 @@ export default function SeatMatrixPage() {
 
   return (
     <div className="ss-page">
+      {/* Action Toolbar */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginBottom: '16px' }}>
+        <button className="ss-tab-btn ss-tab-btn--inactive" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Download size={14} /> Export Matrix
+        </button>
+        <button className="ss-tab-btn ss-tab-btn--inactive" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Printer size={14} /> Print Floor Plan
+        </button>
+        <button className="ss-tab-btn ss-tab-btn--inactive" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981' }}>
+          <MessageSquare size={14} /> Notify Students
+        </button>
+      </div>
 
       {/* Filter bar */}
       <div className="ss-matrix-filter-bar">

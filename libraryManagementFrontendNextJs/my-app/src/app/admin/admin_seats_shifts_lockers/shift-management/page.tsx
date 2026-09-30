@@ -3,7 +3,7 @@
 // DATA FLOW: Next.js Router -> Page -> Components
 
 import { useState } from 'react';
-import { Plus, Edit, PowerOff, Zap, ChevronDown } from 'lucide-react';
+import { Plus, Edit, PowerOff, Zap, ChevronDown, Download, Printer, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Shift {
@@ -88,9 +88,20 @@ export default function ShiftManagementPage() {
             <h1 className="ss-page-title">Shifts</h1>
             <p className="ss-page-subtitle">Define active hours and availability windows</p>
           </div>
-          <button className="ss-btn-primary ss-btn-start" onClick={openAdd}>
-            <Plus size={16} />Add Shift
-          </button>
+          <div className="ss-page-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Importing...')}>
+              <Upload size={14} /> Import
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Exporting CSV...')}>
+              <Download size={14} /> CSV
+            </button>
+            <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Printing...')}>
+              <Printer size={14} /> Print
+            </button>
+            <button className="ss-btn-primary ss-btn-start" onClick={openAdd}>
+              <Plus size={16} />Add Shift
+            </button>
+          </div>
         </div>
 
         {shifts.length === 0 ? (

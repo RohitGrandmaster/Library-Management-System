@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../lib/format';
-import { RefreshCw, Eye } from 'lucide-react';
+import { RefreshCw, Eye, Download, Upload, Printer, MessageSquare, Send, Mail } from 'lucide-react';
 
 const MOCK_SUBSCRIPTIONS = [
   { id: 1, studentName: 'Aarav Sharma',  smartId: 'STU001', plan: 'Premium Plan', shift: 'Morning', startDate: '2026-01-01', endDate: '2026-06-30', daysLeft: 12,  base: 15000, discount: 0,    total: 15000, paid: 15000, due: 0,    status: 'active'    },
@@ -60,9 +60,31 @@ export default function Subscriptions() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="fin-page-title">Subscriptions</h1>
-        <p className="fin-page-subtitle">Manage all student subscriptions.</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 className="fin-page-title">Subscriptions</h1>
+          <p className="fin-page-subtitle">Manage all student subscriptions.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Importing...')}>
+            <Upload size={14} /> Import
+          </button>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Exporting CSV...')}>
+            <Download size={14} /> CSV
+          </button>
+          <button className="fin-btn fin-btn-secondary" onClick={() => toast.success('Printing...')}>
+            <Printer size={14} /> Print
+          </button>
+          <button className="fin-btn fin-btn-secondary" style={{ color: '#10B981' }} onClick={() => toast.success('WhatsApp...')}>
+            <MessageSquare size={14} /> WhatsApp
+          </button>
+          <button className="fin-btn fin-btn-secondary" style={{ color: '#3B82F6' }} onClick={() => toast.success('Telegram...')}>
+            <Send size={14} /> Telegram
+          </button>
+          <button className="fin-btn fin-btn-secondary" style={{ color: '#6366F1' }} onClick={() => toast.success('Email...')}>
+            <Mail size={14} /> Email
+          </button>
+        </div>
       </div>
 
       <div className="fin-filter-bar">

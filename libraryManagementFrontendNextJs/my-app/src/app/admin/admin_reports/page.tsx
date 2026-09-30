@@ -4,7 +4,7 @@
 // DATA FLOW: Next.js Router -> Page -> Components
 
 import { useState, useEffect } from 'react';
-import { Download, FileText, IndianRupee, Users, Wallet, TrendingUp, BarChart2, PieChart as PieIcon, Activity } from 'lucide-react';
+import { Download, FileText, IndianRupee, Users, Wallet, TrendingUp, BarChart2, PieChart as PieIcon, Activity, Printer, Mail } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -153,11 +153,17 @@ export default function AdminReportsPage() {
               <option>Nashik Branch</option>
             </select>
 
+            <button onClick={() => window.alert('Printing Report...')} className="admin-btn-ghost admin-btn-sm">
+              <Printer size={14} /> Print
+            </button>
+            <button onClick={() => window.alert('Emailing Report...')} className="admin-btn-ghost admin-btn-sm" style={{ color: '#6366F1' }}>
+              <Mail size={14} /> Email
+            </button>
             <button onClick={() => handleExport('PDF')} className="admin-btn-ghost admin-btn-sm">
-              <FileText size={14} /> Export PDF
+              <FileText size={14} /> PDF
             </button>
             <button onClick={() => handleExport('Excel')} className="admin-btn-primary admin-btn-sm">
-              <Download size={14} /> Export Excel
+              <Download size={14} /> Excel
             </button>
           </div>
         </div>
