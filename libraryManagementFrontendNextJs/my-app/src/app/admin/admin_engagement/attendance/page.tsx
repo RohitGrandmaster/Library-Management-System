@@ -1,10 +1,10 @@
 'use client';
-// RESPONSIBILITY: Entry page for the admin_engagement module.
+// RESPONSIBILITY: Entry page for the admin_engagement module (View Only).
 // DATA FLOW: Next.js Router -> Page -> Components
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, Save, FileBarChart2, Bell, CheckCircle, Clock, Printer, Download, Upload, MessageSquare, Send, Mail } from 'lucide-react';
+import { ChevronRight, Save, FileBarChart2, Bell, CheckCircle, Clock, Printer, Download, Upload, MessageSquare, Send, Mail, Users, UserCheck, UserX, AlertTriangle } from 'lucide-react';
 
 type AttStatus = 'present' | 'absent' | 'late' | null;
 
@@ -15,14 +15,14 @@ interface Student {
 }
 
 const INIT_STUDENTS: Student[] = [
-  { id:'1', smartId:'SL-001', name:'Rahul Sharma',   initials:'RS', shift:'Morning',   consecutiveAbsent:0, status:null, inTime:'09:00', outTime:'13:00' },
-  { id:'2', smartId:'SL-002', name:'Priya Verma',    initials:'PV', shift:'Morning',   consecutiveAbsent:4, status:null, inTime:'',      outTime:''      },
-  { id:'3', smartId:'SL-003', name:'Amit Kumar',     initials:'AK', shift:'Afternoon', consecutiveAbsent:0, status:null, inTime:'13:00', outTime:'18:00' },
-  { id:'4', smartId:'SL-004', name:'Sneha Patel',    initials:'SP', shift:'Morning',   consecutiveAbsent:7, status:null, inTime:'',      outTime:''      },
-  { id:'5', smartId:'SL-005', name:'Rohan Das',      initials:'RD', shift:'Evening',   consecutiveAbsent:0, status:null, inTime:'18:00', outTime:'22:00' },
-  { id:'6', smartId:'SL-006', name:'Kavita Singh',   initials:'KS', shift:'Afternoon', consecutiveAbsent:0, status:null, inTime:'13:00', outTime:'18:00' },
-  { id:'7', smartId:'SL-007', name:'Arjun Mehta',    initials:'AM', shift:'Morning',   consecutiveAbsent:2, status:null, inTime:'',      outTime:''      },
-  { id:'8', smartId:'SL-008', name:'Nisha Gupta',    initials:'NG', shift:'Evening',   consecutiveAbsent:0, status:null, inTime:'18:00', outTime:'22:00' },
+  { id:'1', smartId:'SL-001', name:'Rahul Sharma',   initials:'RS', shift:'Morning',   consecutiveAbsent:0, status:'present', inTime:'09:00', outTime:'13:00' },
+  { id:'2', smartId:'SL-002', name:'Priya Verma',    initials:'PV', shift:'Morning',   consecutiveAbsent:4, status:'absent', inTime:'',      outTime:''      },
+  { id:'3', smartId:'SL-003', name:'Amit Kumar',     initials:'AK', shift:'Afternoon', consecutiveAbsent:0, status:'present', inTime:'13:00', outTime:'18:00' },
+  { id:'4', smartId:'SL-004', name:'Sneha Patel',    initials:'SP', shift:'Morning',   consecutiveAbsent:7, status:'absent', inTime:'',      outTime:''      },
+  { id:'5', smartId:'SL-005', name:'Rohan Das',      initials:'RD', shift:'Evening',   consecutiveAbsent:0, status:'late', inTime:'18:30', outTime:'22:00' },
+  { id:'6', smartId:'SL-006', name:'Kavita Singh',   initials:'KS', shift:'Afternoon', consecutiveAbsent:0, status:null, inTime:'', outTime:'' },
+  { id:'7', smartId:'SL-007', name:'Arjun Mehta',    initials:'AM', shift:'Morning',   consecutiveAbsent:2, status:'absent', inTime:'',      outTime:''      },
+  { id:'8', smartId:'SL-008', name:'Nisha Gupta',    initials:'NG', shift:'Evening',   consecutiveAbsent:0, status:null, inTime:'', outTime:'' },
 ];
 
 const today = new Date().toISOString().split('T')[0];
@@ -30,9 +30,7 @@ const today = new Date().toISOString().split('T')[0];
 export default function AttendancePage() {
   const [date, setDate]         = useState(today);
   const [shift, setShift]       = useState('All');
-  const [students, setStudents] = useState<Student[]>(INIT_STUDENTS);
-  const [saved, setSaved]       = useState(false);
-  const [alerted, setAlerted]   = useState<Set<string>>(new Set());
+  const [students] = useState<Student[]>(INIT_STUDENTS);
 
   const filtered = shift === 'All' ? students : students.filter(s => s.shift === shift);
   const marked   = filtered.filter(s => s.status !== null).length;
@@ -40,195 +38,193 @@ export default function AttendancePage() {
   const absent   = filtered.filter(s => s.status === 'absent').length;
   const late     = filtered.filter(s => s.status === 'late').length;
 
-  const setStatus = (id: string, status: AttStatus) =>
-    setStudents(p => p.map(s => s.id === id ? { ...s, status } : s));
-
-  const setField = (id: string, field: 'inTime'|'outTime', val: string) =>
-    setStudents(p => p.map(s => s.id === id ? { ...s, [field]: val } : s));
-
-  const handleAlert = (id: string) => setAlerted(p => new Set(p).add(id));
-
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
-  };
-
   return (
-    <div className="eng-page">
-      {/* ── Breadcrumb ── */}
-      <div className="eng-breadcrumb">
-        <Link href="/admin/admin_engagement/attendance">Engagement</Link>
-        <ChevronRight size={12} className="eng-breadcrumb-sep" />
-        <span>Attendance</span>
-      </div>
-
+    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      
       {/* ── Page Header ── */}
-      <div className="eng-page-header">
-        <div className="eng-page-title-row">
-          <div>
-            <h1 className="eng-page-title">📅 Daily Attendance</h1>
-            <p className="eng-page-subtitle">Mark attendance for all enrolled students by shift.</p>
-          </div>
-          <div className="eng-page-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Importing...')}>
-              <Upload size={14} /> Import
-            </button>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Exporting CSV...')}>
-              <Download size={14} /> CSV
-            </button>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" onClick={() => window.alert('Printing...')}>
-              <Printer size={14} /> Print
-            </button>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#10B981' }} onClick={() => window.alert('WhatsApp...')}>
-              <MessageSquare size={14} /> WhatsApp
-            </button>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#3B82F6' }} onClick={() => window.alert('Telegram...')}>
-              <Send size={14} /> Telegram
-            </button>
-            <button className="eng-btn eng-btn--ghost eng-btn--sm" style={{ color: '#6366F1' }} onClick={() => window.alert('Email...')}>
-              <Mail size={14} /> Email
-            </button>
-            <Link href="/admin/admin_engagement/absentee-report" className="eng-btn eng-btn--primary eng-btn--sm" style={{ marginLeft: '8px' }}>
-              <FileBarChart2 size={14} /> Absentee Report
-            </Link>
-          </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 style={{ fontSize: '28px', fontWeight: 800, margin: 0, background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Daily Attendance
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '14px' }}>View attendance records for all enrolled students by shift.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button className="admin-btn-ghost"><Download size={15} /> Export CSV</button>
+          <button className="admin-btn-ghost"><Printer size={15} /> Print</button>
+          <Link href="/admin/admin_engagement/absentee-report" className="admin-btn-primary">
+            <FileBarChart2 size={15} /> Absentee Report
+          </Link>
         </div>
       </div>
 
       {/* ── KPI Stats ── */}
-      <div className="eng-stats-row">
-        <div className="eng-stat-card">
-          <div className="eng-stat-label">Total Students</div>
-          <div className="eng-stat-value">{filtered.length}</div>
-          <div className="eng-stat-sub">{shift} shift</div>
-        </div>
-        <div className="eng-stat-card">
-          <div className="eng-stat-label">Present</div>
-          <div className="eng-stat-value eng-stat-value--success">{present}</div>
-          <div className="eng-stat-sub">{filtered.length ? Math.round(present/filtered.length*100) : 0}% rate</div>
-        </div>
-        <div className="eng-stat-card">
-          <div className="eng-stat-label">Absent</div>
-          <div className="eng-stat-value eng-stat-value--danger">{absent}</div>
-          <div className="eng-stat-sub">{filtered.filter(s=>s.consecutiveAbsent>=3).length} need alerts</div>
-        </div>
-        <div className="eng-stat-card">
-          <div className="eng-stat-label">Late</div>
-          <div className="eng-stat-value eng-stat-value--warning">{late}</div>
-          <div className="eng-stat-sub">{marked}/{filtered.length} marked</div>
-        </div>
-      </div>
-
-      {/* ── Filters ── */}
-      <div className="eng-card eng-card--flush eng-mb-6">
-        <div className="eng-filter-row">
-          <div className="eng-filter-field">
-            <label className="eng-label">Date</label>
-            <input type="date" className="eng-input" value={date}
-              onChange={e => setDate(e.target.value)} />
-          </div>
-          <div className="eng-filter-field">
-            <label className="eng-label">Shift</label>
-            <select className="eng-select eng-filter-select" value={shift}
-              onChange={e => setShift(e.target.value)}>
-              <option>All</option>
-              <option>Morning</option>
-              <option>Afternoon</option>
-              <option>Evening</option>
-            </select>
-          </div>
-          <div className="eng-filter-badges">
-            <span className="eng-badge eng-badge--success">{present} Present</span>
-            <span className="eng-badge eng-badge--danger">{absent} Absent</span>
-            <span className="eng-badge eng-badge--warning">{late} Late</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Student List ── */}
-      <div className="eng-card eng-card--flush">
-        <div className="eng-att-list">
-          {filtered.length === 0 ? (
-            <div className="eng-empty">
-              <div className="eng-empty-icon">📅</div>
-              <p className="eng-empty-title">No students in this shift</p>
-              <p className="eng-empty-sub">Try selecting a different shift or date.</p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+        <div className="admin-kpi-card">
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div className="admin-kpi-icon" style={{ background: 'var(--icon-bg-primary)', color: 'var(--primary)' }}>
+              <Users size={20} />
             </div>
-          ) : filtered.map(s => {
-            const isAlert = s.consecutiveAbsent >= 3;
-            const hasAlerted = alerted.has(s.id);
-            return (
-              <div key={s.id} className={`eng-att-row${isAlert ? ' eng-att-row--alert' : ''}`}>
+            <div>
+              <div className="admin-kpi-label">Total Students</div>
+              <div className="admin-kpi-value">{filtered.length}</div>
+            </div>
+          </div>
+          <div className="admin-kpi-sub">{shift} Shift Selected</div>
+        </div>
 
-                {/* Avatar */}
-                <div className="eng-att-avatar">{s.initials}</div>
+        <div className="admin-kpi-card">
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div className="admin-kpi-icon" style={{ background: 'var(--icon-bg-success)', color: 'var(--success)' }}>
+              <UserCheck size={20} />
+            </div>
+            <div>
+              <div className="admin-kpi-label">Present</div>
+              <div className="admin-kpi-value" style={{ color: 'var(--success)' }}>{present}</div>
+            </div>
+          </div>
+          <div className="admin-kpi-sub">{filtered.length ? Math.round(present/filtered.length*100) : 0}% Attendance Rate</div>
+        </div>
 
-                {/* Info */}
-                <div className="eng-att-info">
-                  <div className="eng-att-name">{s.name}</div>
-                  <div className="eng-att-meta">{s.smartId} · {s.shift} shift</div>
-                </div>
+        <div className="admin-kpi-card">
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div className="admin-kpi-icon" style={{ background: 'var(--icon-bg-danger)', color: 'var(--danger)' }}>
+              <UserX size={20} />
+            </div>
+            <div>
+              <div className="admin-kpi-label">Absent</div>
+              <div className="admin-kpi-value" style={{ color: 'var(--danger)' }}>{absent}</div>
+            </div>
+          </div>
+          <div className="admin-kpi-sub">{filtered.filter(s=>s.consecutiveAbsent>=3).length} need alerts</div>
+        </div>
 
-                {/* Status badges (Admin is View-Only) */}
-                <div className="eng-seg-group">
-                  {(['present', 'absent', 'late'] as AttStatus[]).map(st => (
-                    <button key={st} disabled
-                      className={`eng-seg-btn${s.status === st ? ` eng-seg-btn--${st}` : ''}`}
-                      style={{ opacity: s.status === st ? 1 : 0.4, cursor: 'not-allowed' }}>
-                      {st === 'present' ? <><CheckCircle size={12}/> Present</>
-                       : st === 'absent' ? '✕ Absent'
-                       : <><Clock size={12}/> Late</>}
-                    </button>
-                  ))}
-                </div>
+        <div className="admin-kpi-card">
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div className="admin-kpi-icon" style={{ background: 'var(--icon-bg-warning)', color: 'var(--warning)' }}>
+              <Clock size={20} />
+            </div>
+            <div>
+              <div className="admin-kpi-label">Late</div>
+              <div className="admin-kpi-value" style={{ color: 'var(--warning)' }}>{late}</div>
+            </div>
+          </div>
+          <div className="admin-kpi-sub">{marked}/{filtered.length} Records Marked</div>
+        </div>
+      </div>
 
-                {/* Time inputs (View-Only) */}
-                {(s.status === 'present' || s.status === 'late') && (
-                  <div className="eng-time-pair">
-                    <div className="eng-time-field">
-                      <span className="eng-label eng-label--no-margin">In</span>
-                      <input type="time" className="eng-time-input" value={s.inTime} disabled />
+      {/* ── Filters & Main Content ── */}
+      <div className="admin-card">
+        {/* Header/Filters */}
+        <div style={{ padding: '20px', borderBottom: '1px solid var(--border)', display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-glass)' }}>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>Date</label>
+              <input 
+                type="date" 
+                value={date} 
+                onChange={e => setDate(e.target.value)}
+                style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text-primary)', outline: 'none' }}
+              />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>Shift</label>
+              <select 
+                value={shift} 
+                onChange={e => setShift(e.target.value)}
+                style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text-primary)', outline: 'none', minWidth: '150px' }}
+              >
+                <option>All</option>
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Evening</option>
+              </select>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+             <span className="admin-badge admin-badge-success">{present} Present</span>
+             <span className="admin-badge admin-badge-danger">{absent} Absent</span>
+             <span className="admin-badge admin-badge-warning">{late} Late</span>
+          </div>
+        </div>
+
+        {/* Student List */}
+        <div style={{ padding: '0' }}>
+          {filtered.length === 0 ? (
+            <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+              <div style={{ fontSize: '48px', opacity: 0.5, marginBottom: '16px' }}>📅</div>
+              <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)' }}>No students in this shift</h3>
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Try selecting a different shift or date.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {filtered.map(s => {
+                const isAlert = s.consecutiveAbsent >= 3;
+                return (
+                  <div key={s.id} style={{ 
+                    display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '16px', padding: '16px 20px', 
+                    borderBottom: '1px solid var(--border)', 
+                    background: isAlert ? 'var(--danger-bg)' : 'transparent',
+                    transition: 'background 0.2s'
+                  }}>
+                    
+                    {/* Avatar */}
+                    <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--primary-subtle)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '14px', border: '1px solid var(--border-bright)' }}>
+                      {s.initials}
                     </div>
-                    {s.status === 'present' && (
-                      <div className="eng-time-field">
-                        <span className="eng-label eng-label--no-margin">Out</span>
-                        <input type="time" className="eng-time-input" value={s.outTime} disabled />
+
+                    {/* Info */}
+                    <div style={{ flex: '1 1 200px' }}>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>{s.name}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{s.smartId} • {s.shift} Shift</div>
+                    </div>
+
+                    {/* View-Only Status */}
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {s.status === 'present' ? <span className="admin-badge admin-badge-success"><CheckCircle size={12}/> Present</span> : 
+                       s.status === 'absent' ? <span className="admin-badge admin-badge-danger">✕ Absent</span> : 
+                       s.status === 'late' ? <span className="admin-badge admin-badge-warning"><Clock size={12}/> Late</span> : 
+                       <span className="admin-badge" style={{ background: 'var(--bg-glass)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>Unmarked</span>}
+                    </div>
+
+                    {/* Time (View-Only) */}
+                    <div style={{ display: 'flex', gap: '12px', flex: '1 1 150px', justifyContent: 'flex-end' }}>
+                       {(s.status === 'present' || s.status === 'late') ? (
+                         <>
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>In</span>
+                             <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '13px', color: 'var(--text-primary)' }}>{s.inTime || '--:--'}</div>
+                           </div>
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Out</span>
+                             <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '13px', color: 'var(--text-primary)' }}>{s.outTime || '--:--'}</div>
+                           </div>
+                         </>
+                       ) : (
+                         <div style={{ fontSize: '13px', color: 'var(--text-disabled)' }}>No timing data</div>
+                       )}
+                    </div>
+
+                    {/* Alert Message */}
+                    {isAlert && (
+                      <div style={{ flex: '1 1 100%', marginTop: '8px', padding: '12px 16px', borderRadius: '10px', background: 'var(--bg-card)', border: '1px solid var(--danger-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--danger)', fontSize: '13px', fontWeight: 600 }}>
+                           <AlertTriangle size={16} />
+                           {s.consecutiveAbsent} Days Consecutive Absent
+                         </div>
+                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                           Action required by Manager/Superadmin
+                         </div>
                       </div>
                     )}
                   </div>
-                )}
-
-                {/* Absent alert (Admin cannot manually trigger alerts) */}
-                {isAlert && (
-                  <div className="eng-att-alert">
-                    <span className="eng-badge eng-badge--warning">
-                      ⚠️ {s.consecutiveAbsent} days consecutive
-                    </span>
-                    {!hasAlerted ? (
-                      <button disabled className="eng-btn eng-btn--ghost eng-btn--sm" style={{ cursor: 'not-allowed', opacity: 0.5 }}>
-                        <Bell size={12} /> Alert Parents (Disabled)
-                      </button>
-                    ) : (
-                      <span className="eng-badge eng-badge--success">✅ Parents Alerted</span>
-                    )}
-                  </div>
-                )}
-
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ── Sticky Save Bar removed for Admin (View-Only) ── */}
-      <div className="eng-save-bar">
-        <p className="eng-save-bar-info">
-          <strong>{marked}</strong> of <strong>{filtered.length}</strong> marked for <strong>{date}</strong>
-        </p>
-        <button disabled className="eng-btn eng-btn--primary" style={{ cursor: 'not-allowed', opacity: 0.5 }}>
-          <Save size={15}/> View Only
-        </button>
-      </div>
     </div>
   );
 }

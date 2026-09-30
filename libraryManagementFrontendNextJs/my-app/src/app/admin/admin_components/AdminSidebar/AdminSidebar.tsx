@@ -56,7 +56,10 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </Button>
           {(!collapsed || mobileOpen) && (
-            <span className="admin-sidebar-logo-text ml-2">📚 Smart Library</span>
+            <div className="ml-2 flex items-center gap-2">
+              <span style={{ fontSize: '16px' }}>📚</span>
+              <span className="admin-sidebar-logo-text">Smart Library</span>
+            </div>
           )}
         </div>
 
@@ -66,6 +69,15 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
               if (collapsed && !mobileOpen) return null;
               return <div key={i} className="admin-nav-group-label">{item.group}</div>;
             }
+            
+            // Generate a vibrant color for each icon
+            const colors = [
+              'var(--success)', 'var(--info)', 'var(--warning)', 
+              'var(--purple)', 'var(--rose)', 'var(--cyan)', 
+              'var(--danger)', 'var(--emerald)', 'var(--primary)'
+            ];
+            const itemColor = colors[i % colors.length];
+
             const Icon = item.icon;
             const isExactMatch = pathname === item.href;
             const isSubRouteMatch = pathname.startsWith(item.href + '/');
@@ -80,8 +92,9 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
                 className={`admin-nav-item${isActive ? ' active' : ''}`}
                 title={(collapsed && !mobileOpen) ? item.label : undefined}
                 onClick={mobileOpen ? onMobileClose : undefined}
+                style={{ '--hover-color': itemColor } as React.CSSProperties}
               >
-                <Icon size={15} className="shrink-0 admin-nav-icon" />
+                <Icon size={15} className="shrink-0 admin-nav-icon" style={{ color: isActive ? 'var(--primary)' : itemColor }} />
                 {(!collapsed || mobileOpen) && (
                   <span className="admin-nav-label">{item.label}</span>
                 )}

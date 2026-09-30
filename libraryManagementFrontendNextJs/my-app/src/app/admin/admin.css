@@ -129,7 +129,8 @@
 
   /* ━━━━━━━━━━ LIGHT MODE ━━━━━━━━━━ */
   .admin-theme.light-mode,
-  .admin-theme[data-theme="light"] {
+  .admin-theme[data-theme="light"],
+  [data-theme="light"] .admin-theme {
     --primary:           #6366F1;
     --primary-dark:      #4F46E5;
     --primary-hover:     #4338CA;
@@ -348,9 +349,9 @@
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    border: 1px solid var(--border);
-    background: var(--bg-glass);
-    color: var(--text-secondary);
+    border: 1px solid var(--border-bright);
+    background: var(--icon-bg-primary);
+    color: var(--primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -359,11 +360,10 @@
     flex-shrink: 0;
   }
   .admin-btn-icon:hover {
-    background: var(--primary-subtle);
-    border-color: var(--primary);
-    color: var(--primary);
+    background: var(--primary);
+    color: #fff;
     transform: scale(1.1);
-    box-shadow: 0 3px 12px var(--primary-glow);
+    box-shadow: 0 4px 14px var(--primary-glow);
   }
 
 
@@ -1356,13 +1356,13 @@
 
   .admin-bell-btn {
     position: relative; padding: 9px; border-radius: 10px;
-    color: var(--text-secondary); background: var(--bg-input); border: 1px solid var(--border);
+    color: var(--primary); background: var(--icon-bg-primary); border: 1px solid var(--border-bright);
     cursor: pointer; transition: all 0.2s ease;
   }
   .admin-bell-btn:hover {
-    color: var(--primary); border-color: var(--primary);
-    background: var(--primary-subtle);
-    box-shadow: 0 0 14px var(--primary-glow);
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--primary-glow);
   }
   .admin-bell-dot {
     position: absolute; top: 5px; right: 5px;
@@ -1490,7 +1490,7 @@
     background: var(--bg-glass-hover);
     color: var(--text-primary);
   }
-  .admin-nav-item:hover .admin-nav-icon { color: var(--primary); transform: scale(1.12); }
+  .admin-nav-item:hover .admin-nav-icon { color: var(--violet); transform: scale(1.12); }
 
   .admin-nav-item.active {
     background: var(--primary-subtle);
@@ -1507,7 +1507,8 @@
   }
   .admin-nav-item.active .admin-nav-icon { color: var(--primary); }
 
-  .admin-nav-icon { color: var(--text-secondary); transition: all 0.2s ease; flex-shrink: 0; }
+  /* Colorful icons by default */
+  .admin-nav-icon { color: var(--primary); opacity: 0.8; transition: all 0.2s ease; flex-shrink: 0; }
   .admin-nav-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
 
   .admin-nav-group-label {

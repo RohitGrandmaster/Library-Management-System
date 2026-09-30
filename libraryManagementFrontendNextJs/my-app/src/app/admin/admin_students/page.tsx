@@ -145,7 +145,7 @@ export default function AdminStudentsPage() {
       }
     },
     {
-      headerName: 'Actions', flex: 1.2, minWidth: 160, sortable: false,
+      headerName: 'Actions', flex: 1.2, minWidth: 220, sortable: false,
       cellRenderer: (params: any) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '100%' }}>
           <button
