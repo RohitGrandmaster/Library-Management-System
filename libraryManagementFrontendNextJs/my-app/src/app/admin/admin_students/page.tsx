@@ -104,16 +104,19 @@ export default function AdminStudentsPage() {
 
   const colDefs = useMemo<any[]>(() => [
     {
-      field: 'id', headerName: 'ID', flex: 0.8, minWidth: 100,
+      field: 'id', headerName: 'ID', flex: 0.8, minWidth: 90,
       cellStyle: { fontFamily: 'monospace', fontSize: '12px', color: 'var(--primary)' }
     },
     {
-      field: 'name', headerName: 'Student Name', flex: 1.5, minWidth: 160,
+      field: 'name', headerName: 'Student Name', flex: 1.5, minWidth: 150,
       cellRenderer: (p: any) => (
-        <div>
-          <div style={{ fontWeight: 600, fontSize: '13px' }}>{p.value}</div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{p.data.phone}</div>
-        </div>
+        <div style={{ fontWeight: 600, fontSize: '13px' }}>{p.value}</div>
+      )
+    },
+    {
+      field: 'phone', headerName: 'Mobile', flex: 1.2, minWidth: 120,
+      cellRenderer: (p: any) => (
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{p.value}</div>
       )
     },
     { field: 'shift', headerName: 'Shift', flex: 1, minWidth: 110 },
