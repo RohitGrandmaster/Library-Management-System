@@ -339,8 +339,6 @@
   .sa-shell-main {
     padding: 104px 32px 32px; /* 72px header + 32px gap */
     min-height: 100vh;
-    max-width: 1600px;
-    margin: 0 auto;
     width: 100%;
   }
 
