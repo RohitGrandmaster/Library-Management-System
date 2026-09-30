@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, Wand2, Building2, CreditCard, Receipt,
-  HeadphonesIcon, ScrollText, Activity, Settings, BarChart2, LogOut,
+  HeadphonesIcon, ScrollText, Activity, Settings, BarChart2, LogOut, Users, ShieldAlert, DatabaseBackup, User
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -13,12 +13,15 @@ const NAV_ITEMS = [
   { href: '/superadmin/superadmin_setup-wizard',    icon: Wand2,           label: 'Setup Wizard'      },
   { href: '/superadmin/superadmin_libraries',       icon: Building2,       label: 'Libraries'         },
   { href: '/superadmin/superadmin_subscriptions',   icon: CreditCard,      label: 'Subscriptions'     },
+  { href: '/superadmin/superadmin_users',           icon: Users,           label: 'Users & Access'    },
   { href: '/superadmin/superadmin_billing',         icon: Receipt,         label: 'Billing'           },
   { href: '/superadmin/superadmin_support-tickets', icon: HeadphonesIcon,  label: 'Support Tickets'   },
-  { href: '/superadmin/superadmin_audit-logs',      icon: ScrollText,      label: 'Audit Logs'        },
+  { href: '/superadmin/superadmin_security',        icon: ShieldAlert,     label: 'Security Center'   },
   { href: '/superadmin/superadmin_system-health',   icon: Activity,        label: 'System Health'     },
+  { href: '/superadmin/superadmin_backup',          icon: DatabaseBackup,  label: 'Backup & Restore'  },
   { href: '/superadmin/superadmin_reports',         icon: BarChart2,       label: 'Reports'           },
   { href: '/superadmin/superadmin_settings',        icon: Settings,        label: 'Platform Settings' },
+  { href: '/superadmin/superadmin_profile',         icon: User,            label: 'My Profile'        },
 ];
 
 interface SidebarProps {
@@ -64,11 +67,13 @@ export default function Sidebar({ open }: SidebarProps) {
       </nav>
 
       <div className="sa-sidebar-footer">
-        <div className="sa-header-avatar-icon shrink-0">SA</div>
-        <div className="sa-sidebar-footer-avatar">
-          <p className="sa-sidebar-footer-name">Super Admin</p>
-          <p className="sa-sidebar-footer-role">Platform Owner</p>
-        </div>
+        <Link href="/superadmin/superadmin_profile" className="flex items-center gap-3 flex-1 overflow-hidden group">
+          <div className="sa-header-avatar-icon shrink-0 group-hover:ring-2 ring-primary/50 transition-all">SA</div>
+          <div className="sa-sidebar-footer-avatar">
+            <p className="sa-sidebar-footer-name group-hover:text-primary transition-colors">Super Admin</p>
+            <p className="sa-sidebar-footer-role">Platform Owner</p>
+          </div>
+        </Link>
         <button
           className="sa-btn-icon sa-btn-icon--danger"
           onClick={() => setShowLogout(true)}
