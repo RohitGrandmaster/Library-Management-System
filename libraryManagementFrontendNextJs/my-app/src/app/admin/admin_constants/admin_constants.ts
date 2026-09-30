@@ -16,7 +16,7 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   
   { group: 'CRM & Students' },
   { href: '/admin/admin_crm/enquiries', icon: Phone, label: 'Enquiries' },
-  { href: '/admin/admin_students', icon: Users, label: 'Students' },
+  { href: '/admin/admin_members', icon: Users, label: 'Members' },
 
   { group: 'Seats & Shifts' },
   { href: '/admin/admin_seats_shifts_lockers/seat-matrix',      icon: Armchair,     label: 'Seat Matrix'      },
@@ -33,6 +33,7 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   { group: 'Operations' },
   { href: '/admin/admin_engagement/attendance',      icon: Key,          label: 'Attendance'      },
   { href: '/admin/admin_engagement/absentee-report', icon: AlertCircle,  label: 'Absentee Report' },
+  { href: '/admin/admin_staff-users', icon: User, label: 'Staff & Managers' },
   
   { group: 'Configuration' },
   { href: '/admin/admin_branches', icon: Building2, label: 'Branches' },

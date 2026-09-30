@@ -1,284 +1,510 @@
 'use client';
+// RESPONSIBILITY: Renders the Admin Staff & Managers management module
+// DATA FLOW: Next.js Router -> Page
 
-// RESPONSIBILITY: Entry page for the admin_staff-users module.
-// DATA FLOW: Next.js Router -> Page -> Components
+import React, { useState } from 'react';
+import { 
+  Users, UserPlus, CheckCircle, PauseCircle, Ban, 
+  MonitorSmartphone, Clock, Activity, Edit, Eye, 
+  Key, LogOut, ArrowLeft, Building, User, Mail, Phone, Camera
+} from 'lucide-react';
+import toast from 'react-hot-toast';
 
-import { useState, useMemo, useEffect } from 'react';
-import { fetchApi } from '@/lib/api';
-import { UserPlus, Pencil, Trash2, CheckCircle, Search, Users } from 'lucide-react';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
+type MainTab = 'all' | 'add' | 'active' | 'suspended' | 'deactivated' | 'sessions' | 'history' | 'activity';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
-
-interface StaffMember {
+interface Manager {
   id: string;
   name: string;
+  username: string;
   email: string;
   phone: string;
-  role: 'Admin' | 'Manager' | 'Staff';
   branch: string;
-  status: 'Active' | 'Inactive';
-  joinedDate: string;
+  status: 'Active' | 'Suspended' | 'Deactivated';
+  lastActive: string;
 }
 
-const STAFF: StaffMember[] = [
-  { id: 'S1', name: 'Rajesh Kumar',  email: 'rajesh@library.com',  phone: '9876543210', role: 'Admin',   branch: 'Main Branch',    status: 'Active',   joinedDate: '01/01/24' },
-  { id: 'S2', name: 'Sunita Patil',  email: 'sunita@library.com',  phone: '9876543211', role: 'Manager', branch: 'Branch 2',       status: 'Active',   joinedDate: '15/03/24' },
-  { id: 'S3', name: 'Amit Desai',    email: 'amit@library.com',    phone: '9876543212', role: 'Manager', branch: 'Kothrud Center', status: 'Active',   joinedDate: '01/06/24' },
-  { id: 'S4', name: 'Priya Joshi',   email: 'priya@library.com',   phone: '9876543213', role: 'Staff',   branch: 'Main Branch',    status: 'Active',   joinedDate: '10/07/24' },
-  { id: 'S5', name: 'Rahul Sharma',  email: 'rahul@library.com',   phone: '9876543214', role: 'Staff',   branch: 'Branch 2',       status: 'Inactive', joinedDate: '20/08/24' },
-];
-
-interface FormState { name: string; email: string; phone: string; role: 'Admin' | 'Manager' | 'Staff'; branch: string; }
-const EMPTY: FormState = { name: '', email: '', phone: '', role: 'Staff', branch: 'Main Branch' };
-
 export default function AdminStaffUsersPage() {
-  const [staff, setStaff]       = useState<StaffMember[]>([]);
+  const [activeTab, setActiveTab] = useState<MainTab>('all');
+  const [viewingManager, setViewingManager] = useState<Manager | null>(null);
+  const [managerDetailTab, setManagerDetailTab] = useState<'overview' | 'history' | 'activity'>('overview');
 
-  useEffect(() => {
-    fetchApi('/admin/admin_staff-users').then(data => {
-      const mapped = data.map((u: any) => ({
-        id: u.id,
-        name: u.fullName,
-        email: u.email,
-        phone: u.phone,
-        role: u.role === 'manager' ? 'Manager' : 'Staff',
-        branch: 'Main Branch',
-        status: u.isActive ? 'Active' : 'Inactive',
-        joinedDate: new Date().toLocaleDateString()
-      }));
-      setStaff(mapped);
-    }).catch(console.error);
-  }, []);
-  const [showForm, setShowForm] = useState(false);
-  const [editId, setEditId]     = useState<string | null>(null);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [form, setForm]         = useState<FormState>(EMPTY);
-  const [errors, setErrors]     = useState<Partial<FormState>>({});
-  const [search, setSearch]     = useState('');
-
-  const filtered = staff.filter(s =>
-    s.name.toLowerCase().includes(search.toLowerCase()) ||
-    s.email.toLowerCase().includes(search.toLowerCase()) ||
-    s.role.toLowerCase().includes(search.toLowerCase())
-  );
-
-  function validate(): boolean {
-    const e: Partial<FormState> = {};
-    if (!form.name.trim())  e.name  = 'Name is required';
-    if (!form.email.trim()) e.email = 'Email is required';
-    if (!form.phone.trim()) e.phone = 'Phone is required';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  }
-
-  function openAdd() {
-    setEditId(null); setForm(EMPTY); setErrors({}); setShowForm(true);
-  }
-
-  function openEdit(s: StaffMember) {
-    setEditId(s.id);
-    setForm({ name: s.name, email: s.email, phone: s.phone, role: s.role, branch: s.branch });
-    setErrors({}); setShowForm(true);
-  }
-
-  function handleSave() {
-    if (!validate()) return;
-    if (editId) {
-      setStaff(prev => prev.map(s => s.id === editId ? { ...s, ...form } : s));
-    } else {
-      setStaff(prev => [...prev, {
-        id: `S${Date.now()}`, ...form, status: 'Active',
-        joinedDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }),
-      }]);
-    }
-    setShowForm(false);
-  }
-
-  function handleDelete() {
-    if (deleteId) setStaff(prev => prev.filter(s => s.id !== deleteId));
-    setDeleteId(null);
-  }
-
-  const f = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(p => ({ ...p, [k]: e.target.value as any }));
-    setErrors(p => ({ ...p, [k]: undefined }));
-  };
-
-  const roleBadgeClass = (role: string) => {
-    if (role === 'Admin')   return 'admin-badge admin-badge-purple';
-    if (role === 'Manager') return 'admin-badge admin-badge-info';
-    return 'admin-badge admin-badge-success';
-  };
-
-  const colDefs = useMemo<any[]>(() => [
-    { field: 'name', headerName: 'Name', flex: 1, minWidth: 150 },
-    { field: 'email', headerName: 'Email', flex: 1.5, minWidth: 200 },
-    { field: 'phone', headerName: 'Phone', flex: 1, minWidth: 120 },
-    {
-      field: 'role', headerName: 'Role', flex: 1, minWidth: 120,
-      cellRenderer: (params: any) => (
-        <span className={roleBadgeClass(params.value)}>{params.value}</span>
-      )
-    },
-    { field: 'branch', headerName: 'Branch', flex: 1, minWidth: 150 },
-    { field: 'joinedDate', headerName: 'Joined', flex: 1, minWidth: 120 },
-    {
-      field: 'status', headerName: 'Status', flex: 1, minWidth: 120,
-      cellRenderer: (params: any) => (
-        <span className={`admin-badge ${params.value === 'Active' ? 'admin-badge-success' : 'admin-badge-danger'}`}>
-          {params.value}
-        </span>
-      )
-    },
-    {
-      headerName: 'Actions',
-      flex: 1,
-      minWidth: 120,
-      sortable: false,
-      cellRenderer: (params: any) => (
-        <div style={{ display: 'flex', gap: 6, height: '100%', alignItems: 'center' }}>
-          <button className="admin-btn-icon" onClick={() => openEdit(params.data)} title="Edit">
-            <Pencil size={14} />
-          </button>
-          <button className="admin-btn-icon" onClick={() => setDeleteId(params.data.id)} title="Delete" style={{ color: 'var(--danger)' }}>
-            <Trash2 size={14} />
-          </button>
-        </div>
-      ),
-    },
-  ], []);
-
-  const stats = [
-    { label: 'Admin',   count: staff.filter(s => s.role === 'Admin').length,   color: 'var(--purple)' },
-    { label: 'Manager', count: staff.filter(s => s.role === 'Manager').length, color: 'var(--info)'   },
-    { label: 'Staff',   count: staff.filter(s => s.role === 'Staff').length,   color: 'var(--success)'},
-    { label: 'Total',   count: staff.length,                                   color: 'var(--primary)'},
+  const navItems: { id: MainTab; label: string; icon: React.ElementType; color: string }[] = [
+    { id: 'all', label: 'All Managers', icon: Users, color: 'var(--primary)' },
+    { id: 'add', label: 'Add Manager', icon: UserPlus, color: 'var(--success)' },
+    { id: 'active', label: 'Active Managers', icon: CheckCircle, color: 'var(--success)' },
+    { id: 'suspended', label: 'Suspended Managers', icon: PauseCircle, color: 'var(--warning)' },
+    { id: 'deactivated', label: 'Deactivated Managers', icon: Ban, color: 'var(--danger)' },
+    { id: 'sessions', label: 'Manager Sessions', icon: MonitorSmartphone, color: 'var(--purple)' },
+    { id: 'history', label: 'Login History', icon: Clock, color: 'var(--info)' },
+    { id: 'activity', label: 'Manager Activity', icon: Activity, color: 'var(--cyan)' },
   ];
 
+  const dummyManagers: Manager[] = [
+    { id: 'MGR-001', name: 'Vikram Singh', username: 'vikram.s', email: 'vikram@smartlibrary.com', phone: '+91 9876543210', branch: 'Downtown Central', status: 'Active', lastActive: '2 mins ago' },
+    { id: 'MGR-002', name: 'Anita Desai', username: 'anita.d', email: 'anita@smartlibrary.com', phone: '+91 9876543211', branch: 'Westside Branch', status: 'Active', lastActive: '1 hr ago' },
+    { id: 'MGR-003', name: 'Rahul Sharma', username: 'rahul.s', email: 'rahul@smartlibrary.com', phone: '+91 9876543212', branch: 'North Hub', status: 'Suspended', lastActive: '3 days ago' },
+    { id: 'MGR-004', name: 'Sneha Verma', username: 'sneha.v', email: 'sneha@smartlibrary.com', phone: '+91 9876543213', branch: 'Unassigned', status: 'Deactivated', lastActive: '1 month ago' },
+  ];
+
+  const handleAction = (action: string, managerName: string) => {
+    toast.success(`${action} applied to ${managerName}`);
+  };
+
+  const handleAddManager = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast.success('New manager created successfully!');
+    setActiveTab('all');
+  };
+
+  const openManagerDetails = (mgr: Manager) => {
+    setViewingManager(mgr);
+    setManagerDetailTab('overview');
+  };
+
+  const renderManagerTable = (filterStatus?: string) => {
+    const data = filterStatus ? dummyManagers.filter(m => m.status === filterStatus) : dummyManagers;
+    return (
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Manager</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Contact</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Branch</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((m, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="admin-avatar" style={{ width: '36px', height: '36px', fontSize: '14px', background: 'var(--icon-bg-primary)', color: 'var(--primary)', flexShrink: 0 }}>
+                      {m.name.charAt(0)}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{m.name}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>@{m.username}</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '12px' }}>
+                  <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{m.email}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{m.phone}</div>
+                </td>
+                <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{m.branch}</td>
+                <td style={{ padding: '12px' }}>
+                  <span className={`admin-badge ${m.status === 'Active' ? 'admin-badge-success' : m.status === 'Suspended' ? 'admin-badge-warning' : 'admin-badge-danger'}`}>
+                    {m.status}
+                  </span>
+                </td>
+                <td style={{ padding: '12px' }}>
+                  <button className="admin-btn-primary" style={{ padding: '6px 12px', fontSize: '12px', whiteSpace: 'nowrap' }} onClick={() => openManagerDetails(m)}>
+                    <Eye size={14} style={{ marginRight: '6px' }} /> View Details
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {data.length === 0 && (
+              <tr>
+                <td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: 'var(--text-secondary)' }}>No managers found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', paddingBottom: 40 }}>
-      {/* Page Header */}
-      <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
-        <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Staff &amp; Users</p>
-          <h1 className="admin-page-title">Staff &amp; Users</h1>
-          <p className="admin-page-subtitle">Manage staff accounts and their branch assignments.</p>
-        </div>
-        <div className="admin-page-actions">
-          <button className="admin-btn-primary" onClick={openAdd}>
-            <UserPlus size={15} /> Add Staff
+    <div className="ad-page-animate" style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+      
+      {/* HEADER */}
+      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        {viewingManager && (
+          <button className="admin-btn-icon" onClick={() => setViewingManager(null)}>
+            <ArrowLeft size={20} />
           </button>
+        )}
+        <div>
+          <h1 style={{ fontSize: '28px', fontWeight: 800, margin: 0, background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            {viewingManager ? `Manager: ${viewingManager.name}` : 'Staff & Managers'}
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '14px' }}>
+            {viewingManager ? `ID: ${viewingManager.id} | Branch: ${viewingManager.branch}` : 'Manage branch managers, user accounts, and access permissions.'}
+          </p>
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
-        {stats.map(s => (
-          <div key={s.label} className="admin-card" style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: `color-mix(in srgb, ${s.color} 12%, transparent)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Users size={16} style={{ color: s.color }} />
-            </div>
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>{s.label}</p>
-              <p style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>{s.count}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Search */}
-      <div style={{ marginBottom: 16, position: 'relative', maxWidth: 360 }}>
-        <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-        <input
-          className="admin-input"
-          style={{ paddingLeft: 38 }}
-          placeholder="Search by name, email or role…"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
-      </div>
-
-      {/* AG Grid */}
-      <div className="admin-table-wrapper" style={{ flex: 1, minHeight: 400 }}>
-        <AgGridReact
-          rowData={filtered}
-          columnDefs={colDefs}
-          theme={gridTheme}
-          defaultColDef={{ sortable: true, filter: true, resizable: true }}
-          headerHeight={44}
-          rowHeight={56}
-        />
-      </div>
-
-      {/* Add / Edit Modal */}
-      {showForm && (
-        <div className="admin-modal-overlay" onClick={() => setShowForm(false)}>
-          <div className="admin-modal" onClick={e => e.stopPropagation()}>
-            <h2 className="admin-modal-title">{editId ? 'Edit Staff Member' : 'Add Staff Member'}</h2>
-            <div className="admin-form-grid">
-              <div className="admin-form-field admin-form-field-full">
-                <label className="admin-label admin-label-required">Full Name</label>
-                <input className={`admin-input${errors.name ? ' admin-input-error' : ''}`} value={form.name} onChange={f('name')} placeholder="Full name" />
-                {errors.name && <p className="admin-error">{errors.name}</p>}
-              </div>
-              <div className="admin-form-field admin-form-field-full">
-                <label className="admin-label admin-label-required">Email</label>
-                <input className={`admin-input${errors.email ? ' admin-input-error' : ''}`} type="email" value={form.email} onChange={f('email')} placeholder="email@library.com" />
-                {errors.email && <p className="admin-error">{errors.email}</p>}
-              </div>
-              <div className="admin-form-field">
-                <label className="admin-label admin-label-required">Phone</label>
-                <input className={`admin-input${errors.phone ? ' admin-input-error' : ''}`} value={form.phone} onChange={f('phone')} placeholder="9876543210" />
-                {errors.phone && <p className="admin-error">{errors.phone}</p>}
-              </div>
-              <div className="admin-form-field">
-                <label className="admin-label">Role</label>
-                <select className="admin-select" style={{ width: '100%', padding: '10px 14px' }} value={form.role} onChange={e => setForm(p => ({ ...p, role: e.target.value as any }))}>
-                  <option value="Admin">Admin</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Staff">Staff</option>
-                </select>
-              </div>
-              <div className="admin-form-field admin-form-field-full">
-                <label className="admin-label">Branch</label>
-                <select className="admin-select" style={{ width: '100%', padding: '10px 14px' }} value={form.branch} onChange={e => setForm(p => ({ ...p, branch: e.target.value }))}>
-                  <option value="Main Branch">Main Branch</option>
-                  <option value="Branch 2">Branch 2</option>
-                  <option value="Kothrud Center">Kothrud Center</option>
-                  <option value="Nashik Branch">Nashik Branch</option>
-                </select>
-              </div>
-            </div>
-            <div className="admin-modal-footer">
-              <button className="admin-btn-ghost" onClick={() => setShowForm(false)}>Cancel</button>
-              <button className="admin-btn-primary" onClick={handleSave}>
-                <CheckCircle size={14} /> {editId ? 'Save Changes' : 'Add Staff'}
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        
+        {/* SIDEBAR NAVIGATION */}
+        {!viewingManager && (
+          <div className="admin-card" style={{ flex: '1 1 250px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', position: 'sticky', top: '24px', minWidth: '250px' }}>
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
+                  borderRadius: '10px', fontSize: '14px', fontWeight: activeTab === item.id ? 600 : 500,
+                  background: activeTab === item.id ? 'var(--primary-subtle)' : 'transparent',
+                  color: activeTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                  border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'left'
+                }}
+              >
+                <item.icon size={18} style={{ color: activeTab === item.id ? 'var(--primary)' : item.color }} />
+                {item.label}
               </button>
-            </div>
+            ))}
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Delete Confirm Modal */}
-      {deleteId && (
-        <div className="admin-modal-overlay" onClick={() => setDeleteId(null)}>
-          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 400 }}>
-            <h2 className="admin-modal-title" style={{ color: 'var(--danger)', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Trash2 size={18} /> Remove Staff Member
-            </h2>
-            <p className="admin-modal-desc">
-              Are you sure you want to remove <strong>{staff.find(s => s.id === deleteId)?.name}</strong>? Their account will be deactivated.
-            </p>
-            <div className="admin-modal-footer">
-              <button className="admin-btn-ghost" onClick={() => setDeleteId(null)}>Cancel</button>
-              <button className="admin-btn-danger" onClick={handleDelete}>Remove Staff</button>
+        {/* CONTENT AREA */}
+        <div style={{ flex: '3 1 600px', display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '300px' }}>
+          
+          {/* MAIN LIST VIEWS */}
+          {!viewingManager && activeTab === 'all' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>All Managers</h2>
+              {renderManagerTable()}
             </div>
-          </div>
+          )}
+          {!viewingManager && activeTab === 'active' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Active Managers</h2>
+              {renderManagerTable('Active')}
+            </div>
+          )}
+          {!viewingManager && activeTab === 'suspended' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Suspended Managers</h2>
+              {renderManagerTable('Suspended')}
+            </div>
+          )}
+          {!viewingManager && activeTab === 'deactivated' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Deactivated Managers</h2>
+              {renderManagerTable('Deactivated')}
+            </div>
+          )}
+
+          {/* ADD MANAGER */}
+          {!viewingManager && activeTab === 'add' && (
+            <div className="admin-card" style={{ padding: '32px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Add New Manager</h2>
+              <form onSubmit={handleAddManager} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--bg-glass)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px dashed var(--border)', flexShrink: 0 }}>
+                    <Camera size={24} color="var(--text-secondary)" />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Photo</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Upload a square image (JPG/PNG)</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label className="admin-label">Full Name</label>
+                    <input type="text" className="admin-input" required placeholder="e.g. John Doe" />
+                  </div>
+                  <div>
+                    <label className="admin-label">Username</label>
+                    <input type="text" className="admin-input" required placeholder="e.g. john.doe" />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label className="admin-label">Email Address</label>
+                    <input type="email" className="admin-input" required placeholder="john@domain.com" />
+                  </div>
+                  <div>
+                    <label className="admin-label">Phone Number</label>
+                    <input type="text" className="admin-input" required placeholder="+91 00000 00000" />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label className="admin-label">Password Setup</label>
+                    <select className="admin-input" required>
+                      <option value="auto">Auto-generate and send via Email</option>
+                      <option value="manual">Set manually now</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="admin-label">Branch Assignment</label>
+                    <select className="admin-input" required>
+                      <option value="">Select Branch</option>
+                      <option value="b1">Downtown Central</option>
+                      <option value="b2">Westside Branch</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="admin-label">Initial Status</label>
+                  <select className="admin-input" required>
+                    <option value="Active">Active</option>
+                    <option value="Suspended">Suspended</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                  <button type="submit" className="admin-btn-primary"><UserPlus size={16} /> Create Manager</button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* LOGS & ACTIVITY VIEWS */}
+          {!viewingManager && activeTab === 'sessions' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Global Manager Sessions</h2>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Manager</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Device & OS</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>IP Address</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Last Active</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { mgr: 'Vikram Singh', os: 'Windows 11 (Chrome)', ip: '192.168.1.45', time: 'Just now' },
+                      { mgr: 'Anita Desai', os: 'macOS (Safari)', ip: '110.22.45.12', time: '2 hours ago' },
+                    ].map((sess, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 600 }}>{sess.mgr}</td>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{sess.os}</td>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{sess.ip}</td>
+                        <td style={{ padding: '12px', fontSize: '13px', color: 'var(--success)' }}>{sess.time}</td>
+                        <td style={{ padding: '12px' }}>
+                          <button className="admin-btn-ghost-danger" style={{ padding: '4px 8px', fontSize: '12px' }} onClick={() => handleAction('Revoke Session', sess.mgr)}>Revoke</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {!viewingManager && activeTab === 'history' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Global Login History</h2>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Manager</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Date & Time</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Location</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { mgr: 'Vikram Singh', time: 'Today, 09:00 AM', status: 'Success', loc: 'Delhi, IN' },
+                      { mgr: 'Rahul Sharma', time: 'Yesterday, 08:30 PM', status: 'Failed (Wrong Password)', loc: 'Mumbai, IN' },
+                      { mgr: 'Anita Desai', time: 'Yesterday, 10:15 AM', status: 'Success', loc: 'Delhi, IN' },
+                    ].map((hist, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 600 }}>{hist.mgr}</td>
+                        <td style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>{hist.time}</td>
+                        <td style={{ padding: '12px' }}>
+                          <span className={`admin-badge ${hist.status === 'Success' ? 'admin-badge-success' : 'admin-badge-danger'}`}>{hist.status}</span>
+                        </td>
+                        <td style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>{hist.loc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {!viewingManager && activeTab === 'activity' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Global Manager Activity Logs</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {[
+                  { time: 'Today, 11:30 AM', action: 'Approved admission for John Doe', user: 'Vikram Singh' },
+                  { time: 'Today, 10:15 AM', action: 'Updated pricing settings', user: 'Anita Desai' },
+                  { time: 'Yesterday, 04:00 PM', action: 'Suspended member MEM-104', user: 'Vikram Singh' },
+                ].map((log, i) => (
+                  <div key={i} style={{ padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', flexWrap: 'wrap', gap: '8px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{log.action}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{log.time}</span>
+                    </div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Performed by: {log.user}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* -------------------- DETAILED MANAGER VIEW -------------------- */}
+          {viewingManager && managerDetailTab === 'overview' && (
+            <>
+              {/* Manager Overview Card */}
+              <div className="admin-card" style={{ padding: '32px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
+                  <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+                    <div className="admin-avatar" style={{ width: '80px', height: '80px', fontSize: '32px', background: 'var(--icon-bg-primary)', color: 'var(--primary)', flexShrink: 0 }}>
+                      {viewingManager.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                        {viewingManager.name}
+                        <span className={`admin-badge ${viewingManager.status === 'Active' ? 'admin-badge-success' : viewingManager.status === 'Suspended' ? 'admin-badge-warning' : 'admin-badge-danger'}`}>
+                          {viewingManager.status}
+                        </span>
+                      </h2>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><User size={16} color="var(--info)" /> @{viewingManager.username}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Mail size={16} color="var(--primary)" /> {viewingManager.email}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={16} color="var(--success)" /> {viewingManager.phone}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Building size={16} color="var(--purple)" /> {viewingManager.branch}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '200px', flex: 1 }}>
+                    <button className="admin-btn-primary" onClick={() => handleAction('Profile Edit', viewingManager.name)}><Edit size={16} /> Edit Profile</button>
+                    <button className="admin-btn-ghost" onClick={() => handleAction('Change Branch', viewingManager.name)}><Building size={16} /> Change Branch</button>
+                    <button className="admin-btn-ghost" onClick={() => handleAction('Password Reset', viewingManager.name)}><Key size={16} /> Reset Password</button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced Actions Grid */}
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '8px', marginBottom: '8px' }}>Security & Control Actions</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                <div className="admin-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="admin-btn-icon" style={{ background: 'var(--icon-bg-danger)', color: 'var(--danger)', pointerEvents: 'none', border: 'none' }}><LogOut size={20} /></div>
+                    <div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Force Logout</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>End all active sessions</div>
+                    </div>
+                  </div>
+                  <button className="admin-btn-ghost-danger" onClick={() => handleAction('Force Logout', viewingManager.name)}>Logout User</button>
+                </div>
+
+                <div className="admin-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="admin-btn-icon" style={{ background: 'var(--icon-bg-warning)', color: 'var(--warning)', pointerEvents: 'none', border: 'none' }}><PauseCircle size={20} /></div>
+                    <div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Suspend Account</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Temporary block access</div>
+                    </div>
+                  </div>
+                  <button className="admin-btn-ghost" style={{ color: 'var(--warning)', borderColor: 'var(--warning)' }} onClick={() => handleAction('Suspension', viewingManager.name)}>Suspend User</button>
+                </div>
+
+                <div className="admin-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="admin-btn-icon" style={{ background: 'var(--icon-bg-danger)', color: 'var(--danger)', pointerEvents: 'none', border: 'none' }}><Ban size={20} /></div>
+                    <div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Deactivate Account</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Permanent disable</div>
+                    </div>
+                  </div>
+                  <button className="admin-btn-ghost-danger" onClick={() => handleAction('Deactivation', viewingManager.name)}>Deactivate</button>
+                </div>
+                
+                {viewingManager.status !== 'Active' && (
+                   <div className="admin-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                       <div className="admin-btn-icon" style={{ background: 'var(--icon-bg-success)', color: 'var(--success)', pointerEvents: 'none', border: 'none' }}><CheckCircle size={20} /></div>
+                       <div>
+                         <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Activate Account</div>
+                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Restore access</div>
+                       </div>
+                     </div>
+                     <button className="admin-btn-primary" onClick={() => handleAction('Activation', viewingManager.name)}>Activate</button>
+                   </div>
+                )}
+              </div>
+
+              {/* Logs Direct Access */}
+              <div style={{ display: 'flex', gap: '20px', marginTop: '8px', flexWrap: 'wrap' }}>
+                <button className="admin-btn-ghost" style={{ flex: '1 1 200px', padding: '16px', border: '1px solid var(--info)', color: 'var(--info)' }} onClick={() => setManagerDetailTab('history')}>
+                  <Clock size={18} style={{ marginRight: '8px' }} /> View Login History
+                </button>
+                <button className="admin-btn-ghost" style={{ flex: '1 1 200px', padding: '16px', border: '1px solid var(--cyan)', color: 'var(--cyan)' }} onClick={() => setManagerDetailTab('activity')}>
+                  <Activity size={18} style={{ marginRight: '8px' }} /> View Activity Logs
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Individual Manager Detailed Logs */}
+          {viewingManager && managerDetailTab === 'history' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Login History: {viewingManager.name}</h2>
+                <button className="admin-btn-ghost" onClick={() => setManagerDetailTab('overview')}>Back to Overview</button>
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '500px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Date & Time</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Device/IP</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { time: 'Today, 09:00 AM', device: 'Windows 11 (Chrome) - 192.168.1.45', status: 'Success' },
+                      { time: 'Yesterday, 06:00 PM', device: 'Windows 11 (Chrome) - 192.168.1.45', status: 'Success' },
+                    ].map((log, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 500 }}>{log.time}</td>
+                        <td style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>{log.device}</td>
+                        <td style={{ padding: '12px' }}>
+                           <span className="admin-badge admin-badge-success">{log.status}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {viewingManager && managerDetailTab === 'activity' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Activity Logs: {viewingManager.name}</h2>
+                <button className="admin-btn-ghost" onClick={() => setManagerDetailTab('overview')}>Back to Overview</button>
+              </div>
+              <div style={{ position: 'relative', paddingLeft: '24px', borderLeft: '2px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {[
+                  { time: 'Today, 11:30 AM', action: 'Approved admission for John Doe' },
+                  { time: 'Today, 10:15 AM', action: 'Updated branch pricing settings' },
+                  { time: 'Yesterday, 04:00 PM', action: 'Suspended member MEM-104' },
+                ].map((log, i) => (
+                  <div key={i} style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '-31px', top: '0', width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 0 4px var(--bg-card)' }} />
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>{log.action}</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{log.time}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
-      )}
+      </div>
     </div>
   );
 }
