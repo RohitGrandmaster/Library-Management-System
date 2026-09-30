@@ -31,8 +31,6 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   { href: '/admin/admin_finance/renewals',      icon: RotateCcw,   label: 'Renewals'      },
   
   { group: 'Operations' },
-  { href: '/admin/admin_engagement/attendance',      icon: Key,          label: 'Attendance'      },
-  { href: '/admin/admin_engagement/absentee-report', icon: AlertCircle,  label: 'Absentee Report' },
   { href: '/admin/admin_staff-users', icon: User, label: 'Staff & Managers' },
   
   { group: 'Configuration' },

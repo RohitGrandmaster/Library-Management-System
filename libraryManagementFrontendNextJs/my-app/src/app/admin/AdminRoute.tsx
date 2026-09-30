@@ -24,7 +24,7 @@ export function AdminRoute({ children }: { children: React.ReactNode }) {
   const isAdminRoute = ADMIN_ROUTE_PREFIXES.some(r => pathname.startsWith(r));
   if (!isAdminRoute) return <>{children}</>;
 
-  const sidebarWidth = collapsed ? 60 : 240;
+  const sidebarWidth = collapsed ? 76 : 280;
 
   return (
     <AdminProvider>

@@ -1443,7 +1443,7 @@
     padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
   }
 
   .admin-sidebar-footer {
@@ -1461,8 +1461,8 @@
     min-width: 0;
   }
 
-  .admin-sidebar-user-name  { font-size: 13px; font-weight: 600; color: var(--text-primary);   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .admin-sidebar-user-email { font-size: 12px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .admin-sidebar-user-name  { font-size: 15px; font-weight: 700; color: var(--text-primary);   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .admin-sidebar-user-email { font-size: 13px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .admin-logout-btn {
     color: var(--text-secondary);
@@ -1478,9 +1478,9 @@
 
   /* Sidebar nav */
   .admin-nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px; border-radius: 12px;
-    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 16px; border-radius: 12px;
+    font-size: 15px; font-weight: 500;
     color: var(--text-secondary);
     transition: all 0.2s ease;
     cursor: pointer; text-decoration: none; white-space: nowrap;

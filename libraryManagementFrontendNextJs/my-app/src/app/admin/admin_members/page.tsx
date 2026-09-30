@@ -6,13 +6,13 @@ import React, { useState } from 'react';
 import { 
   Users, UserPlus, Tags, Building, BookOpen, RotateCcw, 
   CheckCircle, AlertTriangle, PauseCircle, Ban, UploadCloud, 
-  DownloadCloud, FileText, ArrowLeft, Edit,
+  DownloadCloud, FileText, ArrowLeft, Edit, Calendar,
   MapPin, Phone, Mail, Activity, CreditCard, Banknote, HelpCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 type MainTab = 'all' | 'add' | 'categories' | 'departments' | 'plans' | 'renewal' | 'active' | 'expired' | 'suspended' | 'blocked' | 'import' | 'export' | 'documents';
-type DetailTab = 'profile' | 'membership' | 'renewalHistory' | 'paymentHistory' | 'lostHistory' | 'activityHistory' | 'documents';
+type DetailTab = 'profile' | 'membership' | 'renewalHistory' | 'paymentHistory' | 'lostHistory' | 'activityHistory' | 'documents' | 'attendance';
 
 interface Member {
   id: string;
@@ -47,6 +47,7 @@ export default function AdminMembersPage() {
 
   const detailNav: { id: DetailTab; label: string; icon: React.ElementType }[] = [
     { id: 'profile', label: 'Profile', icon: Users },
+    { id: 'attendance', label: 'Attendance', icon: Calendar },
     { id: 'membership', label: 'Membership Info', icon: BookOpen },
     { id: 'renewalHistory', label: 'Renewal History', icon: RotateCcw },
     { id: 'paymentHistory', label: 'Payment History', icon: CreditCard },
@@ -155,52 +156,69 @@ export default function AdminMembersPage() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        
-        {/* SIDEBAR NAVIGATION */}
-        <div className="admin-card" style={{ flex: '1 1 250px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', position: 'sticky', top: '24px', minWidth: '250px' }}>
-          {!viewingMember ? (
-            mainNav.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px',
-                  borderRadius: '10px', fontSize: '13px', fontWeight: activeTab === item.id ? 600 : 500,
-                  background: activeTab === item.id ? 'var(--primary-subtle)' : 'transparent',
-                  color: activeTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
-                  border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'left'
-                }}
-              >
-                <item.icon size={16} style={{ color: activeTab === item.id ? 'var(--primary)' : item.color }} />
-                {item.label}
-              </button>
-            ))
-          ) : (
-            <>
-              <div style={{ padding: '8px 16px', fontSize: '12px', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Member Controls</div>
-              {detailNav.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setDetailTab(item.id)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
-                    borderRadius: '10px', fontSize: '14px', fontWeight: detailTab === item.id ? 600 : 500,
-                    background: detailTab === item.id ? 'var(--primary-subtle)' : 'transparent',
-                    color: detailTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
-                    border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'left'
-                  }}
-                >
-                  <item.icon size={18} style={{ opacity: detailTab === item.id ? 1 : 0.7 }} />
-                  {item.label}
-                </button>
-              ))}
-            </>
-          )}
+      {/* TOP KPI CARDS */}
+      {!viewingMember && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '24px' }}>
+          {[
+            { label: 'Total Members', value: '1,248', icon: Users, color: 'var(--primary)' },
+            { label: 'Active Members', value: '984', icon: CheckCircle, color: 'var(--success)' },
+            { label: 'New This Month', value: '+45', icon: UserPlus, color: 'var(--purple)' },
+            { label: 'Pending Renewals', value: '12', icon: AlertTriangle, color: 'var(--danger)' }
+          ].map((kpi, i) => (
+            <div key={i} className="admin-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px', transition: 'transform 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: `${kpi.color}15`, color: kpi.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {React.createElement(kpi.icon as React.ElementType, { size: 28 })}
+              </div>
+              <div>
+                <div style={{ fontSize: '14px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</div>
+                <div style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>{kpi.value}</div>
+              </div>
+            </div>
+          ))}
         </div>
+      )}
 
-        {/* CONTENT AREA */}
-        <div style={{ flex: '3 1 600px', display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '300px' }}>
+      {/* TOP SCROLLABLE NAVIGATION TABS */}
+      <div className="admin-card" style={{ padding: '8px', display: 'flex', gap: '8px', overflowX: 'auto', marginBottom: '24px', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch' }}>
+        {!viewingMember ? (
+          mainNav.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
+                borderRadius: '8px', fontSize: '13px', fontWeight: activeTab === item.id ? 600 : 500,
+                background: activeTab === item.id ? 'var(--primary-subtle)' : 'transparent',
+                color: activeTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', flexShrink: 0
+              }}
+            >
+              <item.icon size={16} style={{ color: activeTab === item.id ? 'var(--primary)' : item.color }} />
+              {item.label}
+            </button>
+          ))
+        ) : (
+          detailNav.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setDetailTab(item.id)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
+                borderRadius: '8px', fontSize: '13px', fontWeight: detailTab === item.id ? 600 : 500,
+                background: detailTab === item.id ? 'var(--primary-subtle)' : 'transparent',
+                color: detailTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', flexShrink: 0
+              }}
+            >
+              <item.icon size={16} style={{ opacity: detailTab === item.id ? 1 : 0.7 }} />
+              {item.label}
+            </button>
+          ))
+        )}
+      </div>
+
+      {/* CONTENT AREA */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* -------------------- MAIN DASHBOARD VIEWS -------------------- */}
           {!viewingMember && activeTab === 'all' && (
@@ -614,6 +632,83 @@ export default function AdminMembersPage() {
                   </table>
                 )}
 
+                {detailTab === 'attendance' && (
+                  <div>
+                    <div style={{ display: 'flex', gap: '20px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                         <div style={{ width: '16px', height: '16px', background: 'var(--success)', borderRadius: '4px' }}/> Present
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                         <div style={{ width: '16px', height: '16px', background: 'var(--danger)', borderRadius: '4px' }}/> Absent
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                         <div style={{ width: '16px', height: '16px', background: 'var(--warning)', borderRadius: '4px' }}/> Late / Half-day
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                         <div style={{ width: '16px', height: '16px', background: 'var(--bg-glass)', border: '1px solid var(--border)', borderRadius: '4px' }}/> Upcoming / Holiday
+                      </div>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px', textAlign: 'center' }}>
+                      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                        <div key={d} style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', paddingBottom: '8px' }}>{d}</div>
+                      ))}
+                      {/* empty days for offset */}
+                      {Array.from({length: 2}).map((_, i) => <div key={`empty-${i}`}/>)}
+                      
+                      {/* actual days */}
+                      {Array.from({length: 31}).map((_, i) => {
+                        const day = i + 1;
+                        let statusColor = 'var(--bg-glass)'; // upcoming
+                        if (day < 25) {
+                           statusColor = day % 7 === 0 ? 'var(--danger)' : day % 5 === 0 ? 'var(--warning)' : 'var(--success)';
+                        }
+                        return (
+                          <div key={day} style={{ 
+                            aspectRatio: '1/1', background: statusColor, borderRadius: '8px', 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: '15px', fontWeight: 600, color: statusColor === 'var(--bg-glass)' ? 'var(--text-secondary)' : '#fff',
+                            border: statusColor === 'var(--bg-glass)' ? '1px solid var(--border)' : 'none',
+                            boxShadow: statusColor !== 'var(--bg-glass)' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'
+                          }}>
+                            {day}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Absentee Report Section */}
+                    <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--border)' }}>
+                      <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>Absentee Report & Leaves</h3>
+                      <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '400px' }}>
+                          <thead>
+                            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Date</th>
+                              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Reason / Remarks</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { date: '14 Oct 2026', status: 'Absent', reason: 'Uninformed' },
+                              { date: '07 Oct 2026', status: 'Absent', reason: 'Medical Leave' },
+                              { date: '02 Oct 2026', status: 'Late', reason: 'Arrived 2 hours late' },
+                            ].map((abs, i) => (
+                              <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                                <td style={{ padding: '12px', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{abs.date}</td>
+                                <td style={{ padding: '12px' }}>
+                                  <span className={`admin-badge ${abs.status === 'Absent' ? 'admin-badge-danger' : 'admin-badge-warning'}`}>{abs.status}</span>
+                                </td>
+                                <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{abs.reason}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {['lostHistory', 'activityHistory', 'documents'].includes(detailTab) && (
                    <div style={{ padding: '40px 20px', textAlign: 'center', border: '1px dashed var(--border)', borderRadius: '12px' }}>
                      <HelpCircle size={32} style={{ color: 'var(--text-tertiary)', marginBottom: '12px', opacity: 0.5 }} />
@@ -624,7 +719,6 @@ export default function AdminMembersPage() {
             </>
           )}
 
-        </div>
       </div>
     </div>
   );
