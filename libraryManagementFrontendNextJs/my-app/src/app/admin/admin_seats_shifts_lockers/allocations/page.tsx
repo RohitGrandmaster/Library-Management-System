@@ -123,7 +123,7 @@ export default function AllocationsPage() {
             <button className="ss-btn-ghost ss-btn-start" style={{ color: '#6366F1' }} onClick={() => toast.success('Email...')}>
               <Mail size={14} /> Email
             </button>
-          </div>>
+          </div>
         </div>
 
         <div className="ss-filter-bar">

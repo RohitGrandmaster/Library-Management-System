@@ -10,6 +10,7 @@ import { X, Save, PhoneCall } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { addEnquirySchema, type AddEnquiryFormData } from '@/app/admin/admin_crm/admin_crm_components/AdminCrmschema/AdminCrmschema';
 import data from '@/app/admin/admin_crm/admin_crm_components/hardcoded.json';
+import { addEnquiry } from '@/app/admin/admin_crm/admin_crm_components/EnquiryStorage';
 
 export default function AddEnquiryPage() {
   const router = useRouter();
@@ -31,10 +32,17 @@ export default function AddEnquiryPage() {
   });
 
   const onSubmit = async (formData: AddEnquiryFormData) => {
-    await new Promise((r) => setTimeout(r, 800));
-    console.log('New enquiry submitted:', formData);
+    // Artificial delay for UX
+    await new Promise((r) => setTimeout(r, 600));
+    addEnquiry({
+      name: formData.name,
+      phone: formData.phone,
+      shift: formData.preferredShift || 'Morning',
+      status: 'New',
+      handledBy: formData.handledBy || 'Admin'
+    });
     toast.success('Lead saved successfully!', { className: 'crm-toast crm-toast--success' });
-    setTimeout(() => router.push('/admin/admin_crm/enquiries'), 600);
+    setTimeout(() => router.push('/admin/admin_crm/enquiries'), 400);
   };
 
   const handleClose = () => router.push('/admin/admin_crm/enquiries');

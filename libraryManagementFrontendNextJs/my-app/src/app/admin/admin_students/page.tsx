@@ -20,22 +20,25 @@ export default function AdminStudentsPage() {
 
   useEffect(() => {
     const mockStudents = [
-      { id: '1001', fullName: 'Rahul Sharma', branch: 'Main Branch' },
-      { id: '1002', fullName: 'Sneha Patil', branch: 'Main Branch' },
-      { id: '1003', fullName: 'Amit Kumar', branch: 'Main Branch' },
-      { id: '1004', fullName: 'Priya Singh', branch: 'Downtown Branch' },
-      { id: '1005', fullName: 'Vikram Verma', branch: 'Main Branch' }
+      { id: '1001', fullName: 'Rahul Sharma', phone: '+91 9876543210', joinDate: '01 Jan 2024', expiryDate: '01 Jan 2025', branch: 'Main Branch', status: 'Active' },
+      { id: '1002', fullName: 'Sneha Patil', phone: '+91 9123456789', joinDate: '15 Feb 2024', expiryDate: '15 Aug 2024', branch: 'Main Branch', status: 'Active' },
+      { id: '1003', fullName: 'Amit Kumar', phone: '+91 9988776655', joinDate: '10 Mar 2024', expiryDate: '10 Sep 2024', branch: 'Main Branch', status: 'Suspended' },
+      { id: '1004', fullName: 'Priya Singh', phone: '+91 9001122334', joinDate: '01 Apr 2024', expiryDate: '01 Oct 2024', branch: 'Downtown Branch', status: 'Active' },
+      { id: '1005', fullName: 'Vikram Verma', phone: '+91 9888123456', joinDate: '20 May 2024', expiryDate: '20 Nov 2024', branch: 'Main Branch', status: 'Blocked' }
     ];
 
     fetchAdminStudents().then(data => {
       const sourceData = (Array.isArray(data) && data.length > 0) ? data : mockStudents;
       const mapped = sourceData.map((s: any) => ({
         id: 'STU-' + s.id.substring(0, 4).toUpperCase(),
-        name: s.fullName,
+        name: s.fullName || s.name,
+        phone: s.phone || '+91 9XXXX XXXX',
         shift: s.id === '1001' ? 'Morning' : s.id === '1002' ? 'Evening' : 'Night',
         seat: `A-${s.id.slice(-2)}`,
         plan: 'Monthly',
-        status: 'Active',
+        joinDate: s.joinDate || '01 Jan 2024',
+        expiryDate: s.expiryDate || '01 Jan 2025',
+        status: s.status || 'Active',
         branch: s.branch
       }));
       setStudents(mapped);
@@ -43,10 +46,13 @@ export default function AdminStudentsPage() {
       const mapped = mockStudents.map((s: any) => ({
         id: 'STU-' + s.id.substring(0, 4).toUpperCase(),
         name: s.fullName,
+        phone: s.phone,
         shift: 'Morning',
         seat: `A-${s.id.slice(-2)}`,
         plan: 'Monthly',
-        status: 'Active',
+        joinDate: s.joinDate,
+        expiryDate: s.expiryDate,
+        status: s.status,
         branch: s.branch
       }));
       setStudents(mapped);
@@ -61,23 +67,54 @@ export default function AdminStudentsPage() {
 
   const colDefs = useMemo<any[]>(() => [
     { field: 'id', headerName: 'ID', flex: 0.8, minWidth: 100 },
-    { field: 'name', headerName: 'Student Name', flex: 1.5, minWidth: 150 },
-    { field: 'shift', headerName: 'Shift', flex: 1.5, minWidth: 180 },
-    { field: 'seat', headerName: 'Seat', flex: 0.8, minWidth: 100 },
-    { field: 'plan', headerName: 'Plan', flex: 1, minWidth: 120 },
+    { field: 'name', headerName: 'Student Name', flex: 1.5, minWidth: 160 },
+    { field: 'phone', headerName: 'Phone', flex: 1.2, minWidth: 140 },
+    { field: 'shift', headerName: 'Shift', flex: 1, minWidth: 120 },
+    { field: 'seat', headerName: 'Seat', flex: 0.8, minWidth: 90 },
+    { field: 'joinDate', headerName: 'Joined', flex: 1.2, minWidth: 130 },
+    { field: 'expiryDate', headerName: 'Expires', flex: 1.2, minWidth: 130 },
     { 
       field: 'status', 
       headerName: 'Status', 
       flex: 1, 
       minWidth: 120, 
+      cellRenderer: (params: any) => {
+        let bg = 'var(--success-bg)';
+        let color = 'var(--success)';
+        if (params.value === 'Suspended') {
+          bg = 'var(--warning-bg)';
+          color = 'var(--warning)';
+        } else if (params.value === 'Blocked') {
+          bg = 'var(--danger-bg)';
+          color = 'var(--danger)';
+        }
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{ background: bg, color: color }}>
+              {params.value}
+          </span>
+        )
+      } 
+    },
+    {
+      headerName: 'Actions',
+      flex: 1.5,
+      minWidth: 200,
+      sortable: false,
+      filter: false,
       cellRenderer: (params: any) => (
-        <span className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{ 
-          background: params.value === 'Active' ? 'var(--success-bg)' : 'var(--danger-bg)',
-          color: params.value === 'Active' ? 'var(--success)' : 'var(--danger)'
-        }}>
-            {params.value}
-        </span>
-    ) },
+        <div className="flex items-center gap-2 mt-2">
+          <button className="text-xs font-medium px-2.5 py-1 rounded-md bg-[rgba(99,102,241,0.1)] text-[#6366F1] hover:bg-[#6366F1] hover:text-white transition-colors" onClick={() => window.alert('Viewing details...')}>
+            View
+          </button>
+          <button className="text-xs font-medium px-2.5 py-1 rounded-md bg-[rgba(245,158,11,0.1)] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white transition-colors" onClick={() => window.alert('Suspending student...')}>
+            Suspend
+          </button>
+          <button className="text-xs font-medium px-2.5 py-1 rounded-md bg-[rgba(239,68,68,0.1)] text-[#EF4444] hover:bg-[#EF4444] hover:text-white transition-colors" onClick={() => window.alert('Blocking student...')}>
+            Block
+          </button>
+        </div>
+      )
+    }
   ], []);
 
   return (

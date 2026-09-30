@@ -11,12 +11,12 @@ import { openWhatsApp } from '@/lib/whatsappUtils';
 import { printThermal } from '@/lib/thermalPrint';
 
 const MOCK_STUDENTS = [
-  { id: 1, name: 'Aarav Sharma',  smartId: 'STU001', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Premium Plan', shift: 'Morning', seat: 'A-01' },
-  { id: 2, name: 'Priya Patel',   smartId: 'STU002', phone: '8084350824', status: 'active',    dueAmount: 1800, plan: 'Basic Plan',   shift: 'Evening', seat: 'B-05' },
-  { id: 3, name: 'Rohan Kumar',   smartId: 'STU003', phone: '8084350824', status: 'expired',   dueAmount: 4000, plan: 'Premium Plan', shift: 'Night',   seat: 'C-12' },
-  { id: 4, name: 'Sneha Singh',   smartId: 'STU004', phone: '8084350824', status: 'suspended', dueAmount: 4500, plan: 'Basic Plan',   shift: 'Morning', seat: 'A-08' },
-  { id: 5, name: 'Vikram Rao',    smartId: 'STU005', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Elite Plan',   shift: 'Full Day','seat': 'D-03' },
-  { id: 6, name: 'Ananya Gupta',  smartId: 'STU006', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Basic Plan',   shift: 'Evening', seat: 'B-10' },
+  { id: 1, name: 'Aarav Sharma',  smartId: 'STU001', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Premium Plan', shift: 'Morning', seat: 'A-01', validUpto: '10 Nov 2024' },
+  { id: 2, name: 'Priya Patel',   smartId: 'STU002', phone: '8084350824', status: 'active',    dueAmount: 1800, plan: 'Basic Plan',   shift: 'Evening', seat: 'B-05', validUpto: '01 Oct 2024' },
+  { id: 3, name: 'Rohan Kumar',   smartId: 'STU003', phone: '8084350824', status: 'expired',   dueAmount: 4000, plan: 'Premium Plan', shift: 'Night',   seat: 'C-12', validUpto: '15 Sep 2024' },
+  { id: 4, name: 'Sneha Singh',   smartId: 'STU004', phone: '8084350824', status: 'suspended', dueAmount: 4500, plan: 'Basic Plan',   shift: 'Morning', seat: 'A-08', validUpto: '01 Sep 2024' },
+  { id: 5, name: 'Vikram Rao',    smartId: 'STU005', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Elite Plan',   shift: 'Full Day','seat': 'D-03', validUpto: '20 Dec 2024' },
+  { id: 6, name: 'Ananya Gupta',  smartId: 'STU006', phone: '8084350824', status: 'active',    dueAmount: 0,    plan: 'Basic Plan',   shift: 'Evening', seat: 'B-10', validUpto: '15 Nov 2024' },
 ];
 
 const MODES = ['cash', 'upi', 'card', 'bank'] as const;
@@ -57,6 +57,7 @@ function buildWhatsAppReceipt(params: {
     '',
     line,
     r('Plan    :', student.plan),
+    r('Cycle   :', params.monthsToRenew + (params.monthsToRenew === '1' ? ' Month' : ' Months')),
     r('Shift   :', student.shift),
     r('Seat    :', student.seat),
     line,
@@ -81,7 +82,7 @@ interface ReceiptData {
   receiptNo: string; studentName: string; studentId: string;
   phone: string; total: number; mode: Mode; date: string; waMessage: string;
   student: typeof MOCK_STUDENTS[0]; amount: number; lateFee: number;
-  couponDiscount: number; txnId: string; remark: string;
+  couponDiscount: number; txnId: string; remark: string; monthsToRenew: string;
 }
 
 export default function CollectFee() {
@@ -96,6 +97,7 @@ export default function CollectFee() {
   const [couponStatus, setCouponStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
   const [lateFee, setLateFee]           = useState('0');
   const [lateFeeOverride, setLateFeeOverride] = useState(false);
+  const [monthsToRenew, setMonthsToRenew] = useState('1');
   const [remark, setRemark]             = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [receiptData, setReceiptData]   = useState<ReceiptData | null>(null);
@@ -113,7 +115,7 @@ export default function CollectFee() {
   function resetForm() {
     setSelectedStudent(null); setSearch(''); setAmount(''); setTxnId('');
     setCouponCode(''); setCouponDiscount(0); setCouponStatus('idle');
-    setLateFee('0'); setLateFeeOverride(false); setRemark(''); setIsSubmitting(false);
+    setLateFee('0'); setLateFeeOverride(false); setRemark(''); setMonthsToRenew('1'); setIsSubmitting(false);
   }
 
   function handleApplyCoupon() {
@@ -129,9 +131,9 @@ export default function CollectFee() {
     setTimeout(() => {
       const rn   = `REC-${receiptCounter++}`;
       const date = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const waMsg = buildWhatsAppReceipt({ receiptNo: rn, student: selectedStudent, amount: baseAmount, mode, txnId, lateFee: lateFeeAmt, couponDiscount, total, remark, date });
+      const waMsg = buildWhatsAppReceipt({ receiptNo: rn, student: selectedStudent, amount: baseAmount, mode, txnId, lateFee: lateFeeAmt, couponDiscount, total, remark, date, monthsToRenew: monthsToRenew as any });
 
-      setReceiptData({ receiptNo: rn, studentName: selectedStudent.name, studentId: selectedStudent.smartId, phone: selectedStudent.phone, total, mode, date, waMessage: waMsg, student: selectedStudent, amount: baseAmount, lateFee: lateFeeAmt, couponDiscount, txnId, remark });
+      setReceiptData({ receiptNo: rn, studentName: selectedStudent.name, studentId: selectedStudent.smartId, phone: selectedStudent.phone, total, mode, date, waMessage: waMsg, student: selectedStudent, amount: baseAmount, lateFee: lateFeeAmt, couponDiscount, txnId, remark, monthsToRenew });
 
       if (selectedStudent.status === 'suspended') {
         setTimeout(() => toast.success('🔓 Seat access automatically restored.'), 500);
@@ -191,6 +193,7 @@ export default function CollectFee() {
                       ['Student', receiptData.studentName],
                       ['Smart ID',receiptData.studentId],
                       ['Phone',   `+91-${maskPhone(receiptData.phone)}`],
+                      ['Cycle',   receiptData.monthsToRenew + (receiptData.monthsToRenew === '1' ? ' Month' : ' Months')],
                       ['Mode',    MODE_LABELS[receiptData.mode]],
                     ].map(([l, v]) => (
                       <div key={l} className="fin-receipt-modal-row">
@@ -275,7 +278,7 @@ export default function CollectFee() {
                     }}>
                       <div>
                         <div className="font-medium">{s.name}</div>
-                        <div className="fin-cell-subtext">{s.smartId} · {s.plan} · +91-{maskPhone(s.phone)}</div>
+                        <div className="fin-cell-subtext">{s.smartId} · {s.plan} · Valid till {s.validUpto}</div>
                       </div>
                       <span className={`fin-badge ${s.status === 'active' ? 'fin-badge--success' : s.status === 'suspended' ? 'fin-badge--danger' : 'fin-badge--warning'}`}>{s.status}</span>
                     </button>
@@ -299,6 +302,15 @@ export default function CollectFee() {
 
             <div className="fin-card p-6 space-y-4">
               <p className="fin-section-label">Payment Details</p>
+              <div>
+                <label className="fin-label">Months Paying For (Cycle)</label>
+                <select className="fin-select w-full mt-1" value={monthsToRenew} onChange={e => setMonthsToRenew(e.target.value)}>
+                  <option value="1">1 Month</option>
+                  <option value="3">3 Months (Quarterly)</option>
+                  <option value="6">6 Months (Half-Yearly)</option>
+                  <option value="12">12 Months (Annual)</option>
+                </select>
+              </div>
               <div>
                 <label className="fin-label">Amount <span className="fin-text-danger">*</span></label>
                 <div className="relative mt-1">

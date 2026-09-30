@@ -22,7 +22,7 @@ import {
   Upload, Download, Printer, MessageSquare, Send, Mail
 } from 'lucide-react';
 import { useEffect } from 'react';
-import { fetchApi } from '@/lib/api';
+import { getEnquiries, updateEnquiry } from '@/app/admin/admin_crm/admin_crm_components/EnquiryStorage';
 import {
   type Enquiry,
   type EnquiryStatus,
@@ -127,7 +127,9 @@ function KanbanCard({
         )}
         <span className="crm-card-footer-item">
           <User size={11} />
-          {enq.handledBy.split(' ')[0]}
+          {typeof enq.handledBy === 'string' 
+            ? (enq.handledBy.split(' ')[0] || 'Unassigned') 
+            : ((enq.handledBy as any)?.name?.split(' ')[0] || 'Unassigned')}
         </span>
       </div>
     </div>
@@ -143,42 +145,7 @@ export default function EnquiriesPage() {
   const [statusFilter, setStatusFilter] = useState<string>('All');
 
   useEffect(() => {
-    const mockEnquiries = [
-      { id: '1', name: 'Rahul Sharma', phone: '9876543210', preferredShift: 'Morning', status: 'New', handledBy: { name: 'Admin' }, createdAt: new Date().toISOString() },
-      { id: '2', name: 'Sneha Patil', phone: '9123456789', preferredShift: 'Evening', status: 'Visited', handledBy: { name: 'John' }, createdAt: new Date(Date.now() - 86400000).toISOString() },
-      { id: '3', name: 'Amit Kumar', phone: '9988776655', preferredShift: 'Night', status: 'Interested', handledBy: { name: 'Admin' }, createdAt: new Date(Date.now() - 172800000).toISOString() },
-      { id: '4', name: 'Priya Singh', phone: '9001122334', preferredShift: 'Morning', status: 'Converted', handledBy: { name: 'Jane' }, createdAt: new Date(Date.now() - 259200000).toISOString() }
-    ];
-
-    fetchApi('/crm/enquiries')
-      .then(res => {
-        const sourceData = (Array.isArray(res) && res.length > 0) ? res : mockEnquiries;
-        const mapped = sourceData.map((e: any) => ({
-          id: e.id,
-          name: e.name,
-          phone: e.phone,
-          shift: e.preferredShift,
-          status: e.status.charAt(0).toUpperCase() + e.status.slice(1),
-          handledBy: e.handledBy?.name || 'Unassigned',
-          addedDate: new Date(e.createdAt).toLocaleDateString(),
-          avatar: e.name.substring(0, 2).toUpperCase()
-        }));
-        setEnquiries(mapped);
-      })
-      .catch(() => {
-        // Fallback to mock on hard failure
-        const mapped = mockEnquiries.map((e: any) => ({
-          id: e.id,
-          name: e.name,
-          phone: e.phone,
-          shift: e.preferredShift,
-          status: e.status,
-          handledBy: e.handledBy.name,
-          addedDate: new Date(e.createdAt).toLocaleDateString(),
-          avatar: e.name.substring(0, 2).toUpperCase()
-        }));
-        setEnquiries(mapped);
-      });
+    setEnquiries(getEnquiries());
   }, []);
 
   /* ── Filter logic ── */
@@ -205,9 +172,8 @@ export default function EnquiriesPage() {
 
   const handleQuickLost = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    setEnquiries((prev) =>
-      prev.map((x) => (x.id === id ? { ...x, status: 'Lost' as EnquiryStatus } : x))
-    );
+    updateEnquiry(id, { status: 'Lost' as EnquiryStatus });
+    setEnquiries(getEnquiries());
   };
 
   return (
@@ -423,7 +389,9 @@ export default function EnquiriesPage() {
                       <td>
                         <StatusBadge status={enq.status} />
                       </td>
-                      <td className="crm-td-secondary">{enq.handledBy}</td>
+                      <td className="crm-td-secondary">
+                        {typeof enq.handledBy === 'string' ? enq.handledBy : (enq.handledBy as any)?.name || 'Unassigned'}
+                      </td>
                       <td className="crm-td-secondary">{enq.addedDate}</td>
                       <td>
                         <FollowUpBadge

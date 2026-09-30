@@ -21,7 +21,9 @@ import {
   Plus,
   Edit2,
   AlertTriangle,
+  Trash2
 } from 'lucide-react';
+import { getEnquiries, updateEnquiry, deleteEnquiry } from '@/app/admin/admin_crm/admin_crm_components/EnquiryStorage';
 import data from '@/app/admin/admin_crm/admin_crm_components/hardcoded.json';
 import {
   type Enquiry,
@@ -177,50 +179,30 @@ export default function EnquiryDetailPage({
   const [statusUpdating, setStatusUpdating] = useState(false);
 
   useEffect(() => {
-    const mockEnquiry = {
-      id: id,
-      name: id === '1' ? 'Rahul Sharma' : id === '2' ? 'Sneha Patil' : 'Amit Kumar',
-      phone: id === '1' ? '9876543210' : id === '2' ? '9123456789' : '9988776655',
-      preferredShift: id === '1' ? 'Morning' : id === '2' ? 'Evening' : 'Night',
-      status: id === '1' ? 'New' : id === '2' ? 'Visited' : 'Interested',
-      handledBy: { name: 'Admin' },
-      createdAt: new Date().toISOString(),
-      source: 'Walk-in',
-      preferredBranch: 'Main Branch',
-    };
-
-    import('@/lib/api').then(({ fetchApi }) => {
-      fetchApi(`/crm/enquiries/${id}`)
-        .then((e: any) => {
-          // If e is empty array (from fallback) or falsy, use mockEnquiry
-          const data = (Array.isArray(e) || !e) ? mockEnquiry : e;
-          
-          const mapped = {
-            id: data.id,
-            name: data.name,
-            phone: data.phone,
-            shift: data.preferredShift,
-            status: data.status.charAt(0).toUpperCase() + data.status.slice(1),
-            handledBy: data.handledBy?.name || 'Unassigned',
-            addedDate: new Date(data.createdAt).toLocaleDateString(),
-            avatar: data.name.substring(0, 2).toUpperCase(),
-            source: data.source || 'Walk-in',
-            preferredBranch: data.preferredBranch || 'Main Branch',
-            enquiryDate: new Date(data.createdAt).toLocaleDateString(),
-            followUps: [],
-            isOverdue: false,
-            isToday: true,
-            isUpcoming: false,
-          };
-          setEnquiry(mapped);
-          setCurrentStatus(mapped.status as EnquiryStatus);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    });
+    const all = getEnquiries();
+    const found = all.find((x) => x.id === id);
+    if (found) {
+      const mapped = {
+        id: found.id,
+        name: found.name,
+        phone: found.phone,
+        shift: found.shift,
+        status: found.status.charAt(0).toUpperCase() + found.status.slice(1),
+        handledBy: found.handledBy || 'Unassigned',
+        addedDate: found.addedDate,
+        avatar: found.avatar,
+        source: 'Walk-in',
+        preferredBranch: 'Main Branch',
+        enquiryDate: found.addedDate,
+        followUps: [],
+        isOverdue: false,
+        isToday: true,
+        isUpcoming: false,
+      };
+      setEnquiry(mapped);
+      setCurrentStatus(mapped.status as EnquiryStatus);
+    }
+    setLoading(false);
   }, [id]);
 
   // ── Follow-up form ──
@@ -262,11 +244,7 @@ export default function EnquiryDetailPage({
   const handleStatusUpdate = async () => {
     setStatusUpdating(true);
     try {
-      const { fetchApi } = await import('@/lib/api');
-      await fetchApi(`/crm/enquiries/${id}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status: currentStatus })
-      });
+      updateEnquiry(id, { status: currentStatus });
       setEnquiry((prev: any) => (prev ? { ...prev, status: currentStatus } : prev));
       toast.success(`Status updated to "${currentStatus}"`, {
         className: 'crm-toast crm-toast--success',
@@ -281,17 +259,6 @@ export default function EnquiryDetailPage({
 
   const handleAddFollowUp = async (formData: FollowUpFormData) => {
     try {
-      const { fetchApi } = await import('@/lib/api');
-      const payload = {
-        date: new Date(formData.date).toISOString(),
-        remark: formData.remark,
-        by: 'Admin'
-      };
-      await fetchApi(`/crm/enquiries/${id}/follow-ups`, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      
       const newEntry: FollowUp = {
         id: `fu_${Date.now()}`,
         date: new Date(formData.date).toLocaleDateString('en-IN', {
@@ -303,9 +270,12 @@ export default function EnquiryDetailPage({
         by: 'Admin',
         remark: formData.remark,
       };
-      setEnquiry((prev: any) =>
-        prev ? { ...prev, followUps: [newEntry, ...prev.followUps] } : prev
-      );
+      setEnquiry((prev: any) => {
+        if (!prev) return prev;
+        const updated = { ...prev, followUps: [newEntry, ...prev.followUps] };
+        // We could also persist followUps to LocalStorage if we added a followUps array to EnquiryStorage type
+        return updated;
+      });
       resetFU();
       toast.success('Follow-up added!', {
         className: 'crm-toast crm-toast--success',
@@ -322,15 +292,18 @@ export default function EnquiryDetailPage({
     );
   };
 
+  const handleDelete = () => {
+    if (confirm('Are you sure you want to delete this enquiry? This cannot be undone.')) {
+      deleteEnquiry(id);
+      toast.success('Enquiry deleted', { className: 'crm-toast crm-toast--success' });
+      router.push('/admin/admin_crm/enquiries');
+    }
+  };
+
   const handleMarkLostConfirm = async (reason: string) => {
     setLostSubmitting(true);
     try {
-      const { fetchApi } = await import('@/lib/api');
-      await fetchApi(`/crm/enquiries/${id}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status: 'Lost', reason: reason })
-      });
-
+      updateEnquiry(id, { status: 'Lost' });
       const lostEntry: FollowUp = {
         id: `fu_${Date.now()}`,
         date: new Date().toLocaleDateString('en-IN', {
@@ -608,9 +581,20 @@ export default function EnquiryDetailPage({
                 className="crm-btn-danger crm-btn-full"
                 onClick={() => setShowLostModal(true)}
                 disabled={enquiry.status === 'Lost'}
+                style={{ marginBottom: '8px' }}
               >
                 <XCircle size={15} />
                 {enquiry.status === 'Lost' ? 'Already Marked Lost' : 'Mark as Lost'}
+              </button>
+
+              {/* Delete */}
+              <button
+                className="crm-btn-danger crm-btn-full"
+                onClick={handleDelete}
+                style={{ backgroundColor: 'rgba(239,68,68,0.1)', borderColor: 'rgba(239,68,68,0.3)', color: '#EF4444' }}
+              >
+                <Trash2 size={15} />
+                Delete Enquiry
               </button>
             </div>
 
