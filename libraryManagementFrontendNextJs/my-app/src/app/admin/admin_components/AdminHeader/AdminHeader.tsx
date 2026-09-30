@@ -4,6 +4,7 @@
 // DATA FLOW: AdminRoute -> AdminHeader
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Building2, Bell, Menu } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useAdmin } from '@/app/admin/admin_context/AdminContext';
@@ -81,9 +82,9 @@ export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps)
           <Bell size={18} />
           <span className="admin-bell-dot" />
         </button>
-        <div className="admin-avatar">
+        <Link href="/admin/admin_profile" className="admin-avatar" title="My Profile" style={{ textDecoration: 'none' }}>
           LA
-        </div>
+        </Link>
       </div>
     </header>
   );

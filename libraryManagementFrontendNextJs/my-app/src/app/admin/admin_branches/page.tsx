@@ -1,191 +1,579 @@
 'use client';
-import { useState, useMemo } from 'react';
+// RESPONSIBILITY: Renders the Admin Branch Management module
+// DATA FLOW: Next.js Router -> Page
+
+import React, { useState } from 'react';
 import { 
-  Building2, Plus, Settings, CheckCircle2, 
-  MapPin, Phone, Search, Edit2, ShieldAlert
+  Building2, Plus, CheckCircle, PauseCircle, Archive, 
+  Users, Settings, Activity, BarChart, MapPin, Phone, 
+  Mail, Clock, User, Shield, BookOpen, MoreVertical, 
+  Eye, Edit, Power, Ban, FileText, ArrowLeft
 } from 'lucide-react';
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { gridTheme } from '@/app/admin/admin_reusable/gridTheme';
+import toast from 'react-hot-toast';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
-
-const MOCK_BRANCHES = [
-  { id: 'BR-01', name: 'Central Hub', code: 'CH-PUNE', manager: 'Rajesh Kumar', phone: '+91 9876543210', address: 'MG Road, Pune', books: 12400, members: 840, status: 'Active' },
-  { id: 'BR-02', name: 'East Wing', code: 'EW-PUNE', manager: 'Sunita Patil', phone: '+91 9876543211', address: 'Kalyani Nagar, Pune', books: 8200, members: 420, status: 'Active' },
-  { id: 'BR-03', name: 'West End', code: 'WE-PUNE', manager: 'Amit Desai', phone: '+91 9876543212', address: 'Baner, Pune', books: 5600, members: 215, status: 'Maintenance' },
-];
+type MainTab = 'all' | 'create' | 'active' | 'suspended' | 'archived' | 'managers' | 'settings' | 'usage' | 'reports';
+type DetailTab = 'overview' | 'users' | 'members' | 'reservations' | 'reports' | 'audit' | 'settings';
 
 export default function AdminBranchesPage() {
-  const [activeTab, setActiveTab] = useState('All Branches');
-  const [search, setSearch] = useState('');
+  const [activeTab, setActiveTab] = useState<MainTab>('all');
+  const [viewingBranch, setViewingBranch] = useState<{id: string, name: string, code: string, address: string, phone: string, email: string, manager: string, status: string} | null>(null);
+  const [detailTab, setDetailTab] = useState<DetailTab>('overview');
 
-  const tabs = [
-    { name: 'All Branches', icon: Building2 },
-    { name: 'Add Branch', icon: Plus },
-    { name: 'Branch Configuration', icon: Settings },
+  const mainNav: { id: MainTab; label: string; icon: React.ElementType; color: string }[] = [
+    { id: 'all', label: 'All Branches', icon: Building2, color: 'var(--primary)' },
+    { id: 'create', label: 'Create Branch', icon: Plus, color: 'var(--success)' },
+    { id: 'active', label: 'Active Branches', icon: CheckCircle, color: 'var(--success)' },
+    { id: 'suspended', label: 'Suspended Branches', icon: PauseCircle, color: 'var(--warning)' },
+    { id: 'archived', label: 'Archived Branches', icon: Archive, color: 'var(--danger)' },
+    { id: 'managers', label: 'Branch Managers', icon: Users, color: 'var(--info)' },
+    { id: 'settings', label: 'Global Settings', icon: Settings, color: 'var(--purple)' },
+    { id: 'usage', label: 'Branch Usage', icon: Activity, color: 'var(--cyan)' },
+    { id: 'reports', label: 'Branch Reports', icon: BarChart, color: 'var(--rose)' },
   ];
 
-  const colDefs = useMemo<any[]>(() => [
-    { field: 'name', headerName: 'Branch Name', flex: 1.5 },
-    { field: 'code', headerName: 'Branch Code', flex: 1 },
-    { field: 'manager', headerName: 'Manager', flex: 1 },
-    { field: 'phone', headerName: 'Phone', flex: 1 },
-    { field: 'address', headerName: 'Address', flex: 1.5 },
-    { field: 'books', headerName: 'Total Books', flex: 0.8 },
-    { field: 'members', headerName: 'Total Members', flex: 0.8 },
-    {
-      field: 'status',
-      headerName: 'Status',
-      flex: 1,
-      cellRenderer: (params: any) => (
-        <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-          params.value === 'Active' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 
-          'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-        }`}>
-          {params.value}
-        </span>
-      )
-    },
-    {
-      headerName: 'Actions',
-      flex: 1,
-      cellRenderer: () => (
-        <div className="flex items-center gap-2 mt-2">
-          <button className="text-indigo-400 hover:text-indigo-300 font-medium text-xs">View</button>
-          <button className="text-emerald-400 hover:text-emerald-300 font-medium text-xs">Edit</button>
-        </div>
-      )
-    }
-  ], []);
+  const detailNav: { id: DetailTab; label: string; icon: React.ElementType }[] = [
+    { id: 'overview', label: 'Overview', icon: Activity },
+    { id: 'users', label: 'Staff Users', icon: Shield },
+    { id: 'members', label: 'Members', icon: Users },
+    { id: 'reservations', label: 'Reservations', icon: BookOpen },
+    { id: 'reports', label: 'Reports', icon: BarChart },
+    { id: 'audit', label: 'Audit Log', icon: FileText },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
 
-  const filtered = useMemo(() => {
-    return MOCK_BRANCHES.filter(b => 
-      b.name.toLowerCase().includes(search.toLowerCase()) || 
-      b.city?.toLowerCase().includes(search.toLowerCase())
+  // Dummy branches
+  const branches = [
+    { id: 'BR-001', name: 'Downtown Central', code: 'DT-CEN', address: '123 Main St, City', phone: '+91 9876543210', email: 'downtown@lib.com', manager: 'Vikram Singh', status: 'Active' },
+    { id: 'BR-002', name: 'Westside Branch', code: 'WS-BR', address: '45 West Ave, City', phone: '+91 9876543211', email: 'westside@lib.com', manager: 'Anita Desai', status: 'Suspended' },
+    { id: 'BR-003', name: 'North Hub', code: 'NH-01', address: '88 North Blvd, City', phone: '+91 9876543212', email: 'north@lib.com', manager: 'Rahul Sharma', status: 'Active' },
+  ];
+
+  const handleCreateBranch = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast.success('New branch created successfully!');
+    setActiveTab('all');
+  };
+
+  const handleAction = (action: string, branchName: string) => {
+    toast.success(`${action} applied to ${branchName}`);
+  };
+
+  const renderBranchTable = (filterStatus?: string) => {
+    const data = filterStatus ? branches.filter(b => b.status === filterStatus) : branches;
+    return (
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Branch Name & Code</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Contact Info</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Manager</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+              <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((b, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '12px' }}>
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>{b.name}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{b.code}</div>
+                </td>
+                <td style={{ padding: '12px' }}>
+                  <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{b.email}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{b.phone}</div>
+                </td>
+                <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>{b.manager}</td>
+                <td style={{ padding: '12px' }}>
+                  <span className={`admin-badge ${b.status === 'Active' ? 'admin-badge-success' : b.status === 'Suspended' ? 'admin-badge-warning' : 'admin-badge-danger'}`}>
+                    {b.status}
+                  </span>
+                </td>
+                <td style={{ padding: '12px' }}>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="admin-btn-icon" title="View Details" onClick={() => setViewingBranch(b)}><Eye size={16} /></button>
+                    <button className="admin-btn-icon" title="Edit" onClick={() => handleAction('Edit', b.name)}><Edit size={16} /></button>
+                    {b.status !== 'Active' && <button className="admin-btn-icon" title="Activate" style={{ color: 'var(--success)' }} onClick={() => handleAction('Activation', b.name)}><Power size={16} /></button>}
+                    {b.status === 'Active' && <button className="admin-btn-icon" title="Suspend" style={{ color: 'var(--warning)' }} onClick={() => handleAction('Suspension', b.name)}><PauseCircle size={16} /></button>}
+                    <button className="admin-btn-icon" title="Archive" style={{ color: 'var(--danger)' }} onClick={() => handleAction('Archive', b.name)}><Archive size={16} /></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {data.length === 0 && (
+              <tr>
+                <td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: 'var(--text-secondary)' }}>No branches found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     );
-  }, [search]);
+  };
 
   return (
-    <div className="ad-page-animate">
-      <div className="flex flex-col gap-1 mb-8">
-        <div className="admin-breadcrumb" style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: 8 }}>
-          <span>Nexus 360</span><span> / </span><span>Admin</span><span> / </span><span style={{ color: 'var(--primary)' }}>Branches</span>
-        </div>
-        <div className="flex items-center justify-between mt-2">
-          <h1 className="sa-page-title flex items-center gap-3" style={{ fontSize: 24, fontWeight: 700, color: '#fff' }}>
-            <Building2 className="text-primary" size={28} /> Master Branches
-          </h1>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-2 mb-6 border-b border-white/5 pb-2 overflow-x-auto hide-scrollbar">
-        {tabs.map((tab) => (
-          <button
-            key={tab.name}
-            onClick={() => setActiveTab(tab.name)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-              activeTab === tab.name 
-                ? 'bg-primary/20 text-white border border-primary/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]' 
-                : 'text-white/50 hover:bg-white/5 hover:text-white'
-            }`}
-          >
-            <tab.icon size={16} /> {tab.name}
+    <div className="ad-page-animate" style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+      
+      {/* HEADER */}
+      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {viewingBranch && (
+          <button className="admin-btn-icon" onClick={() => setViewingBranch(null)}>
+            <ArrowLeft size={20} />
           </button>
-        ))}
+        )}
+        <div>
+          <h1 style={{ fontSize: '28px', fontWeight: 800, margin: 0, background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            {viewingBranch ? `Branch: ${viewingBranch.name}` : 'Branch Management'}
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '14px' }}>
+            {viewingBranch ? `Code: ${viewingBranch.code} | Manager: ${viewingBranch.manager}` : 'Manage all library branches, managers, and configurations globally.'}
+          </p>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="admin-card p-0 h-[600px] flex flex-col overflow-hidden">
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
         
-        {activeTab === 'All Branches' && (
-          <div className="flex-1 flex flex-col animate-fade-in">
-            <div className="p-4 border-b border-white/5 flex items-center justify-between bg-black/10">
-              <div className="relative w-72">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-                <input 
-                  type="text" 
-                  className="admin-input pl-9" 
-                  placeholder="Search branches..." 
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
-              </div>
-              <button onClick={() => setActiveTab('Add Branch')} className="admin-btn-primary">
-                <Plus size={16} /> Add Branch
+        {/* SIDEBAR NAVIGATION */}
+        <div className="admin-card" style={{ flex: '1 1 250px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', position: 'sticky', top: '24px' }}>
+          {!viewingBranch ? (
+            // MAIN NAVIGATION
+            mainNav.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
+                  borderRadius: '10px', fontSize: '14px', fontWeight: activeTab === item.id ? 600 : 500,
+                  background: activeTab === item.id ? 'var(--primary-subtle)' : 'transparent',
+                  color: activeTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                  border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'left'
+                }}
+              >
+                <item.icon size={18} style={{ color: activeTab === item.id ? 'var(--primary)' : item.color }} />
+                {item.label}
               </button>
-            </div>
-            <div className="flex-1 w-full">
-              <AgGridReact
-                theme={gridTheme}
-                rowData={filtered}
-                columnDefs={colDefs}
-                headerHeight={48}
-                rowHeight={60}
-                defaultColDef={{ sortable: true, filter: true, resizable: true }}
-              />
-            </div>
-          </div>
-        )}
+            ))
+          ) : (
+            // DETAIL NAVIGATION (When a branch is selected)
+            <>
+              <div style={{ padding: '8px 16px', fontSize: '12px', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Branch Details</div>
+              {detailNav.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setDetailTab(item.id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
+                    borderRadius: '10px', fontSize: '14px', fontWeight: detailTab === item.id ? 600 : 500,
+                    background: detailTab === item.id ? 'var(--primary-subtle)' : 'transparent',
+                    color: detailTab === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                    border: 'none', cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'left'
+                  }}
+                >
+                  <item.icon size={18} style={{ opacity: detailTab === item.id ? 1 : 0.7 }} />
+                  {item.label}
+                </button>
+              ))}
+            </>
+          )}
+        </div>
 
-        {activeTab === 'Add Branch' && (
-          <div className="p-6 overflow-y-auto h-full animate-fade-in">
-            <div className="max-w-2xl">
-              <h2 className="text-lg font-bold text-white mb-2">Create New Branch</h2>
-              <p className="text-sm text-white/50 mb-8">Deploy a new physical library branch to the Nexus 360 network.</p>
-              
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Branch Name</label>
-                  <input type="text" placeholder="e.g. Central Hub" className="admin-input" />
+        {/* CONTENT AREA */}
+        <div style={{ flex: '3 1 600px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          {/* -------------------- MAIN DASHBOARD VIEWS -------------------- */}
+          {!viewingBranch && activeTab === 'all' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>All Branches</h2>
+                <button className="admin-btn-primary" onClick={() => setActiveTab('create')}><Plus size={16} /> New Branch</button>
+              </div>
+              {renderBranchTable()}
+            </div>
+          )}
+
+          {!viewingBranch && activeTab === 'active' && (
+             <div className="admin-card" style={{ padding: '24px' }}>
+               <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Active Branches</h2>
+               {renderBranchTable('Active')}
+             </div>
+          )}
+
+          {!viewingBranch && activeTab === 'suspended' && (
+             <div className="admin-card" style={{ padding: '24px' }}>
+               <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Suspended Branches</h2>
+               {renderBranchTable('Suspended')}
+             </div>
+          )}
+
+          {!viewingBranch && activeTab === 'archived' && (
+             <div className="admin-card" style={{ padding: '24px' }}>
+               <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Archived Branches</h2>
+               {renderBranchTable('Archived')}
+             </div>
+          )}
+
+          {!viewingBranch && activeTab === 'create' && (
+            <div className="admin-card" style={{ padding: '32px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Create New Branch</h2>
+              <form onSubmit={handleCreateBranch} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Branch Name</label>
+                    <input type="text" className="admin-input" required placeholder="e.g. Downtown Central" />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Branch Code</label>
+                    <input type="text" className="admin-input" required placeholder="e.g. DT-CEN" />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Branch Code</label>
-                  <input type="text" placeholder="e.g. CH-PUNE" className="admin-input" />
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Address</label>
+                  <textarea className="admin-input" required placeholder="Full physical address" style={{ minHeight: '60px' }}></textarea>
                 </div>
-                <div className="flex flex-col gap-2 col-span-2">
-                  <label className="text-sm font-semibold text-white/80">Full Address</label>
-                  <textarea placeholder="Complete physical address" className="admin-input h-20 py-2 resize-none" />
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Phone Number</label>
+                    <input type="text" className="admin-input" required placeholder="+91 00000 00000" />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Email Address</label>
+                    <input type="email" className="admin-input" required placeholder="branch@domain.com" />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Contact Number</label>
-                  <input type="tel" placeholder="+91" className="admin-input" />
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Working Hours</label>
+                    <input type="text" className="admin-input" required placeholder="e.g. 08:00 AM - 08:00 PM" />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Assign Manager</label>
+                    <select className="admin-input" required>
+                      <option value="">Select Manager</option>
+                      <option value="user1">Vikram Singh</option>
+                      <option value="user2">Anita Desai</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Email Address</label>
-                  <input type="email" placeholder="branch@example.com" className="admin-input" />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Working Hours</label>
-                  <input type="text" placeholder="08:00 AM - 10:00 PM" className="admin-input" />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-white/80">Status</label>
-                  <select className="admin-input appearance-none bg-black/20">
-                    <option>Active</option>
-                    <option>Inactive</option>
+                
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Initial Status</label>
+                  <select className="admin-input" required>
+                    <option value="Active">Active</option>
+                    <option value="Suspended">Suspended (Setup Phase)</option>
                   </select>
                 </div>
-              </div>
 
-              <div className="mt-8 pt-6 border-t border-white/5">
-                <button className="admin-btn-primary bg-primary hover:bg-primary-hover border-none">
-                  <CheckCircle2 size={16} /> Save Branch
-                </button>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                  <button type="submit" className="admin-btn-primary">Create Branch</button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {!viewingBranch && activeTab === 'managers' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Branch Managers</h2>
+                <button className="admin-btn-primary"><Plus size={16} /> Assign Manager</button>
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Manager Name</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Assigned Branch</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Contact Info</th>
+                      <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { name: 'Vikram Singh', branch: 'Downtown Central', email: 'vikram@lib.com', phone: '+91 9999911111', status: 'Active' },
+                      { name: 'Anita Desai', branch: 'Westside Branch', email: 'anita@lib.com', phone: '+91 9999922222', status: 'Active' },
+                      { name: 'Rahul Sharma', branch: 'North Hub', email: 'rahul@lib.com', phone: '+91 9999933333', status: 'Active' }
+                    ].map((mgr, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 500 }}>{mgr.name}</td>
+                        <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{mgr.branch}</td>
+                        <td style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>{mgr.email}<br/>{mgr.phone}</td>
+                        <td style={{ padding: '12px' }}><span className="admin-badge admin-badge-success">{mgr.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeTab === 'Branch Configuration' && (
-          <div className="flex-1 h-full flex flex-col items-center justify-center text-white/40 animate-fade-in">
-            <Settings size={64} className="mb-4 opacity-30 text-primary" />
-            <h2 className="text-xl font-bold text-white mb-2">Global Branch Settings</h2>
-            <p className="text-sm text-center max-w-sm">Configure working hours, holidays, and multi-branch transfer rules here.</p>
-          </div>
-        )}
+          {!viewingBranch && activeTab === 'settings' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Global Branch Settings</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div>
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Cross-Branch Member Access</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Allow members to reserve seats across all branches.</div>
+                  </div>
+                  <button className="admin-btn-ghost">Enable</button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div>
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Standardized Pricing</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Force all branches to use the same subscription pricing plans.</div>
+                  </div>
+                  <div className="admin-badge admin-badge-success">Enforced</div>
+                </div>
+              </div>
+            </div>
+          )}
 
+          {!viewingBranch && activeTab === 'usage' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Global Branch Usage</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '8px' }}>Total Capacity (All Branches)</div>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--primary)' }}>450 Seats</div>
+                </div>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '8px' }}>Current Occupancy</div>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--warning)' }}>78%</div>
+                </div>
+              </div>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>More advanced visual charts will be placed here.</p>
+            </div>
+          )}
+
+          {!viewingBranch && activeTab === 'reports' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Branch Comparison Reports</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                {[
+                  { title: 'Monthly Revenue Comparison', type: 'PDF / Excel' },
+                  { title: 'Occupancy Rate by Branch', type: 'PDF / Excel' },
+                  { title: 'New Admissions Report', type: 'PDF / Excel' }
+                ].map((rep, i) => (
+                  <div key={i} style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)', cursor: 'pointer' }} className="hover:border-primary">
+                    <div className="admin-btn-icon" style={{ background: 'var(--primary-subtle)', color: 'var(--primary)', marginBottom: '12px', pointerEvents: 'none' }}><BarChart size={20} /></div>
+                    <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 4px 0' }}>{rep.title}</h3>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{rep.type}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+
+          {/* -------------------- BRANCH DETAILS VIEWS -------------------- */}
+          {viewingBranch && detailTab === 'overview' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 24px 0' }}>Overview: {viewingBranch.name}</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '8px' }}>Total Seats</div>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--primary)' }}>120</div>
+                </div>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '8px' }}>Active Members</div>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--success)' }}>85</div>
+                </div>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px', marginBottom: '8px' }}>Revenue (MTD)</div>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--info)' }}>₹45,200</div>
+                </div>
+              </div>
+              
+              <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px 0' }}>Contact Information</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><MapPin size={16} color="var(--primary)"/> <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{viewingBranch.address}</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><Phone size={16} color="var(--primary)"/> <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{viewingBranch.phone}</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><Mail size={16} color="var(--primary)"/> <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{viewingBranch.email}</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><User size={16} color="var(--primary)"/> <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Manager: {viewingBranch.manager}</span></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'users' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Staff Users - {viewingBranch.name}</h2>
+                <button className="admin-btn-primary">Add Staff</button>
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Staff Name</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Role</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { name: 'Amit Sharma', role: 'Librarian', status: 'Active' },
+                    { name: 'Riya Das', role: 'Support Staff', status: 'Active' },
+                  ].map((staff, i) => (
+                    <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>{staff.name}</td>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{staff.role}</td>
+                      <td style={{ padding: '12px' }}><span className="admin-badge admin-badge-success">{staff.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'members' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Members - {viewingBranch.name}</h2>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button className="admin-btn-ghost">Export</button>
+                  <button className="admin-btn-primary">Add Member</button>
+                </div>
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Name & ID</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Plan</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { id: 'MEM-101', name: 'John Doe', plan: 'Premium (Monthly)', status: 'Active' },
+                    { id: 'MEM-102', name: 'Jane Smith', plan: 'Standard (Quarterly)', status: 'Inactive' },
+                  ].map((mem, i) => (
+                    <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                      <td style={{ padding: '12px' }}>
+                        <div style={{ fontSize: '14px', color: 'var(--text-primary)', fontWeight: 500 }}>{mem.name}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{mem.id}</div>
+                      </td>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{mem.plan}</td>
+                      <td style={{ padding: '12px' }}>
+                        <span className={`admin-badge ${mem.status === 'Active' ? 'admin-badge-success' : 'admin-badge-warning'}`}>{mem.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'reservations' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Reservations - {viewingBranch.name}</h2>
+              <div style={{ display: 'flex', gap: '20px', marginBottom: '24px' }}>
+                <div style={{ flex: 1, padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>Today&apos;s Reservations</div>
+                  <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--primary)', marginTop: '4px' }}>42</div>
+                </div>
+                <div style={{ flex: 1, padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>Available Seats Now</div>
+                  <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)', marginTop: '4px' }}>15</div>
+                </div>
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Seat No.</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Member</th>
+                    <th style={{ padding: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>Time Slot</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { seat: 'A-12', member: 'John Doe', time: '09:00 AM - 01:00 PM' },
+                    { seat: 'B-04', member: 'Rahul Roy', time: '02:00 PM - 06:00 PM' },
+                  ].map((res, i) => (
+                    <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--primary)', fontWeight: 600 }}>{res.seat}</td>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>{res.member}</td>
+                      <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>{res.time}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'reports' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Branch Reports - {viewingBranch.name}</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)', cursor: 'pointer' }} className="hover:border-primary">
+                  <BarChart size={24} color="var(--primary)" style={{ marginBottom: '12px' }} />
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Daily Attendance</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Download CSV/PDF</div>
+                </div>
+                <div style={{ padding: '20px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)', cursor: 'pointer' }} className="hover:border-primary">
+                  <BarChart size={24} color="var(--info)" style={{ marginBottom: '12px' }} />
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Revenue Collection</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Download CSV/PDF</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'audit' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Audit Log - {viewingBranch.name}</h2>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {[
+                  { time: 'Today, 09:30 AM', action: 'New admission approved', user: 'Vikram Singh (Manager)' },
+                  { time: 'Yesterday, 06:15 PM', action: 'Branch settings updated', user: 'Admin' },
+                  { time: 'Yesterday, 10:00 AM', action: 'Fee collected for MEM-101', user: 'Riya Das (Staff)' },
+                ].map((log, i) => (
+                  <div key={i} style={{ padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{log.action}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{log.time}</span>
+                    </div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>By: {log.user}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {viewingBranch && detailTab === 'settings' && (
+            <div className="admin-card" style={{ padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Branch Settings - {viewingBranch.name}</h2>
+              <form style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Update Manager</label>
+                  <select className="admin-input">
+                    <option>{viewingBranch.manager}</option>
+                    <option>Anita Desai</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Operating Hours</label>
+                  <input type="text" className="admin-input" defaultValue="08:00 AM - 08:00 PM" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--bg-glass)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <div>
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Allow Online Bookings</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Members can book seats via app.</div>
+                  </div>
+                  <div className="admin-badge admin-badge-success">Enabled</div>
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  <button type="button" className="admin-btn-primary" onClick={() => toast.success('Settings saved!')}>Save Branch Settings</button>
+                </div>
+              </form>
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
   );

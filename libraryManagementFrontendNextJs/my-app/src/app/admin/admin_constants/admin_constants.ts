@@ -2,7 +2,7 @@ import {
   LayoutDashboard, BarChart2, History,
   FileText, User, Building2, Key, Tag,
   Ban, LucideIcon, IndianRupee, Users,
-  RotateCcw, Phone, MessageSquare, Handshake, AlertCircle, Armchair
+  RotateCcw, Phone, MessageSquare, Handshake, AlertCircle, Armchair, Shield
 } from 'lucide-react';
 import { AdminNavItem } from '../admin_types/admin_types';
 import { ADMIN_ROUTES } from '../admin_url_config';
@@ -35,7 +35,10 @@ export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
   { href: '/admin/admin_engagement/absentee-report', icon: AlertCircle,  label: 'Absentee Report' },
   
   { group: 'Configuration' },
+  { href: '/admin/admin_branches', icon: Building2, label: 'Branches' },
   { href: '/admin/admin_settings', icon: Key, label: 'Settings' },
+  { href: '/admin/admin_security', icon: Shield, label: 'Library Security' },
+  { href: '/admin/admin_support', icon: MessageSquare, label: 'Help & Support' },
 ];
 
 /**
