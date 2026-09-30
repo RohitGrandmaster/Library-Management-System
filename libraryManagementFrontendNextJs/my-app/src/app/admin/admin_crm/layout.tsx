@@ -1,3 +1,5 @@
+import './crm.css';
+
 export default function CrmInnerLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="crm-theme h-full">{children}</div>;
 }

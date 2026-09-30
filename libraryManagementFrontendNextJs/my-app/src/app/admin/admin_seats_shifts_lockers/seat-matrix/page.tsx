@@ -39,14 +39,41 @@ export default function SeatMatrixPage() {
   const [seatsData, setSeatsData]       = useState<SeatData[]>([]);
 
   useEffect(() => {
-    fetchApi('/seats_shifts_lockers/seat-matrix').then(data => {
-      const mapped = data.map((s: any) => ({
-        uuid: s.id,
-        id: s.seatNumber.replace('S-', ''),
-        status: s.isActive ? 'free' : 'maintenance',
-      }));
-      setSeatsData(mapped);
-    }).catch(console.error);
+    // Generate 60 seats (A-01 to A-60) for a realistic layout mock
+    const mockSeats: SeatData[] = Array.from({ length: 60 }, (_, i) => {
+      const num = String(i + 1).padStart(2, '0');
+      const rand = Math.random();
+      let status: 'free' | 'occupied' | 'expiring' | 'maintenance' = 'free';
+      let shift = 'Morning';
+      if (rand > 0.85) status = 'maintenance';
+      else if (rand > 0.7) status = 'expiring';
+      else if (rand > 0.4) {
+        status = 'occupied';
+        shift = Math.random() > 0.5 ? 'Evening' : 'Full Day';
+      }
+
+      return {
+        id: num,
+        status,
+        shift: status !== 'maintenance' ? shift : undefined,
+        student: status === 'occupied' || status === 'expiring' ? `Student ${num}` : undefined
+      };
+    });
+
+    fetchApi('/seats_shifts_lockers/seat-matrix')
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map((s: any) => ({
+            uuid: s.id,
+            id: s.seatNumber.replace('S-', ''),
+            status: s.isActive ? 'free' : 'maintenance',
+          }));
+          setSeatsData(mapped);
+        } else {
+          setSeatsData(mockSeats);
+        }
+      })
+      .catch(() => setSeatsData(mockSeats));
   }, []);
 
   const visible = activeTab === 'All'

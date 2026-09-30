@@ -2,7 +2,7 @@ import {
   LayoutDashboard, BarChart2, History,
   FileText, User, Building2, Key, Tag,
   Ban, LucideIcon, IndianRupee, Users,
-  RotateCcw, Phone, MessageSquare, Handshake, AlertCircle
+  RotateCcw, Phone, MessageSquare, Handshake, AlertCircle, Armchair
 } from 'lucide-react';
 import { AdminNavItem } from '../admin_types/admin_types';
 import { ADMIN_ROUTES } from '../admin_url_config';
@@ -11,22 +11,28 @@ import { ADMIN_ROUTES } from '../admin_url_config';
  * Sidebar Navigation Configuration
  */
 export const ADMIN_SIDEBAR_NAV: AdminNavItem[] = [
-  { href: ADMIN_ROUTES.DASHBOARD, icon: LayoutDashboard, label: 'Dashboard' },
-  { href: ADMIN_ROUTES.REPORTS,   icon: BarChart2,       label: 'Reports'   },
-  { group: 'Admin' },
-  { href: ADMIN_ROUTES.BRANCHES,    icon: Building2, label: 'Branches'      },
-  { href: ADMIN_ROUTES.STAFF_USERS, icon: User,      label: 'Staff & Users' },
-  { href: ADMIN_ROUTES.PERMISSIONS, icon: Key,       label: 'Permissions'   },
-  { href: ADMIN_ROUTES.PLANS,       icon: FileText,  label: 'Plans'         },
-  { href: ADMIN_ROUTES.COUPONS,     icon: Tag,       label: 'Coupons'       },
-  { href: ADMIN_ROUTES.BLACKLIST,   icon: Ban,       label: 'Blacklist'     },
-  { href: ADMIN_ROUTES.AUDIT_LOGS,  icon: History,   label: 'Audit Logs'    },
-  { group: 'Operations (All Branches)' },
-  { href: ADMIN_ROUTES.EXPENSES,    icon: IndianRupee, label: 'Expenses'    },
-  { href: ADMIN_ROUTES.STUDENTS,    icon: Users,       label: 'Students'    },
+  { href: '/admin/admin_dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/admin/admin_reports',   icon: BarChart2,       label: 'Reports'   },
+  
+  { group: 'CRM & Students' },
+  { href: '/admin/admin_crm/enquiries', icon: Phone, label: 'Enquiries' },
+  { href: '/admin/admin_students', icon: Users, label: 'Students' },
+
+  { group: 'Seats & Shifts' },
+  { href: '/admin/admin_seats_shifts_lockers/seat-matrix', icon: Armchair, label: 'Seat Matrix' },
+  { href: '/admin/admin_seats_shifts_lockers/shift-management', icon: History, label: 'Shifts' },
+  { href: '/admin/admin_seats_shifts_lockers/allocations', icon: FileText, label: 'Allocations' },
+
+  { group: 'Finance' },
+  { href: '/admin/admin_finance/collect-fee', icon: IndianRupee, label: 'Collect Fee' },
+  { href: '/admin/admin_finance/subscriptions', icon: FileText, label: 'Subscriptions' },
+  { href: '/admin/admin_finance/renewals', icon: RotateCcw, label: 'Renewals' },
+  
+  { group: 'Operations' },
+  { href: '/admin/admin_engagement/attendance', icon: Key, label: 'Attendance' },
+  
   { group: 'Configuration' },
-  { href: ADMIN_ROUTES.EXPENSE_CATEGORIES, icon: Tag, label: 'Expense Types' },
-  { href: ADMIN_ROUTES.SETTINGS,    icon: Key,       label: 'Settings'      },
+  { href: '/admin/admin_settings', icon: Key, label: 'Settings' },
 ];
 
 /**
@@ -40,8 +46,6 @@ export const ADMIN_KPI_META = [
   { icon: AlertCircle, iconColor: 'var(--danger)',  iconBg: 'var(--icon-bg-danger)'  },
 ] as const;
 
-// Importing Armchair to use in KPI_META
-import { Armchair } from 'lucide-react';
 
 
 /**

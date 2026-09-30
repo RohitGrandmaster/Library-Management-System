@@ -1,3 +1,5 @@
+import './finance.css';
+
 export default function FinanceModuleLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="finance-theme h-full">{children}</div>;
 }

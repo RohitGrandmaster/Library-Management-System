@@ -1,3 +1,5 @@
+import './seat_shift.css';
+
 export default function SeatsShiftsLockersLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="ss-theme h-full">{children}</div>;
 }

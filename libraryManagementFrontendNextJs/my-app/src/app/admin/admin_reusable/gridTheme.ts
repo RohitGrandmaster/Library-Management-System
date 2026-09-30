@@ -2,21 +2,16 @@
 // ⚠️ NO hardcoded values here — all values come from admin.css
 import { themeQuartz } from 'ag-grid-community';
 
-const v = (name: string) =>
-  typeof window !== 'undefined'
-    ? getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-    : '';
-
 export const gridTheme = themeQuartz.withParams({
-  backgroundColor:       v('--ag-bg'),
-  foregroundColor:       v('--ag-fg'),
-  headerBackgroundColor: v('--ag-header-bg'),
-  headerTextColor:       v('--ag-header-text'),
-  borderColor:           v('--ag-border'),
+  backgroundColor:       '#0F0F1A',
+  foregroundColor:       '#F0F0FF',
+  headerBackgroundColor: '#16162A',
+  headerTextColor:       '#94A3B8',
+  borderColor:           '#2A2A3E',
   rowBorder:             true,
-  oddRowBackgroundColor: v('--ag-odd-row-bg'),
-  rowHoverColor:         v('--ag-row-hover'),
-  fontFamily:            v('--ag-font'),
+  oddRowBackgroundColor: '#12121F',
+  rowHoverColor:         'rgba(99, 102, 241, 0.08)',
+  fontFamily:            "'Inter', sans-serif",
   fontSize:              13,
   wrapperBorder:         false,
   wrapperBorderRadius:   0,

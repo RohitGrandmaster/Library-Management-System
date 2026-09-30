@@ -47,13 +47,13 @@ export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps)
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <ThemeToggle />
-        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="Notifications">
-          <Bell size={17} />
-          <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
-        </Button>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-white text-[10px] font-bold">
+        <button className="admin-bell-btn" aria-label="Notifications">
+          <Bell size={18} />
+          <span className="admin-bell-dot" />
+        </button>
+        <div className="admin-avatar">
           LA
         </div>
       </div>

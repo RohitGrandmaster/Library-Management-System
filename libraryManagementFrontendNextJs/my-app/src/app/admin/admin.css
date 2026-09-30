@@ -13,25 +13,25 @@
   .admin-theme {
     /* ── Core Brand ── */
     --primary:          #6366F1;
-    --primary-hover:    #4F46E5;
-    --primary-subtle:   rgba(99, 102, 241, 0.08);
+    --primary-hover:    #8b5cf6;
+    --primary-subtle:   rgba(99,102,241,0.15);
 
     /* ── Backgrounds ── */
-    --bg-page:          #0F0F1A;
-    --bg-card:          #1A1A2E;
-    --bg-sidebar:       #12121F;
-    --bg-header:        #16162A;
-    --bg-input:         #1E1E32;
+    --bg-page:          #030712; /* Deep dark bg */
+    --bg-card:          rgba(15,15,30,0.6); /* Glass card */
+    --bg-sidebar:       rgba(5,5,18,0.6); /* Glass sidebar */
+    --bg-header:        rgba(3,7,18,0.8);
+    --bg-input:         rgba(10,10,28,0.8);
 
     /* ── Borders ── */
-    --border:           #2A2A3E;
+    --border:           rgba(99,102,241,0.2);
     --border-focus:     #6366F1;
     --border-glowing:   rgba(99, 102, 241, 0.4);
 
     /* ── Text ── */
-    --text-primary:     #F0F0FF;
-    --text-secondary:   #8888AA;
-    --text-disabled:    #44445A;
+    --text-primary:     #FFFFFF;
+    --text-secondary:   #94A3B8;
+    --text-disabled:    #475569;
 
     /* ── Semantic Status Colors ── */
     --success:          #10B981;
@@ -97,7 +97,12 @@
     font-size: 14px;
     color: var(--text-primary);
     background-color: var(--bg-page);
+    background-image: radial-gradient(rgba(99,102,241,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
     box-sizing: border-box;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
   }
 
   /* Removed aggressive !important overrides to fix CSS conflicts */
@@ -1124,12 +1129,14 @@
     top: 0;
     right: 0;
     z-index: 30;
-    height: 64px;
+    height: 72px; /* Matched superadmin header height */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    background-color: var(--bg-header);
+    padding: 0 32px; /* Wider padding */
+    background: var(--bg-header);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border-bottom: 1px solid var(--border);
     transition: left 0.3s;
   }
@@ -1195,7 +1202,9 @@
     z-index: 40;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-sidebar);
+    background: var(--bg-sidebar);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border-right: 1px solid var(--border);
     transition: width 0.3s, transform 0.3s;
     overflow: hidden;
@@ -1288,7 +1297,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 16px;
+    padding: 12px 16px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 500;

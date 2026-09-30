@@ -1,3 +1,5 @@
+import './engagement.css';
+
 export default function EngagementModuleLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="engagement-theme h-full">{children}</div>;
 }
