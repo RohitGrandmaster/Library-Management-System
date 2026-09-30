@@ -5,6 +5,8 @@ import { AgGridReact } from 'ag-grid-react';
 import type { ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { gridTheme } from '@/app/superadmin/superadmin_reusable/gridTheme';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 import { Eye, Edit2, ShieldAlert, Plus, X, MapPin, Users, CheckCircle, AlertTriangle, Save, Loader } from 'lucide-react';
 import { useLibraries } from '@/app/superadmin/superadmin_libraries/useLibraries';
 import LibraryPanel from '@/app/superadmin/superadmin_libraries/LibraryPanel';

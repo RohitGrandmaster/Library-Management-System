@@ -1,7 +1,6 @@
 // RESPONSIBILITY: Renders the Admin Dashboard, fetching data server-side and displaying KPI metrics, seating, and actions.
 // DATA FLOW: Server Fetch -> AdminDashboardPage -> (KpiCard, SeatMatrixGrid, ActionItemsList, RecentPaymentsFeed)
 
-import { cookies } from 'next/headers';
 import { ChevronRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import KpiCard from '@/app/admin/admin_reusable/KpiCard';
@@ -11,28 +10,45 @@ import RecentPaymentsFeed from '@/app/admin/admin_reusable/RecentPaymentsFeed';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { ADMIN_KPI_META, ADMIN_ACTION_ICONS } from '@/app/admin/admin_constants/admin_constants';
-import { ADMIN_API_ROUTES } from '@/app/admin/admin_url_config';
+
 
 
 async function getDashboardData() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('access_token')?.value || '';
-
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001/api/v1';
-  const url = `${API_BASE}${ADMIN_API_ROUTES.DASHBOARD}`;
-  
-  const res = await fetch(url, {
-    cache: 'no-store',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    return null;
-  }
-  return res.json();
+  // ── Frontend-only Mock Data (no backend required) ──────────────────────────
+  return {
+    kpiCards: [
+      { label: 'Active Members', value: '1,293', trend: { value: '+18', up: true }, sub: '18 joined today' },
+      { label: 'Revenue (Month)', value: '₹1,24,800', trend: { value: '+12%', up: true }, sub: 'vs last month' },
+      { label: 'Seats Available', value: '14 / 60', trend: { value: '-3', up: false }, sub: 'Morning shift' },
+      { label: 'Overdue Returns', value: '7', trend: { value: '+2', up: false }, sub: '3 critical' },
+    ],
+    seats: Array.from({ length: 60 }, (_, i) => ({
+      id: i + 1,
+      label: `SL-${String(i + 1).padStart(2, '0')}`,
+      status: i < 46 ? 'occupied' : 'available',
+      studentName: i < 46 ? `Student ${i + 1}` : null,
+    })),
+    shifts: [
+      { id: 'morning', name: 'Morning', time: '6AM–12PM', occupancy: 32, total: 60 },
+      { id: 'afternoon', name: 'Afternoon', time: '12PM–6PM', occupancy: 25, total: 60 },
+      { id: 'evening', name: 'Evening', time: '6PM–10PM', occupancy: 18, total: 60 },
+    ],
+    actionItems: [
+      { label: 'Fee Renewals Due', count: 14, type: 'warning', description: '14 members expiring this week' },
+      { label: 'New Enquiries', count: 6, type: 'danger', description: '6 unattended enquiries' },
+      { label: 'Complaint Open', count: 2, type: 'warning', description: '2 open complaints' },
+      { label: 'PTP Dates Today', count: 3, type: 'danger', description: '3 payment promises today' },
+    ],
+    recentPayments: [
+      { id: 'TXN-001', studentName: 'Ravi Kumar', amount: 1200, type: 'Membership', date: '2026-09-30', status: 'paid' },
+      { id: 'TXN-002', studentName: 'Sneha Mehta', amount: 600, type: 'Fine', date: '2026-09-29', status: 'paid' },
+      { id: 'TXN-003', studentName: 'Arjun Singh', amount: 1500, type: 'Membership', date: '2026-09-29', status: 'pending' },
+      { id: 'TXN-004', studentName: 'Priya Sharma', amount: 300, type: 'Fine', date: '2026-09-28', status: 'paid' },
+      { id: 'TXN-005', studentName: 'Mohan Lal', amount: 1200, type: 'Membership', date: '2026-09-28', status: 'overdue' },
+    ],
+  };
 }
+
 
 
 export default async function AdminDashboardPage() {

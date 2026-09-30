@@ -11,8 +11,17 @@ export function useLibraries() {
   const loadLibraries = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchApi(LIBRARIES_URL_CONFIG.ENDPOINTS.GET_LIBRARIES);
-      setLibraries(data);
+      // ── Frontend-only Mock Data (no backend required) ──────────────────────────
+      const mockData: Library[] = [
+        { id: '1', name: 'StudyNest Patna', location: 'Patna, Bihar', branches: 3, students: 450, plan: 'Pro', status: 'Active', revenue: 150000, joinedAt: '2023-01-15' },
+        { id: '2', name: 'The Alexandria Modern', location: 'Delhi', branches: 5, students: 1240, plan: 'Enterprise', status: 'Active', revenue: 520000, joinedAt: '2022-11-10' },
+        { id: '3', name: 'Scholar Spaces', location: 'Mumbai', branches: 1, students: 890, plan: 'Starter', status: 'Maintenance', revenue: 0, joinedAt: '2024-02-20' },
+        { id: '4', name: 'Gyan Kendra', location: 'Pune', branches: 2, students: 560, plan: 'Pro', status: 'Active', revenue: 210000, joinedAt: '2023-08-05' },
+        { id: '5', name: 'City Reading Hub', location: 'Ahmedabad', branches: 4, students: 2100, plan: 'Enterprise', status: 'Active', revenue: 850000, joinedAt: '2021-06-12' },
+      ];
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setLibraries(mockData);
     } catch (err) {
       console.error(err);
       setError('Failed to load libraries');
@@ -26,12 +35,19 @@ export function useLibraries() {
   }, [loadLibraries]);
 
   const updateLibrary = async (id: string, updates: Partial<Library>) => {
-    const updated = await fetchApi(LIBRARIES_URL_CONFIG.ENDPOINTS.UPDATE_LIBRARY(id), {
-      method: 'PATCH',
-      body: JSON.stringify(updates),
-    });
-    setLibraries((libs) => libs.map((l: any) => (l.id === id ? { ...l, ...updated } : l)));
-    return updated;
+    // Simulate network delay
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    
+    let updatedLibrary: Library | null = null;
+    setLibraries((libs) => libs.map((l) => {
+      if (l.id === id) {
+        updatedLibrary = { ...l, ...updates };
+        return updatedLibrary;
+      }
+      return l;
+    }));
+    
+    return updatedLibrary || updates;
   };
 
   const toggleStatus = async (id: string) => {
@@ -39,12 +55,10 @@ export function useLibraries() {
     if (!lib) throw new Error('Library not found');
     const newStatus = lib.status === 'Active' ? 'Maintenance' : 'Active';
     
-    await fetchApi(LIBRARIES_URL_CONFIG.ENDPOINTS.UPDATE_STATUS(id), {
-      method: 'PATCH',
-      body: JSON.stringify({ status: newStatus }),
-    });
+    // Simulate network delay
+    await new Promise((resolve) => setTimeout(resolve, 300));
     
-    setLibraries((libs) => libs.map((l: any) => (l.id === id ? { ...l, status: newStatus } : l)));
+    setLibraries((libs) => libs.map((l) => (l.id === id ? { ...l, status: newStatus } : l)));
     return newStatus;
   };
 

@@ -28,9 +28,15 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <button className="sa-mobile-menu-btn" onClick={onMenuClick} title="Toggle menu">
           <Menu size={18} />
         </button>
-        <div className="sa-header-search">
-          <Search size={14} className="sa-metric--muted shrink-0" />
-          <input placeholder="Search libraries, tickets, logs..." />
+        <div className="sa-header-search group relative">
+          <Search size={16} className="text-gray-400 group-focus-within:text-indigo-400 transition-colors shrink-0" />
+          <input 
+            placeholder="Search libraries, tickets, logs..." 
+            className="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-gray-500"
+          />
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white/5 border border-white/10 rounded px-1.5 py-0.5 pointer-events-none">
+            <span className="text-[10px] font-medium text-gray-400">⌘K</span>
+          </div>
         </div>
       </div>
 

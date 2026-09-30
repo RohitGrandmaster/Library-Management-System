@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Eye, EyeOff, BookOpen, CheckCircle, ChevronRight, Lock } from 'lucide-react';
+import {
+  Eye, EyeOff, BookOpen, CheckCircle, Lock,
+  Shield, Zap, Users, BarChart3, Sparkles,
+} from 'lucide-react';
 import { loginSchema, type LoginFormData } from '@/app/auth/reusable/schema';
 import hardcoded from '@/app/auth/hardcoded.json';
-import { login } from '@/lib/auth';
 
 const ROLES = hardcoded.roles;
 
@@ -21,143 +23,399 @@ function getRedirectUrl(role: typeof ROLES[0]): string {
   return role.redirectTo;
 }
 
+const LOGIN_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { box-sizing: border-box; }
+
+  .login-bg {
+    background: #030712;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(rgba(99,102,241,0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .aurora-orb-1 {
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.18) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orb-float 14s ease-in-out infinite alternate;
+  }
+  .aurora-orb-2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(139,92,246,0.14) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orb-float 18s ease-in-out infinite alternate-reverse;
+  }
+  .aurora-orb-3 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(ellipse, rgba(34,211,238,0.08) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orb-float 10s ease-in-out infinite alternate;
+  }
+
+  @keyframes orb-float {
+    0% { transform: translate(0,0) scale(1); }
+    100% { transform: translate(50px, 30px) scale(1.08); }
+  }
+
+  .glass-login {
+    background: rgba(8,8,22,0.75);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(99,102,241,0.2);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(99,102,241,0.08);
+  }
+
+  .glass-left {
+    background: rgba(5,5,18,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(99,102,241,0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 40%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .shimmer-btn {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #22d3ee, #6366f1);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .glow-indigo {
+    box-shadow: 0 0 30px rgba(99,102,241,0.5), 0 0 60px rgba(99,102,241,0.15);
+  }
+
+  .input-field {
+    background: rgba(10,10,28,0.8);
+    border: 1px solid rgba(99,102,241,0.2);
+    color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .input-field::placeholder {
+    color: rgba(148,163,184,0.5);
+  }
+
+  .input-field:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+
+  .input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+  }
+
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px #0a0a1c inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+
+  .role-tab {
+    color: rgba(148,163,184,0.7);
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+  }
+
+  .role-tab:hover {
+    color: #fff;
+    background: rgba(99,102,241,0.08);
+  }
+
+  .role-tab-active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.2));
+    border-color: rgba(99,102,241,0.4) !important;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.2);
+  }
+
+  .feature-pill {
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.2);
+    transition: all 0.25s;
+  }
+
+  .feature-pill:hover {
+    background: rgba(99,102,241,0.15);
+    border-color: rgba(99,102,241,0.4);
+    transform: translateY(-2px);
+  }
+
+  @keyframes float-card {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .float-card-1 { animation: float-card 6s ease-in-out infinite; }
+  .float-card-2 { animation: float-card 8s ease-in-out infinite 1s; }
+  .float-card-3 { animation: float-card 7s ease-in-out infinite 2s; }
+
+  .stat-card {
+    background: rgba(15,15,35,0.8);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #030712; }
+  ::-webkit-scrollbar-thumb { background: #2d2d5e; border-radius: 10px; }
+
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  .spin-slow { animation: spin-slow 20s linear infinite; }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s;
+  }
+  .submit-btn:hover::before { left: 100%; }
+`;
+
+const roleIcons: Record<string, React.ReactNode> = {
+  superadmin: <Shield size={16} className="text-violet-400" />,
+  admin: <Zap size={16} className="text-cyan-400" />,
+  manager: <Users size={16} className="text-emerald-400" />,
+};
+
+const roleColors: Record<string, string> = {
+  superadmin: 'from-violet-500/20 to-purple-500/10 border-violet-500/30',
+  admin: 'from-cyan-500/20 to-blue-500/10 border-cyan-500/30',
+  manager: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/30',
+};
+
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({
+  const { register, handleSubmit, setValue, setError, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '', role: 'superadmin' },
+    // Auto-fill SuperAdmin credentials by default
+    defaultValues: { email: ROLES[0].email, password: ROLES[0].password, role: 'superadmin' },
   });
 
   const handleRoleSelect = (role: typeof ROLES[0]) => {
     setSelectedRole(role);
-    setValue('email', '', { shouldValidate: false });
-    setValue('password', '', { shouldValidate: false });
+    // Auto-fill credentials for the selected role
+    setValue('email', role.email, { shouldValidate: false });
+    setValue('password', role.password, { shouldValidate: false });
     setValue('role', role.id as LoginFormData['role']);
   };
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await login(data.email, data.password);
-      const userRole = response.user.role;
-      const roleConfig = ROLES.find((r) => r.id === userRole);
-      window.location.href = roleConfig ? getRedirectUrl(roleConfig) : `/${userRole}/dashboard`;
+      // ── Frontend-only mock authentication ──────────────────────────────
+      // Find matching role credential from hardcoded list
+      const matchedRole = ROLES.find(
+        (r) => r.id === data.role && r.email === data.email && r.password === data.password
+      );
+
+      if (!matchedRole) {
+        throw new Error('Invalid email or password. Please check your credentials.');
+      }
+
+      // Simulate a JWT token (mock)
+      const mockToken = btoa(JSON.stringify({ role: matchedRole.id, email: data.email, exp: Date.now() + 900000 }));
+      const mockUser = { id: `${matchedRole.id}-001`, name: matchedRole.label, email: data.email, role: matchedRole.id, phone: '' };
+
+      // Store in localStorage + cookie (same as real auth flow)
+      localStorage.setItem('access_token', mockToken);
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      document.cookie = `access_token=${mockToken}; path=/; SameSite=Strict; max-age=900`;
+
+      // Redirect based on role
+      window.location.href = getRedirectUrl(matchedRole);
     } catch (err: any) {
       setError('root', { message: err.message || 'Invalid credentials. Please try again.' });
     }
   };
 
   return (
-    <main className="flex min-h-screen bg-[#030712] text-white font-sans overflow-hidden">
-      <style>{`
-        .glass-panel {
-          background: rgba(5, 13, 26, 0.7);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(34, 211, 238, 0.15);
-        }
-        .glow-cyan {
-          box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
-        }
-        .grid-bg {
-          background-image: linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-        input:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0 50px #0A1628 inset !important;
-          -webkit-text-fill-color: white !important;
-        }
-      `}</style>
+    <main className="login-bg flex min-h-screen text-white overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: LOGIN_CSS }} />
 
-      {/* Grid and Ambient Lights */}
-      <div className="absolute inset-0 grid-bg z-0" />
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 blur-[100px] rounded-full pointer-events-none z-0" />
+      {/* Background */}
+      <div className="absolute inset-0 dot-grid opacity-50" />
+      <div className="aurora-orb-1" style={{ top: '-15%', left: '-10%' }} />
+      <div className="aurora-orb-2" style={{ bottom: '-10%', right: '-8%' }} />
+      <div className="aurora-orb-3" style={{ top: '40%', left: '30%' }} />
 
-      {/* ── LEFT BRAND PANEL (Hidden on Mobile) ── */}
-      <section className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-cyan-500/10 bg-[#020610]/50 backdrop-blur-md">
+      {/* ── LEFT BRAND PANEL ── */}
+      <section className="hidden lg:flex lg:w-[55%] flex-col justify-between p-14 relative z-10 glass-left">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
-            <BookOpen className="w-5 h-5 text-white" />
+          <div className="relative w-11 h-11">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl blur-md opacity-80" />
+            <div className="relative w-11 h-11 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg">
+              <BookOpen className="w-5 h-5 text-white" />
+            </div>
           </div>
           <span className="text-2xl font-black tracking-tight">
-            Library<span className="text-cyan-400">OS</span>
+            Library<span className="gradient-text">OS</span>
           </span>
         </div>
 
-        {/* Hero Text */}
-        <div className="space-y-6 max-w-lg">
-          <h1 className="text-5xl font-black tracking-tight leading-[1.1]">
-            Welcome Back to <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              The Future of Libraries
-            </span>
-          </h1>
-          <p className="text-slate-400 text-lg leading-relaxed">
-            Manage your books, automate member alerts, and track attendance all in one seamless dashboard.
-          </p>
-          
-          <div className="flex flex-wrap gap-3 mt-4">
-            {['Smart ID Cards', 'WhatsApp Automation', 'QR Checkouts', 'Multi-Branch'].map((feature) => (
-              <span key={feature} className="px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold flex items-center gap-1.5">
-                <CheckCircle size={12} /> {feature}
-              </span>
+        {/* Center Content */}
+        <div className="space-y-10 max-w-xl">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-bold px-4 py-2 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            2,400+ libraries trust LibraryOS
+          </div>
+
+          {/* Hero Text */}
+          <div className="space-y-4">
+            <h1 className="text-5xl font-black tracking-tight leading-[1.08]">
+              Welcome back to<br />
+              <span className="gradient-text">The Smartest</span><br />
+              Library Platform
+            </h1>
+            <p className="text-slate-400 text-lg leading-relaxed">
+              Manage books, automate alerts, track attendance — all from one powerful dashboard built for modern Indian libraries.
+            </p>
+          </div>
+
+          {/* Feature Pills */}
+          <div className="flex flex-wrap gap-3">
+            {[
+              { icon: <CheckCircle size={13} />, label: 'Smart ID Cards', color: 'text-cyan-400' },
+              { icon: <CheckCircle size={13} />, label: 'WhatsApp Automation', color: 'text-emerald-400' },
+              { icon: <CheckCircle size={13} />, label: 'QR Checkouts', color: 'text-violet-400' },
+              { icon: <CheckCircle size={13} />, label: 'Multi-Branch', color: 'text-amber-400' },
+              { icon: <CheckCircle size={13} />, label: 'Real-time Analytics', color: 'text-rose-400' },
+            ].map((f) => (
+              <div key={f.label} className={`feature-pill flex items-center gap-2 px-4 py-2 rounded-xl cursor-default`}>
+                <span className={f.color}>{f.icon}</span>
+                <span className="text-xs font-semibold text-slate-300">{f.label}</span>
+              </div>
             ))}
+          </div>
+
+          {/* Floating Stat Cards */}
+          <div className="relative h-36">
+            <div className="stat-card rounded-2xl p-4 absolute left-0 top-0 float-card-1 w-52">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                  <BookOpen size={16} className="text-cyan-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-400">Books Managed</div>
+                  <div className="text-xl font-black text-white">18L+</div>
+                </div>
+              </div>
+            </div>
+            <div className="stat-card rounded-2xl p-4 absolute left-56 top-4 float-card-2 w-52">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                  <Users size={16} className="text-emerald-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-400">Active Members</div>
+                  <div className="text-xl font-black text-white">5L+</div>
+                </div>
+              </div>
+            </div>
+            <div className="stat-card rounded-2xl p-4 absolute left-24 top-16 float-card-3 w-52">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-violet-500/20 flex items-center justify-center">
+                  <BarChart3 size={16} className="text-violet-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-400">Daily Transactions</div>
+                  <div className="text-xl font-black text-white">12K+</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-slate-500 text-sm font-medium">© {new Date().getFullYear()} LibraryOS. All rights reserved.</p>
+        <div className="flex items-center justify-between">
+          <p className="text-slate-500 text-sm">&copy; {new Date().getFullYear()} LibraryOS. All rights reserved.</p>
+          <div className="flex gap-4 text-xs text-slate-500">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+          </div>
+        </div>
       </section>
 
       {/* ── RIGHT AUTH PANEL ── */}
-      <section className="w-full lg:w-1/2 flex items-center justify-center p-6 relative z-10">
+      <section className="w-full lg:w-[45%] flex items-center justify-center p-6 md:p-10 relative z-10">
         <div className="w-full max-w-md">
+
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
-              <BookOpen className="w-5 h-5 text-white" />
+            <div className="relative w-10 h-10">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl blur-md opacity-70" />
+              <div className="relative w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
             </div>
-            <span className="text-2xl font-black tracking-tight">
-              Library<span className="text-cyan-400">OS</span>
-            </span>
+            <span className="text-2xl font-black tracking-tight">Library<span className="gradient-text">OS</span></span>
           </div>
 
-          <div className="glass-panel rounded-3xl p-8 glow-cyan">
+          <div className="glass-login rounded-3xl p-8 md:p-10">
+            {/* Header */}
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-black tracking-tight mb-2">Sign In</h2>
-              <p className="text-slate-400 text-sm">Select your role and enter your credentials</p>
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 mb-5">
+                <Lock size={24} className="text-indigo-400" />
+              </div>
+              <h2 className="text-3xl font-black tracking-tight mb-2">Welcome Back</h2>
+              <p className="text-slate-400 text-sm">Select your role and sign in to continue</p>
             </div>
 
             {/* Role Selector */}
-            <div className="bg-[#0A1628] p-1.5 rounded-xl flex gap-1 mb-8 border border-white/5">
+            <div className="grid grid-cols-3 gap-2 mb-7 p-1.5 rounded-2xl" style={{ background: 'rgba(10,10,25,0.6)', border: '1px solid rgba(255,255,255,0.05)' }}>
               {ROLES.map((role) => {
                 const isActive = selectedRole.id === role.id;
                 return (
                   <button
                     key={role.id}
                     type="button"
+                    id={`role-btn-${role.id}`}
                     onClick={() => handleRoleSelect(role)}
-                    className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
-                        : 'text-slate-400 hover:text-white hover:bg-white/5'
-                    }`}
+                    className={`py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1.5 role-tab ${isActive ? 'role-tab-active' : ''}`}
                   >
-                    {isActive && <CheckCircle size={12} className="opacity-70" />}
-                    {role.label}
+                    <span>{roleIcons[role.id]}</span>
+                    <span>{role.label}</span>
                   </button>
                 );
               })}
+            </div>
+
+            {/* Role Info Banner */}
+            <div className={`bg-gradient-to-r ${roleColors[selectedRole.id]} border rounded-xl p-3 flex items-center gap-3 mb-6`}>
+              <span className="text-lg">{selectedRole.icon}</span>
+              <div>
+                <div className="text-xs font-black text-white">{selectedRole.label} Portal</div>
+                <div className="text-[11px] text-slate-400">Will redirect to: {ROLE_DEST_LABEL[selectedRole.id]}</div>
+              </div>
             </div>
 
             {/* Login Form */}
@@ -167,31 +425,31 @@ export default function LoginPage() {
               {/* Email */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">Email Address</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter your email"
-                    {...register('email')}
-                    className={`w-full bg-[#0A1628] border ${errors.email ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition-colors`}
-                  />
-                </div>
-                {errors.email && <p className="text-rose-400 text-xs font-medium mt-1">{errors.email.message}</p>}
+                <input
+                  id="login-email"
+                  type="text"
+                  placeholder="Enter your email"
+                  {...register('email')}
+                  className={`input-field w-full rounded-xl px-4 py-3.5 text-sm ${errors.email ? 'input-error' : ''}`}
+                />
+                {errors.email && <p className="text-rose-400 text-xs font-medium mt-1 flex items-center gap-1"><span>⚠</span>{errors.email.message}</p>}
               </div>
 
               {/* Password */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center">
                   <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">Password</label>
-                  <Link href="/auth/forgot-password" className="text-xs text-cyan-400 font-semibold hover:text-cyan-300">
-                    Forgot?
+                  <Link href="/auth/forgot-password" className="text-xs text-indigo-400 font-semibold hover:text-indigo-300 transition-colors">
+                    Forgot password?
                   </Link>
                 </div>
                 <div className="relative">
                   <input
+                    id="login-password"
                     type={showPw ? 'text' : 'password'}
                     placeholder="Enter your password"
                     {...register('password')}
-                    className={`w-full bg-[#0A1628] border ${errors.password ? 'border-rose-500' : 'border-white/10 focus:border-cyan-500'} rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition-colors pr-12`}
+                    className={`input-field w-full rounded-xl px-4 py-3.5 text-sm pr-12 ${errors.password ? 'input-error' : ''}`}
                   />
                   <button
                     type="button"
@@ -201,51 +459,65 @@ export default function LoginPage() {
                     {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
-                {errors.password && <p className="text-rose-400 text-xs font-medium mt-1">{errors.password.message}</p>}
+                {errors.password && <p className="text-rose-400 text-xs font-medium mt-1 flex items-center gap-1"><span>⚠</span>{errors.password.message}</p>}
               </div>
 
-              {/* Error Banner */}
+              {/* Root Error */}
               {errors.root && (
-                <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm px-4 py-3 rounded-xl flex items-start gap-2">
+                <div className="bg-rose-500/10 border border-rose-500/25 text-rose-300 text-sm px-4 py-3 rounded-xl flex items-start gap-2">
                   <span className="shrink-0 mt-0.5">⚠️</span>
                   <span>{errors.root.message}</span>
                 </div>
               )}
 
-              {/* Access Info Alert */}
-              <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 flex items-start gap-3 mt-4">
-                <div className="text-blue-400 mt-0.5">{selectedRole.icon}</div>
-                <div>
-                  <div className="text-xs font-bold text-blue-300">{selectedRole.label} Access</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Logging in will take you to {ROLE_DEST_LABEL[selectedRole.id]}</div>
-                </div>
-              </div>
-
-              {/* Submit Button */}
+              {/* Submit */}
               <button
+                id="login-submit-btn"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black text-sm py-4 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-all active:scale-[0.98] mt-6 flex justify-center items-center gap-2"
+                className="submit-btn shimmer-btn glow-indigo w-full text-white font-black text-sm py-4 rounded-xl transition-all active:scale-[0.98] mt-2 flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Signing in...
+                  </>
                 ) : (
                   <>
                     <Lock size={16} />
-                    Secure Login
+                    Secure Sign In
+                    <Sparkles size={14} />
                   </>
                 )}
               </button>
             </form>
 
-            <div className="mt-8 text-center border-t border-white/10 pt-6">
-              <p className="text-sm text-slate-400">
+            {/* Footer Links */}
+            <div className="mt-8 pt-6 border-t border-white/5 space-y-4">
+              <p className="text-sm text-slate-400 text-center">
                 New to LibraryOS?{' '}
-                <Link href="/auth/signup" className="text-cyan-400 font-bold hover:text-cyan-300 transition-colors">
+                <Link href="/auth/signup" className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors">
                   Create an account
                 </Link>
               </p>
+              <p className="text-xs text-slate-500 text-center">
+                Protected by enterprise-grade SSL encryption
+              </p>
             </div>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="flex items-center justify-center gap-6 mt-6">
+            {[
+              { icon: <Shield size={13} />, label: 'SSL Secured' },
+              { icon: <Zap size={13} />, label: '99.9% Uptime' },
+              { icon: <CheckCircle size={13} />, label: 'GDPR Compliant' },
+            ].map((badge) => (
+              <div key={badge.label} className="flex items-center gap-1.5 text-slate-500 text-xs">
+                <span className="text-indigo-400/60">{badge.icon}</span>
+                {badge.label}
+              </div>
+            ))}
           </div>
         </div>
       </section>

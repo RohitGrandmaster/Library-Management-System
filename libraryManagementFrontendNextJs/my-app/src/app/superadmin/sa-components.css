@@ -62,9 +62,17 @@
 
   /* ── Card ── */
   .sa-card {
-    background-color: var(--bg-card);
+    background: var(--bg-card);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sa-card:hover {
+    border-color: rgba(99,102,241,0.4);
+    box-shadow: 0 12px 40px rgba(99,102,241,0.2), inset 0 0 0 1px rgba(255,255,255,0.05);
   }
 
   /* ── KPI card ── */
@@ -107,16 +115,22 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 24px;
-    border-radius: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     color: #ffffff;
     border: none;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    background: linear-gradient(135deg, var(--primary), var(--purple));
-    box-shadow: 0 4px 20px color-mix(in srgb, var(--primary) 35%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #22d3ee, #6366f1);
+    background-size: 200% auto;
+    animation: shimmerBtn 3s linear infinite;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+  }
+  @keyframes shimmerBtn {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
   }
   .sa-btn-primary:hover:not(:disabled) { opacity: 0.92; }
   .sa-btn-primary:active:not(:disabled) { transform: scale(0.98); }

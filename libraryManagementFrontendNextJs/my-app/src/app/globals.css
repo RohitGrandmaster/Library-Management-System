@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import "tailwindcss";
 
+/* ── Hide Scrollbar Globally ── */
+body, html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 @theme {
   --color-surface: #12121d;
   --color-surface-dim: #12121d;

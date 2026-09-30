@@ -57,7 +57,7 @@ export function SuperadminRoute({ children }: { children: React.ReactNode }) {
         <Sidebar open={sidebarOpen} />
         <div className="sa-shell-content">
           <Header onMenuClick={() => setSidebarOpen(o => !o)} />
-          <main className="sa-shell-main">
+          <main className="sa-shell-main sa-page-animate">
             {children}
           </main>
         </div>
