@@ -36,13 +36,13 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </button>
         
         <div className="sa-header-search group relative">
-          <Search size={16} className="text-gray-400 group-focus-within:text-indigo-400 transition-colors shrink-0" />
+          <Search size={16} className="text-[var(--text-secondary)] group-focus-within:text-[var(--primary)] transition-colors shrink-0" />
           <input 
             placeholder="Global search (⌘K)..." 
-            className="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-gray-500"
+            className="bg-transparent border-none outline-none text-sm text-[var(--text-primary)] w-full placeholder:text-[var(--text-secondary)]"
           />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white/5 border border-white/10 rounded px-1.5 py-0.5 pointer-events-none">
-            <span className="text-[10px] font-medium text-gray-400">⌘K</span>
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-[var(--card-bg)] border border-[var(--border)] rounded px-1.5 py-0.5 pointer-events-none">
+            <span className="text-[10px] font-medium text-[var(--text-secondary)]">⌘K</span>
           </div>
         </div>
 
@@ -65,34 +65,34 @@ export default function Header({ onMenuClick }: HeaderProps) {
         {/* Quick Add Dropdown */}
         <div className="relative hidden md:block" ref={quickAddRef}>
           <button 
-            className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-lg transition-colors shadow-[0_0_10px_rgba(79,70,229,0.3)]"
+            className="sa-btn-primary flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-lg"
             onClick={() => setQuickAddOpen(!quickAddOpen)}
           >
             <Plus size={14} /> Create <ChevronDown size={14} />
           </button>
           
           {quickAddOpen && (
-            <div className="absolute top-full right-0 mt-3 w-48 bg-[#151520] border border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-                <Building size={16} className="text-emerald-400" /> Onboard Tenant
+            <div className="absolute top-full right-0 mt-3 w-48 bg-[var(--card-bg)] border border-[var(--border)] rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)] transition-colors">
+                <Building size={16} className="text-[var(--success)]" /> Onboard Tenant
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-                <UserPlus size={16} className="text-sky-400" /> Provision Admin
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)] transition-colors">
+                <UserPlus size={16} className="text-[var(--info)]" /> Provision Admin
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-                <Ticket size={16} className="text-amber-400" /> Issue Promo Code
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)] transition-colors">
+                <Ticket size={16} className="text-[var(--warning)]" /> Issue Promo Code
               </button>
             </div>
           )}
         </div>
 
         {/* System Health Mini-Indicator */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border-r border-white/10 mr-1">
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border-r border-[var(--border)] mr-1">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--success)] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--success)]"></span>
           </span>
-          <span className="text-[11px] font-bold text-white/50 tracking-wider">API: 12ms</span>
+          <span className="text-[11px] font-bold text-[var(--text-secondary)] tracking-wider">API: 12ms</span>
         </div>
 
         <ThemeToggle />
@@ -115,7 +115,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   <h4 className="sa-notif-title">System Alerts</h4>
                   <p className="sa-notif-subtitle">2 unread notifications</p>
                 </div>
-                <button className="sa-btn-ghost sa-btn-ghost--sm text-indigo-400">Mark read</button>
+                <button className="sa-btn-ghost sa-btn-ghost--sm">Mark read</button>
               </div>
               <div className="sa-notif-list">
                 <div className="sa-notif-item sa-notif-item--unread">

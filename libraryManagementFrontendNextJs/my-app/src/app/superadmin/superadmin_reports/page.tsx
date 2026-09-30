@@ -33,7 +33,7 @@ const PLAN_DISTRIBUTION = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1e1e2d] border border-white/10 p-3 rounded-lg shadow-xl">
+      <div className="bg-[var(--card-bg)] border border-[var(--border)] p-3 rounded-lg shadow-xl">
         <p className="text-white font-bold mb-2">{label}</p>
         {payload.map((entry: any, index: number) => (
           <p key={index} className="text-sm flex items-center gap-2" style={{ color: entry.color }}>

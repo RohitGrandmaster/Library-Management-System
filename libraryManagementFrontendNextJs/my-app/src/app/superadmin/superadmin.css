@@ -333,7 +333,7 @@
   }
   .sa-shell-content {
     flex: 1;
-    margin-left: 280px;
+    margin-left: 260px;
     min-height: 100vh;
   }
   .sa-shell-main {
@@ -1235,8 +1235,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
-    width: calc(100% - 280px);
-    left: 280px;
+    width: calc(100% - 260px);
+    left: 260px;
     box-shadow: 0 4px 30px rgba(0,0,0,0.3);
   }
   .sa-header-search {

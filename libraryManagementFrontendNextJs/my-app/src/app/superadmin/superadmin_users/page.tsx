@@ -304,7 +304,7 @@ export default function UsersAndAccessPage() {
               <p className="text-sm text-white/50">Define which roles have access to specific SaaS modules.</p>
             </div>
             
-            <div className="border border-white/5 rounded-xl overflow-hidden bg-[#151520]">
+            <div className="border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--card-bg)]">
               <table className="w-full text-left text-sm">
                 <thead className="bg-white/5 text-white/70">
                   <tr>
