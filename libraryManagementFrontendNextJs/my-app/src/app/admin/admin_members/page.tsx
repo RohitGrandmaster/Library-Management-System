@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { 
   Users, UserPlus, Tags, Building, BookOpen, RotateCcw, 
   CheckCircle, AlertTriangle, PauseCircle, Ban, UploadCloud, 
-  DownloadCloud, FileText, ArrowLeft, Edit, Shield, Calendar, 
+  DownloadCloud, FileText, ArrowLeft, Edit,
   MapPin, Phone, Mail, Activity, CreditCard, Banknote, HelpCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -530,7 +530,7 @@ export default function AdminMembersPage() {
               {/* DETAILS TABS CONTENT */}
               <div className="admin-card" style={{ padding: '24px' }}>
                 <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {detailNav.find(n => n.id === detailTab)?.icon && React.createElement(detailNav.find(n => n.id === detailTab)?.icon as any, { size: 20, color: 'var(--primary)' })}
+                  {detailNav.find(n => n.id === detailTab)?.icon && React.createElement(detailNav.find(n => n.id === detailTab)?.icon as React.ElementType, { size: 20, color: 'var(--primary)' })}
                   {detailNav.find(n => n.id === detailTab)?.label}
                 </h3>
 
