@@ -14,14 +14,14 @@
     /* ── Core Brand ── */
     --primary:          #6366F1;
     --primary-hover:    #8b5cf6;
-    --primary-subtle:   rgba(99,102,241,0.15);
+    --primary-subtle:   rgba(99,102,241,0.2);
 
     /* ── Backgrounds ── */
-    --bg-page:          #030712; /* Deep dark bg */
-    --bg-card:          rgba(15,15,30,0.6); /* Glass card */
-    --bg-sidebar:       rgba(5,5,18,0.6); /* Glass sidebar */
-    --bg-header:        rgba(3,7,18,0.8);
-    --bg-input:         rgba(10,10,28,0.8);
+    --bg-page:          #020617; /* Slate 950 */
+    --bg-card:          rgba(15, 23, 42, 0.6); /* Slate 900 glass */
+    --bg-sidebar:       rgba(2, 6, 23, 0.75); /* Slate 950 glass */
+    --bg-header:        rgba(2, 6, 23, 0.85);
+    --bg-input:         rgba(15, 23, 42, 0.5);
 
     /* ── Borders ── */
     --border:           rgba(99,102,241,0.2);
@@ -126,46 +126,61 @@
   /* ═══════════════ BUTTONS ═══════════════ */
 
   .admin-btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
     color: #ffffff;
     border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
+    border-radius: 10px;
+    padding: 10px 22px;
     font-size: 14px;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .admin-btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.25s;
   }
   .admin-btn-primary:hover { 
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.2); 
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255,255,255,0.3); 
   }
+  .admin-btn-primary:hover::after { opacity: 1; }
 
   .admin-btn-ghost {
-    background: transparent;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border);
     color: var(--text-primary);
-    border-radius: 8px;
-    padding: 10px 20px;
+    border-radius: 10px;
+    padding: 10px 22px;
     font-size: 14px;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
-    transition: border-color 0.15s, background-color 0.15s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     text-decoration: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
   }
   .admin-btn-ghost:hover {
     border-color: var(--primary);
     background-color: var(--primary-subtle);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .admin-btn-danger {
@@ -225,21 +240,23 @@
   /* ═══════════════ FORM ELEMENTS ═══════════════ */
 
   .admin-input {
-    background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
+    border-radius: 10px;
+    padding: 11px 16px;
     font-size: 14px;
     color: var(--text-primary);
     width: 100%;
     outline: none;
     font-family: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: all 0.25s;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
   }
   .admin-input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+    background-color: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), inset 0 1px 2px rgba(0,0,0,0.2);
   }
   .admin-input::placeholder { color: var(--text-disabled); }
   .admin-input-error {
@@ -251,18 +268,24 @@
   }
 
   .admin-select {
-    background-color: var(--bg-input);
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 10px;
+    padding: 10px 16px;
     font-size: 13px;
     color: var(--text-primary);
     outline: none;
     cursor: pointer;
     font-family: inherit;
-    transition: border-color 0.15s;
+    transition: all 0.25s;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
   }
-  .admin-select:focus { border-color: var(--border-focus); }
+  .admin-select:focus { 
+    border-color: var(--primary);
+    background-color: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  }
 
   .admin-textarea {
     background-color: var(--bg-input);
@@ -305,12 +328,16 @@
   /* ═══════════════ CARDS & PANELS ═══════════════ */
 
   .admin-card {
-    background: rgba(20, 20, 35, 0.6);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .admin-card:hover {
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .admin-card-header {
@@ -330,13 +357,16 @@
   /* ═══════════════ BADGES ═══════════════ */
 
   .admin-badge {
-    border-radius: 999px;
-    padding: 2px 10px;
+    border-radius: 9999px;
+    padding: 4px 12px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
   .admin-badge-success { color: var(--success); background-color: var(--success-bg); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
   .admin-badge-warning { color: var(--warning); background-color: var(--warning-bg); border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent); }
@@ -394,13 +424,23 @@
   /* ═══════════════ KPI / STAT CARDS ═══════════════ */
 
   .admin-kpi-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .admin-kpi-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(99, 102, 241, 0.1);
   }
 
   .admin-kpi-icon {
@@ -541,26 +581,32 @@
 
   .admin-tab-bar {
     display: flex;
-    gap: 4px;
-    padding: 4px;
-    border-radius: 8px;
-    background-color: var(--bg-input);
+    gap: 6px;
+    padding: 6px;
+    border-radius: 12px;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
   }
 
   .admin-tab {
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
     background: transparent;
     color: var(--text-secondary);
     border: none;
     cursor: pointer;
     font-family: inherit;
-    transition: background-color 0.15s, color 0.15s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .admin-tab:hover  { color: var(--text-primary); }
-  .admin-tab.active { background-color: var(--primary); color: #ffffff; }
+  .admin-tab:hover  { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .admin-tab.active { 
+    background-color: var(--primary); 
+    color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
 
 
   /* ═══════════════ FILTER BAR ═══════════════ */

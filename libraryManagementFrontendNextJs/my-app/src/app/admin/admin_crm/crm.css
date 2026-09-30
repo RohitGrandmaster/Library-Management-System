@@ -11,19 +11,19 @@
   .crm-theme {
     /* Primary */
     --primary:          #6366F1;
-    --primary-hover:    #4F46E5;
-    --primary-subtle:   rgba(99, 102, 241, 0.08);
+    --primary-hover:    #8b5cf6;
+    --primary-subtle:   rgba(99, 102, 241, 0.2);
 
     /* Backgrounds */
-    --bg-page:          #0F0F1A;
-    --bg-card:          #1A1A2E;
-    --bg-sidebar:       #12121F;
-    --bg-header:        #16162A;
-    --bg-input:         #1E1E32;
-    --bg-drawer:        #1A1A2E;
+    --bg-page:          #020617; /* Slate 950 */
+    --bg-card:          rgba(15, 23, 42, 0.6); /* Slate 900 glass */
+    --bg-sidebar:       rgba(2, 6, 23, 0.75); /* Slate 950 glass */
+    --bg-header:        rgba(2, 6, 23, 0.85);
+    --bg-input:         rgba(15, 23, 42, 0.5);
+    --bg-drawer:        #0f172a;
 
     /* Borders */
-    --border:           #2A2A3E;
+    --border:           rgba(99,102,241,0.2);
     --border-focus:     #6366F1;
 
     /* Text */
