@@ -43,7 +43,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
 
       <aside
         className={`admin-sidebar${mobileOpen ? ' admin-sidebar-mobile-open' : ''}`}
-        style={{ width: collapsed ? 76 : 280 }}
+        style={{ width: collapsed ? 76 : 260 }}
       >
         <div className="admin-sidebar-logo">
           <Button
@@ -57,8 +57,8 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
           </Button>
           {(!collapsed || mobileOpen) && (
             <div className="ml-2 flex items-center gap-2">
-              <span style={{ fontSize: '20px' }}>📚</span>
-              <span className="admin-sidebar-logo-text" style={{ fontSize: '18px' }}>Smart Library</span>
+              <span style={{ fontSize: '18px' }}>📚</span>
+              <span className="admin-sidebar-logo-text" style={{ fontSize: '16px' }}>Smart Library</span>
             </div>
           )}
         </div>
@@ -94,7 +94,7 @@ export default function AdminSidebar({ collapsed, onToggle, mobileOpen, onMobile
                 onClick={mobileOpen ? onMobileClose : undefined}
                 style={{ '--hover-color': itemColor } as React.CSSProperties}
               >
-                <Icon size={18} className="shrink-0 admin-nav-icon" style={{ color: isActive ? 'var(--primary)' : itemColor }} />
+                <Icon size={16} className="shrink-0 admin-nav-icon" style={{ color: isActive ? 'var(--primary)' : itemColor }} />
                 {(!collapsed || mobileOpen) && (
                   <span className="admin-nav-label">{item.label}</span>
                 )}
