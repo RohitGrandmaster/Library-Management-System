@@ -8,15 +8,15 @@ const v = (name: string): string =>
     : '';
 
 export const gridTheme = themeQuartz.withParams({
-  backgroundColor:       v('--ag-bg'),
-  foregroundColor:       v('--ag-fg'),
-  headerBackgroundColor: v('--ag-header-bg'),
-  headerTextColor:       v('--ag-header-text'),
-  borderColor:           v('--ag-border'),
+  backgroundColor:       'var(--bg-card)',
+  foregroundColor:       'var(--text-primary)',
+  headerBackgroundColor: 'var(--bg-glass)',
+  headerTextColor:       'var(--text-secondary)',
+  borderColor:           'var(--border)',
   rowBorder:             true,
-  oddRowBackgroundColor: v('--ag-odd-row-bg'),
-  rowHoverColor:         v('--ag-row-hover'),
-  fontFamily:            v('--ag-font'),
+  oddRowBackgroundColor: 'transparent',
+  rowHoverColor:         'var(--bg-glass-hover)',
+  fontFamily:            "'Inter', sans-serif",
   fontSize:              13,
   wrapperBorder:         false,
   wrapperBorderRadius:   0,

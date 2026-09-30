@@ -34,14 +34,17 @@ export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps)
         <div className="flex items-center gap-2">
           <Building2 size={15} className="text-muted-foreground hidden sm:block" />
           <Select value={selectedBranch} onValueChange={setSelectedBranch}>
-            <SelectTrigger className="w-[160px] h-8 text-sm font-medium border-none shadow-none bg-transparent hover:bg-muted/50 focus:ring-0">
+            <SelectTrigger 
+              className="w-[180px] h-9 text-sm font-medium border-none shadow-none focus:ring-0"
+              style={{ background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)' }}
+            >
               <SelectValue placeholder="Select Branch" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Main Branch">Main Branch</SelectItem>
-              <SelectItem value="Branch 2">Branch 2</SelectItem>
-              <SelectItem value="Kothrud Center">Kothrud Center</SelectItem>
-              <SelectItem value="Nashik Branch">Nashik Branch</SelectItem>
+            <SelectContent style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', zIndex: 9999 }}>
+              <SelectItem value="Main Branch" style={{ cursor: 'pointer' }}>Main Branch</SelectItem>
+              <SelectItem value="Branch 2" style={{ cursor: 'pointer' }}>Branch 2</SelectItem>
+              <SelectItem value="Kothrud Center" style={{ cursor: 'pointer' }}>Kothrud Center</SelectItem>
+              <SelectItem value="Nashik Branch" style={{ cursor: 'pointer' }}>Nashik Branch</SelectItem>
             </SelectContent>
           </Select>
         </div>

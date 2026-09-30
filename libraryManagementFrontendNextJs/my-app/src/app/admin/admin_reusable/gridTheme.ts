@@ -3,14 +3,14 @@
 import { themeQuartz } from 'ag-grid-community';
 
 export const gridTheme = themeQuartz.withParams({
-  backgroundColor:       '#0F0F1A',
-  foregroundColor:       '#F0F0FF',
-  headerBackgroundColor: '#16162A',
-  headerTextColor:       '#94A3B8',
-  borderColor:           '#2A2A3E',
+  backgroundColor:       'var(--bg-card)',
+  foregroundColor:       'var(--text-primary)',
+  headerBackgroundColor: 'var(--bg-glass)',
+  headerTextColor:       'var(--text-secondary)',
+  borderColor:           'var(--border)',
   rowBorder:             true,
-  oddRowBackgroundColor: '#12121F',
-  rowHoverColor:         'rgba(99, 102, 241, 0.08)',
+  oddRowBackgroundColor: 'transparent',
+  rowHoverColor:         'var(--bg-glass-hover)',
   fontFamily:            "'Inter', sans-serif",
   fontSize:              13,
   wrapperBorder:         false,

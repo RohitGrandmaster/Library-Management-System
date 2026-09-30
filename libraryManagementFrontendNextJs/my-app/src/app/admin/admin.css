@@ -1875,3 +1875,21 @@
 .ad-page-animate {
   animation: ad-fade-slide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ━━━━━━━━━━ AG GRID GLOBAL CENTERING ━━━━━━━━━━ */
+/* User requested "list items hamesa center me view hogaa alignment sahi kijiye" */
+.ag-theme-quartz .ag-cell,
+.ag-theme-quartz .ag-header-cell {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.ag-theme-quartz .ag-header-cell-label {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100%;
+}
