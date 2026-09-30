@@ -130,18 +130,7 @@ export default function SeatManagementPage() {
           <button className="ss-btn-icon" title="View Maintenance Log" onClick={() => toast.success(`Opening log for ${data.seatNo}`)}>
             <Wrench size={13} />
           </button>
-          <button className="ss-btn-icon" title="Edit" onClick={() => openEdit(data)}>
-            <Edit size={13} />
-          </button>
-          {data.status !== 'Broken' ? (
-            <button className="ss-btn-icon" title="Mark Broken" onClick={() => setConfirmBroken(data)}>
-              <AlertTriangle size={13} />
-            </button>
-          ) : (
-            <button className="ss-btn-icon" title="Mark Fixed" onClick={() => handleMarkFixed(data)}>
-              <CheckCircle size={13} />
-            </button>
-          )}
+          {/* Admin is View-Only: Edit, Mark Broken/Fixed buttons removed */}
         </div>
       ),
     },
@@ -157,9 +146,7 @@ export default function SeatManagementPage() {
             <h1 className="ss-page-title">Seats</h1>
             <p className="ss-page-subtitle">Manage all library seats</p>
           </div>
-          <button className="ss-btn-primary ss-btn-start" onClick={openAdd}>
-            <Plus size={16} />Add Seat
-          </button>
+          {/* Admin is View-Only: Add Seat button removed */}
         </div>
 
         <div className="ss-filter-bar">
@@ -182,8 +169,7 @@ export default function SeatManagementPage() {
           <div className="ss-empty-state">
             <p className="ss-empty-state__icon">🪑</p>
             <p className="ss-empty-state__title">No seats found.</p>
-            <p className="ss-empty-state__sub">Add your first seat to get started.</p>
-            <button className="ss-btn-primary" onClick={openAdd}><Plus size={15} />Add Seat</button>
+            <p className="ss-empty-state__sub">No seats match the current filter.</p>
           </div>
         ) : (
           <div className="ss-table-wrapper ss-grid-h-400">

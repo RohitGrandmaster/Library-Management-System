@@ -98,9 +98,7 @@ export default function ShiftManagementPage() {
             <button className="ss-btn-ghost ss-btn-start" onClick={() => toast.success('Printing...')}>
               <Printer size={14} /> Print
             </button>
-            <button className="ss-btn-primary ss-btn-start" onClick={openAdd}>
-              <Plus size={16} />Add Shift
-            </button>
+            {/* Admin is View-Only: Add Shift button removed */}
           </div>
         </div>
 
@@ -108,8 +106,7 @@ export default function ShiftManagementPage() {
           <div className="ss-empty-state">
             <p className="ss-empty-state__icon">🕐</p>
             <p className="ss-empty-state__title">No shifts defined.</p>
-            <p className="ss-empty-state__sub">Use Setup Wizard or add manually.</p>
-            <button className="ss-btn-primary" onClick={openAdd}><Plus size={15} />Add Shift</button>
+            <p className="ss-empty-state__sub">No shifts have been configured yet.</p>
           </div>
         ) : (
           <div className="ss-shift-cards-grid">
@@ -143,20 +140,7 @@ export default function ShiftManagementPage() {
                     </div>
                   </div>
 
-                  <div className="ss-shift-card__footer">
-                    <button className="ss-btn-ghost" onClick={() => openEdit(shift)}>
-                      <Edit size={14} />Edit
-                    </button>
-                    {shift.active ? (
-                      <button className="ss-btn-danger" onClick={() => setDeactivateTarget(shift)}>
-                        <PowerOff size={14} />Deactivate
-                      </button>
-                    ) : (
-                      <button className="ss-btn-primary" onClick={() => handleActivate(shift)}>
-                        <Zap size={14} />Activate
-                      </button>
-                    )}
-                  </div>
+                  {/* Admin is View-Only: Edit/Activate/Deactivate buttons removed */}
 
                 </div>
               </div>

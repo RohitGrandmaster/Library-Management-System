@@ -131,13 +131,7 @@ export default function Renewals() {
       sortable: false,
       cellRenderer: (params: any) => (
         <div className="flex items-center gap-2 h-full">
-          <button
-            className="fin-badge fin-badge--info cursor-pointer hover:border-[var(--mgr-primary)]"
-            onClick={() => openRenew(params.data)}
-            title="Renew Now"
-          >
-            <RefreshCw size={12} className="mr-1" /> Renew
-          </button>
+          {/* Admin is View-Only: Renew button removed */}
           <button
             className="fin-badge fin-badge--neutral cursor-pointer hover:border-[var(--mgr-primary)]"
             onClick={() => handleRemind(params.data.studentName)}

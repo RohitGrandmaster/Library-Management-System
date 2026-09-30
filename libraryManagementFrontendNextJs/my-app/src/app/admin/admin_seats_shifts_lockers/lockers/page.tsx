@@ -119,21 +119,10 @@ export default function LockersPage() {
       headerName: 'ACTIONS', flex: 1.2, sortable: false,
       cellRenderer: ({ data }: { data: Locker }) => (
         <div className="ss-cell-actions">
-          {data.status === 'Free' && (
-            <button className="ss-btn-icon" title="Assign Student" onClick={() => setShowAssign(data)}>
-              <UserPlus size={13} />
-            </button>
-          )}
-          {data.status === 'Occupied' && (
-            <button className="ss-btn-icon" title="Free Locker" onClick={() => setFreeTarget(data)}>
-              <Unlock size={13} />
-            </button>
-          )}
-          {data.status !== 'Maintenance' && (
-            <button className="ss-btn-icon" title="Mark Maintenance" onClick={() => handleMarkMaintenance(data)}>
-              <Wrench size={13} />
-            </button>
-          )}
+          {/* Admin is View-Only: Assign, Free, Mark Maintenance buttons removed */}
+          <span className="ss-text-secondary" style={{ fontSize: '12px' }}>
+            {data.status}
+          </span>
         </div>
       ),
     },
@@ -149,9 +138,7 @@ export default function LockersPage() {
             <h1 className="ss-page-title">Lockers</h1>
             <p className="ss-page-subtitle">Manage locker assignments and availability</p>
           </div>
-          <button className="ss-btn-primary ss-btn-start" onClick={() => { setNewLockerId(''); setAddError(''); setShowAddModal(true); }}>
-            <Plus size={16} />Add Locker
-          </button>
+          {/* Admin is View-Only: Add Locker button removed */}
         </div>
 
         <div className="ss-filter-bar">
@@ -170,9 +157,7 @@ export default function LockersPage() {
           <div className="ss-empty-state">
             <p className="ss-empty-state__icon">🔒</p>
             <p className="ss-empty-state__title">No lockers added yet.</p>
-            <button className="ss-btn-primary" onClick={() => { setNewLockerId(''); setAddError(''); setShowAddModal(true); }}>
-              <Plus size={15} />Add Locker
-            </button>
+            <p className="ss-empty-state__sub">No lockers match the current filter.</p>
           </div>
         ) : (
           <div className="ss-table-wrapper ss-grid-h-400">
