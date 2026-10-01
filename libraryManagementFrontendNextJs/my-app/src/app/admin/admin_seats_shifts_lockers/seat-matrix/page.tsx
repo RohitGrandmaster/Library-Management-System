@@ -73,7 +73,7 @@ export default function SeatMatrixPage() {
     fetchApi('/seats_shifts_lockers/seat-matrix')
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.map((s: any) => ({
+          const mapped: SeatData[] = data.map((s: any) => ({
             uuid: s.id,
             id: s.seatNumber.replace('S-', ''),
             status: s.isActive ? 'free' : 'maintenance',
