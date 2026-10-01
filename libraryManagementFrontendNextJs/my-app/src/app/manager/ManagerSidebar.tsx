@@ -11,7 +11,7 @@ import {
   Ban, Receipt, DollarSign, CalendarCheck, ClipboardCheck,
   QrCode, Calendar, TrendingUp, BarChart, Wallet, BookOpen,
   MessageSquare, Bell, BellRing, Smartphone, LifeBuoy,
-  LogOut, Menu, X, type LucideIcon,
+  LogOut, Menu, X, type LucideIcon, AlertCircle, Building,
 } from 'lucide-react';
 
 type NavItem = { group: string } | { href: string; icon: LucideIcon; label: string };
