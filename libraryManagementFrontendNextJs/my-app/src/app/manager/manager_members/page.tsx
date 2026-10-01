@@ -73,7 +73,7 @@ export default function MembersDashboardPage() {
     return filtered;
   };
 
-  const colDefs = useMemo(() => [
+  const colDefs: any[] = useMemo(() => [
     { field: 'id', headerName: 'Member ID', width: 130, cellClass: 'font-mono text-primary' },
     { field: 'name', headerName: 'Name', flex: 1, cellClass: 'text-white font-bold' },
     { field: 'phone', headerName: 'Phone', width: 140 },

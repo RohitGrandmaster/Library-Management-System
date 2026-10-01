@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { 
   AlertCircle, DollarSign, Wallet, FileText, CheckCircle, 
-  RotateCcw, Receipt, History, AlertTriangle, Send, Search, IndianRupee, HandCoins
+  RotateCcw, Receipt, History, AlertTriangle, Send, Search, IndianRupee, HandCoins, Clock
 } from 'lucide-react';
 import { AgGridReact } from 'ag-grid-react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -96,7 +96,7 @@ export default function FinesAndPaymentsPage() {
   };
 
   // AG Grid ColDefs
-  const pendingCols = useMemo(() => [
+  const pendingCols: any[] = useMemo(() => [
     { field: 'id', headerName: 'Fine ID', width: 120 },
     { field: 'member', headerName: 'Member', flex: 1 },
     { field: 'type', headerName: 'Type', flex: 1 },
@@ -105,7 +105,7 @@ export default function FinesAndPaymentsPage() {
     { field: 'status', headerName: 'Status', width: 150, cellRenderer: (p: any) => <span className="mgr-badge mgr-badge--warning">{p.value}</span> },
   ], []);
 
-  const historyCols = useMemo(() => [
+  const historyCols: any[] = useMemo(() => [
     { field: 'receipt', headerName: 'Receipt #', width: 130 },
     { field: 'member', headerName: 'Member', flex: 1 },
     { field: 'type', headerName: 'Fine Type', flex: 1 },

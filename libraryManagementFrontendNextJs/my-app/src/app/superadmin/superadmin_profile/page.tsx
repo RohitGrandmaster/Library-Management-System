@@ -53,7 +53,7 @@ export default function SuperAdminProfilePage() {
     handleSave();
   };
 
-  const colDefs = useMemo(() => [
+  const colDefs: any[] = useMemo(() => [
     { headerName: 'Date & Time', field: 'date', flex: 1.5, cellClass: 'text-white/90 font-medium' },
     { headerName: 'IP Address', field: 'ip', flex: 1, cellClass: 'text-secondary' },
     { headerName: 'Location', field: 'location', flex: 1.5, cellClass: 'text-white/80' },

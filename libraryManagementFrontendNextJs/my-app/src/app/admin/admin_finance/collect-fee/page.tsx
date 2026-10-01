@@ -34,9 +34,9 @@ function buildWhatsAppReceipt(params: {
   receiptNo: string; student: typeof MOCK_STUDENTS[0];
   amount: number; mode: Mode; txnId: string;
   lateFee: number; couponDiscount: number; total: number;
-  remark: string; date: string;
+  remark: string; date: string; monthsToRenew?: string;
 }): string {
-  const { receiptNo, student, amount, mode, txnId, lateFee, couponDiscount, total, remark, date } = params;
+  const { receiptNo, student, amount, mode, txnId, lateFee, couponDiscount, total, remark, date, monthsToRenew = '1' } = params;
   const W = 42;
   const line = '─'.repeat(W);
   const c = (t: string) => ' '.repeat(Math.max(0, Math.floor((W - t.length) / 2))) + t;
@@ -57,7 +57,7 @@ function buildWhatsAppReceipt(params: {
     '',
     line,
     r('Plan    :', student.plan),
-    r('Cycle   :', params.monthsToRenew + (params.monthsToRenew === '1' ? ' Month' : ' Months')),
+    r('Cycle   :', monthsToRenew + (monthsToRenew === '1' ? ' Month' : ' Months')),
     r('Shift   :', student.shift),
     r('Seat    :', student.seat),
     line,

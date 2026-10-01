@@ -29,12 +29,12 @@ export interface Enquiry {
   shift: string;
   status: EnquiryStatus;
   addedDate: string;
-  source: EnquirySource | string;
+  source?: EnquirySource | string;
   handledBy: string;
-  enquiryDate: string;
-  preferredBranch: string;
+  enquiryDate?: string;
+  preferredBranch?: string;
   avatar: string;
-  followUps: FollowUp[];
+  followUps?: FollowUp[];
   isOverdue?: boolean;
   isToday?: boolean;
   isUpcoming?: boolean;

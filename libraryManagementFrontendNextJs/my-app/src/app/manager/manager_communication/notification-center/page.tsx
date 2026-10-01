@@ -64,7 +64,7 @@ export default function NotificationCenterPage() {
     setNotifForm({ recipient: '', type: 'Manual member notification', channel: 'Email', message: '' });
   };
 
-  const historyColDefs = useMemo(() => [
+  const historyColDefs: any[] = useMemo(() => [
     { field: 'recipient', headerName: 'Recipient', flex: 2, cellClass: 'text-white font-medium' },
     { field: 'type', headerName: 'Message Type', flex: 2, cellClass: 'text-[var(--mgr-text-secondary)]' },
     { field: 'channel', headerName: 'Channel', flex: 1,
