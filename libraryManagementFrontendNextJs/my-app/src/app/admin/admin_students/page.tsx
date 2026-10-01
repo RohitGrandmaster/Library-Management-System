@@ -257,7 +257,7 @@ export default function AdminStudentsPage() {
           defaultColDef={{ sortable: true, filter: true, resizable: true }}
           headerHeight={44}
           rowHeight={58}
-          onRowClicked={(e) => setSelectedStudent(e.data)}
+          onRowClicked={(e) => setSelectedStudent(e.data || null)}
         />
       </div>
 
