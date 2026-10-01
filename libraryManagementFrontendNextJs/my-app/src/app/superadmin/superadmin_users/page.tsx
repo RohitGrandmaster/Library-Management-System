@@ -65,7 +65,7 @@ export default function UsersAndAccessPage() {
   // Form State
   const [formData, setFormData] = useState({ name: '', username: '', email: '', role: 'Manager', branch: 'Global', twoFactor: false });
 
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast('', 2500)); };
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   const handleOpenAdd = () => {
     setEditUser(null);
@@ -118,7 +118,7 @@ export default function UsersAndAccessPage() {
     { name: 'User Sessions', icon: Activity },
   ];
 
-  const userCols = useMemo(() => [
+  const userCols: any[] = useMemo(() => [
     { 
       field: 'name', headerName: 'Name', flex: 1.2, cellClass: 'sa-cell-primary-bold',
       cellRenderer: (p: ICellRendererParams) => (
@@ -177,7 +177,7 @@ export default function UsersAndAccessPage() {
     }
   ], []);
 
-  const sessionCols = useMemo(() => [
+  const sessionCols: any[] = useMemo(() => [
     { field: 'user', headerName: 'User', flex: 1, cellClass: 'sa-cell-primary-bold' },
     { 
       field: 'device', headerName: 'Device & Browser', flex: 1.5, cellClass: 'sa-cell-muted',

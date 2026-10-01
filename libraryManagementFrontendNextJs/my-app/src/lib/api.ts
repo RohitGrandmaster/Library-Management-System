@@ -11,6 +11,7 @@
  */
 
 import { getAccessToken, refreshAccessToken, clearAuthState } from './auth';
+import { getMockData } from './mockData';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
@@ -45,8 +46,8 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
       return { success: true, mock: true, id: Date.now().toString(), message: 'Mock action successful' };
     }
 
-    // For GET operations, return an empty array as a fallback to prevent map() crashes
-    return [];
+    // For GET operations, return appropriate mock data
+    return getMockData(url);
   }
 
   // ── Handle 401 — Token expired → try refresh ─────────────────────────────

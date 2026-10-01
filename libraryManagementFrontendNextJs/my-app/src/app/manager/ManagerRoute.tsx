@@ -5,7 +5,11 @@ import { usePathname } from 'next/navigation';
 import ManagerSidebar from './ManagerSidebar';
 import ManagerHeader from './ManagerHeader';
 import './manager.css';
-
+import '@/app/manager/manager_communication/communication.css';
+import '@/app/manager/manager_crm/crm.css';
+import '@/app/manager/manager_engagement/engagement.css';
+import '@/app/manager/manager_finance/finance.css';
+import '@/app/manager/manager_seats_shifts_lockers/seat_shift.css';
 const MANAGER_ROUTES = [
   '/manager',
 ];

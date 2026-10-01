@@ -10,7 +10,7 @@ import {
   FileText, RotateCcw, CreditCard, Handshake, Shield, Clock,
   Ban, Receipt, DollarSign, CalendarCheck, ClipboardCheck,
   QrCode, Calendar, TrendingUp, BarChart, Wallet, BookOpen,
-  MessageSquare, Bell, BellRing, Smartphone,
+  MessageSquare, Bell, BellRing, Smartphone, LifeBuoy,
   LogOut, Menu, X, type LucideIcon,
 } from 'lucide-react';
 
@@ -21,8 +21,8 @@ const NAV: NavItem[] = [
   { href: '/manager/manager_reports',   icon: BarChart2,       label: 'Reports'   },
   { group: 'CRM' },
   { href: '/manager/manager_crm/enquiries',       icon: Phone,      label: 'Enquiries'        },
-  { group: 'Students' },
-  { href: '/manager/manager_students',            icon: Users,      label: 'All Students'     },
+  { group: 'Members' },
+  { href: '/manager/manager_members',            icon: Users,      label: 'Member Directory'     },
   { href: '/manager/manager_students/new',        icon: UserPlus,   label: 'New Admission'    },
   { href: '/manager/manager_students/group',      icon: Users2,     label: 'Group Admission'  },
   { href: '/manager/manager_students/alumni',     icon: UserCheck,  label: 'Alumni'           },
@@ -47,6 +47,7 @@ const NAV: NavItem[] = [
   { href: '/manager/manager_finance/trust-score',       icon: Shield,      label: 'Trust Scores'      },
   { href: '/manager/manager_finance/security-deposits', icon: Wallet,      label: 'Security Deposits' },
   { href: '/manager/manager_finance/late-fees',         icon: Clock,       label: 'Late Fees'         },
+  { href: '/manager/manager_finance/fines-and-payments', icon: AlertCircle, label: 'Fines & Payments' },
   { href: '/manager/manager_finance/auto-suspend',      icon: Ban,         label: 'Auto-Suspend'      },
   { href: '/manager/manager_finance/invoice',           icon: Receipt,     label: 'Invoice'           },
   { href: '/manager/manager_finance/receipt',           icon: BookOpen,    label: 'Receipt'           },
@@ -69,6 +70,10 @@ const NAV: NavItem[] = [
   { href: '/manager/manager_communication/notification-center', icon: BellRing,      label: 'Notification Center' },
   { href: '/manager/manager_communication/whatsapp-logs',       icon: Smartphone,    label: 'WhatsApp Logs'       },
   { href: '/manager/manager_communication/whatsapp-templates',  icon: Smartphone,    label: 'WhatsApp Templates'  },
+  { group: 'Help & Support' },
+  { href: '/manager/manager_help_support',                      icon: LifeBuoy,      label: 'Help & Support'      },
+  { group: 'Settings' },
+  { href: '/manager/manager_branch_info',                       icon: Building,      label: 'Branch Info'         },
 ];
 
 // All nav hrefs for specificity check

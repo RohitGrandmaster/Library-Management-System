@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import type { ICellRendererParams } from 'ag-grid-community';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -27,23 +27,23 @@ export default function SubscriptionsPage() {
   // Modal State
   const [showModal, setShowModal] = useState(false);
   const [editPlan, setEditPlan] = useState<any>(null);
-  const [formData, setFormData] = useState({ name: '', price: 0, branches: '', members: '', storage: '' });
+  const [formData, setFormData] = useState({ name: '', price: 0, branches: 0, members: 0, storage: '' });
 
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
+  const showToast = useCallback((msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); }, []);
 
-  const handleOpenAdd = () => {
+  const handleOpenAdd = useCallback(() => {
     setEditPlan(null);
-    setFormData({ name: '', price: 0, branches: '', members: '', storage: '' });
+    setFormData({ name: '', price: 0, branches: 0, members: 0, storage: '' });
     setShowModal(true);
-  };
+  }, []);
 
-  const handleOpenEdit = (plan: any) => {
+  const handleOpenEdit = useCallback((plan: any) => {
     setEditPlan(plan);
     setFormData({ ...plan });
     setShowModal(true);
-  };
+  }, []);
 
-  const handleSavePlan = () => {
+  const handleSavePlan = useCallback(() => {
     if (editPlan) {
       setPlans(p => p.map(x => x.id === editPlan.id ? { ...x, ...formData } : x));
       showToast(`Plan ${formData.name} updated!`);
@@ -52,9 +52,9 @@ export default function SubscriptionsPage() {
       showToast(`New plan ${formData.name} created!`);
     }
     setShowModal(false);
-  };
+  }, [editPlan, formData, showToast]);
 
-  const toggleStatus = (id: string) => {
+  const toggleStatus = useCallback((id: string) => {
     setSubs(p => p.map(s => {
       if (s.id === id) {
         const nextStatus = s.status === 'Paid' ? 'Due Soon' : s.status === 'Due Soon' ? 'Overdue' : 'Paid';
@@ -63,12 +63,12 @@ export default function SubscriptionsPage() {
       return s;
     }));
     showToast('Subscription status updated');
-  };
+  }, [showToast]);
 
-  const tabs = [
+  const tabs = useMemo(() => [
     { name: 'Active Subscribers', icon: Users },
     { name: 'SaaS Pricing Plans', icon: Package },
-  ];
+  ], []);
 
   const colDefs = useMemo<any[]>(() => [
     { headerName: 'Tenant', field: 'tenant', flex: 2, cellClass: () => 'sa-cell-primary-bold' },
@@ -76,7 +76,7 @@ export default function SubscriptionsPage() {
     { headerName: 'Cycle & MRR', field: 'mrr', flex: 1,
       cellRenderer: (p: ICellRendererParams) => (
         <div>
-          <p className="text-sm font-medium text-primary">₹{p.data?.mrr.toLocaleString()}</p>
+          <p className="text-sm font-medium text-primary">₹{p.data?.mrr?.toLocaleString()}</p>
           <p className="text-xs text-secondary">{p.data?.cycle}</p>
         </div>
       ),
@@ -90,11 +90,14 @@ export default function SubscriptionsPage() {
       ),
     },
     { headerName: 'Actions', flex: 1,
-      cellRenderer: (p: ICellRendererParams) => (
-        <button onClick={() => toggleStatus(p.data.id)} className="text-indigo-400 text-xs font-bold hover:text-indigo-300 border border-indigo-500/20 px-3 py-1.5 rounded bg-indigo-500/10">Cycle Status</button>
-      )
+      cellRenderer: (p: ICellRendererParams) => {
+        if (!p.data) return null;
+        return (
+          <button type="button" onClick={() => toggleStatus(p.data.id)} className="text-indigo-400 text-xs font-bold hover:text-indigo-300 border border-indigo-500/20 px-3 py-1.5 rounded bg-indigo-500/10">Cycle Status</button>
+        );
+      }
     },
-  ], []);
+  ], [toggleStatus]);
 
   return (
     <div className="sa-page-animate relative">
@@ -190,11 +193,11 @@ export default function SubscriptionsPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-white/70 block mb-1">Max Branches</label>
-                  <input type="text" className="sa-input" value={formData.branches} onChange={e => setFormData(p => ({...p, branches: e.target.value}))} />
+                  <input type="number" className="sa-input" value={formData.branches} onChange={e => setFormData(p => ({...p, branches: Number(e.target.value)}))} />
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-white/70 block mb-1">Max Members</label>
-                  <input type="text" className="sa-input" value={formData.members} onChange={e => setFormData(p => ({...p, members: e.target.value}))} />
+                  <input type="number" className="sa-input" value={formData.members} onChange={e => setFormData(p => ({...p, members: Number(e.target.value)}))} />
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-white/70 block mb-1">Storage</label>
