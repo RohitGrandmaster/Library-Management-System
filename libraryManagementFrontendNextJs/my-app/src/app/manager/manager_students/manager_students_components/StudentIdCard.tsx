@@ -79,7 +79,7 @@ export default function StudentIdCard({ data }: Props) {
           <div className="mgr-idcard-header-left">
             <div className="mgr-idcard-logo-icon">📚</div>
             <div>
-              <div className="mgr-idcard-logo-text">SMART LIBRARY 360</div>
+              <div className="mgr-idcard-logo-text">Library OS</div>
               <div className="mgr-idcard-branch-text">{data.branch ?? 'MAIN BRANCH'}</div>
             </div>
           </div>

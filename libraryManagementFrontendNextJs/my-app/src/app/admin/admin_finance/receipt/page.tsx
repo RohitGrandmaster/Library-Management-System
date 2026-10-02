@@ -44,7 +44,7 @@ export default function ReceiptsPage() {
     const c = (t: string) => ' '.repeat(Math.max(0, Math.floor((W - t.length) / 2))) + t;
     const row = (l: string, v: string) => l + ' '.repeat(Math.max(1, W - l.length - v.length)) + v;
     const msg = [
-      c('★ SMART LIBRARY 360 ★'),
+      c('★ Library OS ★'),
       c('Main Branch'),
       line,
       c('[ PAYMENT RECEIPT ]'),

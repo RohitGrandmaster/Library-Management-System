@@ -81,7 +81,7 @@ export default function SecurityCenterPage() {
 
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Security Center</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Security Center</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title flex items-center gap-3">
@@ -334,7 +334,7 @@ export default function SecurityCenterPage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-lg font-bold text-white mb-1">Global Active Sessions</h2>
-                <p className="text-sm text-white/50">Monitor real-time logins across the entire Nexus 360 platform.</p>
+                <p className="text-sm text-white/50">Monitor real-time logins across the entire Library OS platform.</p>
               </div>
               <button className="sa-btn-secondary text-rose-400 border-rose-500/20 hover:bg-rose-500/10">Terminate All Sessions</button>
             </div>

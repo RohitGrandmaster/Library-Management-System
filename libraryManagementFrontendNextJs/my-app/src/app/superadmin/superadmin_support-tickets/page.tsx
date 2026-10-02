@@ -13,7 +13,7 @@ const INITIAL_TICKETS = [
   { id: 'TKT-988', subject: 'Cannot generate student ID card',    tenant: 'Scholar Spaces',        priority: 'Medium', status: 'In-Progress', category: 'Bug',      assignee: 'Rahul Sharma', slaBreach: false, age: '1 day',   replies: 5, hasAttachment: true, desc: 'The ID card generator throws a blank PDF when clicking Print. Issue started after the last update on 8th Apr.' },
   { id: 'TKT-987', subject: 'Change email address of owner',      tenant: 'The Alexandria Modern', priority: 'Low',    status: 'Resolved',    category: 'Account',  assignee: 'Amit Verma',   slaBreach: false, age: '3 days',  replies: 3, hasAttachment: false, desc: 'Owner wants to update their registered email from old@alex.com to new@alex.com. Identity verified via phone OTP.' },
   { id: 'TKT-980', subject: 'Seats occupancy showing wrong count',tenant: 'Quiet Corner Lib',      priority: 'High',   status: 'Resolved',    category: 'Bug',      assignee: 'Rahul Sharma', slaBreach: false, age: '5 days',  replies: 7, hasAttachment: true, desc: 'Dashboard shows 42/40 seats occupied which is impossible. Likely a sync issue after manual seat deletion.' },
-  { id: 'TKT-975', subject: 'Need help setting up biometric',     tenant: 'StudyNest Patna',       priority: 'Medium', status: 'Open',        category: 'Support',  assignee: 'Unassigned',   slaBreach: false, age: '2 hours', replies: 1, hasAttachment: false, desc: 'We bought the eSSL biometric device. Need assistance integrating it with Nexus 360.' },
+  { id: 'TKT-975', subject: 'Need help setting up biometric',     tenant: 'StudyNest Patna',       priority: 'Medium', status: 'Open',        category: 'Support',  assignee: 'Unassigned',   slaBreach: false, age: '2 hours', replies: 1, hasAttachment: false, desc: 'We bought the eSSL biometric device. Need assistance integrating it with Library OS.' },
 ];
 
 type Ticket = typeof INITIAL_TICKETS[0];
@@ -292,7 +292,7 @@ export default function SupportTicketsPage() {
 
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Support Helpdesk</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Support Helpdesk</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">SaaS Support Helpdesk</h1>

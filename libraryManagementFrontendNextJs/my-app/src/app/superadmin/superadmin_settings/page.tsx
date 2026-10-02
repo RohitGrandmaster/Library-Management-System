@@ -11,7 +11,7 @@ export default function PlatformSettingsPage() {
 
   // State for all forms to make them functional
   const [generalConfig, setGeneralConfig] = useState({
-    platformName: 'Nexus 360', supportEmail: 'support@nexus360.com', currency: 'INR (₹)', timezone: 'Asia/Kolkata'
+    platformName: 'Library OS', supportEmail: 'support@nexus360.com', currency: 'INR (₹)', timezone: 'Asia/Kolkata'
   });
   
   const [apiConfig, setApiConfig] = useState({
@@ -43,7 +43,7 @@ export default function PlatformSettingsPage() {
 
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>System Settings</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>System Settings</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title flex items-center gap-3">

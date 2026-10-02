@@ -108,7 +108,7 @@ export default function ReportsAnalyticsPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div className="flex flex-col gap-1">
           <div className="sa-breadcrumb">
-            <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Reports & Analytics</span>
+            <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Reports & Analytics</span>
           </div>
           <h1 className="sa-page-title flex items-center gap-3 mt-2">
             <Activity className="text-primary" size={28} /> Global SaaS Analytics

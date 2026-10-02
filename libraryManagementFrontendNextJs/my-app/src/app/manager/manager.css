@@ -1110,7 +1110,7 @@
   .mgr-idcard-stripe { animation: none !important; background-position: 0% 50% !important; }
 
   .mgr-idcard-body::before {
-    content: 'SMART LIBRARY 360 • VERIFIED • SMART LIBRARY 360 • VERIFIED';
+    content: 'Library OS • VERIFIED • Library OS • VERIFIED';
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%) rotate(-35deg);
     font-size: 9px; font-weight: 700; color: rgba(99,102,241,0.07);

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Nexus 360",
+  title: "Library OS",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

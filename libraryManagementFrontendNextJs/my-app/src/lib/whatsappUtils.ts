@@ -51,7 +51,7 @@ export function formatIdCardMessage(data: StudentWhatsAppData): string {
 
   const lines: string[] = [
     `╔═══════════════════════╗`,
-    `║  📚 SMART LIBRARY 360 ║`,
+    `║  📚 Library OS ║`,
     `║  🏛 ${branch.padEnd(19)}║`,
     `║  🪪  S T U D E N T   I D ║`,
     `╚═══════════════════════╝`,
@@ -98,7 +98,7 @@ export function formatDuesMessage(data: StudentWhatsAppData): string {
 
   return [
     `━━━━━━━━━━━━━━━━━━━━━━`,
-    `📚 *SMART LIBRARY 360*`,
+    `📚 *Library OS*`,
     `📍 ${branch}`,
     `━━━━ FEE STATEMENT ━━━━`,
     ``,

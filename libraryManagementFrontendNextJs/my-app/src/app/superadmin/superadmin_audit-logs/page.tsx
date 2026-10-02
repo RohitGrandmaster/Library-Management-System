@@ -107,7 +107,7 @@ export default function AuditLogsPage() {
 
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Audit Logs</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Audit Logs</span>
         </div>
         <h1 className="sa-page-title">System Audit Logs</h1>
       </div>

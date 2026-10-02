@@ -1,4 +1,4 @@
-# 🎨 SMART LIBRARY 360 — GLOBAL DESIGN SYSTEM
+# 🎨 Library OS — GLOBAL DESIGN SYSTEM
 > **Prepend this block to EVERY module you give to Stitch.**
 > This ensures visual consistency across all 109 pages.
 > Stack: Next.js 16 (App Router, Turbopack) · TypeScript · Tailwind CSS · shadcn/ui components

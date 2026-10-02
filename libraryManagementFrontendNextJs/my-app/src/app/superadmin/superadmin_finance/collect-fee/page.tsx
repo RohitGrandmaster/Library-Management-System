@@ -40,7 +40,7 @@ function buildWhatsAppReceipt(params: {
   const r = (l: string, v: string) => l + ' '.repeat(Math.max(1, W - l.length - v.length)) + v;
 
   const lines = [
-    c('★ SMART LIBRARY 360 ★'),
+    c('★ Library OS ★'),
     c('Main Branch'),
     line,
     c('[ FEE RECEIPT ]'),

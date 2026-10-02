@@ -37,7 +37,7 @@ export default function ReceiptDetail() {
     const r = (l: string, v: string) => l.slice(0,10).padEnd(10) + ' ' + v;
 
     const msg = [
-      dln, c('SMART LIBRARY 360'), c('Main Branch'), dln,
+      dln, c('Library OS'), c('Main Branch'), dln,
       c('FEE RECEIPT'), ln,
       r('Receipt :', RECEIPT_DATA.receiptNo),
       r('Date    :', RECEIPT_DATA.date), ln,

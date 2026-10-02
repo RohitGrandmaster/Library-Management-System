@@ -224,7 +224,7 @@ export default function UsersAndAccessPage() {
     <div className="sa-page-animate">
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Users & Access</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Users & Access</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title">Users & Access Control</h1>

@@ -66,7 +66,7 @@ export default function BackupRestorePage() {
 
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Backup & Restore</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Backup & Restore</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title flex items-center gap-3">

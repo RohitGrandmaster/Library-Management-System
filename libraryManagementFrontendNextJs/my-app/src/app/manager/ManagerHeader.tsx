@@ -39,7 +39,7 @@ export default function ManagerHeader({ sidebarWidth, onMobileOpen }: Props) {
         </button>
         <div className="mgr-header-titles" style={{ display: 'flex', flexDirection: 'column', minWidth: '160px' }}>
           <span className="mgr-header-branch-name" style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={20} color="var(--primary)" /> Manager Panel
+            <ShieldCheck size={20} color="var(--primary)" /> Library OS
           </span>
           {time && (
             <span style={{ fontSize: '13px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>

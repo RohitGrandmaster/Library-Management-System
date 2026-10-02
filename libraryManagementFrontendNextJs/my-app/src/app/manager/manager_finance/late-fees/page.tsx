@@ -63,7 +63,7 @@ export default function LateFees() {
   const sendWhatsAppReminder = (s: OverdueStudent) => {
     const lines = [
       `━━━━━━━━━━━━━━━━━━━━━━`,
-      `📚 *SMART LIBRARY 360*`,
+      `📚 *Library OS*`,
       `📍 Main Branch`,
       `━━━━ FEE OVERDUE ━━━━`,
       ``,

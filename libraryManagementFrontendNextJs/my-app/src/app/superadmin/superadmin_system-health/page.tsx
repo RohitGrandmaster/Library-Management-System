@@ -51,7 +51,7 @@ export default function SystemHealthPage() {
       {/* Header */}
       <div className="flex flex-col gap-1 mb-8">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>System Health</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>System Health</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <h1 className="sa-page-title flex items-center gap-3">
@@ -73,7 +73,7 @@ export default function SystemHealthPage() {
           </div>
           <div>
             <h2 className="text-2xl font-bold text-emerald-400">All Systems Operational</h2>
-            <p className="text-sm text-emerald-200/60 mt-1">Nexus 360 Core, APIs, and Databases are running smoothly.</p>
+            <p className="text-sm text-emerald-200/60 mt-1">Library OS Core, APIs, and Databases are running smoothly.</p>
           </div>
         </div>
         <div className="text-right relative z-10">

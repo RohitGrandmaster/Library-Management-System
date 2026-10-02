@@ -45,7 +45,7 @@ export default function InvoiceDetail() {
     const r = (l: string, v: string) => l.slice(0, 10).padEnd(10) + ' ' + v;
 
     const msg = [
-      dln, c('SMART LIBRARY 360'), c('Main Branch'), dln,
+      dln, c('Library OS'), c('Main Branch'), dln,
       c('TAX INVOICE'), ln,
       r('Invoice :', INV.invoiceNumber),
       r('Date    :', formatDate(INV.invoiceDate)), ln,

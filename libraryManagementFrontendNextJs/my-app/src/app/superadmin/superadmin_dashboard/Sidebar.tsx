@@ -38,11 +38,10 @@ export default function Sidebar({ open }: SidebarProps) {
     <aside className={`sa-sidebar ${open ? 'sa-sidebar--open' : ''}`}>
       <div className="sa-sidebar-logo-area">
         <div className="sa-sidebar-logo-box">
-          <span className="text-white text-xs font-bold">N</span>
+          <span className="text-white text-xs font-bold">L</span>
         </div>
         <div>
-          <p className="sa-sidebar-logo-name">Nexus 360</p>
-          <p className="sa-sidebar-logo-sub">Super Admin Panel</p>
+          <p className="sa-sidebar-logo-name">Library OS</p>
         </div>
       </div>
 

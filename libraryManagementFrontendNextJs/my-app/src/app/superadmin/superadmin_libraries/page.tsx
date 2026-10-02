@@ -98,7 +98,7 @@ export default function LibrariesPage() {
 
       <div className="flex flex-col gap-1 mb-6">
         <div className="sa-breadcrumb">
-          <span>Nexus 360</span><span>/</span><span>Super Admin</span><span>/</span><span>Libraries</span>
+          <span>Library OS</span><span>/</span><span>Super Admin</span><span>/</span><span>Libraries</span>
         </div>
         <div className="flex items-center justify-between">
           <h1 className="sa-page-title">Registered Libraries</h1>
