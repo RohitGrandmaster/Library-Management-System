@@ -69,7 +69,7 @@ function buildWhatsAppReceipt(params: {
     c('✅ Payment Received & Confirmed'),
     c('Thank You! Keep Studying 😊'),
     line,
-    c('Smart Library 360'),
+    c('Library OS'),
   ];
   return lines.join('\n');
 }
@@ -140,7 +140,7 @@ export default function CollectFee() {
   function handlePrintReceipt() {
     if (!receiptData) return;
     printThermal({
-      type: 'receipt', shopName: 'Smart Library 360', branch: 'Main Branch',
+      type: 'receipt', shopName: 'Library OS', branch: 'Main Branch',
       studentName: receiptData.studentName, smartId: receiptData.studentId,
       phone: receiptData.phone, shift: receiptData.student.shift,
       seat: receiptData.student.seat, plan: receiptData.student.plan,
@@ -176,7 +176,7 @@ export default function CollectFee() {
                 </div>
                 <div className="fin-receipt-body">
                   <div className="fin-receipt-logo-circle"><BookOpen size={28} className="fin-receipt-accent-icon" /></div>
-                  <p className="fin-receipt-brand">Smart Library 360</p>
+                  <p className="fin-receipt-brand">Library OS</p>
                   <p className="fin-receipt-title">Payment Receipt</p>
                   <div className="fin-receipt-id-box" style={{ marginTop: 24 }}>
                     <p className="fin-receipt-id-label">Receipt Number</p>
@@ -354,7 +354,7 @@ export default function CollectFee() {
                 </div>
                 <div className="fin-receipt-body">
                   <div className="fin-receipt-logo-circle"><BookOpen size={28} className="fin-receipt-accent-icon" /></div>
-                  <p className="fin-receipt-brand">Smart Library 360</p>
+                  <p className="fin-receipt-brand">Library OS</p>
                   <p className="fin-receipt-title">Payment Receipt</p>
                   <div className="fin-receipt-id-box mt-6">
                     <p className="fin-receipt-id-label">Receipt Number</p>
@@ -404,7 +404,7 @@ export default function CollectFee() {
                 </div>
               </div>
               <div className="space-y-3 mt-4">
-                <button className="fin-receipt-btn-secondary" onClick={resetForm}>🚫 Cancel</button>
+                <button className="fin-receipt-btn-secondary flex items-center justify-center gap-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }} onClick={resetForm}><X size={16} /> Cancel</button>
               </div>
             </div>
           </div>

@@ -104,7 +104,7 @@ export default function AdminPermissionsPage() {
         {/* Page Header */}
         <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
           <div>
-            <p className="admin-breadcrumb">Smart Library 360 › Admin › Permissions</p>
+            <p className="admin-breadcrumb">Library OS › Admin › Permissions</p>
             <h1 className="admin-page-title">Role Permissions</h1>
             <p className="admin-page-subtitle">Configure what Managers are allowed to do across branches.</p>
           </div>

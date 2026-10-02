@@ -7,7 +7,7 @@ import { printThermal } from '@/lib/thermalPrint';
 
 const INV = {
   invoiceNumber:        'INV-20260411-001',
-  libraryName:          'Smart Library 360',
+  libraryName:          'Library OS',
   libraryAddress:       'Main Branch, Pune',
   libraryGstin:         '22AAACP1234B1Z5',
   libraryPhone:         '+91 98765 43210',
@@ -57,7 +57,7 @@ export default function InvoiceDetail() {
       r('Txn ID  :', INV.paymentTransactionId),
       r('Status  :', INV.paymentStatus.toUpperCase()), '',
       c('Thank You for choosing'),
-      c('Smart Library 360'),
+      c('Library OS'),
       dln,
     ].join('\n');
 

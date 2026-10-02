@@ -1,4 +1,4 @@
-# Smart Library 360 - Manager Features
+# Library OS - Manager Features
 
 ## Directory Structure
 The `manager` directory has been fully refactored into a strictly micro-modular, AI-friendly architecture based on the rules in `frontend_development_instruction.md`.

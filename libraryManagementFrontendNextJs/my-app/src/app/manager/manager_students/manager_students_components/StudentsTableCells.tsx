@@ -67,7 +67,7 @@ export function ActionsCell({ data }: { data: Student }) {
       c('⚠️ Please clear dues to avoid'),
       c('seat suspension.'),
       '',
-      c('Smart Library 360 | Main Branch'),
+      c('Library OS | Main Branch'),
     ].join('\n');
     openWhatsApp(data.phone, msg);
   }

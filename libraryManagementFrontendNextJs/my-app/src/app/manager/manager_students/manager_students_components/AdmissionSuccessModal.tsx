@@ -42,7 +42,7 @@ export default function AdmissionSuccessModal({ data, onClose }: Props) {
 
   function handlePrintReceipt() {
     printThermal({
-      type: 'receipt', shopName: 'Smart Library 360', branch: data.branch,
+      type: 'receipt', shopName: 'Library OS', branch: data.branch,
       studentName: data.name, smartId: data.smartId, phone: data.phone,
       shift: data.shift, seat: data.seat, plan: data.plan,
       joinDate: data.joinDate, expiryDate: data.expiryDate,
@@ -55,7 +55,7 @@ export default function AdmissionSuccessModal({ data, onClose }: Props) {
 
   function handlePrintIdCard() {
     printThermal({
-      type: 'idcard', shopName: 'Smart Library 360', branch: data.branch,
+      type: 'idcard', shopName: 'Library OS', branch: data.branch,
       studentName: data.name, smartId: data.smartId, phone: data.phone,
       shift: data.shift, seat: data.seat, locker: data.locker, plan: data.plan,
       joinDate: data.joinDate, expiryDate: data.expiryDate,

@@ -117,7 +117,7 @@ export default function AdminAuditLogsPage() {
       {/* Page Header */}
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Audit Logs</p>
+          <p className="admin-breadcrumb">Library OS › Admin › Audit Logs</p>
           <h1 className="admin-page-title">Audit Logs</h1>
           <p className="admin-page-subtitle">Track all sensitive actions performed in the system.</p>
         </div>

@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
         <div className="flex justify-center pt-2">
           <div className="flex items-center gap-2.5">
             <div className="auth-logo-box auth-logo-box--sm"><BookOpen size={18} className="text-white" /></div>
-            <span className="text-lg font-extrabold text-[var(--text-primary)]">Smart Library 360</span>
+            <span className="text-lg font-extrabold text-[var(--text-primary)]">Library OS</span>
           </div>
         </div>
 
@@ -100,7 +100,7 @@ export default function ForgotPasswordPage() {
 
           <div className="flex items-center justify-center gap-3 mt-7 opacity-40">
             <div className="h-px w-6 bg-[var(--border)]" />
-            <span className="text-[10px] tracking-[0.12em] uppercase font-bold text-[var(--text-secondary)]">Smart Library 360</span>
+            <span className="text-[10px] tracking-[0.12em] uppercase font-bold text-[var(--text-secondary)]">Library OS</span>
             <div className="h-px w-6 bg-[var(--border)]" />
           </div>
         </div>

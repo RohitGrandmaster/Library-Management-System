@@ -76,10 +76,12 @@ export default function Sidebar({ open }: SidebarProps) {
           </div>
         </Link>
         <button
-          className="sa-btn-icon sa-btn-icon--danger"
           onClick={() => setShowLogout(true)}
           title="Log out"
           aria-label="Log out"
+          style={{ color: '#ef4444', background: 'rgba(239, 68, 68, 0.1)', border: 'none', borderRadius: '6px', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', transition: 'all 0.15s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#ef4444'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; e.currentTarget.style.color = '#ef4444'; }}
         >
           <LogOut size={15} />
         </button>
@@ -87,15 +89,12 @@ export default function Sidebar({ open }: SidebarProps) {
 
       {showLogout && typeof document !== 'undefined' && createPortal(
         <div className="sa-wizard-modal-overlay" style={{ zIndex: 9999 }} onClick={() => setShowLogout(false)}>
-          <div className="sa-wizard-modal" style={{ maxWidth: 360 }} onClick={e => e.stopPropagation()}>
-            <div className="sa-wizard-modal-icon">
-              <LogOut size={20} className="sa-metric--warning" />
-            </div>
-            <p className="sa-wizard-modal-title">Log out?</p>
-            <p className="sa-wizard-modal-desc">Are you sure you want to log out of the Super Admin panel?</p>
-            <div className="flex gap-3 mt-4">
-              <button className="sa-btn-ghost sa-btn-ghost--sm flex-1" onClick={() => setShowLogout(false)}>Cancel</button>
-              <button className="sa-btn-ghost sa-btn-ghost--danger flex-1" onClick={() => router.push('/auth/login')}>Log out</button>
+          <div className="sa-wizard-modal" style={{ maxWidth: 360, background: '#12121d', border: '2px solid rgba(239, 68, 68, 0.4)', borderRadius: '12px', padding: '24px', boxShadow: '0 10px 40px -10px rgba(239, 68, 68, 0.2)' }} onClick={e => e.stopPropagation()}>
+            <p className="sa-wizard-modal-title" style={{ color: 'var(--text-primary)', fontSize: '18px', fontWeight: 600 }}>Log out?</p>
+            <p className="sa-wizard-modal-desc" style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '14px' }}>Are you sure you want to log out of the Super Admin panel?</p>
+            <div className="flex justify-end gap-3 mt-4" style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+              <button onClick={() => setShowLogout(false)} style={{ padding: '8px 16px', borderRadius: '6px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-primary)', fontWeight: 500, cursor: 'pointer' }}>Cancel</button>
+              <button onClick={() => router.push('/auth/login')} style={{ padding: '8px 16px', borderRadius: '6px', border: 'none', background: '#ef4444', color: '#ffffff', fontWeight: 600, cursor: 'pointer' }}>Log out</button>
             </div>
           </div>
         </div>,

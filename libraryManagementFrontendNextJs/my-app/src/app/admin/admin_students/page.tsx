@@ -181,7 +181,7 @@ export default function AdminStudentsPage() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-[var(--border)] pb-5">
         <div>
-          <p className="text-xs text-[var(--text-secondary)] mb-1 tracking-widest uppercase font-medium">Smart Library 360 › Admin › Students</p>
+          <p className="text-xs text-[var(--text-secondary)] mb-1 tracking-widest uppercase font-medium">Library OS › Admin › Students</p>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">{selectedBranch} — Students</h1>
           <p className="text-sm text-[var(--text-secondary)] mt-1">Overview of all enrolled students. Click a row or View to see full details.</p>
         </div>

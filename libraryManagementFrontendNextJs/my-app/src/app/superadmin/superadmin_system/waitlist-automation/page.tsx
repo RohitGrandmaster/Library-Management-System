@@ -21,7 +21,7 @@ export default function WaitlistAutomationPage() {
   const [enabled, setEnabled] = useState(true);
   const [delay, setDelay] = useState(0);
   const [template, setTemplate] = useState(
-    'Hello {name}! 🎉 A seat (Shift: {shift}) is now available at Smart Library. Reply YES to confirm your booking within 30 minutes. — Smart Library Team'
+    'Hello {name}! 🎉 A seat (Shift: {shift}) is now available at Library OS. Reply YES to confirm your booking within 30 minutes. — Library OS Team'
   );
 
   return (

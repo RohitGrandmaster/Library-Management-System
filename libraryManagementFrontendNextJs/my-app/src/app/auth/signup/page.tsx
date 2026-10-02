@@ -49,7 +49,7 @@ export default function SignupPage() {
           <div className="auth-logo-box">
             <BookOpen size={22} className="text-white" />
           </div>
-          <span className="text-xl font-extrabold text-[var(--text-primary)]">Smart Library 360</span>
+          <span className="text-xl font-extrabold text-[var(--text-primary)]">Library OS</span>
         </div>
 
         <div className="relative z-10 space-y-6">
@@ -59,7 +59,7 @@ export default function SignupPage() {
               <span className="auth-gradient-text">free trial today</span>
             </h1>
             <p className="mt-4 text-[var(--text-secondary)] text-base leading-relaxed max-w-sm">
-              Join 12,000+ libraries already running smarter with Smart Library 360.
+              Join 12,000+ libraries already running smarter with Library OS.
             </p>
           </div>
           <div className="space-y-3">
@@ -77,7 +77,7 @@ export default function SignupPage() {
           </div>
         </div>
 
-        <p className="relative z-10 text-xs text-[var(--text-secondary)]">© 2026 Smart Library 360</p>
+        <p className="relative z-10 text-xs text-[var(--text-secondary)]">© 2026 Library OS</p>
       </section>
 
       {/* ── RIGHT PANEL ── */}
@@ -87,7 +87,7 @@ export default function SignupPage() {
           <div className="lg:hidden flex justify-center mb-8">
             <div className="flex items-center gap-2.5">
               <div className="auth-logo-box auth-logo-box--sm"><BookOpen size={18} className="text-white" /></div>
-              <span className="text-lg font-extrabold text-[var(--text-primary)]">Smart Library 360</span>
+              <span className="text-lg font-extrabold text-[var(--text-primary)]">Library OS</span>
             </div>
           </div>
 

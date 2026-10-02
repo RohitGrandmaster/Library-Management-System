@@ -101,7 +101,7 @@ export default function ResetPasswordPage() {
         <div className="flex justify-center">
           <div className="flex items-center gap-2.5">
             <div className="auth-logo-box auth-logo-box--sm"><BookOpen size={18} className="text-white" /></div>
-            <span className="text-lg font-extrabold text-[var(--text-primary)]">Smart Library 360</span>
+            <span className="text-lg font-extrabold text-[var(--text-primary)]">Library OS</span>
           </div>
         </div>
 

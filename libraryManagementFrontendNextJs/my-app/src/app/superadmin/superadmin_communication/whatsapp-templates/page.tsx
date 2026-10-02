@@ -7,7 +7,7 @@ interface Template { id: string; label: string; icon: string; body: string; }
 const VARS = ['{name}', '{amount}', '{duedate}', '{planname}', '{libraryname}', '{phone}', '{seat}'];
 
 const INIT: Template[] = [
-  { id: 'welcome',      label: 'Welcome Message',      icon: '👋', body: 'Welcome to {libraryname}, {name}! Your seat {seat} is confirmed. We wish you a productive study journey. — Smart Library Team' },
+  { id: 'welcome',      label: 'Welcome Message',      icon: '👋', body: 'Welcome to {libraryname}, {name}! Your seat {seat} is confirmed. We wish you a productive study journey. — Library OS Team' },
   { id: 'fee_reminder', label: 'Fee Reminder',          icon: '💰', body: 'Hi {name}, your fee of ₹{amount} is due on {duedate}. Please pay on time to avoid late charges. — {libraryname}' },
   { id: 'renewal',      label: 'Renewal Alert',         icon: '🔁', body: 'Hi {name}, your {planname} subscription expires in 3 days. Renew now to continue uninterrupted access. — {libraryname}' },
   { id: 'receipt',      label: 'Payment Receipt',       icon: '🧾', body: 'Dear {name}, your payment of ₹{amount} has been received. Thank you! Contact us at {phone} for queries. — {libraryname}' },
@@ -62,7 +62,7 @@ export default function WhatsappTemplatesPage() {
     .replace(/{amount}/g, '1000')
     .replace(/{duedate}/g, '15-Apr-2026')
     .replace(/{planname}/g, 'Monthly')
-    .replace(/{libraryname}/g, 'Smart Library 360')
+    .replace(/{libraryname}/g, 'Library OS')
     .replace(/{phone}/g, '+91 9000000000')
     .replace(/{seat}/g, 'S-03');
 

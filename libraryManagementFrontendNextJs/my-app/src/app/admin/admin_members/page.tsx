@@ -529,19 +529,15 @@ export default function AdminMembersPage() {
                       </div>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                     <button className="admin-btn-ghost" onClick={() => handleAction('Edit Member', viewingMember.name)}><Edit size={16} /> Edit</button>
                     <button className="admin-btn-primary" onClick={() => handleAction('Renew Membership', viewingMember.name)}><RotateCcw size={16} /> Renew</button>
                     <button className="admin-btn-primary" style={{ background: 'var(--purple)', borderColor: 'var(--purple)' }} onClick={() => handleAction('Reserve Seat', viewingMember.name)}><MapPin size={16} /> Reserve</button>
                     <button className="admin-btn-ghost" style={{ color: 'var(--warning)', borderColor: 'var(--warning)' }} onClick={() => handleAction('Collect Fine', viewingMember.name)}><Banknote size={16} /> Collect Fine</button>
+                    {viewingMember.status === 'Active' && <button className="admin-btn-ghost" style={{ color: 'var(--warning)', borderColor: 'var(--warning)' }} onClick={() => handleAction('Suspend', viewingMember.name)}><PauseCircle size={14} /> Suspend</button>}
+                    {(viewingMember.status === 'Suspended' || viewingMember.status === 'Blocked') && <button className="admin-btn-ghost" style={{ color: 'var(--success)', borderColor: 'var(--success)' }} onClick={() => handleAction('Reactivate', viewingMember.name)}><CheckCircle size={14} /> Reactivate</button>}
+                    {viewingMember.status !== 'Blocked' && <button className="admin-btn-ghost-danger" onClick={() => handleAction('Block', viewingMember.name)}><Ban size={14} /> Block</button>}
                   </div>
-                </div>
-
-                {/* Advanced Status Actions */}
-                <div style={{ display: 'flex', gap: '12px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)', flexWrap: 'wrap' }}>
-                  {viewingMember.status === 'Active' && <button className="admin-btn-ghost" style={{ color: 'var(--warning)', borderColor: 'var(--warning)' }} onClick={() => handleAction('Suspend', viewingMember.name)}><PauseCircle size={14} /> Suspend Member</button>}
-                  {(viewingMember.status === 'Suspended' || viewingMember.status === 'Blocked') && <button className="admin-btn-ghost" style={{ color: 'var(--success)', borderColor: 'var(--success)' }} onClick={() => handleAction('Reactivate', viewingMember.name)}><CheckCircle size={14} /> Reactivate Member</button>}
-                  {viewingMember.status !== 'Blocked' && <button className="admin-btn-ghost-danger" onClick={() => handleAction('Block', viewingMember.name)}><Ban size={14} /> Block Member</button>}
                 </div>
               </div>
 

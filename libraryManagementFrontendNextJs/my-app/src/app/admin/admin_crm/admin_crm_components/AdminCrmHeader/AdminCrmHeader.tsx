@@ -39,7 +39,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           </svg>
         </div>
 
-        <span className="crm-header-title">Smart Library 360</span>
+        <span className="crm-header-title">Library OS</span>
       </div>
 
       {/* ── Right section ── */}

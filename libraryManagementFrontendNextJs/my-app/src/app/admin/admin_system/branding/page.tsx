@@ -18,7 +18,7 @@ export default function BrandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [form, setForm] = useState({
-    libraryName: 'Smart Library 360',
+    libraryName: 'Library OS',
     tagline: 'Your Knowledge Hub',
     primaryColor: '',
     accentColor: '',

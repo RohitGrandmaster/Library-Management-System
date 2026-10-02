@@ -21,6 +21,7 @@ import {
   User,
   Upload, Download, Printer, MessageSquare, Send, Mail
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { getEnquiries, updateEnquiry } from '@/app/admin/admin_crm/admin_crm_components/EnquiryStorage';
 import {
@@ -196,22 +197,22 @@ export default function EnquiriesPage() {
               </button>
             </div>
 
-            <button className="crm-btn-ghost" onClick={() => window.alert('Importing...')}>
+            <button className="crm-btn-ghost" onClick={() => toast.success('Importing...')}>
               <Upload size={14} /> Import
             </button>
-            <button className="crm-btn-ghost" onClick={() => window.alert('Exporting CSV...')}>
+            <button className="crm-btn-ghost" onClick={() => toast.success('Exporting CSV...')}>
               <Download size={14} /> CSV
             </button>
-            <button className="crm-btn-ghost" onClick={() => window.alert('Printing...')}>
+            <button className="crm-btn-ghost" onClick={() => toast.success('Printing...')}>
               <Printer size={14} /> Print
             </button>
-            <button className="crm-btn-ghost" style={{ color: '#10B981' }} onClick={() => window.alert('WhatsApp All...')}>
+            <button className="crm-btn-ghost" style={{ color: '#10B981' }} onClick={() => toast.success('WhatsApp All...')}>
               <MessageSquare size={14} /> WA
             </button>
-            <button className="crm-btn-ghost" style={{ color: '#3B82F6' }} onClick={() => window.alert('Telegram All...')}>
+            <button className="crm-btn-ghost" style={{ color: '#3B82F6' }} onClick={() => toast.success('Telegram All...')}>
               <Send size={14} /> TG
             </button>
-            <button className="crm-btn-ghost" style={{ color: '#6366F1' }} onClick={() => window.alert('Email All...')}>
+            <button className="crm-btn-ghost" style={{ color: '#6366F1' }} onClick={() => toast.success('Email All...')}>
               <Mail size={14} /> Email
             </button>
 

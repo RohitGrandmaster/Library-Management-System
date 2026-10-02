@@ -70,7 +70,7 @@ export default function ReceiptsPage() {
 
   function handlePrint(r: typeof MOCK_RECEIPTS[0]) {
     printThermal({
-      type: 'receipt', shopName: 'Smart Library 360', branch: 'Main Branch',
+      type: 'receipt', shopName: 'Library OS', branch: 'Main Branch',
       studentName: r.studentName, smartId: r.studentId, phone: r.phone,
       shift: r.shift, seat: r.seat, plan: r.planName,
       billNumber: r.receiptNumber, date: formatDate(r.date),

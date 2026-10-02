@@ -62,7 +62,7 @@ export default function ReceiptDetail() {
   function handlePrint() {
     printThermal({
       type:         'receipt',
-      shopName:     'Smart Library 360',
+      shopName:     'Library OS',
       branch:       'Main Branch',
       studentName:  RECEIPT_DATA.studentName,
       smartId:      RECEIPT_DATA.studentId,
@@ -108,7 +108,7 @@ export default function ReceiptDetail() {
             <div className="fin-receipt-logo-circle">
               <BookOpen size={28} className="fin-receipt-accent-icon" />
             </div>
-            <p className="fin-receipt-brand">Smart Library 360</p>
+            <p className="fin-receipt-brand">Library OS</p>
             <h2 className="fin-receipt-title">Payment Receipt</h2>
             <div className="fin-receipt-id-box">
               <p className="fin-receipt-id-label">Receipt No.</p>

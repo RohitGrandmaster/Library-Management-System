@@ -66,7 +66,7 @@ export default function AdminExpensesPage() {
     <div className="h-full flex flex-col pb-10 space-y-6">
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 &gt; Admin &gt; Expenses</p>
+          <p className="admin-breadcrumb">Library OS &gt; Admin &gt; Expenses</p>
           <h1 className="admin-page-title">{selectedBranch} - Expenses</h1>
           <p className="admin-page-subtitle">Monitor expenses logged by managers for the currently selected branch.</p>
         </div>

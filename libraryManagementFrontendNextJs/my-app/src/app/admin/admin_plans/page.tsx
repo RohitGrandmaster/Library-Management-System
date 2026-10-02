@@ -135,7 +135,7 @@ export default function AdminPlansPage() {
       {/* Header */}
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Plans</p>
+          <p className="admin-breadcrumb">Library OS › Admin › Plans</p>
           <h1 className="admin-page-title">Membership Plans</h1>
           <p className="admin-page-subtitle">Create and manage pricing plans available across all branches.</p>
         </div>

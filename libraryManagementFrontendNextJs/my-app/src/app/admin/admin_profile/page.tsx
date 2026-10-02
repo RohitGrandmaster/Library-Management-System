@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { User, Edit3, Key, Shield, Clock, MonitorSmartphone, Settings, Mail, Phone, Camera, LogOut } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 type Tab = 'profile' | 'edit' | 'password' | '2fa' | 'history' | 'sessions' | 'security';
 
@@ -157,10 +158,10 @@ export default function AdminProfilePage() {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Bio / Role Description</label>
-                  <textarea className="admin-input" defaultValue="Main administrator managing operations for Smart Library branches." style={{ minHeight: '80px', resize: 'vertical' }}></textarea>
+                  <textarea className="admin-input" defaultValue="Main administrator managing operations for Library OS branches." style={{ minHeight: '80px', resize: 'vertical' }}></textarea>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                  <button type="button" className="admin-btn-primary" onClick={() => alert('Profile Updated!')}>Save Changes</button>
+                  <button type="button" className="admin-btn-primary" onClick={() => toast.success('Profile Updated!')}>Save Changes</button>
                 </div>
               </form>
             </div>
@@ -183,7 +184,7 @@ export default function AdminProfilePage() {
                   <input type="password" className="admin-input" placeholder="••••••••" />
                 </div>
                 <div style={{ marginTop: '10px' }}>
-                  <button type="button" className="admin-btn-primary" onClick={() => alert('Password Changed!')}>Update Password</button>
+                  <button type="button" className="admin-btn-primary" onClick={() => toast.success('Password Changed!')}>Update Password</button>
                 </div>
               </form>
             </div>

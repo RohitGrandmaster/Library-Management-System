@@ -213,6 +213,7 @@ const roleColors: Record<string, string> = {
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const { register, handleSubmit, setValue, setError, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -249,8 +250,11 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(mockUser));
       document.cookie = `access_token=${mockToken}; path=/; SameSite=Strict; max-age=900`;
 
-      // Redirect based on role
-      window.location.href = getRedirectUrl(matchedRole);
+      // Show success popup and delay redirect
+      setLoginSuccess(true);
+      setTimeout(() => {
+        window.location.href = getRedirectUrl(matchedRole);
+      }, 1500);
     } catch (err: any) {
       setError('root', { message: err.message || 'Invalid credentials. Please try again.' });
     }
@@ -265,6 +269,19 @@ export default function LoginPage() {
       <div className="aurora-orb-1" style={{ top: '-15%', left: '-10%' }} />
       <div className="aurora-orb-2" style={{ bottom: '-10%', right: '-8%' }} />
       <div className="aurora-orb-3" style={{ top: '40%', left: '30%' }} />
+
+      {/* SUCCESS POPUP */}
+      {loginSuccess && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#030712]/80 backdrop-blur-sm transition-opacity duration-300">
+          <div className="bg-[#12121d] border border-emerald-500/30 p-8 rounded-3xl shadow-[0_20px_60px_-15px_rgba(16,185,129,0.3)] flex flex-col items-center justify-center gap-2 transform scale-100 transition-transform duration-300">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3 border border-emerald-500/20">
+              <CheckCircle size={32} />
+            </div>
+            <h3 className="text-white text-xl font-black tracking-tight">Login Successful</h3>
+            <p className="text-slate-400 text-sm font-medium">Redirecting securely...</p>
+          </div>
+        </div>
+      )}
 
       {/* ── LEFT BRAND PANEL ── */}
       <section className="hidden lg:flex lg:w-[55%] flex-col justify-between p-14 relative z-10 glass-left">

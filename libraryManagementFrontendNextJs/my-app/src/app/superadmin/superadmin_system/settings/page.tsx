@@ -30,7 +30,7 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
 
   const [form, setForm] = useState({
-    appName: 'Smart Library 360',
+    appName: 'Library OS',
     primaryColor: '',
     secondaryColor: '',
     gracePeriod: 5,
@@ -316,7 +316,7 @@ export default function SettingsPage() {
               <CardContent className="space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="library-name">Library Name</Label>
-                  <Input id="library-name" defaultValue="Smart Library 360" />
+                  <Input id="library-name" defaultValue="Library OS" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="library-timezone">Timezone</Label>

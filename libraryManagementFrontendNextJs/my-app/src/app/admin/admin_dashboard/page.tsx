@@ -68,7 +68,7 @@ export default async function AdminDashboardPage() {
       {/* Breadcrumb + Title */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
         <div>
-          <p className="text-sm text-muted-foreground mb-1">Smart Library 360 › Admin › Dashboard</p>
+          <p className="text-sm text-muted-foreground mb-1">Library OS › Admin › Dashboard</p>
           <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-sm text-muted-foreground mt-1">Welcome back — here's what's happening today.</p>
         </div>

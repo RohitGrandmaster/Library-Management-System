@@ -63,7 +63,7 @@ export default function ExpenseCategoriesPage() {
     <div className="space-y-6 pb-10">
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 &gt; Admin &gt; Expense Categories</p>
+          <p className="admin-breadcrumb">Library OS &gt; Admin &gt; Expense Categories</p>
           <h1 className="admin-page-title">Expense Categories</h1>
           <p className="admin-page-subtitle">Define the types of expenses managers can record in Daily Settlements.</p>
         </div>

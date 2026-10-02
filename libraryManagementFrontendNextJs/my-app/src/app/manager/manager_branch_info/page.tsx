@@ -7,7 +7,7 @@ export default function BranchInformationPage() {
   
   // State for Branch Info form
   const [branchData, setBranchData] = useState({
-    branchName: 'Smart Library 360 - Connaught Place',
+    branchName: 'Library OS - Connaught Place',
     branchCode: 'SL360-CP-01',
     address: 'Block A, Connaught Place, New Delhi, 110001',
     phone: '+91 9876543210',

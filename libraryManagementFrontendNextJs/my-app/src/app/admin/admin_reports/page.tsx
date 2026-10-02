@@ -75,15 +75,15 @@ export default function AdminReportsPage() {
         thisYear:    [ { month: 'Q1', value: 595000 }, { month: 'Q2', value: 720000 }, { month: 'Q3', value: 800000 } ]
       },
       studentGrowth: {
-        thisMonth:   [ { month: 'W1', value: 12 }, { month: 'W2', value: 18 }, { month: 'W3', value: 25 }, { month: 'W4', value: 32 } ],
-        last3Months: [ { month: 'Jul', value: 85 }, { month: 'Aug', value: 120 }, { month: 'Sep', value: 142 } ],
-        thisYear:    [ { month: 'Q1', value: 150 }, { month: 'Q2', value: 280 }, { month: 'Q3', value: 420 } ]
+        thisMonth:   [ { month: 'W1', joined: 12, exited: 2 }, { month: 'W2', joined: 18, exited: 4 }, { month: 'W3', joined: 25, exited: 3 }, { month: 'W4', joined: 32, exited: 5 } ],
+        last3Months: [ { month: 'Jul', joined: 85, exited: 10 }, { month: 'Aug', joined: 120, exited: 15 }, { month: 'Sep', joined: 142, exited: 12 } ],
+        thisYear:    [ { month: 'Q1', joined: 150, exited: 25 }, { month: 'Q2', joined: 280, exited: 40 }, { month: 'Q3', joined: 420, exited: 55 } ]
       }
     };
     
     fetchApi('/admin/admin_reports')
       .then(res => {
-        if (Array.isArray(res) && res.length === 0) {
+        if (!res || Object.keys(res).length === 0 || Array.isArray(res) || !res.incomeVsExpense) {
           setData(mockData); // Fallback to mock data
         } else {
           setData(res);
@@ -92,7 +92,7 @@ export default function AdminReportsPage() {
       .catch(() => setData(mockData));
   }, []);
 
-  if (!data) return <div className="p-8">Loading reports...</div>;
+  if (!data || !data.incomeVsExpense) return <div className="p-8">Loading reports...</div>;
 
   const incomeData  = data.incomeVsExpense[range];
   const revenueData = data.revenueTrend[range];
@@ -121,7 +121,7 @@ export default function AdminReportsPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-[var(--border)] pb-5">
           <div>
-            <p className="text-xs text-[var(--text-secondary)] mb-1 tracking-widest uppercase font-medium">Smart Library 360 › Admin › Reports</p>
+            <p className="text-xs text-[var(--text-secondary)] mb-1 tracking-widest uppercase font-medium">Library OS › Admin › Reports</p>
             <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">Analytics & Reports</h1>
             <p className="text-sm text-[var(--text-secondary)] mt-1">Financial health and operational overview across branches</p>
           </div>
@@ -153,10 +153,10 @@ export default function AdminReportsPage() {
               <option>Nashik Branch</option>
             </select>
 
-            <button onClick={() => window.alert('Printing Report...')} className="admin-btn-ghost admin-btn-sm">
+            <button onClick={() => toast.success('Printing Report...')} className="admin-btn-ghost admin-btn-sm">
               <Printer size={14} /> Print
             </button>
-            <button onClick={() => window.alert('Emailing Report...')} className="admin-btn-ghost admin-btn-sm" style={{ color: '#6366F1' }}>
+            <button onClick={() => toast.success('Emailing Report...')} className="admin-btn-ghost admin-btn-sm" style={{ color: '#6366F1' }}>
               <Mail size={14} /> Email
             </button>
             <button onClick={() => handleExport('PDF')} className="admin-btn-ghost admin-btn-sm">

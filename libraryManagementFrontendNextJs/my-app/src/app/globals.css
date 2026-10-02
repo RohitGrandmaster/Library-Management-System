@@ -10,6 +10,11 @@ body, html {
   display: none; /* Chrome, Safari and Opera */
 }
 
+/* Ensure all buttons have pointer cursor globally */
+button, [role="button"], input[type="button"], input[type="submit"] {
+  cursor: pointer;
+}
+
 @theme {
   --color-surface: #12121d;
   --color-surface-dim: #12121d;

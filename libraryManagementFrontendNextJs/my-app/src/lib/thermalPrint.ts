@@ -1,5 +1,5 @@
 /**
- * Thermal Print Utility — Smart Library 360
+ * Thermal Print Utility — Library OS
  * 80mm thermal printer — ESC/POS style via browser popup
  */
 
@@ -60,7 +60,7 @@ function rowRight(label: string, value: string): string {
 }
 
 export function buildThermalContent(d: ThermalBillData): string {
-  const shop   = (d.shopName ?? 'Smart Library 360').toUpperCase();
+  const shop   = (d.shopName ?? 'Library OS').toUpperCase();
   const branch = d.branch ?? 'Main Branch';
   const now    = d.date ?? new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
@@ -133,7 +133,7 @@ export function buildThermalContent(d: ThermalBillData): string {
     L.push(center('Payment Received & Confirmed'));
     L.push(center('Thank You! Keep Studying!'));
     L.push(ln());
-    L.push(center('Smart Library 360'));
+    L.push(center('Library OS'));
   }
 
   if (d.type === 'dues') {
@@ -160,7 +160,7 @@ export function buildThermalContent(d: ThermalBillData): string {
     L.push(center('Please clear dues to avoid'));
     L.push(center('seat suspension.'));
     L.push(ln());
-    L.push(center('Smart Library 360'));
+    L.push(center('Library OS'));
   }
 
   L.push('');
@@ -185,7 +185,7 @@ export function printThermal(data: ThermalBillData): void {
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>Receipt — Smart Library 360</title>
+  <title>Receipt — Library OS</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {

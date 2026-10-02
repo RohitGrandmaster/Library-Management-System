@@ -77,7 +77,7 @@ export default function LateFees() {
       ``,
       `━━━━━━━━━━━━━━━━━━━━━━`,
       `🎓 Keep studying hard!`,
-      `📚 Smart Library 360`
+      `📚 Library OS`
     ];
     const message = lines.join('\\n');
     openWhatsApp(s.phone, message);

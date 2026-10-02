@@ -146,7 +146,7 @@ export default function AdminCouponsPage() {
       {/* Page Header */}
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Coupons</p>
+          <p className="admin-breadcrumb">Library OS › Admin › Coupons</p>
           <h1 className="admin-page-title">Coupons</h1>
           <p className="admin-page-subtitle">Create and track discount coupon codes.</p>
         </div>

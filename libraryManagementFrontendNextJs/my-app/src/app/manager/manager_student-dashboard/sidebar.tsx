@@ -12,7 +12,7 @@
 //       <header className="fixed top-0 w-full h-[64px] z-50 flex items-center justify-between px-6 bg-[#12121d] shadow-none">
 //         <div className="flex items-center gap-4">
 //           <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-[#c0c1ff] to-[#8083ff]">
-//             Smart Library 360
+//             Library OS
 //           </span>
 //         </div>
 

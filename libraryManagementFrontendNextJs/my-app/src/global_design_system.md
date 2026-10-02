@@ -63,7 +63,7 @@ Every authenticated page uses this shell. Auth pages (`login`, `signup`, `forgot
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │  TOP HEADER (height: 64px, position: fixed, top: 0, full-width)  │
-│  [☰ Collapse] [📚 Smart Library 360 Logo]  ··· [🏢 Branch Name ▼] [🔔 Bell (badge count)] [👤 Avatar + Name ▼]  │
+│  [☰ Collapse] [📚 Library OS Logo]  ··· [🏢 Branch Name ▼] [🔔 Bell (badge count)] [👤 Avatar + Name ▼]  │
 ├────────────────┬─────────────────────────────────────────────────┤
 │  SIDEBAR       │  MAIN CONTENT AREA                              │
 │  width: 240px  │  margin-left: 240px                            │

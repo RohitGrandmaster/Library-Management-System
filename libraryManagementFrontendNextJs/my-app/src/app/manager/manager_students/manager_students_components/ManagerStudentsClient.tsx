@@ -54,7 +54,7 @@ export function ManagerStudentsClient() {
     <div className="mgr-page">
       <div className="mgr-page-header">
         <div>
-          <p className="mgr-breadcrumb">Smart Library 360 › Students</p>
+          <p className="mgr-breadcrumb">Library OS › Students</p>
           <h1 className="mgr-page-title">Student Directory</h1>
           <p className="mgr-page-subtitle">Manage admissions, seating, and billing for all active learners.</p>
         </div>

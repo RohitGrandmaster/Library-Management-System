@@ -133,7 +133,7 @@ export default function SmartIdPage() {
             <DialogTrigger asChild>
               <Button id="force-regenerate-btn" variant="destructive">🔢 Force Regenerate Sequence</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent style={{ background: '#12121d', border: '1px solid var(--border)' }}>
               <DialogHeader>
                 <DialogTitle>Confirm Force Regenerate</DialogTitle>
                 <DialogDescription>

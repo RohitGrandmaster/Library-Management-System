@@ -234,7 +234,7 @@ export default function AdminSupportPage() {
                 {[
                   { title: 'New CRM Feature Released! 🚀', date: 'Today, 10:00 AM', content: 'You can now directly send WhatsApp templates to leads directly from the Enquiries tab. Try it out now!' },
                   { title: 'Scheduled Maintenance', date: '25 Sep 2026', content: 'The system will undergo scheduled maintenance on 30 Sep from 2 AM to 4 AM IST. Expect brief downtimes.' },
-                  { title: 'Welcome to Smart Library v2.0', date: '01 Sep 2026', content: 'We have completely revamped the admin portal with a fresh new look, dark mode support, and improved performance.' }
+                  { title: 'Welcome to Library OS v2.0', date: '01 Sep 2026', content: 'We have completely revamped the admin portal with a fresh new look, dark mode support, and improved performance.' }
                 ].map((ann, i) => (
                   <div key={i} style={{ position: 'relative', paddingLeft: '24px', borderLeft: '2px solid var(--primary)' }}>
                     <div style={{ position: 'absolute', left: '-6px', top: '0', width: '10px', height: '10px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 0 4px var(--bg-card)' }} />
@@ -250,7 +250,7 @@ export default function AdminSupportPage() {
           {activeTab === 'docs' && (
             <div className="admin-card" style={{ padding: '24px' }}>
               <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px 0' }}>Documentation & Guides</h2>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Download or read our official guides to master the Smart Library Admin portal.</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Download or read our official guides to master the Library OS Admin portal.</p>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
                 {[

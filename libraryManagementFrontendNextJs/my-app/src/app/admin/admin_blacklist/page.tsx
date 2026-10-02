@@ -150,7 +150,7 @@ export default function AdminBlacklistPage() {
         {/* Page Header */}
         <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
           <div>
-            <p className="admin-breadcrumb">Smart Library 360 › Admin › Blacklist</p>
+            <p className="admin-breadcrumb">Library OS › Admin › Blacklist</p>
             <h1 className="admin-page-title">Blacklist</h1>
             <p className="admin-page-subtitle">Students banned from re-joining the library.</p>
           </div>

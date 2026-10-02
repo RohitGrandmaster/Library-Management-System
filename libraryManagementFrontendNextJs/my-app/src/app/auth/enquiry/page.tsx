@@ -230,7 +230,7 @@ export default function PublicEnquiryPage() {
             {LIBRARY.phone}
           </a>
           <p className="text-[10px] text-[var(--text-disabled)] pt-1">
-            © 2026 {LIBRARY.name} · Powered by Smart Library 360
+            © 2026 {LIBRARY.name} · Powered by Library OS
           </p>
         </div>
       </div>

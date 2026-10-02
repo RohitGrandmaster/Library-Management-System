@@ -122,7 +122,7 @@ export default function OfflinePage() {
 
         {/* Footer */}
         <p className="sys-offline-footer">
-          Smart Library 360 · Works offline with limited functionality
+          Library OS · Works offline with limited functionality
         </p>
       </div>
     </div>

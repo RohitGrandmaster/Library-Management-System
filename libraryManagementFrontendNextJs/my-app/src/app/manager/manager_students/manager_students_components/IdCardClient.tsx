@@ -80,7 +80,7 @@ export function IdCardClient() {
     if (!cardData || !selected) return;
     printThermal({
       type:        'idcard',
-      shopName:    'Smart Library 360',
+      shopName:    'Library OS',
       branch:      selected.branch,
       studentName: cardData.name,
       smartId:     cardData.smartId,

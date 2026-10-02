@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    libraryName: 'Smart Library 360',
+    libraryName: 'Library OS',
     address: '12, MG Road, Pune, Maharashtra 411001',
     contactEmail: 'hello@smartlibrary.com',
     contactPhone: '+91 9876543210',
@@ -37,7 +37,7 @@ export default function AdminSettingsPage() {
       {/* Page Header */}
       <div className="admin-page-header" style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 24 }}>
         <div>
-          <p className="admin-breadcrumb">Smart Library 360 › Admin › Settings</p>
+          <p className="admin-breadcrumb">Library OS › Admin › Settings</p>
           <h1 className="admin-page-title">Global Settings</h1>
           <p className="admin-page-subtitle">Configure your library's core identity, billing info, and preferences.</p>
         </div>

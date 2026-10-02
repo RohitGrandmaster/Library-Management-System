@@ -57,7 +57,7 @@ export default function InvoicesPage() {
       line,
       row('Status  :', `${statusEmoji} ${inv.paymentStatus.toUpperCase()}`),
       '',
-      c('Smart Library 360 | Main Branch'),
+      c('Library OS | Main Branch'),
       line,
     ].join('\n');
     openWhatsApp(inv.phone, msg);
@@ -65,7 +65,7 @@ export default function InvoicesPage() {
 
   function handlePrint(inv: typeof MOCK_INVOICES[0]) {
     printThermal({
-      type: 'receipt', shopName: 'Smart Library 360', branch: 'Main Branch',
+      type: 'receipt', shopName: 'Library OS', branch: 'Main Branch',
       studentName: inv.studentName, smartId: inv.studentId, phone: inv.phone,
       shift: inv.shift, seat: inv.seat, plan: inv.planName,
       billNumber: inv.invoiceNumber, date: formatDate(inv.invoiceDate),

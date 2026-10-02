@@ -115,7 +115,7 @@ export default function ManagerHelpSupportPage() {
               <Video size={24} />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Video Tutorials</h3>
-            <p className="text-sm text-[var(--mgr-text-secondary)] mb-4 flex-1">Watch step-by-step videos to master the Smart Library CRM and operations.</p>
+            <p className="text-sm text-[var(--mgr-text-secondary)] mb-4 flex-1">Watch step-by-step videos to master the Library OS CRM and operations.</p>
             <button className="text-purple-400 text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">Watch Now <ArrowRight size={14} /></button>
           </div>
           <div className="mgr-card p-6 flex flex-col items-start border-t-4 border-t-emerald-500 hover:-translate-y-1 transition-transform cursor-pointer group">

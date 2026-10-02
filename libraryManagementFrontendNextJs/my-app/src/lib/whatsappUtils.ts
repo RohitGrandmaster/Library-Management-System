@@ -1,5 +1,5 @@
 /**
- * WhatsApp utility functions for Smart Library 360
+ * WhatsApp utility functions for Library OS
  */
 
 export interface StudentWhatsAppData {
@@ -121,7 +121,7 @@ export function formatDuesMessage(data: StudentWhatsAppData): string {
     `📅 Valid: ${data.joinDate} → ${data.expiryDate}`,
     ``,
     `━━━━━━━━━━━━━━━━━━━━━━`,
-    `📚 Smart Library 360`,
+    `📚 Library OS`,
     `━━━━━━━━━━━━━━━━━━━━━━`,
   ].filter(Boolean).join('\n');
 }
