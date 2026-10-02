@@ -50,7 +50,7 @@ export default function AdminHeader({ sidebarWidth, onMobileOpen }: HeaderProps)
           <Building2 size={15} className="text-muted-foreground hidden sm:block" />
           <Select value={selectedBranch} onValueChange={setSelectedBranch}>
             <SelectTrigger 
-              className="w-[180px] h-9 text-sm font-medium border-none shadow-none focus:ring-0"
+              className="w-[130px] sm:w-[180px] h-9 text-sm font-medium border-none shadow-none focus:ring-0"
               style={{ background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)' }}
             >
               <SelectValue placeholder="Select Branch" />

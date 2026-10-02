@@ -41,7 +41,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             placeholder="Global search (⌘K)..." 
             className="bg-transparent border-none outline-none text-sm text-[var(--text-primary)] w-full placeholder:text-[var(--text-secondary)]"
           />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-[var(--card-bg)] border border-[var(--border)] rounded px-1.5 py-0.5 pointer-events-none">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 bg-[var(--card-bg)] border border-[var(--border)] rounded px-1.5 py-0.5 pointer-events-none">
             <span className="text-[10px] font-medium text-[var(--text-secondary)]">⌘K</span>
           </div>
         </div>

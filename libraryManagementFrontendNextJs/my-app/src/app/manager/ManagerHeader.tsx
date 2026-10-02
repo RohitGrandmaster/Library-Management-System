@@ -37,7 +37,7 @@ export default function ManagerHeader({ sidebarWidth, onMobileOpen }: Props) {
         <button className="mgr-mobile-menu-btn" onClick={onMobileOpen} aria-label="Open menu">
           <Menu size={20} />
         </button>
-        <div style={{ display: 'flex', flexDirection: 'column', minWidth: '160px' }}>
+        <div className="mgr-header-titles" style={{ display: 'flex', flexDirection: 'column', minWidth: '160px' }}>
           <span className="mgr-header-branch-name" style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ShieldCheck size={20} color="var(--primary)" /> Manager Panel
           </span>
@@ -77,7 +77,7 @@ export default function ManagerHeader({ sidebarWidth, onMobileOpen }: Props) {
       <div className="mgr-header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <button title="Help & Support" style={{ background: 'transparent', border: 'none', padding: '8px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button className="mgr-help-btn" title="Help & Support" style={{ background: 'transparent', border: 'none', padding: '8px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <HelpCircle size={18} />
           </button>
           <ThemeToggle />
@@ -91,7 +91,7 @@ export default function ManagerHeader({ sidebarWidth, onMobileOpen }: Props) {
            <div className="mgr-avatar" title="Manager" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'var(--primary)', color: '#fff' }}>
              <User size={18} />
            </div>
-           <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '4px' }}>
+           <div className="mgr-avatar-details" style={{ display: 'flex', flexDirection: 'column', paddingRight: '4px' }}>
              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1' }}>{getGreeting()}</span>
              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{managerName}</span>
            </div>

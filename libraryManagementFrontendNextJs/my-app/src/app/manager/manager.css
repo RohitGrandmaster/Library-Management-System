@@ -1053,9 +1053,11 @@
   .mgr-sidebar { transform: translateX(-100%); width: 240px !important; }
   .mgr-sidebar.mgr-sidebar-mobile-open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5); }
   .mgr-main-offset { margin-left: 0 !important; }
-  .mgr-header { left: 0 !important; padding: 0 12px; }
+  .mgr-header { left: 0 !important; padding: 0 12px; gap: 8px; justify-content: space-between; }
   .mgr-mobile-menu-btn { display: flex; }
-  .mgr-header-branch { display: none; }
+  .mgr-header-titles, .mgr-branch-pill, .mgr-help-btn, .mgr-avatar-details { display: none !important; }
+  .mgr-header-middle { padding: 0 8px !important; }
+  .mgr-avatar-wrapper { padding: 0 !important; border: none !important; background: transparent !important; }
   .mgr-shell-content { padding: 12px; padding-top: 76px; }
   .mgr-page-title  { font-size: 18px; }
   .mgr-kpi-value   { font-size: 22px; }
